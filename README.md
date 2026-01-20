@@ -233,5 +233,3 @@ TBD.
 Spindle is not flashy by design.
 
 It exists to make everything else safer, calmer, and more trustworthy.
-
-Say the word and we proceed.
