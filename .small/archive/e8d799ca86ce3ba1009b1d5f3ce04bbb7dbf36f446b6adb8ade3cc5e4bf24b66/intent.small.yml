@@ -1,0 +1,10 @@
+small_version: "1.0.0"
+owner: "human"
+intent: "Implement Phase 6 CLI skeleton and spindle status command."
+scope:
+  include:
+    - "CLI skeleton"
+    - "spindle status command"
+  exclude: []
+success_criteria:
+  - "spindle status reads SMALL state via small CLI and reports next actionable task and strict check status"
