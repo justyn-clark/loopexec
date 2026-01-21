@@ -1,3 +1,5 @@
+Note: This document describes planned behavior. Some commands may not yet be implemented.
+
 # Spindle Architecture
 
 This document describes the high-level architecture of Spindle.
