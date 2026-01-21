@@ -1,3 +1,5 @@
+Note: This document describes planned behavior. Some commands may not yet be implemented.
+
 # Loop Contract Specification
 
 This document defines the normative contract for Spindle execution loops.
