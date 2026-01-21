@@ -3,3 +3,6 @@
 .env
 node_modules/
 build/
+
+# local build output
+spindle
