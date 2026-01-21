@@ -531,3 +531,44 @@ entries:
       status: completed
       task_id: task-3
       timestamp: "2026-01-21T02:33:04.243150000Z"
+    - command: perl -0pi -e 's/^spindle$/\/spindle/m' .gitignore
+      evidence: Apply started
+      notes: 'apply: execution started'
+      status: in_progress
+      task_id: task-3
+      timestamp: "2026-01-21T02:42:04.011264000Z"
+    - command: perl -0pi -e 's/^spindle$/\/spindle/m' .gitignore
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      status: completed
+      task_id: task-3
+      timestamp: "2026-01-21T02:42:04.043541000Z"
+    - command: git add .gitignore
+      evidence: Apply started
+      notes: 'apply: execution started'
+      status: in_progress
+      task_id: task-3
+      timestamp: "2026-01-21T02:43:40.794013000Z"
+    - command: git add .gitignore
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      status: completed
+      task_id: task-3
+      timestamp: "2026-01-21T02:43:40.827557000Z"
+    - command: git commit -m "Fix gitignore for spindle binary"
+      evidence: Apply started
+      notes: 'apply: execution started'
+      status: in_progress
+      task_id: task-3
+      timestamp: "2026-01-21T02:43:54.002654000Z"
+    - command: git commit -m "Fix gitignore for spindle binary"
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      status: completed
+      task_id: task-3
+      timestamp: "2026-01-21T02:43:54.043033000Z"
+    - evidence: Adjusted .gitignore to ignore only /spindle binary and committed fix
+      notes: commit fe3bce7
+      status: completed
+      task_id: task-3
+      timestamp: "2026-01-21T02:43:57.728774000Z"
