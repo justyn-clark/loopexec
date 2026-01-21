@@ -1,3 +1,5 @@
+Note: This document describes planned behavior. Some commands may not yet be implemented.
+
 # Integrations
 
 This document describes how to integrate Spindle with external systems.
