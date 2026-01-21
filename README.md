@@ -1,3 +1,5 @@
+Note: This document describes planned behavior. Some commands may not yet be implemented.
+
 # Spindle
 
 Spindle is a state-driven execution CLI designed to run bounded work loops against SMALL-governed repositories.
