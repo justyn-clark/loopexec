@@ -1,7 +1,10 @@
 small_version: "1.0.0"
 owner: "human"
-intent: "Develop Spindle CLI for state-driven execution loops against SMALL-governed repositories"
+intent: "Implement Phase 6 CLI skeleton and spindle status command."
 scope:
-  include: []
+  include:
+    - "CLI skeleton"
+    - "spindle status command"
   exclude: []
-success_criteria: []
+success_criteria:
+  - "spindle status reads SMALL state via small CLI and reports next actionable task and strict check status"
