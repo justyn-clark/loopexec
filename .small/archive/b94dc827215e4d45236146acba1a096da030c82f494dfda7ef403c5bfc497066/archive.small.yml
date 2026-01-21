@@ -1,0 +1,17 @@
+small_version: 1.0.0
+archived_at: "2026-01-21T00:13:49.065815Z"
+source_dir: /Users/justin/Documents/Justyn Clark Network/REPOS/Spindle
+replayId: b94dc827215e4d45236146acba1a096da030c82f494dfda7ef403c5bfc497066
+files:
+    - name: intent.small.yml
+      sha256: 8fcf9daa2ad5affd5a1b8a6b6fb729bb6e104ad6129f361ece51fdfa2ae10fdc
+    - name: constraints.small.yml
+      sha256: cba743345dd15746fe158d92a7a5cb670ae4f750711c535de7cad7892fcebb99
+    - name: plan.small.yml
+      sha256: eb69cc42751b45d79bad6c2af92cb6d48c5f98c78fd3e5d876c361e317a68b5e
+    - name: progress.small.yml
+      sha256: 9890450ce75c99e4a769612219fe7ef0627b9abad4335ffb31eba374228a1e05
+    - name: handoff.small.yml
+      sha256: 730fe0fa0617763a2ab1d81666258ff239d8e64cad6270d39fd59c15a2a02d23
+    - name: workspace.small.yml
+      sha256: c599ff02e3762863531aa4c073eb7c5b85a3ec40459f1103b18ac2c8f7db9a15
