@@ -1,6 +1,6 @@
 small_version: 1.0.0
 owner: agent
-summary: Committed Phase 6 CLI skeleton with spindle status; added spindle to .gitignore.
+summary: Fixed .gitignore so only /spindle binary is ignored; cmd/spindle/main.go no longer ignored.
 resume:
     current_task_id: ""
     next_steps: []
