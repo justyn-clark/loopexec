@@ -60,6 +60,33 @@ Spindle **composes** with these tools instead of replacing them.
 
 ---
 
+## Why Spindle Is Not CI
+
+CI systems validate code after commits.
+Spindle governs execution during work.
+
+| Concern | CI | Spindle |
+|---------|-----|---------|
+| When it runs | After push | During task execution |
+| What it checks | Build, tests, lint | State validity, constraints |
+| Failure response | Reject commit | Halt loop, require fix |
+| State model | Stateless per run | Persistent via SMALL |
+| Execution scope | Entire pipeline | One bounded step |
+
+CI asks: "Is this code acceptable?"
+Spindle asks: "Is this step valid to execute now?"
+
+CI runs after the fact.
+Spindle runs in the moment.
+
+They are complementary:
+- Spindle ensures disciplined execution during development
+- CI ensures quality gates before merge
+
+Use both. They solve different problems.
+
+---
+
 ## Core Principles
 
 ### 1. State Is the Source of Truth
