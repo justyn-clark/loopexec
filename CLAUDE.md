@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Spindle is a state-driven execution CLI designed to run bounded work loops against SMALL-governed repositories. It enforces execution discipline, durability, and auditability for AI-assisted and human-assisted work.
+loopexec is a state-driven execution CLI designed to run bounded work loops against SMALL-governed repositories. It enforces execution discipline, durability, and auditability for AI-assisted and human-assisted work.
 
-Spindle is **not** an AI model, agent framework, or task runner - it composes with these tools by enforcing how work is executed, recorded, and resumed.
+loopexec is **not** an AI model, agent framework, or task runner - it composes with these tools by enforcing how work is executed, recorded, and resumed.
 
 ## SMALL Protocol Compliance
 
@@ -41,8 +41,8 @@ Evidence must be precise, name files/systems touched, and explain why changes we
 
 ## Architecture (Planned)
 
-Spindle will be implemented in Go with this structure:
-- `cmd/spindle/` - CLI entry point
+loopexec will be implemented in Go with this structure:
+- `cmd/loopexec/` - CLI entry point
 - `internal/loop/` - Execution loop logic
 - `internal/substrate/` - Execution adapters (local shell, Nix, containers)
 - `internal/selector/` - Task selection logic
@@ -50,8 +50,8 @@ Spindle will be implemented in Go with this structure:
 
 ## CLI Commands (Planned)
 
-- `spindle status` - Show current state
-- `spindle run` - Execute one step
-- `spindle loop` - Run bounded execution loop
-- `spindle emit --json` - Output for integrations
-- `spindle substrate list` - List available execution substrates
+- `loopexec status` - Show current state
+- `loopexec run` - Execute one step
+- `loopexec loop` - Run bounded execution loop
+- `loopexec emit --json` - Output for integrations
+- `loopexec substrate list` - List available execution substrates

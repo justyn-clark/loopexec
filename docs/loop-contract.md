@@ -2,7 +2,7 @@ Note: This document describes planned behavior. Some commands may not yet be imp
 
 # Loop Contract Specification
 
-This document defines the normative contract for Spindle execution loops.
+This document defines the normative contract for loopexec execution loops.
 
 Version: 1.0.0
 
