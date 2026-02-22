@@ -2,18 +2,18 @@ Note: This document describes planned behavior. Some commands may not yet be imp
 
 # Integrations
 
-This document describes how to integrate Spindle with external systems.
+This document describes how to integrate loopexec with external systems.
 
 ---
 
 ## JSON Output
 
-Spindle provides structured JSON output via the `emit` command.
+loopexec provides structured JSON output via the `emit` command.
 
 ### Basic Usage
 
 ```bash
-spindle emit --json
+loopexec emit --json
 ```
 
 Output structure:
@@ -45,9 +45,9 @@ Output structure:
 
 Emit specific sections:
 ```bash
-spindle emit --json --section plan
-spindle emit --json --section progress
-spindle emit --json --section status
+loopexec emit --json --section plan
+loopexec emit --json --section progress
+loopexec emit --json --section status
 ```
 
 ---
@@ -56,7 +56,7 @@ spindle emit --json --section status
 
 ### Simple Wrapper Loop
 
-Run Spindle in a bash loop with manual intervention:
+Run loopexec in a bash loop with manual intervention:
 
 ```bash
 #!/bin/bash
@@ -67,7 +67,7 @@ while true; do
     small check --strict || { echo "Strict check failed"; exit 1; }
 
     # Get status
-    status=$(spindle emit --json | jq -r '.status')
+    status=$(loopexec emit --json | jq -r '.status')
 
     if [ "$status" = "complete" ]; then
         echo "All tasks complete"
@@ -82,7 +82,7 @@ while true; do
     fi
 
     # Run one iteration
-    spindle run
+    loopexec run
 
     # Optional: add delay between iterations
     sleep 1
@@ -91,25 +91,25 @@ done
 
 ### Status Polling
 
-Poll Spindle status from another process:
+Poll loopexec status from another process:
 
 ```bash
 #!/bin/bash
 
 # Check if work is complete
 is_complete() {
-    local status=$(spindle emit --json | jq -r '.status')
+    local status=$(loopexec emit --json | jq -r '.status')
     [ "$status" = "complete" ]
 }
 
 # Get current task
 current_task() {
-    spindle emit --json | jq -r '.current_task.title // "none"'
+    loopexec emit --json | jq -r '.current_task.title // "none"'
 }
 
 # Get progress percentage
 progress_percent() {
-    local json=$(spindle emit --json)
+    local json=$(loopexec emit --json)
     local completed=$(echo "$json" | jq '.plan_summary.completed')
     local total=$(echo "$json" | jq '.plan_summary.total')
     echo "scale=0; $completed * 100 / $total" | bc
@@ -121,7 +121,7 @@ echo "Progress: $(progress_percent)%"
 
 ### Exit Code Handling
 
-Spindle exit codes:
+loopexec exit codes:
 
 | Code | Meaning |
 |------|---------|
@@ -132,7 +132,7 @@ Spindle exit codes:
 
 Handle in bash:
 ```bash
-spindle run
+loopexec run
 case $? in
     0) echo "Success" ;;
     1) echo "Execution failed - check evidence" ;;
@@ -147,14 +147,14 @@ esac
 
 ### GitHub Actions
 
-Run Spindle as a CI check:
+Run loopexec as a CI check:
 
 ```yaml
-name: Spindle Check
+name: loopexec Check
 on: [push, pull_request]
 
 jobs:
-  spindle:
+  loopexec:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -164,22 +164,22 @@ jobs:
           # Install small CLI
           curl -fsSL https://small.dev/install.sh | sh
 
-      - name: Install Spindle
+      - name: Install loopexec
         run: |
-          # Install spindle
-          go install github.com/your-org/spindle/cmd/spindle@latest
+          # Install loopexec
+          go install github.com/your-org/loopexec/cmd/loopexec@latest
 
       - name: Validate SMALL State
         run: small check --strict
 
-      - name: Check Spindle Status
+      - name: Check loopexec Status
         run: |
-          spindle emit --json > spindle-status.json
-          cat spindle-status.json
+          loopexec emit --json > loopexec-status.json
+          cat loopexec-status.json
 
       - name: Fail on Blocked Tasks
         run: |
-          blocked=$(jq '.plan_summary.blocked' spindle-status.json)
+          blocked=$(jq '.plan_summary.blocked' loopexec-status.json)
           if [ "$blocked" -gt 0 ]; then
             echo "Blocked tasks detected"
             exit 1
@@ -238,10 +238,10 @@ small status --json
 small check --strict
 
 # See what to work on
-spindle emit --json | jq '.current_task'
+loopexec emit --json | jq '.current_task'
 
 # Run one step
-spindle run
+loopexec run
 
 # Check results
 small status --json
@@ -253,10 +253,10 @@ small handoff --summary "Completed feature X implementation"
 
 ### Watch Mode
 
-Monitor Spindle in a terminal:
+Monitor loopexec in a terminal:
 
 ```bash
-watch -n 5 'spindle emit --json | jq "."'
+watch -n 5 'loopexec emit --json | jq "."'
 ```
 
 ### Debug Mode
@@ -264,7 +264,7 @@ watch -n 5 'spindle emit --json | jq "."'
 Run with verbose output:
 
 ```bash
-spindle run --verbose
+loopexec run --verbose
 ```
 
 Output includes:
@@ -281,28 +281,28 @@ The following integrations are explicitly out of scope for this document:
 
 ### Direct Model Invocation
 
-Spindle does not invoke AI models directly. Model invocation is the responsibility of the agent or automation layer above Spindle.
+loopexec does not invoke AI models directly. Model invocation is the responsibility of the agent or automation layer above loopexec.
 
 ### Prompt Management
 
-Spindle does not manage prompts, context windows, or model configurations. These concerns belong to the agent layer.
+loopexec does not manage prompts, context windows, or model configurations. These concerns belong to the agent layer.
 
 ### Agent Orchestration
 
-Spindle does not orchestrate multiple agents or manage agent lifecycles. It executes work; it does not decide what work to do.
+loopexec does not orchestrate multiple agents or manage agent lifecycles. It executes work; it does not decide what work to do.
 
-These separations are intentional. Spindle provides execution discipline. Higher layers provide intelligence.
+These separations are intentional. loopexec provides execution discipline. Higher layers provide intelligence.
 
 ---
 
 ## Integration Checklist
 
-When integrating Spindle:
+When integrating loopexec:
 
 1. Ensure SMALL CLI is installed and accessible
 2. Verify `.small/` workspace is initialized
 3. Confirm strict check passes before starting
-4. Use `spindle emit --json` for programmatic access
+4. Use `loopexec emit --json` for programmatic access
 5. Handle all exit codes appropriately
 6. Always run strict check after failures
 7. Generate handoff at session boundaries

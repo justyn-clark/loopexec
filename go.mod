@@ -1,4 +1,4 @@
-module github.com/justyn-clark/Spindle
+module github.com/justyn-clark/loopexec
 
 go 1.25.3
 
