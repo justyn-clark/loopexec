@@ -1,7 +1,7 @@
 
 - SMALL = state    
 - **loopexec** = execution loop (public name) 
-- Spindle = optional internal codename, not user-facing    
+- loopexec = optional internal codename, not user-facing    
 - Ralph loop made explicit, deterministic, and human-usable    
 - Manual and agent workflows clarified
 - Future-proof for plugins, Codex, Claude Code, and BYO loops
