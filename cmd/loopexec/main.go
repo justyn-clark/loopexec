@@ -254,7 +254,7 @@ func newStepCmd() *cobra.Command {
 
 func newRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:          "spindle",
+		Use:          "loopexec",
 		Aliases:      []string{"loopexec"},
 		Short:        "loopexec CLI",
 		SilenceUsage: true,
