@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  go-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Go version
+        run: go version
+
+      - name: Format check (gofmt)
+        run: |
+          files=$(find . -type f -name '*.go' -not -path './vendor/*')
+          out=$(gofmt -l $files)
+          if [ -n "$out" ]; then
+            echo "Unformatted files:"
+            echo "$out"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
