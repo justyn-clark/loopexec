@@ -1,22 +1,22 @@
 Note: This document describes planned behavior. Some commands may not yet be implemented.
 
-# Spindle Architecture
+# loopexec Architecture
 
-This document describes the high-level architecture of Spindle.
+This document describes the high-level architecture of loopexec.
 
 ---
 
 ## Overview
 
-Spindle is a state-driven execution CLI. It reads state from SMALL artifacts, executes bounded work, and records outcomes atomically.
+loopexec is a state-driven execution CLI. It reads state from SMALL artifacts, executes bounded work, and records outcomes atomically.
 
-Spindle does not:
+loopexec does not:
 - Define state (SMALL does)
 - Orchestrate workflows
 - Replace CI or task runners
 - Manage agents or models
 
-Spindle does:
+loopexec does:
 - Drive execution loops
 - Enforce state gates
 - Record evidence
@@ -26,7 +26,7 @@ Spindle does:
 
 ## Execution Loop
 
-Spindle implements a controlled execution loop (Ralph loop) with hard state boundaries.
+loopexec implements a controlled execution loop (Ralph loop) with hard state boundaries.
 
 ```
 +-----------------+
@@ -79,7 +79,7 @@ The loop terminates when no actionable tasks remain or a halt condition is trigg
 
 ## State Gates
 
-Spindle enforces state validity at defined boundaries.
+loopexec enforces state validity at defined boundaries.
 
 ### Strict Check
 
@@ -131,7 +131,7 @@ The substrate is recorded as part of execution evidence. This makes the environm
 
 ### Substrate Selection
 
-Spindle selects the substrate based on:
+loopexec selects the substrate based on:
 - Workspace configuration
 - Command-line flags
 - Constraint directives
@@ -142,7 +142,7 @@ The default is local shell. Other substrates require explicit configuration.
 
 ## Failure Modes
 
-Spindle halts execution under these conditions:
+loopexec halts execution under these conditions:
 
 ### Gate Failures
 
@@ -168,13 +168,13 @@ Spindle halts execution under these conditions:
 | Dependency cycle | Tasks depend on each other | Fix plan structure |
 | Missing task | Referenced task not in plan | Add task via `small plan --add` |
 
-When execution halts, Spindle records the halt reason. The next session can resume from the recorded state.
+When execution halts, loopexec records the halt reason. The next session can resume from the recorded state.
 
 ---
 
 ## Resume Semantics
 
-Spindle supports safe resume via SMALL handoff and replayId.
+loopexec supports safe resume via SMALL handoff and replayId.
 
 ### Handoff
 
@@ -211,7 +211,7 @@ If the workspace state has changed outside the session (manual edits, other agen
 
 ```
 +---------------------+
-|      Spindle CLI    |
+|      loopexec CLI    |
 +----------+----------+
            |
            v
@@ -247,4 +247,4 @@ If the workspace state has changed outside the session (manual edits, other agen
 - **Emitter**: Produces JSON output for integrations.
 - **SMALL**: External authority for all state operations.
 
-Spindle never bypasses SMALL. All state reads and writes go through the SMALL CLI.
+loopexec never bypasses SMALL. All state reads and writes go through the SMALL CLI.
