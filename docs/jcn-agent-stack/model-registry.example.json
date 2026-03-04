@@ -1,0 +1,30 @@
+{
+  "version": "1",
+  "machines": [
+    {"id": "mac-studio", "ram_gb": 64, "role": "model-host"},
+    {"id": "mac-mini", "ram_gb": 16, "role": "daemon"},
+    {"id": "mba-m2", "ram_gb": 16, "role": "mobile"}
+  ],
+  "models": [
+    {
+      "id": "qwen2.5-coder-14b-q4km",
+      "family": "qwen2.5-coder",
+      "quant": "Q4_K_M",
+      "memory_gb_estimate": 10.5,
+      "capabilities": ["repo_refactor", "code_patch", "planning"],
+      "machine_allowlist": ["mac-studio", "mac-mini"],
+      "priority": 10,
+      "status": "active"
+    },
+    {
+      "id": "phi-4-q4km",
+      "family": "phi-4",
+      "quant": "Q4_K_M",
+      "memory_gb_estimate": 8.0,
+      "capabilities": ["reasoning", "planning", "summarization"],
+      "machine_allowlist": ["mac-studio", "mac-mini", "mba-m2"],
+      "priority": 20,
+      "status": "active"
+    }
+  ]
+}
