@@ -1,0 +1,7 @@
+{
+  "job_type": "repo_refactor",
+  "repo_size": "large",
+  "latency_budget": "balanced",
+  "context_need": "high",
+  "tool_calling_needed": true
+}
