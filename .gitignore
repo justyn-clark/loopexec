@@ -6,3 +6,18 @@ build/
 
 # local build output
 /spindle
+
+# ================================
+# SMALL runtime artifacts
+# ================================
+
+# Root workspace canonical artifacts are committed, so do NOT ignore /.small/ entirely.
+.small-cache/
+.small/runs/
+
+# Always ignore runtime run snapshots at repo root
+.small-runs/
+
+# Ignore all archives by default (curation only)
+.small/archive/*
+.small/logs
