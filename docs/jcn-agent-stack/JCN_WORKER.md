@@ -134,3 +134,11 @@ gates:
 - `worker-run`
 - `worker-cluster`
 - `worker-queue`
+
+## Phase 2 Replay Command
+
+Run from repo root:
+
+`JCN_LMSTUDIO_BASE_URL=http://localhost:1234 go run ./cmd/jcn-worker run docs/jcn-agent-stack/worker-task.example.json`
+
+This replay command reuses the same task file and default router policy and model registry.

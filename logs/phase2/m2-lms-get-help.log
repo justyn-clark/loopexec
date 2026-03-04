@@ -1,0 +1,49 @@
+Usage: lms get [options] [modelName]
+
+Search and download local models
+
+Arguments:
+   modelName                                     The model to download. If not provided,
+                                                 staff picked models will be shown. For
+                                                 models that have multiple quantizations,
+                                                 you can specify the quantization by
+                                                 appending it with "@". For example, use
+                                                 "llama-3.1-8b@q4_k_m" to download the
+                                                 llama-3.1-8b model with the specified
+                                                 quantization.
+
+Options:
+   --mlx                                         Whether to include MLX models in the
+                                                 search results. If any of "--mlx" or
+                                                 "--gguf" flag is specified, only models
+                                                 that match the specified flags will be
+                                                 shown; Otherwise only models supported by
+                                                 your installed LM Runtimes will be shown.
+   --gguf                                        Whether to include GGUF models in the
+                                                 search results. If any of "--mlx" or
+                                                 "--gguf" flag is specified, only models
+                                                 that match the specified flags will be
+                                                 shown; Otherwise only models supported by
+                                                 your installed LM Runtimes will be shown.
+   -n, --limit <value>                           Limit the number of model options.
+   --always-show-all-results                     By default, an exact model match to the
+                                                 query is automatically selected. If this
+                                                 flag is specified, you're prompted to
+                                                 choose from the model results, even when
+                                                 there's an exact match.
+   -a, --always-show-download-options            By default, if there an exact match for
+                                                 your query, the system will automatically
+                                                 select a quantization based on your
+                                                 hardware. Specifying this flag will
+                                                 always prompt you to choose a download
+                                                 option.
+   -y, --yes                                     Automatically approve all prompts. Useful
+                                                 for scripting. If there are multiple
+                                                 models matching the search term, the
+                                                 first one will be used. If there are
+                                                 multiple download options, the
+                                                 recommended one based on your hardware
+                                                 will be chosen. Fails if you have
+                                                 specified a quantization via the "@"
+                                                 syntax and the quantization does not
+                                                 exist in the options.
