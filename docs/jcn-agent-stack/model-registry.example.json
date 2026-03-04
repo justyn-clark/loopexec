@@ -7,6 +7,16 @@
   ],
   "models": [
     {
+      "id": "qwen2.5-0.5b-instruct",
+      "family": "qwen2.5",
+      "quant": "Q8_0",
+      "memory_gb_estimate": 1.0,
+      "capabilities": ["repo_refactor", "code_patch", "planning", "reasoning", "summarization", "multimodal"],
+      "machine_allowlist": ["mac-studio", "mac-mini", "mba-m2"],
+      "priority": 5,
+      "status": "active"
+    },
+    {
       "id": "qwen2.5-coder-14b-q4km",
       "family": "qwen2.5-coder",
       "quant": "Q4_K_M",

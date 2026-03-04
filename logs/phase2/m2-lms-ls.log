@@ -1,0 +1,7 @@
+Waking up LM Studio service...
+
+You have 1 models, taking up 84.11 MB of disk space.
+
+EMBEDDING                               PARAMS    ARCH          SIZE        
+text-embedding-nomic-embed-text-v1.5              Nomic BERT    84.11 MB    
+

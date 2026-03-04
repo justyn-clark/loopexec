@@ -1,0 +1,17 @@
+{
+  "runId": "2026-03-04T23-35-48Z-0655",
+  "started_utc": "2026-03-04T23:35:48Z",
+  "ended_utc": "2026-03-04T23:35:48Z",
+  "task_path": "/var/folders/93/_vxgpzjd6ks13t426qyxd03r0000gn/T/TestRunCallsLMStudioAndPrintsSelection462063607/001/task.json",
+  "task_sha256": "9c26e04743ad834650bc71c3e9d2cb66944c642367aed2043ad2c8ff9003d2da",
+  "router_policy_path": "/var/folders/93/_vxgpzjd6ks13t426qyxd03r0000gn/T/TestRunCallsLMStudioAndPrintsSelection462063607/001/policy.json",
+  "router_policy_sha256": "36a3b17b69aecad73a687bf8a2fb633600dcffd24bb88a2b73c6de4ce91b32d2",
+  "model_registry_path": "/var/folders/93/_vxgpzjd6ks13t426qyxd03r0000gn/T/TestRunCallsLMStudioAndPrintsSelection462063607/001/registry.json",
+  "model_registry_sha256": "e6d58e5842a4c9be49a42166142c41d9930571e64d18ef5d47f31b65bcd1a533",
+  "selected_model_id": "qwen",
+  "selected_machine_target": "mac-studio",
+  "lmstudio_base_url": "http://127.0.0.1:56589",
+  "prompt_sha256": "91bf1fd11750e92415f65024a1e81e07d39323ae07a8073b6c8fcf21e5483778",
+  "response_sha256": "b814aabdde112d89d45105c3205482949a86d7bbc33040034db21f7a85c84c4a",
+  "status": "OK"
+}
