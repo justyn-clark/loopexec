@@ -1,0 +1,12 @@
+error: invalid worker name: docs/jcn-agent-stack/worker-task.example.json
+exit status 1
+{
+  "worker": "code-worker",
+  "model_id": "qwen2.5-coder-14b-q4km",
+  "machine_target": "mac-studio",
+  "reason_codes": [
+    "job_type_match",
+    "capability_match",
+    "machine_priority_match"
+  ]
+}

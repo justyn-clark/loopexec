@@ -1,12 +1,12 @@
 {
   "version": "1",
   "job_type_priority": {
-    "repo_refactor": ["qwen2.5-coder-14b-q4km", "phi-4-q4km"],
-    "code_patch": ["qwen2.5-coder-14b-q4km", "phi-4-q4km"],
-    "reasoning": ["phi-4-q4km", "qwen2.5-coder-14b-q4km"],
-    "summarization": ["phi-4-q4km", "qwen2.5-coder-14b-q4km"],
-    "planning": ["phi-4-q4km", "qwen2.5-coder-14b-q4km"],
-    "multimodal": ["phi-4-q4km"]
+    "repo_refactor": ["qwen2.5-0.5b-instruct", "qwen2.5-coder-14b-q4km", "phi-4-q4km"],
+    "code_patch": ["qwen2.5-0.5b-instruct", "qwen2.5-coder-14b-q4km", "phi-4-q4km"],
+    "reasoning": ["phi-4-q4km", "qwen2.5-0.5b-instruct", "qwen2.5-coder-14b-q4km"],
+    "summarization": ["phi-4-q4km", "qwen2.5-0.5b-instruct", "qwen2.5-coder-14b-q4km"],
+    "planning": ["phi-4-q4km", "qwen2.5-0.5b-instruct", "qwen2.5-coder-14b-q4km"],
+    "multimodal": ["qwen2.5-0.5b-instruct", "phi-4-q4km"]
   },
   "machine_priority": ["mac-studio", "mac-mini", "mba-m2"]
 }

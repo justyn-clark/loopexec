@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-71gwcxc7cpfi33ji7j495",
+  "object": "chat.completion",
+  "created": 1772667092,
+  "model": "qwen2.5-0.5b-instruct",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "OK is the standard response in many languages, including English.",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 30,
+    "completion_tokens": 13,
+    "total_tokens": 43
+  },
+  "stats": {},
+  "system_fingerprint": "qwen2.5-0.5b-instruct"
+}

@@ -1,0 +1,8 @@
+Usage: lms server [options] [command]
+
+Commands for managing the local server
+
+Commands:
+   start             Starts the local server
+   stop              Stops the local server
+   status            Displays the status of the local server
