@@ -19,5 +19,16 @@ build/
 .small-runs/
 
 # Ignore all archives by default (curation only)
+.small-archive/
 .small/archive/*
 .small/logs
+
+# JCN universal secrets policy
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.*.example
+!.env.*.sample
+!.env.*.template
