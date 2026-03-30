@@ -1,555 +1,173 @@
-
-- SMALL = state    
-- **loopexec** = execution loop (public name) 
-- loopexec = optional internal codename, not user-facing    
-- Ralph loop made explicit, deterministic, and human-usable    
-- Manual and agent workflows clarified
-- Future-proof for plugins, Codex, Claude Code, and BYO loops
-  
-  
-
-> Note: This document describes **planned behavior**. Some commands and integrations may not yet be implemented.
-  
-# **loopexec**
-
-**loopexec** is a state-driven execution CLI designed to run **bounded work loops** against repositories governed by **SMALL**.
-
-It does not replace agents, models, CI systems, or task runners.
-
-It enforces **how work is executed, recorded, compacted, and resumed**.
-  
-loopexec exists to make AI-assisted and human-assisted work **durable, auditable, reproducible, interrupt-safe, and token-efficient**.
-
----
-
-## **Why loopexec Exists**
-
-  
-
-Modern agent tooling is good at generating actions.
-
-It is bad at maintaining state and execution discipline.
-
-  
-
-Common failure modes:
-
-- Plans drift from reality
-    
-- Work completes without evidence
-    
-- Context windows reset or balloon
-    
-- Execution boundaries are implicit
-    
-- Handoffs are informal or missing
-    
-- Token usage grows without bound
-    
-
-  
-
-**SMALL solves state.**
-
-**loopexec solves execution discipline and loop control.**
-
-  
-
-Together, they enable:
-
-- Bounded, step-by-step execution
-    
-- Deterministic validation before and after each step
-    
-- State as the source of truth (not chat history)
-    
-- Safe interruption and resumption
-    
-- Measurable, comparable token usage
-    
-
----
-
-## **What loopexec Is**
-
-  
-
-loopexec is a CLI that:
-
-- Reads authoritative state from .small/
-    
-- Selects the next actionable task
-    
-- Executes **exactly one bounded step**
-    
-- Writes results atomically via SMALL checkpoints
-    
-- Re-validates state after execution
-    
-- Emits structured telemetry for observation
-    
-- Repeats until work is complete, blocked, or halted
-    
-
-  
-
-At its core, loopexec implements a **controlled execution loop**
-
-(commonly called a _Ralph loop_) with hard state boundaries.
-
----
-
-## **What loopexec Is Not**
-
-  
-
-loopexec is **not**:
-
-- An AI model
-    
-- An agent framework
-    
-- A workflow orchestrator
-    
-- A CI replacement
-    
-- A general task runner (make, just, task, etc.)
-    
-
-  
-
-loopexec **composes** with these tools instead of replacing them.
-
----
-
-## **SMALL and loopexec: Clear Separation of Concerns**
-
-|**Layer**|**Responsibility**|
-|---|---|
-|SMALL|State, invariants, lineage|
-|loopexec|Execution loop and discipline|
-|Agent|Proposes actions|
-|Human|Defines intent, constraints, approvals|
-|CI|Post-commit validation|
-|Observer|Visibility and analytics|
-
-If SMALL is the **ledger**,
-
-loopexec is the **disciplined operator**.
-
----
-
-## **Core Principles**
-
-  
-
-### **1. State Is Authoritative**
-
-  
-
-Conversation history is ephemeral.
-
-Logs are insufficient.
-
-  
-
-loopexec treats .small/ artifacts as the **only source of truth**.
-
-  
-
-Every execution step must:
-
-- Respect intent and constraints
-    
-- Correspond to a plan task
-    
-- Produce evidence in progress
-    
-- Be resumable via handoff
-    
-
----
-
-### **2. One Step at a Time**
-
-  
-
-loopexec enforces **single-step execution**.
-
-  
-
-Each loop iteration:
-
-- Executes one bounded command
-    
-- Produces one checkpoint
-    
-- Mutates state once
-    
-
-  
-
-This makes failures obvious, retries safe, audits trivial, and compaction possible.
-
----
-
-### **3. Human on the Loop, Not in the Loop**
-
-  
-
-loopexec supports:
-
-- Humans
-    
-- AI agents
-    
-- Or both together
-    
-
-  
-
-Humans define intent and constraints.
-
-Agents propose actions.
-
-loopexec enforces boundaries and records outcomes.
-
-  
-
-No invisible work.
-
-No silent failures.
-
----
-
-### **4. Bounded Context (Compaction by Design)**
-
-  
-
-loopexec never hands an agent the entire repo history.
-
-  
-
-Instead, it generates a **bounded context packet** per step:
-
-- Current SMALL state (status JSON)
-    
-- Active plan slice only
-    
-- Recent progress slice only
-    
-- One-step objective
-    
-- Execution policy and stop conditions
-    
-
-  
-
-This is the execution equivalent of **mallocing a fixed buffer**:
-
-- No unbounded growth
-    
-- No repeated reallocation
-    
-- Predictable token usage
-    
-
----
-
-## **Human Workflow (Manual Execution)**
-
-  
-
-loopexec is intentionally usable **without any agent**.
-
-  
-
-A human-only loop looks like:
-
-1. Define intent and constraints
-    
-    (via files or small init + edits)
-    
-2. Add plan tasks
-    
-
-```
-small plan --add "Implement feature X"
+# loopexec
+
+`loopexec` is a Go repo for two related command-line surfaces:
+
+- `loopexec` — a contract-first execution-loop CLI stub with stable command names, JSON output, and explicit exit codes.
+- `jcn-worker` — a local JCN worker prototype that deterministically routes a task to a model/machine pair and can execute a local LM Studio chat completion, then write replay artifacts.
+
+This repository is not yet the full production loop engine described in the longer design docs. Today it is a small, test-covered implementation that locks down CLI behavior and captures the first local worker-routing flow.
+
+## Current status
+
+Implemented now:
+
+- Go CLI for `loopexec` in `cmd/loopexec`
+- Commands: `init`, `run`, `status`, `check`, `step`
+- Global `--json` output mode
+- Explicit exit-code contract for success, halt, invariant, workspace, and execution failures
+- Contract tests for machine-readable output
+- GitHub Actions CI running `gofmt`, `go vet`, and `go test ./...`
+- `jcn-worker` prototype in `cmd/jcn-worker`
+- Deterministic task routing from:
+  - task file
+  - router policy JSON
+  - model registry JSON
+- Local LM Studio chat-completions call via `http://localhost:1234` by default
+- Run artifact output under `docs/jcn-agent-stack/runs/`
+
+Not implemented yet:
+
+- Full SMALL-driven loop execution
+- Direct `small` CLI integration inside `cmd/loopexec`
+- Real task selection/checkpointing/handoff orchestration
+- Container/Nix/remote substrates
+- Multi-worker orchestration in this repo
+
+## Repository layout
+
+```text
+cmd/loopexec/                  loopexec CLI
+cmd/jcn-worker/                local worker prototype
+docs/architecture.md           planned loop architecture
+docs/cli.md                    current loopexec command contract
+docs/integrations.md           current integration guidance for the implemented CLI
+docs/loop-contract.md          normative target contract/spec
+docs/jcn-agent-stack/          JCN worker architecture, examples, and replay artifacts
+.github/workflows/ci.yml       fmt/vet/test CI gate
+scripts/feeltest.sh            deterministic shell feel test helper
 ```
 
-2.   
-    
-3. Validate state
-    
+## Build
 
-```
-small check --strict
-```
+From repo root:
 
-3.   
-    
-4. Mark task in progress
-    
-
-```
-small progress add --task task-1 --status in_progress
+```bash
+go build ./cmd/loopexec
+go build ./cmd/jcn-worker
 ```
 
-4.   
-    
-5. Execute work manually
-    
-    - Edit code
-        
-    - Run tools
-        
-    - Run tests
-        
-    
-6. Record outcome
-    
+Or install the main CLI:
 
-```
-small checkpoint --task task-1 --status completed --evidence "Tests pass"
+```bash
+go install ./cmd/loopexec
 ```
 
-6.   
-    
-7. Re-validate
-    
+## Test
 
-```
-small check --strict
+```bash
+go test ./...
 ```
 
-7.   
-    
-8. Generate handoff when stopping
-    
+CI currently enforces:
 
-```
-small handoff --summary "Implemented feature X"
-```
+- `gofmt`
+- `go vet ./...`
+- `go test ./...`
 
-  
+## loopexec CLI
 
-  
+The implemented `loopexec` binary is a contract stub that returns deterministic human or JSON output.
 
-This is **loopexec by hand**.
+### Commands
 
-The CLI simply automates and enforces this discipline.
+- `loopexec init`
+- `loopexec run`
+- `loopexec status`
+- `loopexec check`
+- `loopexec step`
 
----
+### Global flag
 
-## **Agent Workflow (Runner-Driven)**
+- `--json` — emit exactly one JSON object to stdout
 
-  
+### Example
 
-In an agent-driven loop:
-
-- loopexec selects the task
-    
-- loopexec generates the bounded context packet
-    
-- The agent receives only that packet
-    
-- The agent proposes an action
-    
-- loopexec executes via small apply
-    
-- loopexec checkpoints and re-validates
-    
-
-  
-
-The agent never mutates state directly.
-
----
-
-## **Relationship to Agents and Plugins**
-
-  
-
-Agents do **not** replace loopexec.
-
-  
-
-Agents are execution _advisors_.
-
-  
-
-Possible integrations:
-
-- Claude Code plugin
-    
-- Future Codex plugin
-    
-- Custom loop systems
-    
-- CI-adjacent runners
-    
-
-  
-
-All integrations must obey this rule:
-
-  
-
-> **SMALL governs state.**
-
-> **loopexec governs execution.**
-
-> **Agents propose, never mutate.**
-
----
-
-## **Bring Your Own Loop (BYO)**
-
-  
-
-If you already have a loop system:
-
-- Use SMALL as your state layer
-    
-- Implement the Ralph loop yourself
-    
-- Call SMALL commands explicitly
-    
-- Generate your own bounded context packets
-    
-- Emit telemetry alongside SMALL
-    
-
-  
-
-loopexec is the **reference implementation**, not a monopoly.
-
----
-
-## **Execution Substrates**
-
-  
-
-loopexec supports pluggable execution substrates:
-
-- Local shell
-    
-- Containers
-    
-- Reproducible dev shells (e.g. Nix)
-    
-- Remote runners (future)
-    
-
-  
-
-The substrate is part of the evidence.
-
----
-
-## **Token and Cost Accounting (Planned)**
-
-  
-
-loopexec can optionally record per-step telemetry:
-
-- Input tokens
-    
-- Output tokens
-    
-- Cached tokens (if available)
-    
-- Estimated cost
-    
-- Wall-clock time
-    
-
-  
-
-This enables **side-by-side proof**:
-
-- Free-form agent loops
-    
-- loopexec-bounded loops
-    
-
-  
-
-Same task. Same repo. Measurable difference.
-
----
-
-## **Observer and Visibility (Planned)**
-
-  
-
-Telemetry is written outside .small/:
-
-```
-.loopexec/
-  runs/
-    <replayId>/
-      run.json
-      steps/
-      packets/
+```bash
+loopexec init
+loopexec run --json
+loopexec status --run-id local --iteration 1
+loopexec check
 ```
 
-This enables:
+Example JSON response:
 
-- TUI (ratatui)
-    
-- Web dashboards
-    
-- CSV exports
-    
-- Comparative analysis
-    
+```json
+{
+  "tool": "loopexec",
+  "version": "0.1.0-rc1",
+  "status": "ok",
+  "run_id": "local",
+  "iteration": 1,
+  "errors": []
+}
+```
 
-  
+### Exit codes
 
-Observer tools are **read-only**.
+- `0` success
+- `10` halted: success condition met
+- `11` halted: blocked
+- `12` halted: max iterations reached
+- `20` invariant failed
+- `30` workspace invalid or missing
+- `40` execution failure
+- `50` internal error
 
----
+## jcn-worker
 
-## **Why This Is Not CI**
+`jcn-worker` is an experimental local worker runtime for the JCN stack.
 
-  
+Implemented subcommands:
 
-CI answers: _Is this code acceptable after the fact?_
+- `jcn-worker version`
+- `jcn-worker list`
+- `jcn-worker status`
+- `jcn-worker run <taskPath> [--policy <path>] [--registry <path>]`
 
-loopexec asks: _Is this step valid to execute right now?_
+Current built-in worker inventory returned by `jcn-worker list`:
 
-  
+- `code-worker`
+- `docs-worker`
+- `infra-worker`
+- `mindrail-worker`
+- `reaper-worker`
 
-Use both. They solve different problems.
+### Example run
 
----
+```bash
+JCN_LMSTUDIO_BASE_URL=http://localhost:1234 \
+  go run ./cmd/jcn-worker run docs/jcn-agent-stack/worker-task.example.json
+```
 
-## **Who This Is For**
+Successful runs write:
 
-  
+- `docs/jcn-agent-stack/runs/<runId>.json`
+- `docs/jcn-agent-stack/runs/<runId>.txt`
 
-loopexec is for developers who:
+These artifacts record hashes, selected model, selected machine target, timestamps, and transcript text.
 
-- Use AI agents seriously
-    
-- Care about correctness and auditability
-    
-- Want work to survive context loss
-    
-- Want measurable efficiency, not vibes
-    
-- Prefer explicit systems over magic
-    
+## SMALL relationship
 
----
+This repo is SMALL-governed at the repository level, but the implemented `loopexec` binary does not yet execute the full SMALL loop described in the design docs.
 
-## **Final Note**
+Read the docs in this order:
 
-  
+1. `docs/cli.md` — what the current CLI actually does
+2. `docs/integrations.md` — how to integrate with the current implementation
+3. `docs/architecture.md` — target architecture and planned boundaries
+4. `docs/loop-contract.md` — normative target contract
+5. `docs/jcn-agent-stack/` — JCN worker architecture and local worker prototype artifacts
 
-loopexec is not flashy by design.
+## Notes on planned docs
 
-  
-
-It exists so everything else can be.
+Some documents in this repo intentionally describe the target architecture rather than the current implementation. Where that is the case, they are marked as planned or normative.
