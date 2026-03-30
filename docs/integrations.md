@@ -1,308 +1,227 @@
-Note: This document describes planned behavior. Some commands may not yet be implemented.
-
 # Integrations
 
-This document describes how to integrate loopexec with external systems.
+This document describes integration patterns for the code that is implemented in this repository today.
+
+> Note: `docs/architecture.md` and `docs/loop-contract.md` describe the target loop design. This file stays scoped to the current CLI surface.
 
 ---
 
-## JSON Output
+## loopexec integration surface
 
-loopexec provides structured JSON output via the `emit` command.
+The current `loopexec` binary exposes these commands:
 
-### Basic Usage
+- `loopexec init`
+- `loopexec run`
+- `loopexec status`
+- `loopexec check`
+- `loopexec step`
+
+There is no `emit` command in the current implementation.
+
+### Machine-readable output
+
+All implemented commands support the global `--json` flag.
+
+Example:
 
 ```bash
-loopexec emit --json
+loopexec run --json
 ```
 
-Output structure:
+Example response:
+
 ```json
 {
-  "status": "running",
-  "current_task": {
-    "id": "task-3",
-    "title": "Implement feature X",
-    "status": "in_progress"
-  },
-  "plan_summary": {
-    "total": 5,
-    "completed": 2,
-    "in_progress": 1,
-    "pending": 2,
-    "blocked": 0
-  },
-  "last_checkpoint": {
-    "task_id": "task-2",
-    "status": "completed",
-    "timestamp": "2026-01-21T00:05:30Z"
-  },
-  "replayId": "86f57e500b5ec132..."
+  "tool": "loopexec",
+  "version": "0.1.0-rc1",
+  "status": "ok",
+  "run_id": "local",
+  "iteration": 1,
+  "errors": []
 }
 ```
 
-### Filtering Output
+### JSON fields
 
-Emit specific sections:
-```bash
-loopexec emit --json --section plan
-loopexec emit --json --section progress
-loopexec emit --json --section status
-```
+All JSON responses use this shape:
+
+- `tool` (string)
+- `version` (string)
+- `status` (string)
+- `run_id` (string, optional)
+- `iteration` (integer, optional)
+- `halt_reason` (string, optional)
+- `errors` (array of strings)
+
+Human-readable output goes to stdout. Error lines are printed to stderr.
 
 ---
 
-## Bash Integration
+## Exit codes
 
-### Simple Wrapper Loop
-
-Run loopexec in a bash loop with manual intervention:
-
-```bash
-#!/bin/bash
-set -e
-
-while true; do
-    # Check state
-    small check --strict || { echo "Strict check failed"; exit 1; }
-
-    # Get status
-    status=$(loopexec emit --json | jq -r '.status')
-
-    if [ "$status" = "complete" ]; then
-        echo "All tasks complete"
-        small handoff --summary "Loop completed successfully"
-        break
-    fi
-
-    if [ "$status" = "blocked" ]; then
-        echo "Blocked - manual intervention required"
-        small handoff --summary "Loop blocked, awaiting intervention"
-        break
-    fi
-
-    # Run one iteration
-    loopexec run
-
-    # Optional: add delay between iterations
-    sleep 1
-done
-```
-
-### Status Polling
-
-Poll loopexec status from another process:
-
-```bash
-#!/bin/bash
-
-# Check if work is complete
-is_complete() {
-    local status=$(loopexec emit --json | jq -r '.status')
-    [ "$status" = "complete" ]
-}
-
-# Get current task
-current_task() {
-    loopexec emit --json | jq -r '.current_task.title // "none"'
-}
-
-# Get progress percentage
-progress_percent() {
-    local json=$(loopexec emit --json)
-    local completed=$(echo "$json" | jq '.plan_summary.completed')
-    local total=$(echo "$json" | jq '.plan_summary.total')
-    echo "scale=0; $completed * 100 / $total" | bc
-}
-
-echo "Current task: $(current_task)"
-echo "Progress: $(progress_percent)%"
-```
-
-### Exit Code Handling
-
-loopexec exit codes:
+`loopexec` currently uses these exit codes:
 
 | Code | Meaning |
 |------|---------|
-| 0 | Success (iteration complete or loop finished) |
-| 1 | Execution failure (command failed) |
-| 2 | Gate failure (strict check failed) |
-| 3 | Configuration error |
+| 0 | Success |
+| 10 | Halted: success condition met |
+| 11 | Halted: blocked |
+| 12 | Halted: max iterations reached |
+| 20 | Invariant failed |
+| 30 | Workspace invalid or missing |
+| 40 | Execution failure |
+| 50 | Internal error |
 
-Handle in bash:
+Example shell handling:
+
 ```bash
-loopexec run
+loopexec run --json
 case $? in
-    0) echo "Success" ;;
-    1) echo "Execution failed - check evidence" ;;
-    2) echo "Gate failed - fix SMALL state" ;;
-    3) echo "Configuration error" ;;
+  0)  echo "success" ;;
+  10) echo "halted: success condition met" ;;
+  11) echo "halted: blocked" ;;
+  12) echo "halted: max iterations reached" ;;
+  20) echo "invariant failed" ;;
+  30) echo "workspace invalid or missing" ;;
+  40) echo "execution failure" ;;
+  50) echo "internal error" ;;
+  *)  echo "unexpected exit code" ;;
 esac
 ```
 
 ---
 
-## CI Integration
+## Bash usage
 
-### GitHub Actions
+### Initialize local metadata
 
-Run loopexec as a CI check:
+```bash
+loopexec init
+```
+
+This creates `.loopexec/` in the current working directory.
+
+### Run a stub iteration
+
+```bash
+loopexec run --run-id local --max-iterations 1 --json
+```
+
+### Force known halt paths for wrappers and tests
+
+```bash
+loopexec run --json --halt-reason success
+loopexec run --json --halt-reason blocked
+loopexec run --json --halt-reason max-iterations
+loopexec run --json --halt-reason exec-fail
+```
+
+### Read status
+
+```bash
+loopexec status --run-id local --iteration 1 --json
+```
+
+### Force an invariant failure
+
+```bash
+loopexec check --json --fail-invariant
+```
+
+---
+
+## CI integration
+
+This repository's own CI lives in `.github/workflows/ci.yml` and currently checks:
+
+- `gofmt`
+- `go vet ./...`
+- `go test ./...`
+
+A minimal external CI integration for the current repo can use the same pattern:
 
 ```yaml
-name: loopexec Check
+name: loopexec CI
 on: [push, pull_request]
 
 jobs:
-  loopexec:
+  go-ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install SMALL CLI
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Format check
         run: |
-          # Install small CLI
-          curl -fsSL https://small.dev/install.sh | sh
+          files=$(find . -type f -name '*.go' -not -path './vendor/*')
+          out=$(gofmt -l $files)
+          test -z "$out"
 
-      - name: Install loopexec
-        run: |
-          # Install loopexec
-          go install github.com/your-org/loopexec/cmd/loopexec@latest
+      - name: Vet
+        run: go vet ./...
 
-      - name: Validate SMALL State
-        run: small check --strict
-
-      - name: Check loopexec Status
-        run: |
-          loopexec emit --json > loopexec-status.json
-          cat loopexec-status.json
-
-      - name: Fail on Blocked Tasks
-        run: |
-          blocked=$(jq '.plan_summary.blocked' loopexec-status.json)
-          if [ "$blocked" -gt 0 ]; then
-            echo "Blocked tasks detected"
-            exit 1
-          fi
-```
-
-### Pre-commit Hook
-
-Validate state before commit:
-
-```bash
-#!/bin/bash
-# .git/hooks/pre-commit
-
-# Skip if not a SMALL workspace
-[ -d ".small" ] || exit 0
-
-# Validate state
-if ! small check --strict; then
-    echo "SMALL strict check failed. Fix before committing."
-    exit 1
-fi
-
-# Check for in-progress tasks
-in_progress=$(small status --json | jq '.plan.tasks_by_status.in_progress // 0')
-if [ "$in_progress" -gt 0 ]; then
-    echo "Warning: Tasks are in progress. Consider checkpointing first."
-fi
-```
-
-### Post-merge Hook
-
-Update handoff after merge:
-
-```bash
-#!/bin/bash
-# .git/hooks/post-merge
-
-[ -d ".small" ] || exit 0
-
-# Regenerate handoff with new state
-small check --strict && small handoff --summary "Post-merge state sync"
+      - name: Test
+        run: go test ./...
 ```
 
 ---
 
-## Local Developer Usage
+## jcn-worker integration surface
 
-### Interactive Session
+`jcn-worker` is a separate local-worker prototype in this repo.
 
-Start a development session:
+Implemented commands:
 
-```bash
-# Begin session
-small status --json
-small check --strict
+- `jcn-worker version`
+- `jcn-worker list`
+- `jcn-worker status`
+- `jcn-worker run <taskPath> [--policy <path>] [--registry <path>]`
 
-# See what to work on
-loopexec emit --json | jq '.current_task'
+### Default paths
 
-# Run one step
-loopexec run
+If the task file does not override them, `jcn-worker run` uses:
 
-# Check results
-small status --json
+- router policy: `docs/jcn-agent-stack/router-policy.example.json`
+- model registry: `docs/jcn-agent-stack/model-registry.example.json`
+- LM Studio base URL: `http://localhost:1234`
 
-# End session
-small check --strict
-small handoff --summary "Completed feature X implementation"
-```
-
-### Watch Mode
-
-Monitor loopexec in a terminal:
+You can override the base URL with:
 
 ```bash
-watch -n 5 'loopexec emit --json | jq "."'
+export JCN_LMSTUDIO_BASE_URL=http://localhost:1234
 ```
 
-### Debug Mode
-
-Run with verbose output:
+### Example run
 
 ```bash
-loopexec run --verbose
+go run ./cmd/jcn-worker run docs/jcn-agent-stack/worker-task.example.json
 ```
 
-Output includes:
-- Task selection reasoning
-- Substrate configuration
-- Command execution details
-- Checkpoint contents
+Successful output includes:
+
+- `selected_model_id: ...`
+- `selected_machine_target: ...`
+- model response text
+
+Successful and failed runs both attempt to write replay artifacts under:
+
+- `docs/jcn-agent-stack/runs/<runId>.json`
+- `docs/jcn-agent-stack/runs/<runId>.txt`
+
+The JSON run record includes task, policy, and registry hashes plus timestamps and selected route data.
 
 ---
 
-## Deferred Integrations
+## Deferred integrations
 
-The following integrations are explicitly out of scope for this document:
+The following are still design-stage in this repo and should not be treated as implemented behavior:
 
-### Direct Model Invocation
-
-loopexec does not invoke AI models directly. Model invocation is the responsibility of the agent or automation layer above loopexec.
-
-### Prompt Management
-
-loopexec does not manage prompts, context windows, or model configurations. These concerns belong to the agent layer.
-
-### Agent Orchestration
-
-loopexec does not orchestrate multiple agents or manage agent lifecycles. It executes work; it does not decide what work to do.
-
-These separations are intentional. loopexec provides execution discipline. Higher layers provide intelligence.
-
----
-
-## Integration Checklist
-
-When integrating loopexec:
-
-1. Ensure SMALL CLI is installed and accessible
-2. Verify `.small/` workspace is initialized
-3. Confirm strict check passes before starting
-4. Use `loopexec emit --json` for programmatic access
-5. Handle all exit codes appropriately
-6. Always run strict check after failures
-7. Generate handoff at session boundaries
+- direct SMALL-driven loop execution from `cmd/loopexec`
+- `loopexec emit`
+- automatic task selection from `.small/`
+- checkpoint and handoff execution by `loopexec`
+- container/Nix/remote execution substrates
+- multi-worker orchestration
