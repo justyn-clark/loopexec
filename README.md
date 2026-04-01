@@ -1,9 +1,13 @@
 # loopexec
 
+[![CI](https://github.com/justynclarknetwork/loopexec/actions/workflows/ci.yml/badge.svg)](https://github.com/justynclarknetwork/loopexec/actions/workflows/ci.yml)
+[![Latest tag](https://img.shields.io/github/v/tag/justynclarknetwork/loopexec?sort=semver)](https://github.com/justynclarknetwork/loopexec/tags)
+[![Go version](https://img.shields.io/badge/go-1.25.3-00ADD8?logo=go&logoColor=white)](https://go.dev)
+
 `loopexec` is a Go repo for two related command-line surfaces:
 
-- `loopexec` — a contract-first execution-loop CLI stub with stable command names, JSON output, and explicit exit codes.
-- `jcn-worker` — a local JCN worker prototype that deterministically routes a task to a model/machine pair and can execute a local LM Studio chat completion, then write replay artifacts.
+- `loopexec` - a contract-first execution-loop CLI stub with stable command names, JSON output, and explicit exit codes.
+- `jcn-worker` - a local JCN worker prototype that deterministically routes a task to a model/machine pair and can execute a local LM Studio chat completion, then write replay artifacts.
 
 This repository is not yet the full production loop engine described in the longer design docs. Today it is a small, test-covered implementation that locks down CLI behavior and captures the first local worker-routing flow.
 
@@ -88,7 +92,7 @@ The implemented `loopexec` binary is a contract stub that returns deterministic 
 
 ### Global flag
 
-- `--json` — emit exactly one JSON object to stdout
+- `--json` - emit exactly one JSON object to stdout
 
 ### Example
 
@@ -162,11 +166,11 @@ This repo is SMALL-governed at the repository level, but the implemented `loopex
 
 Read the docs in this order:
 
-1. `docs/cli.md` — what the current CLI actually does
-2. `docs/integrations.md` — how to integrate with the current implementation
-3. `docs/architecture.md` — target architecture and planned boundaries
-4. `docs/loop-contract.md` — normative target contract
-5. `docs/jcn-agent-stack/` — JCN worker architecture and local worker prototype artifacts
+1. `docs/cli.md` - what the current CLI actually does
+2. `docs/integrations.md` - how to integrate with the current implementation
+3. `docs/architecture.md` - target architecture and planned boundaries
+4. `docs/loop-contract.md` - normative target contract
+5. `docs/jcn-agent-stack/` - JCN worker architecture and local worker prototype artifacts
 
 ## Notes on planned docs
 

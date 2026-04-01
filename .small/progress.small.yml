@@ -1,4 +1,4 @@
-small_version: 1.0.0
+small_version: "1.0.0"
 owner: agent
 entries:
     - command: small init
@@ -971,3 +971,43 @@ entries:
       status: completed
       task_id: task-3
       timestamp: "2026-01-21T03:08:25.518884000Z"
+    - evidence: Migrated legacy runtime layout to canonical stores (1 migration(s), 0 deduped file(s))
+      notes: .small/archive->.small-archive
+      status: completed
+      task_id: meta/reconcile-runtime-layout
+      timestamp: "2026-03-26T18:22:34.848062000Z"
+    - command: small fix --runtime-layout
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260326T182234.858224000Z.txt
+      command_sha256: a95018abc4b1b01879670b12f55839f25cd026fde2afee6235eb06d9b028305c
+      command_summary: small fix --runtime-layout
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      status: completed
+      task_id: task-1
+      timestamp: "2026-03-26T18:22:34.858224000Z"
+    - command: small start --summary "Resolved git pull rebase conflict and repaired SMALL run state"
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260326T182245.924711000Z.txt
+      command_sha256: c1e130b1e9efd2d1a1767951cef983b5d05885f94fe920ef23a5e3a52cbd4516
+      command_summary: small start --summary "Resolved git pull rebase conflict and repaired SMALL run state"
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-1
+      timestamp: "2026-03-26T18:22:45.924711000Z"
+    - evidence: Resolved the .gitignore rebase conflict by combining SMALL runtime ignores with the local env ignore policy, continued the paused rebase, and updated main to include SECRETS_POLICY.md and the loopexec binary
+      notes: Also repaired SMALL runtime state enough to pass small check --strict after the rebase
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-1
+      timestamp: "2026-03-26T18:23:02.228000000Z"
+    - command: small fix --orphan-progress
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260326T182311.819548000Z.txt
+      command_sha256: 732e7aa0cc382170b420683ab3bdf008c796cea451de4c546a017f8f53fe5dbe
+      command_summary: small fix --orphan-progress
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-1
+      timestamp: "2026-03-26T18:23:11.819548000Z"

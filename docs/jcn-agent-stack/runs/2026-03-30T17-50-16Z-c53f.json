@@ -1,0 +1,18 @@
+{
+  "runId": "2026-03-30T17-50-16Z-c53f",
+  "started_utc": "2026-03-30T17:50:16Z",
+  "ended_utc": "",
+  "task_path": "/missing/task.json",
+  "task_sha256": "",
+  "router_policy_path": "",
+  "router_policy_sha256": "",
+  "model_registry_path": "",
+  "model_registry_sha256": "",
+  "selected_model_id": "",
+  "selected_machine_target": "",
+  "lmstudio_base_url": "",
+  "prompt_sha256": "",
+  "response_sha256": "",
+  "status": "FAIL",
+  "error": "read task: open /missing/task.json: no such file or directory"
+}
