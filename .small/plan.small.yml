@@ -1,8 +1,9 @@
-small_version: 1.0.0
+small_version: "1.0.0"
 owner: agent
 tasks:
     - id: task-1
       title: Initial task
+      status: completed
     - id: task-2
       title: 'Part A: Add planned vs implemented banners and freeze docs'
       status: completed

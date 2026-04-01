@@ -1,0 +1,18 @@
+{
+  "runId": "2026-03-30T17-52-33Z-a2e2",
+  "started_utc": "2026-03-30T17:52:33Z",
+  "ended_utc": "",
+  "task_path": "/var/folders/jx/29rlkfl14h5dxq_pysm3hpj40000gp/T/TestUnsupportedJobType1131041101/001/task.json",
+  "task_sha256": "28151ed2f4a877e229a4d9ff5ff398c38b73c20b32ce59112ef59e3f6b833064",
+  "router_policy_path": "/var/folders/jx/29rlkfl14h5dxq_pysm3hpj40000gp/T/TestUnsupportedJobType1131041101/001/policy.json",
+  "router_policy_sha256": "36a3b17b69aecad73a687bf8a2fb633600dcffd24bb88a2b73c6de4ce91b32d2",
+  "model_registry_path": "/var/folders/jx/29rlkfl14h5dxq_pysm3hpj40000gp/T/TestUnsupportedJobType1131041101/001/registry.json",
+  "model_registry_sha256": "e6d58e5842a4c9be49a42166142c41d9930571e64d18ef5d47f31b65bcd1a533",
+  "selected_model_id": "",
+  "selected_machine_target": "",
+  "lmstudio_base_url": "",
+  "prompt_sha256": "",
+  "response_sha256": "",
+  "status": "FAIL",
+  "error": "unsupported job_type: unknown"
+}
