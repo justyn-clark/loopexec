@@ -18,6 +18,10 @@ build/
 # Always ignore runtime run snapshots at repo root
 .small-runs/
 
+# JCN agent-stack receipts under docs are curated manually; ignore fresh
+# local test runs so verification does not leave the worktree dirty.
+docs/jcn-agent-stack/runs/20*
+
 # Ignore all archives by default (curation only)
 .small-archive/
 .small/archive/*
