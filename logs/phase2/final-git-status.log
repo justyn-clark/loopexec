@@ -1,9 +1,0 @@
- M cmd/jcn-worker/main.go
- M cmd/jcn-worker/main_test.go
- M docs/jcn-agent-stack/JCN_WORKER.md
- M docs/jcn-agent-stack/model-registry.example.json
- M docs/jcn-agent-stack/router-policy.example.json
- M docs/jcn-agent-stack/worker-task.example.json
-?? docs/jcn-agent-stack/PHASE2_PROGRESS.md
-?? docs/jcn-agent-stack/runs/
-?? logs/

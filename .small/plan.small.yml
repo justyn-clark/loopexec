@@ -1,12 +1,12 @@
 small_version: "1.0.0"
 owner: agent
 tasks:
-    - id: task-1
-      title: Initial task
-      status: completed
-    - id: task-2
-      title: 'Part A: Add planned vs implemented banners and freeze docs'
-      status: completed
-    - id: task-3
-      title: 'Part B: Complete Phase 6 spindle status'
-      status: completed
+  - id: task-1
+    title: "Remove internal runtime artifacts from public release surface"
+    status: completed
+  - id: task-2
+    title: "Add public release metadata and documentation"
+    status: in_progress
+  - id: task-3
+    title: "Verify, publish, and record release cleanup"
+    status: pending
