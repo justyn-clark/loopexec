@@ -1,9 +1,12 @@
 small_version: "1.0.0"
 owner: agent
-summary: Run complete. strict check passed. All plan tasks completed.
+summary: "Public release cleanup is in progress."
 resume:
-    next_steps: []
+  next_steps:
+    - "Run verification."
+    - "Commit and push release cleanup."
+    - "Transfer repository to justyn-clark and make it public."
 links: []
 replayId:
-    value: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
-    source: auto
+  value: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+  source: manual

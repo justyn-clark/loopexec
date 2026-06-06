@@ -1,1 +1,0 @@
-patched cmd/jcn-worker/main_test.go to keep run artifacts in repo root

@@ -1,6 +1,0 @@
-Prompt:
-You are a deterministic coding assistant. Reply in one short sentence.
-Say OK.
-
-Response:
-OK.
