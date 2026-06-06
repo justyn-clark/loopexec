@@ -1,10 +1,8 @@
 # Integrations
 
-This document describes integration patterns for the code that is implemented in this repository today.
+This document describes integration patterns for the code implemented in this repository today.
 
 > Note: `docs/architecture.md` and `docs/loop-contract.md` describe the target loop design. This file stays scoped to the current CLI surface.
-
----
 
 ## loopexec integration surface
 
@@ -18,7 +16,7 @@ The current `loopexec` binary exposes these commands:
 
 There is no `emit` command in the current implementation.
 
-### Machine-readable output
+## Machine-readable output
 
 All implemented commands support the global `--json` flag.
 
@@ -41,8 +39,6 @@ Example response:
 }
 ```
 
-### JSON fields
-
 All JSON responses use this shape:
 
 - `tool` (string)
@@ -54,8 +50,6 @@ All JSON responses use this shape:
 - `errors` (array of strings)
 
 Human-readable output goes to stdout. Error lines are printed to stderr.
-
----
 
 ## Exit codes
 
@@ -89,11 +83,9 @@ case $? in
 esac
 ```
 
----
-
 ## Bash usage
 
-### Initialize local metadata
+Initialize local metadata:
 
 ```bash
 loopexec init
@@ -101,13 +93,13 @@ loopexec init
 
 This creates `.loopexec/` in the current working directory.
 
-### Run a stub iteration
+Run a stub iteration:
 
 ```bash
 loopexec run --run-id local --max-iterations 1 --json
 ```
 
-### Force known halt paths for wrappers and tests
+Force known halt paths for wrappers and tests:
 
 ```bash
 loopexec run --json --halt-reason success
@@ -116,19 +108,17 @@ loopexec run --json --halt-reason max-iterations
 loopexec run --json --halt-reason exec-fail
 ```
 
-### Read status
+Read status:
 
 ```bash
 loopexec status --run-id local --iteration 1 --json
 ```
 
-### Force an invariant failure
+Force an invariant failure:
 
 ```bash
 loopexec check --json --fail-invariant
 ```
-
----
 
 ## CI integration
 
@@ -167,54 +157,6 @@ jobs:
         run: go test ./...
 ```
 
----
-
-## jcn-worker integration surface
-
-`jcn-worker` is a separate local-worker prototype in this repo.
-
-Implemented commands:
-
-- `jcn-worker version`
-- `jcn-worker list`
-- `jcn-worker status`
-- `jcn-worker run <taskPath> [--policy <path>] [--registry <path>]`
-
-### Default paths
-
-If the task file does not override them, `jcn-worker run` uses:
-
-- router policy: `docs/jcn-agent-stack/router-policy.example.json`
-- model registry: `docs/jcn-agent-stack/model-registry.example.json`
-- LM Studio base URL: `http://localhost:1234`
-
-You can override the base URL with:
-
-```bash
-export JCN_LMSTUDIO_BASE_URL=http://localhost:1234
-```
-
-### Example run
-
-```bash
-go run ./cmd/jcn-worker run docs/jcn-agent-stack/worker-task.example.json
-```
-
-Successful output includes:
-
-- `selected_model_id: ...`
-- `selected_machine_target: ...`
-- model response text
-
-Successful and failed runs both attempt to write replay artifacts under:
-
-- `docs/jcn-agent-stack/runs/<runId>.json`
-- `docs/jcn-agent-stack/runs/<runId>.txt`
-
-The JSON run record includes task, policy, and registry hashes plus timestamps and selected route data.
-
----
-
 ## Deferred integrations
 
 The following are still design-stage in this repo and should not be treated as implemented behavior:
@@ -223,5 +165,5 @@ The following are still design-stage in this repo and should not be treated as i
 - `loopexec emit`
 - automatic task selection from `.small/`
 - checkpoint and handoff execution by `loopexec`
-- container/Nix/remote execution substrates
+- container, Nix, or remote execution substrates
 - multi-worker orchestration

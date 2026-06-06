@@ -1,7 +1,0 @@
-small_version: "1.0.0"
-owner: "human"
-intent: "Develop Spindle CLI for state-driven execution loops against SMALL-governed repositories"
-scope:
-  include: []
-  exclude: []
-success_criteria: []

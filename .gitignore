@@ -1,34 +1,6 @@
 .DS_Store
 .idea/
 .env
-node_modules/
-build/
-
-# local build output
-/spindle
-
-# ================================
-# SMALL runtime artifacts
-# ================================
-
-# Root workspace canonical artifacts are committed, so do NOT ignore /.small/ entirely.
-.small-cache/
-.small/runs/
-
-# Always ignore runtime run snapshots at repo root
-.small-runs/
-
-# JCN agent-stack receipts under docs are curated manually; ignore fresh
-# local test runs so verification does not leave the worktree dirty.
-docs/jcn-agent-stack/runs/20*
-
-# Ignore all archives by default (curation only)
-.small-archive/
-.small/archive/*
-.small/logs
-
-# JCN universal secrets policy
-.env
 .env.*
 !.env.example
 !.env.sample
@@ -36,3 +8,18 @@ docs/jcn-agent-stack/runs/20*
 !.env.*.example
 !.env.*.sample
 !.env.*.template
+
+node_modules/
+build/
+
+# Local build output
+/loopexec
+
+# Runtime artifacts
+.loopexec/
+.small-cache/
+.small-runs/
+.small-archive/
+.small/logs
+.small/runs/
+logs/

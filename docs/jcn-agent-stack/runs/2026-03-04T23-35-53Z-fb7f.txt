@@ -1,6 +1,0 @@
-Prompt:
-You are a deterministic coding assistant. Reply in one short sentence.
-Summarize the worker route decision in one short sentence.
-
-Response:
-The worker's route is determined by their location, destination, and available time slots.

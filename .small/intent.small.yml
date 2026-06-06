@@ -1,7 +1,16 @@
 small_version: "1.0.0"
 owner: "human"
-intent: "Spindle repo stabilization and Phase 6 completion (docs truthiness + spindle status)"
+intent: "Prepare loopexec as a public bounded-loop execution CLI companion to SMALL Protocol."
 scope:
-  include: []
-  exclude: []
-success_criteria: []
+  include:
+    - "loopexec CLI contract"
+    - "public release metadata"
+    - "repository documentation"
+  exclude:
+    - "internal worker prototypes"
+    - "runtime logs"
+    - "local machine state"
+success_criteria:
+  - "Repository has a clean public README and license."
+  - "Only public release files are tracked."
+  - "Tests and secret scan pass before publication."
