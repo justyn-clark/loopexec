@@ -11,7 +11,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.1.0-rc1"
+	toolVersion = "0.1.0"
 )
 
 const (
