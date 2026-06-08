@@ -84,7 +84,7 @@ Example JSON response:
 ```json
 {
   "tool": "loopexec",
-  "version": "0.1.0-rc1",
+  "version": "0.1.0",
   "status": "ok",
   "run_id": "local",
   "iteration": 1,
