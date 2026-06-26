@@ -7,7 +7,10 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec init`
   - Initialize local loopexec workspace metadata.
 - `loopexec run`
-  - Run one bounded loop iteration.
+  - Run a bounded `check_fixpoint` loop until the check passes, a bound trips, or the work command fails.
+  - Flags: `--check "<cmd>"` (required external oracle; exit 0 = converged), `--exec "<cmd>"` (work step run each iteration), `--max-iterations N` (fuse, default 10), `--run-id`, `--workdir`, `--budget-usd`.
+  - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`), never forced by a flag.
+  - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`
@@ -48,10 +51,19 @@ Example:
 
 ## Exit codes
 
-- `0` success
-- `10` halted success condition met
-- `11` halted blocked
-- `12` halted max iterations reached
+The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` §5). Codes `13`–`19` are reserved for halt reasons emitted by later slices.
+
+- `0` success (loop ran, no halt)
+- `10` converged: `success_condition_met`
+- `11` terminal-blocked: `no_actionable_tasks`, `human_required`
+- `12` iteration-cap: `max_iterations_reached`
+- `13` integrity: `blocked_path_modified`, `reward_hacking_detected`, `metric_integrity_violation`
+- `14` oracle-untrusted: `check_flaky`, `check_not_hermetic`, `hermeticity_violation`
+- `15` check-inadequate: `check_inadequate`
+- `16` resumable-judgment: `escalation_pending`, `reviewer_rejected`
+- `17` no-convergence: `no_progress_detected`, `oscillation_detected`, `infeasible_suspected`
+- `18` budget: `budget_exceeded`, `cost_anomaly`
+- `19` liveness/drift: `heartbeat_stale`, `model_drift_detected`, `comprehension_debt_exceeded`
 - `20` invariant failed
 - `30` workspace invalid or missing
 - `40` execution failure (timeout or command failure)
