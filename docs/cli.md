@@ -41,7 +41,7 @@ Example:
 ```json
 {
   "tool": "loopexec",
-  "version": "0.1.0",
+  "version": "0.2.0-rc1",
   "status": "ok",
   "run_id": "local",
   "iteration": 1,
