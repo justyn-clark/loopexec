@@ -28,3 +28,6 @@ tasks:
     - id: task-9
       title: 'Slice 3: metric-integrity gate (guards dominate success) + doctor isolation preflight'
       status: completed
+    - id: task-10
+      title: 'Slice 4: receipt pinning (model/sampling/context/cost/fingerprint) + replay (verify) + attest (sign)'
+      status: completed

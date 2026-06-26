@@ -108,6 +108,9 @@ type response struct {
 	Verdict string `json:"verdict,omitempty"`
 	Why     string `json:"why,omitempty"`
 
+	Verified  *bool  `json:"verified,omitempty"`
+	Signature string `json:"signature,omitempty"`
+
 	Errors []string `json:"errors"`
 }
 
@@ -166,6 +169,12 @@ func printResponse(cmd *cobra.Command, r response) error {
 			fmt.Fprintf(cmd.OutOrStdout(), "  [%-7s] %s: %s\n", c.Status, c.Name, c.Detail)
 		}
 	}
+	if r.Verified != nil {
+		fmt.Fprintf(cmd.OutOrStdout(), "verified: %t\n", *r.Verified)
+	}
+	if r.Signature != "" {
+		fmt.Fprintf(cmd.OutOrStdout(), "signature: %s\n", r.Signature)
+	}
 	for _, msg := range r.Errors {
 		fmt.Fprintf(cmd.ErrOrStderr(), "error: %s\n", msg)
 	}
@@ -184,6 +193,32 @@ type receiptEvent struct {
 	ExitCode  *int   `json:"exit_code,omitempty"`
 }
 
+// Receipt-pin types (SPEC.md section 8): everything that determines the output,
+// so a receipt can be verified offline.
+type modelPin struct {
+	Provider string `json:"provider,omitempty"`
+	ID       string `json:"id"`
+	Version  string `json:"version,omitempty"`
+}
+
+type samplingPin struct {
+	Temperature float64 `json:"temperature"`
+	Seed        int     `json:"seed"`
+	MaxTokens   int     `json:"max_tokens,omitempty"`
+}
+
+type manifestEntry struct {
+	Path   string `json:"path"`
+	SHA256 string `json:"sha256"`
+}
+
+// checkFingerprint is the verifiable verdict: the recorded check's exit code and
+// a hash of its normalized output. `replay` reproduces and compares it.
+type checkFingerprint struct {
+	ExitCode     int    `json:"exit_code"`
+	OutputSHA256 string `json:"output_sha256"`
+}
+
 // loopState is the durable, resumable machine state (SPEC.md §8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
@@ -200,6 +235,15 @@ type loopState struct {
 	BestFailCount    *int `json:"best_fail_count,omitempty"`
 	BestIteration    int  `json:"best_iteration,omitempty"`
 	EverImproved     bool `json:"ever_improved,omitempty"`
+
+	// Receipt pinning (SPEC.md section 8) for replay / attest.
+	Check           string            `json:"check,omitempty"`
+	Workdir         string            `json:"workdir,omitempty"`
+	Model           *modelPin         `json:"model,omitempty"`
+	Sampling        *samplingPin      `json:"sampling,omitempty"`
+	ContextManifest []manifestEntry   `json:"context_manifest,omitempty"`
+	CostUSD         float64           `json:"cost_usd,omitempty"`
+	Fingerprint     *checkFingerprint `json:"fingerprint,omitempty"`
 
 	UpdatedTS int64 `json:"updated_ts"`
 }
@@ -266,6 +310,16 @@ type runConfig struct {
 	failuresCmd   string
 	noProgressK   int
 	integrityCmd  string
+
+	// Receipt pinning (SPEC.md section 8).
+	modelProvider string
+	modelID       string
+	modelVersion  string
+	temperature   float64
+	seed          int
+	maxTokens     int
+	contextFiles  []string
+	costUSD       float64
 }
 
 // executeRun is the real check_fixpoint loop (SPEC.md §4, Slice 0 subset):
@@ -303,6 +357,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	rw.emit(0, "run_start", fmt.Sprintf("check=%q exec=%q max=%d", cfg.check, cfg.execCmd, cfg.maxIterations), nil)
 
 	var lastCheckExit *int
+	var lastCheckOut string
 	haltReason := ""
 
 	var tracker *progressTracker
@@ -350,9 +405,10 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			}
 		}
 
-		rc, _ := runShell(cfg.workdir, cfg.check)
+		rc, checkOut := runShell(cfg.workdir, cfg.check)
 		rcCopy := rc
 		lastCheckExit = &rcCopy
+		lastCheckOut = checkOut
 		rw.emit(i, "check", "", &rcCopy)
 		if rc == 0 {
 			haltReason = "success_condition_met"
@@ -387,6 +443,25 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	st.HaltReason = haltReason
 	st.LastCheckExit = lastCheckExit
 	st.Phase = "halted"
+
+	// Receipt pinning (SPEC.md section 8): everything needed to verify offline.
+	st.Check = cfg.check
+	st.Workdir = cfg.workdir
+	st.CostUSD = cfg.costUSD
+	if cfg.modelID != "" {
+		st.Model = &modelPin{Provider: cfg.modelProvider, ID: cfg.modelID, Version: cfg.modelVersion}
+		st.Sampling = &samplingPin{Temperature: cfg.temperature, Seed: cfg.seed, MaxTokens: cfg.maxTokens}
+	}
+	if man := buildManifest(cfg.workdir, cfg.contextFiles); len(man) > 0 {
+		st.ContextManifest = man
+	}
+	if lastCheckExit != nil {
+		st.Fingerprint = &checkFingerprint{
+			ExitCode:     *lastCheckExit,
+			OutputSHA256: sha256hex([]byte(normalizeOutput(lastCheckOut))),
+		}
+	}
+
 	rw.emit(st.Iteration, "halt", haltReason, nil)
 	if err := writeStateAtomic(dir, st); err != nil {
 		return &cliError{Code: exitInternalError, Message: "cannot write state", Cause: err}
@@ -479,6 +554,14 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().StringVar(&cfg.failuresCmd, "failures-cmd", "", "Command printing current open failures (one identity per line); enables set-based progress and the no-regression ratchet")
 	cmd.Flags().IntVar(&cfg.noProgressK, "no-progress-k", 3, "Halt no_progress_detected after K iterations with no new best failing-set size")
 	cmd.Flags().StringVar(&cfg.integrityCmd, "integrity-cmd", "", "Command printing the test-determining surface (one identity per line); its t0 set MUST NOT lose a member (metric-integrity gate)")
+	cmd.Flags().StringVar(&cfg.modelProvider, "model-provider", "", "Pin the model provider into the receipt (section 8)")
+	cmd.Flags().StringVar(&cfg.modelID, "model-id", "", "Pin the model id into the receipt; enables the model/sampling pin")
+	cmd.Flags().StringVar(&cfg.modelVersion, "model-version", "", "Pin the model version/build into the receipt")
+	cmd.Flags().Float64Var(&cfg.temperature, "temperature", 0, "Recorded sampling temperature")
+	cmd.Flags().IntVar(&cfg.seed, "seed", 0, "Recorded sampling seed")
+	cmd.Flags().IntVar(&cfg.maxTokens, "max-tokens", 0, "Recorded sampling max_tokens")
+	cmd.Flags().StringArrayVar(&cfg.contextFiles, "context-file", nil, "File to include in the receipt context manifest (path + sha256); repeatable")
+	cmd.Flags().Float64Var(&cfg.costUSD, "cost-usd", 0, "Recorded run cost in USD (live metering is Planned)")
 	return cmd
 }
 
@@ -580,6 +663,8 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newProbeCheckCmd())
 	cmd.AddCommand(newDoctorCmd())
 	cmd.AddCommand(newExplainHaltCmd())
+	cmd.AddCommand(newReplayCmd())
+	cmd.AddCommand(newAttestCmd())
 	return cmd
 }
 

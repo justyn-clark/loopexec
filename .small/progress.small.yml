@@ -95,3 +95,19 @@ entries:
       status: completed
       task_id: task-9
       timestamp: "2026-06-26T21:12:34.264107000Z"
+    - evidence: Added task task-10 via small plan --add
+      notes: 'Slice 4: receipt pinning (model/sampling/context/cost/fingerprint) + replay (verify) + attest (sign)'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-10
+      timestamp: "2026-06-26T23:29:00.357446000Z"
+    - evidence: 'Starting Slice 4: pin model-identity/sampling/context-manifest/cost + a check fingerprint into the receipt; replay re-runs the recorded check and verifies the fingerprint (agent-free); attest HMAC-signs the receipt.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-10
+      timestamp: "2026-06-26T23:29:00.420603000Z"
+    - evidence: 'cmd/loopexec/receipt.go: run pins model-identity tuple + sampling + context manifest (sha256) + cost + a check fingerprint (exit + output hash) into state.json. replay re-runs the recorded check and verifies the fingerprint agent-free (mismatch -> objective_unverified, exit 13). attest HMAC-signs the receipt and --verify checks it. receipt_test.go; gofmt/vet/test green; SPEC section 11 + docs/cli.md updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-10
+      timestamp: "2026-06-26T23:34:46.439951000Z"
