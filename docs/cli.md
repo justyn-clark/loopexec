@@ -51,7 +51,7 @@ Example:
 
 ## Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` §5). Codes `13`–`19` are reserved for halt reasons emitted by later slices.
+The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Codes `13`-`19` are reserved for halt reasons emitted by later slices.
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`
