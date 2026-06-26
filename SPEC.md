@@ -1,8 +1,8 @@
-# loopexec — Canonical Specification
+# loopexec - Canonical Specification
 
 **Status:** normative. This is the single source of truth for the loopexec contract. The binary (`cmd/loopexec`) and the docs site (`loopexec.dev`) MUST conform to this document. Where `docs/loop-contract.md` and this file disagree, this file wins; `loop-contract.md` is the **`task_list` mode profile** of this spec.
 
-**Spec version:** 2.0.0  ·  **Conformance keywords:** MUST / MUST NOT / SHOULD / MAY per RFC 2119.
+**Spec version:** 2.0.0  |  **Conformance keywords:** MUST / MUST NOT / SHOULD / MAY per RFC 2119.
 
 Rationale and the cross-examination that produced this contract live in `UPDATES/ref-cross-exam.md`. This document is the contract; that document is the argument.
 
@@ -12,19 +12,19 @@ Rationale and the cross-examination that produced this contract live in `UPDATES
 
 loopexec is a **deterministic runtime for loop engineering**: it runs bounded, stateless, auditable work loops that progress through an **external check**, durable state, isolated execution, and **explicit stop conditions**.
 
-A loop runs until an external check passes, a guard trips, a budget is spent, or a human is required — **never** because an agent reports it is done. Every halt emits a **computed** reason (never a flag) and a **replayable receipt**.
+A loop runs until an external check passes, a guard trips, a budget is spent, or a human is required - **never** because an agent reports it is done. Every halt emits a **computed** reason (never a flag) and a **replayable receipt**.
 
 loopexec is **not** an agent, a model, or a task runner. It composes with those by governing *how* work is executed, recorded, and resumed.
 
 ---
 
-## 2. Topology — the two machines, made explicit
+## 2. Topology - the two machines, made explicit
 
 loopexec hosts two control topologies. The mode is explicit and recorded in every receipt.
 
 | `loop.mode` | Stop condition | Gate | Profile |
 |---|---|---|---|
-| `check_fixpoint` | external check returns `success_exit_code` | the application oracle (test/build/lint/score) | this document, §4 |
+| `check_fixpoint` | external check returns `success_exit_code` | the application oracle (test/build/lint/score) | this document, section 4 |
 | `task_list` | all SMALL plan tasks `completed` | `small check --strict` (state hygiene) **+ a per-task acceptance oracle** | `docs/loop-contract.md` |
 
 **Invariant T1.** `check_fixpoint` is the degenerate one-task plan whose acceptance criterion *is* the external check. `task_list` MUST attach a real per-task acceptance oracle; state-hygiene validation alone is NOT an acceptance oracle (it cannot decide application correctness). A `task_list` loop without a per-task oracle MUST refuse to mark tasks `completed` and MUST halt `check_inadequate`.
@@ -35,41 +35,41 @@ loopexec hosts two control topologies. The mode is explicit and recorded in ever
 
 ## 3. The oracle contract (the check)
 
-**O1 — External.** The check MUST be an external process returning an exit code, independent of the agent. The agent's self-assessment is not a check.
+**O1 - External.** The check MUST be an external process returning an exit code, independent of the agent. The agent's self-assessment is not a check.
 
-**O2 — Determinism as a maintained confidence bound (not a one-time probe).**
+**O2 - Determinism as a maintained confidence bound (not a one-time probe).**
 - `loopexec probe-check` MUST report an **achieved confidence bound** on the check's flake rate, not a pass/fail of N runs. The run count is derived from a target `max_flake_rate`, not a magic constant.
 - During a loop, each in-loop check invocation is treated as a free Bernoulli sample; the runtime maintains a sequential (Wilson) lower bound on stability and MUST halt `check_not_deterministic` when it drops below `confidence_target`.
 - Probing MUST be adversarial where configured (test order, seed, clock, concurrency, load) and MUST report which dimension broke.
 
-**O3 — Hermeticity.** A check declared deterministic MUST be hermetic: frozen clock/seed/TZ/locale, OS-assigned (`:0`) ports, ephemeral fixtures, pinned tool versions. A non-hermetic check MUST be rejected by `doctor` (`check_not_hermetic`), not silently looped on.
+**O3 - Hermeticity.** A check declared deterministic MUST be hermetic: frozen clock/seed/TZ/locale, OS-assigned (`:0`) ports, ephemeral fixtures, pinned tool versions. A non-hermetic check MUST be rejected by `doctor` (`check_not_hermetic`), not silently looped on.
 
-**O4 — Adequacy ≠ determinism.** A check that returns `0` regardless of the diff is deterministic and useless. `doctor` MUST verify adequacy: every changed/added line is exercised by the check (coverage delta), and a mutation canary injected into changed lines MUST turn the check red. Failure ⇒ `check_inadequate`.
+**O4 - Adequacy != determinism.** A check that returns `0` regardless of the diff is deterministic and useless. `doctor` MUST verify adequacy: every changed/added line is exercised by the check (coverage delta), and a mutation canary injected into changed lines MUST turn the check red. Failure => `check_inadequate`.
 
-**O5 — Determinism ≠ idempotency.** A deterministic but side-effecting check (passes once, fails on rerun in the same workspace) is distinct from a flaky one; it MUST be reported `check_has_side_effects` and cured by reset, not by editing the check.
+**O5 - Determinism != idempotency.** A deterministic but side-effecting check (passes once, fails on rerun in the same workspace) is distinct from a flaky one; it MUST be reported `check_has_side_effects` and cured by reset, not by editing the check.
 
-**O6 — Single capture.** The runtime MUST run the check **once** per iteration and derive *both* the green/red verdict and the failing-test set from that one captured artifact `{exit_code, stdout, stderr}`. It MUST NOT re-invoke the suite to scrape failure text.
+**O6 - Single capture.** The runtime MUST run the check **once** per iteration and derive *both* the green/red verdict and the failing-test set from that one captured artifact `{exit_code, stdout, stderr}`. It MUST NOT re-invoke the suite to scrape failure text.
 
 ---
 
-## 4. Iteration lifecycle — `check_fixpoint`
+## 4. Iteration lifecycle - `check_fixpoint`
 
 Each iteration MUST execute as one ordered transaction:
 
-1. **Build context** — a narrow, budgeted slice (`build-context`). Token budget is a true ceiling, measured with a code-calibrated estimator; a slice that cannot fit even after widening tiers MUST emit `context_budget_unsatisfiable`, never silently evict relevant files.
-2. **Execute the agent** in the agent zone (§7).
+1. **Build context** - a narrow, budgeted slice (`build-context`). Token budget is a true ceiling, measured with a code-calibrated estimator; a slice that cannot fit even after widening tiers MUST emit `context_budget_unsatisfiable`, never silently evict relevant files.
+2. **Execute the agent** in the agent zone (section 7).
 3. **Run the check once** (O6); capture the artifact; parse the failing-test set `F_i`.
-4. **Guards dominate success (G-before-S).** Evaluate guards (§6) BEFORE any green branch can fire. A check that went green because a guard was violated (e.g., a weakened test) MUST classify as the guard reason, NOT `success_condition_met`.
-5. **Acceptance (anti-regression ratchet).** Accept the iteration's diff only if the passing-test set is a **superset** of the last accepted set (primary guarantee). Optionally enforce a numeric `score ≥ best_so_far` ratchet with an acceptance band. On violation, revert to the last accepted commit and re-prompt.
-6. **Progress / feasibility.** Update `F_i`. Halt on no strict decrease in `|F_i|` over K iterations, on a previously-passing test re-entering `F` (oscillation), or on a contradictory pair across ≥2 cycles. Distinguish "still improving at cutoff" (raise the limit) from "stalled/infeasible" (do not retry).
-7. **Checkpoint the receipt** (§8). Every iteration MUST append a typed JSONL event and update durable state.
-8. **Continue or halt.** Halt only on a computed condition from §5; otherwise iterate. Before declaring `success_condition_met`, the full check phase MUST pass (a targeted subset MAY drive intermediate iterations).
+4. **Guards dominate success (G-before-S).** Evaluate guards (section 6) BEFORE any green branch can fire. A check that went green because a guard was violated (e.g., a weakened test) MUST classify as the guard reason, NOT `success_condition_met`.
+5. **Acceptance (anti-regression ratchet).** Accept the iteration's diff only if the passing-test set is a **superset** of the last accepted set (primary guarantee). Optionally enforce a numeric `score >= best_so_far` ratchet with an acceptance band. On violation, revert to the last accepted commit and re-prompt.
+6. **Progress / feasibility.** Update `F_i`. Halt on no strict decrease in `|F_i|` over K iterations, on a previously-passing test re-entering `F` (oscillation), or on a contradictory pair across >=2 cycles. Distinguish "still improving at cutoff" (raise the limit) from "stalled/infeasible" (do not retry).
+7. **Checkpoint the receipt** (section 8). Every iteration MUST append a typed JSONL event and update durable state.
+8. **Continue or halt.** Halt only on a computed condition from section 5; otherwise iterate. Before declaring `success_condition_met`, the full check phase MUST pass (a targeted subset MAY drive intermediate iterations).
 
 ---
 
-## 5. Halt reasons → exit codes (canonical map)
+## 5. Halt reasons -> exit codes (canonical map)
 
-The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` are preserved; `13–19` are reserved new classes. Every reason MUST be **computed from observed state** — `--halt-reason` is a hidden test fixture only.
+The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` are preserved; `13-19` are reserved new classes. Every reason MUST be **computed from observed state** - `--halt-reason` is a hidden test fixture only.
 
 | exit | class | `halt_reason` strings | owner |
 |---|---|---|---|
@@ -89,7 +89,7 @@ The **`halt_reason` string is the stable integration contract**; the **exit code
 | 40 | execution | `execution_failure` | LoopExec |
 | 50 | internal | `internal_error` | LoopExec |
 
-**Ownership stance.** LoopExec owns everything a number can decide (exit codes, the `F_i` trajectory, a fingerprint hash, a coverage/mutation delta, a manifest hash, a spend ledger, a model-identity tuple, a sequential flake bound). Musketeer owns only what a number cannot express — `reward_hacking_detected`, `reviewer_rejected` — layered **on top of** the deterministic `metric_integrity_violation`, never replacing it. Humans own the irreducible decision and the ack. **Judgment is never the stop oracle:** it can veto a green loop or escalate, but it cannot promote a red one to green.
+**Ownership stance.** LoopExec owns everything a number can decide (exit codes, the `F_i` trajectory, a fingerprint hash, a coverage/mutation delta, a manifest hash, a spend ledger, a model-identity tuple, a sequential flake bound). Musketeer owns only what a number cannot express - `reward_hacking_detected`, `reviewer_rejected` - layered **on top of** the deterministic `metric_integrity_violation`, never replacing it. Humans own the irreducible decision and the ack. **Judgment is never the stop oracle:** it can veto a green loop or escalate, but it cannot promote a red one to green.
 
 **Migration.** The legacy bare `"blocked"` string (one word, three meanings) is split: `no_actionable_tasks` (11), `blocked_path_modified` (13), `human_required` (11).
 
@@ -97,20 +97,20 @@ The **`halt_reason` string is the stable integration contract**; the **exit code
 
 ## 6. Guards & metric integrity
 
-Guards are evaluated against an **immutable baseline `t0`** captured at loop start, BEFORE any green declaration (G-before-S, §4.4), covering working-tree + staged + committed + untracked changes.
+Guards are evaluated against an **immutable baseline `t0`** captured at loop start, BEFORE any green declaration (G-before-S, section 4.4), covering working-tree + staged + committed + untracked changes.
 
-- **`blocked_paths`** — globs the loop MUST NOT modify (default includes `test/`, `infra/`, `.env`, `.git/`). Violation ⇒ `blocked_path_modified`.
-- **Metric integrity** (supersedes `git diff --quiet -- test/`): the collected-test-set MUST NOT lose a member; test-count and AST-level assertion-count MUST NOT decrease; a protected-manifest hash over the full test-determining surface (runner/coverage config, CI yaml, test-dep lockfile) MUST be stable; coverage MUST NOT drop below the `t0` floor. Tests SHOULD run from a read-only mount frozen at `t0`. Violation ⇒ `metric_integrity_violation`.
+- **`blocked_paths`** - globs the loop MUST NOT modify (default includes `test/`, `infra/`, `.env`, `.git/`). Violation => `blocked_path_modified`.
+- **Metric integrity** (supersedes `git diff --quiet -- test/`): the collected-test-set MUST NOT lose a member; test-count and AST-level assertion-count MUST NOT decrease; a protected-manifest hash over the full test-determining surface (runner/coverage config, CI yaml, test-dep lockfile) MUST be stable; coverage MUST NOT drop below the `t0` floor. Tests SHOULD run from a read-only mount frozen at `t0`. Violation => `metric_integrity_violation`.
 - **Judge (advisory).** A cross-model, cross-lab judge MAY veto a green iteration (`reviewer_rejected` / `reward_hacking_detected`). It receives a behavioral oracle (check log, result delta, collected-set delta, coverage/mutation signal), treats the diff as untrusted data, and never replaces the deterministic gate.
 
 ---
 
 ## 7. Isolation & secrets (two zones)
 
-A single `--network none` container cannot both run a cloud agent and isolate untrusted code. Isolation MUST be two zones sharing only a work volume that is a **detached clone** (a git worktree is ergonomic, NOT a security boundary — it shares the object DB/refs/remotes/hooks/credentials).
+A single `--network none` container cannot both run a cloud agent and isolate untrusted code. Isolation MUST be two zones sharing only a work volume that is a **detached clone** (a git worktree is ergonomic, NOT a security boundary - it shares the object DB/refs/remotes/hooks/credentials).
 
-- **Agent zone** — reasoning surface. Network: default-deny + **egress allowlist** to the model endpoint only, via an auditing proxy. Credentials: exactly one **per-run minted, short-TTL, spend-capped** key (never a `~/.claude` bind-mount). Filesystem: RW `/work`, RO elsewhere, no `$HOME`.
-- **Exec zone** — untrusted code execution (check/build/test). Network: `none`. Hermetic (O3). Ephemeral: reset each run.
+- **Agent zone** - reasoning surface. Network: default-deny + **egress allowlist** to the model endpoint only, via an auditing proxy. Credentials: exactly one **per-run minted, short-TTL, spend-capped** key (never a `~/.claude` bind-mount). Filesystem: RW `/work`, RO elsewhere, no `$HOME`.
+- **Exec zone** - untrusted code execution (check/build/test). Network: `none`. Hermetic (O3). Ephemeral: reset each run.
 - **`doctor` preconditions (fail-closed):** reject `network: none` for a cloud/local-host model (`isolation_unsatisfiable`); reject any `~/.claude` mount (`credential_scope_invalid`); reject `exec_zone.network != none`; require an egress allowlist; warn on `worktree` + credentialed origin.
 
 ---
@@ -131,8 +131,8 @@ A live-LLM trajectory is not reproducible; only the **verdict** is. Marketing co
 
 ## 9. Cost & liveness
 
-- **Budget** MUST be a **run-total** hard cap (not only per-turn), accumulated from parsed provider usage, with a rolling-σ anomaly detector (`cost_anomaly`) distinct from the absolute cap (`budget_exceeded`). The cost model includes agent tokens **+ judge cost + per-iteration check-execution cost**; the ceiling is a quantile, not a mean mislabeled "upper bound."
-- **Liveness.** The heartbeat MUST be read by an external watchdog (`loopexec watch`) that times out a wedged agent call and emits `heartbeat_stale`. Every exit — including a non-zero agent exit — MUST pass through the typed logger; a `set -e`-style silent death is non-conformant.
+- **Budget** MUST be a **run-total** hard cap (not only per-turn), accumulated from parsed provider usage, with a rolling-sigma anomaly detector (`cost_anomaly`) distinct from the absolute cap (`budget_exceeded`). The cost model includes agent tokens **+ judge cost + per-iteration check-execution cost**; the ceiling is a quantile, not a mean mislabeled "upper bound."
+- **Liveness.** The heartbeat MUST be read by an external watchdog (`loopexec watch`) that times out a wedged agent call and emits `heartbeat_stale`. Every exit - including a non-zero agent exit - MUST pass through the typed logger; a `set -e`-style silent death is non-conformant.
 - **Comprehension.** `diffs_merged_unread` MUST be tracked; the loop SHOULD halt `comprehension_debt_exceeded` after a configured threshold, cleared by a signed `ack`. (A forcing/visibility gate, not proof of comprehension.)
 
 ---
@@ -142,11 +142,11 @@ A live-LLM trajectory is not reproducible; only the **verdict** is. Marketing co
 | Command | Purpose | Exit semantics |
 |---|---|---|
 | `init` | scaffold versioned `.loop_state.json` + `loop.yml` | 0 / `workspace_invalid` |
-| `run` | the real iterating loop (§4); computed halt | per §5 |
-| `run --once` | single iteration (debug); absorbs legacy `step` | per §5 |
+| `run` | the real iterating loop (section 4); computed halt | per section 5 |
+| `run --once` | single iteration (debug); absorbs legacy `step` | per section 5 |
 | `probe-check` | determinism as a confidence bound (O2); agent-free | 0 / class 14 |
 | `build-context` | bounded relevant slice; budget-unsatisfiable handling | 0 / `context_budget_unsatisfiable` |
-| `doctor` | precondition gate: determinism + hermeticity + adequacy + isolation | 0 / class 14·15·30 |
+| `doctor` | precondition gate: determinism + hermeticity + adequacy + isolation | 0 / class 14|15|30 |
 | `check` | SMALL/state-hygiene validation only (NOT the application oracle) | 0 / `invariant_failed` |
 | `ratchet` | inspect/advance the monotonic acceptance frontier | 0 |
 | `replay` | VERIFY a recorded receipt (agent-free, budget-free) | 0 / class 13 |
@@ -169,13 +169,13 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 |---|---|
 | CLI contract: `--json`, stable exit codes, deterministic output | Shipped |
 | `init` / `status` / `check` / `step` stubs | Shipped |
-| `run` as a real iterating loop (§4) | In progress |
-| Computed halt reasons (§5) replacing `--halt-reason` | In progress |
-| Typed JSONL receipt + durable state (§8) | In progress |
+| `run` as a real iterating loop (section 4) | In progress |
+| Computed halt reasons (section 5) replacing `--halt-reason` | In progress |
+| Typed JSONL receipt + durable state (section 8) | In progress |
 | `probe-check` confidence bound (O2) | In progress |
-| `doctor` precondition gate (O3–O5, §7) | Planned |
+| `doctor` precondition gate (O3-O5, section 7) | Planned |
 | `build-context`, `ratchet`, `replay`/`reexecute`, `escalate`/`watch`, `attest`/`ack` | Planned |
-| Two-zone isolation + per-run minted key (§7) | Planned |
-| Metric-integrity gate (§6) | Planned |
+| Two-zone isolation + per-run minted key (section 7) | Planned |
+| Metric-integrity gate (section 6) | Planned |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.
