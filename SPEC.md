@@ -181,7 +181,9 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Receipt pinning: model-identity tuple + sampling + context manifest (sha256) + cost + check fingerprint (section 8) | Shipped (recorded from flags; live cost metering Planned) |
 | `replay`: verify a receipt offline by re-running the check and matching the fingerprint (section 8) | Shipped |
 | `attest`: HMAC-sign a receipt and `--verify` it (section 8) | Shipped |
-| `build-context`, `reexecute`, `escalate`/`watch`, `ack` | Planned |
+| `reexecute`: live re-run of the recorded config N times, halt-reason distribution (section 8) | Shipped |
+| `escalate` / `watch` / `ack` + comprehension gate (section 9) | Shipped (file/stdout channels, heartbeat + staleness detection, comprehension `--comprehension-every`; github/slack channels + kill-the-PID actuator Planned) |
+| `build-context`: budgeted relevant-file slice | Planned |
 | Two-zone isolation container orchestration + per-run minted key (section 7) | Planned |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.

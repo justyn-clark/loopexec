@@ -12,6 +12,7 @@ This document defines the command surface and machine contract for loopexec.
   - Optional set-based progress (section 3.2): `--failures-cmd "<cmd>"` prints the current open failures (one identity per line) and enables the no-regression ratchet; `--no-progress-k N` halts after N iterations with no new best failing-set size.
   - Optional metric-integrity gate (section 6): `--integrity-cmd "<cmd>"` prints the test-determining surface (one identity per line); its `t0` set MUST NOT lose a member. Evaluated before the green check (guards dominate success); a violation halts `metric_integrity_violation`.
   - Optional receipt pinning (section 8): `--model-provider/--model-id/--model-version`, `--temperature/--seed/--max-tokens`, `--context-file <path>` (repeatable; recorded with sha256), `--cost-usd`. A check fingerprint (exit code + output sha256) is always recorded for `replay`.
+  - Optional comprehension gate (section 9): `--comprehension-every N` halts `comprehension_debt_exceeded` after N merged-but-unread iterations (cleared by `loopexec ack`). Each iteration also updates a heartbeat for `loopexec watch`.
   - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`, plus `no_progress_detected` / `oscillation_detected` / `same_test_regressed` when `--failures-cmd` is set), never forced by a flag.
   - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
 - `loopexec probe-check`
@@ -28,6 +29,14 @@ This document defines the command surface and machine contract for loopexec.
   - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. (`reexecute`, the live re-run, is Planned.)
 - `loopexec attest`
   - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
+- `loopexec reexecute`
+  - Live re-run of the recorded loop config `--samples N` times in isolated copies; reports the halt-reason distribution and convergence rate (a statistical match, not byte identity). `--confirm` required (it burns budget).
+- `loopexec escalate`
+  - Emit a structured escalation packet (`--channel file|stdout`; github/slack Planned) and mark the run `paged`. Cleared by `ack`.
+- `loopexec watch`
+  - Read `.loopexec/heartbeat` and report `alive` or `heartbeat_stale` (19) when its age exceeds `--stall-timeout`. The kill-the-wedged-PID actuator is Planned.
+- `loopexec ack`
+  - Clear comprehension debt and any paged escalation, recording `--reviewer` (a forcing/visibility gate, not proof of comprehension).
 - `loopexec status`
   - Show loop status.
 - `loopexec check`

@@ -111,7 +111,20 @@ type response struct {
 	Verified  *bool  `json:"verified,omitempty"`
 	Signature string `json:"signature,omitempty"`
 
+	Ops *opsReport `json:"ops,omitempty"`
+
 	Errors []string `json:"errors"`
+}
+
+// opsReport carries the output of the reexecute / escalate / watch commands.
+type opsReport struct {
+	Samples         int            `json:"samples,omitempty"`
+	Converged       int            `json:"converged,omitempty"`
+	ConvergenceRate float64        `json:"convergence_rate,omitempty"`
+	Distribution    map[string]int `json:"distribution,omitempty"`
+	Packet          string         `json:"packet,omitempty"`
+	HeartbeatAgeS   *int           `json:"heartbeat_age_s,omitempty"`
+	Stale           *bool          `json:"stale,omitempty"`
 }
 
 var jsonOutput bool
@@ -219,6 +232,14 @@ type checkFingerprint struct {
 	OutputSHA256 string `json:"output_sha256"`
 }
 
+// escalationState is the resumable human-handoff record (SPEC.md section 9).
+type escalationState struct {
+	State   string `json:"state"` // none | paged | acked
+	Channel string `json:"channel,omitempty"`
+	Ref     string `json:"ref,omitempty"`
+	AckedBy string `json:"acked_by,omitempty"`
+}
+
 // loopState is the durable, resumable machine state (SPEC.md §8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
@@ -244,6 +265,15 @@ type loopState struct {
 	ContextManifest []manifestEntry   `json:"context_manifest,omitempty"`
 	CostUSD         float64           `json:"cost_usd,omitempty"`
 	Fingerprint     *checkFingerprint `json:"fingerprint,omitempty"`
+
+	// Recorded config for reexecute (SPEC.md section 8) + ops state (section 9).
+	Exec              string           `json:"exec,omitempty"`
+	MaxIterations     int              `json:"max_iterations,omitempty"`
+	FailuresCmd       string           `json:"failures_cmd,omitempty"`
+	IntegrityCmd      string           `json:"integrity_cmd,omitempty"`
+	NoProgressK       int              `json:"no_progress_k,omitempty"`
+	DiffsMergedUnread int              `json:"diffs_merged_unread,omitempty"`
+	Escalation        *escalationState `json:"escalation,omitempty"`
 
 	UpdatedTS int64 `json:"updated_ts"`
 }
@@ -285,6 +315,23 @@ func (w *receiptWriter) emit(iteration int, event, detail string, exitCode *int)
 	_, _ = w.f.Write(append(line, '\n'))
 }
 
+// heartbeat is the liveness marker an external `watch` reads (SPEC.md section 9).
+type heartbeat struct {
+	TS        int64  `json:"ts"`
+	PID       int    `json:"pid"`
+	Iteration int    `json:"iteration"`
+	Phase     string `json:"phase"`
+}
+
+func writeHeartbeat(dir string, iteration int, phase string) {
+	hb := heartbeat{TS: nowFunc().Unix(), PID: os.Getpid(), Iteration: iteration, Phase: phase}
+	data, err := json.Marshal(hb)
+	if err != nil {
+		return
+	}
+	_ = os.WriteFile(filepath.Join(dir, "heartbeat"), data, 0o644)
+}
+
 // writeStateAtomic writes state via a temp file + rename so a crash mid-write
 // can never leave a half-written, unparseable state file.
 func writeStateAtomic(dir string, st loopState) error {
@@ -320,6 +367,8 @@ type runConfig struct {
 	maxTokens     int
 	contextFiles  []string
 	costUSD       float64
+
+	comprehensionEvery int
 }
 
 // executeRun is the real check_fixpoint loop (SPEC.md §4, Slice 0 subset):
@@ -359,6 +408,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	var lastCheckExit *int
 	var lastCheckOut string
 	haltReason := ""
+	diffsUnread := 0
 
 	var tracker *progressTracker
 	if strings.TrimSpace(cfg.failuresCmd) != "" {
@@ -378,6 +428,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	for i := 1; i <= cfg.maxIterations; i++ {
 		st.Iteration = i
 		rw.emit(i, "iter_start", "", nil)
+		writeHeartbeat(dir, i, "iter_start")
 
 		if strings.TrimSpace(cfg.execCmd) != "" {
 			rc, _ := runShell(cfg.workdir, cfg.execCmd)
@@ -434,6 +485,14 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				break
 			}
 		}
+
+		// Comprehension gate (SPEC.md section 9): after N merged-but-unread
+		// iterations, halt to force a human read (cleared by `loopexec ack`).
+		diffsUnread++
+		if cfg.comprehensionEvery > 0 && diffsUnread >= cfg.comprehensionEvery {
+			haltReason = "comprehension_debt_exceeded"
+			break
+		}
 	}
 
 	if haltReason == "" {
@@ -448,6 +507,12 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	st.Check = cfg.check
 	st.Workdir = cfg.workdir
 	st.CostUSD = cfg.costUSD
+	st.Exec = cfg.execCmd
+	st.MaxIterations = cfg.maxIterations
+	st.FailuresCmd = cfg.failuresCmd
+	st.IntegrityCmd = cfg.integrityCmd
+	st.NoProgressK = cfg.noProgressK
+	st.DiffsMergedUnread = diffsUnread
 	if cfg.modelID != "" {
 		st.Model = &modelPin{Provider: cfg.modelProvider, ID: cfg.modelID, Version: cfg.modelVersion}
 		st.Sampling = &samplingPin{Temperature: cfg.temperature, Seed: cfg.seed, MaxTokens: cfg.maxTokens}
@@ -562,6 +627,7 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().IntVar(&cfg.maxTokens, "max-tokens", 0, "Recorded sampling max_tokens")
 	cmd.Flags().StringArrayVar(&cfg.contextFiles, "context-file", nil, "File to include in the receipt context manifest (path + sha256); repeatable")
 	cmd.Flags().Float64Var(&cfg.costUSD, "cost-usd", 0, "Recorded run cost in USD (live metering is Planned)")
+	cmd.Flags().IntVar(&cfg.comprehensionEvery, "comprehension-every", 0, "Halt comprehension_debt_exceeded after N iterations without a `loopexec ack` (0 = off)")
 	return cmd
 }
 
@@ -665,6 +731,10 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newExplainHaltCmd())
 	cmd.AddCommand(newReplayCmd())
 	cmd.AddCommand(newAttestCmd())
+	cmd.AddCommand(newReexecuteCmd())
+	cmd.AddCommand(newEscalateCmd())
+	cmd.AddCommand(newWatchCmd())
+	cmd.AddCommand(newAckCmd())
 	return cmd
 }
 
