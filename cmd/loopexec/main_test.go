@@ -30,6 +30,31 @@ func TestExitCodeMappings(t *testing.T) {
 	}
 }
 
+func TestHaltExitCodeMap(t *testing.T) {
+	// Locks the canonical halt_reason -> exit_code map from SPEC.md §5.
+	cases := map[string]int{
+		"success_condition_met":      exitConverged,
+		"human_required":             exitTerminalBlocked,
+		"max_iterations_reached":     exitIterationCap,
+		"metric_integrity_violation": exitIntegrity,
+		"reward_hacking_detected":    exitIntegrity,
+		"check_flaky":                exitOracleUntrusted,
+		"check_inadequate":           exitCheckInadequate,
+		"escalation_pending":         exitResumableJudgment,
+		"oscillation_detected":       exitNoConvergence,
+		"budget_exceeded":            exitBudget,
+		"model_drift_detected":       exitLivenessDrift,
+		"workspace_invalid":          exitWorkspaceInvalid,
+		"execution_failure":          exitExecutionFailure,
+		"definitely_not_a_reason":    exitInternalError,
+	}
+	for reason, want := range cases {
+		if got := haltExitCode(reason); got != want {
+			t.Errorf("haltExitCode(%q) = %d, want %d", reason, got, want)
+		}
+	}
+}
+
 func TestPrintResponseJSON(t *testing.T) {
 	jsonOutput = true
 	defer func() { jsonOutput = false }()
