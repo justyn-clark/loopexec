@@ -1,12 +1,27 @@
 small_version: "1.0.0"
 owner: agent
 tasks:
-  - id: task-1
-    title: "Remove internal runtime artifacts from public release surface"
-    status: completed
-  - id: task-2
-    title: "Add public release metadata and documentation"
-    status: in_progress
-  - id: task-3
-    title: "Verify, publish, and record release cleanup"
-    status: pending
+    - id: task-1
+      title: Remove internal runtime artifacts from public release surface
+      status: completed
+    - id: task-2
+      title: Add public release metadata and documentation
+      status: completed
+    - id: task-3
+      title: Verify, publish, and record release cleanup
+      status: completed
+    - id: task-4
+      title: 'Define canonical SPEC.md contract: two loop topologies, halt-reason exit-code map, capability matrix'
+      status: completed
+    - id: task-5
+      title: 'Slice 0: real check_fixpoint run loop with computed halts, typed JSONL receipts, durable state'
+      status: completed
+    - id: task-6
+      title: 'Slice 1: probe-check (determinism confidence bound) and doctor preconditions gate'
+      status: completed
+    - id: task-7
+      title: Rebuild loopexec.dev as ASCII-only loop-engineering reference and bump toolchain to Go 1.26
+      status: completed
+    - id: task-8
+      title: 'Slice 2: no-regression ratchet, set-based progress/oscillation/feasibility, explain-halt'
+      status: pending
