@@ -111,3 +111,19 @@ entries:
       status: completed
       task_id: task-10
       timestamp: "2026-06-26T23:34:46.439951000Z"
+    - evidence: Added task task-11 via small plan --add
+      notes: 'Slice 5: reexecute (live re-run distribution), escalate/watch (heartbeat + packet), comprehension ack gate'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-11
+      timestamp: "2026-06-26T23:52:04.124898000Z"
+    - evidence: 'Starting Slice 5: run writes a heartbeat + tracks diffs_merged_unread; reexecute re-runs the recorded config N times in isolated copies; escalate emits a packet + paged state; watch detects heartbeat staleness; ack clears the comprehension gate.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-11
+      timestamp: "2026-06-26T23:52:04.185783000Z"
+    - evidence: 'cmd/loopexec/ops.go: reexecute re-runs the recorded config N times in isolated copies (copyTree) and reports the halt-reason distribution (--confirm-gated); escalate emits a packet (file/stdout) + marks paged; watch reads the heartbeat run now writes each iteration and reports alive vs heartbeat_stale (19); ack clears the comprehension counter + paged escalation; run --comprehension-every halts comprehension_debt_exceeded (19). ops_test.go (41 tests); gofmt/vet/test green; SPEC section 11 + docs/cli.md updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-11
+      timestamp: "2026-06-26T23:58:54.850456000Z"

@@ -31,3 +31,6 @@ tasks:
     - id: task-10
       title: 'Slice 4: receipt pinning (model/sampling/context/cost/fingerprint) + replay (verify) + attest (sign)'
       status: completed
+    - id: task-11
+      title: 'Slice 5: reexecute (live re-run distribution), escalate/watch (heartbeat + packet), comprehension ack gate'
+      status: completed
