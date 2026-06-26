@@ -169,11 +169,11 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 |---|---|
 | CLI contract: `--json`, stable exit codes, deterministic output | Shipped |
 | `init` / `status` / `check` / `step` stubs | Shipped |
-| `run` as a real iterating loop (section 4) | In progress |
-| Computed halt reasons (section 5) replacing `--halt-reason` | In progress |
-| Typed JSONL receipt + durable state (section 8) | In progress |
-| `probe-check` confidence bound (O2) | In progress |
-| `doctor` precondition gate (O3-O5, section 7) | Planned |
+| `run` as a real iterating loop (section 4) | Shipped |
+| Computed halt reasons (section 5) replacing `--halt-reason` | Shipped |
+| Typed JSONL receipt + durable state (section 8) | Shipped |
+| `probe-check` confidence bound (O2) | Shipped (core; adversarial perturbation + in-loop sequential monitor Planned) |
+| `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism enforced; hermeticity/adequacy/isolation reported as planned) |
 | `build-context`, `ratchet`, `replay`/`reexecute`, `escalate`/`watch`, `attest`/`ack` | Planned |
 | Two-zone isolation + per-run minted key (section 7) | Planned |
 | Metric-integrity gate (section 6) | Planned |

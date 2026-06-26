@@ -93,15 +93,19 @@ func (e *cliError) Unwrap() error {
 }
 
 type response struct {
-	Tool       string   `json:"tool"`
-	Version    string   `json:"version"`
-	Status     string   `json:"status"`
-	RunID      string   `json:"run_id,omitempty"`
-	Iteration  int      `json:"iteration,omitempty"`
-	HaltReason string   `json:"halt_reason,omitempty"`
-	CheckExit  *int     `json:"check_exit,omitempty"`
-	Receipt    string   `json:"receipt,omitempty"`
-	Errors     []string `json:"errors"`
+	Tool       string `json:"tool"`
+	Version    string `json:"version"`
+	Status     string `json:"status"`
+	RunID      string `json:"run_id,omitempty"`
+	Iteration  int    `json:"iteration,omitempty"`
+	HaltReason string `json:"halt_reason,omitempty"`
+	CheckExit  *int   `json:"check_exit,omitempty"`
+	Receipt    string `json:"receipt,omitempty"`
+
+	Probe  *probeReport  `json:"probe,omitempty"`
+	Doctor *doctorReport `json:"doctor,omitempty"`
+
+	Errors []string `json:"errors"`
 }
 
 var jsonOutput bool
@@ -147,6 +151,17 @@ func printResponse(cmd *cobra.Command, r response) error {
 	}
 	if r.Receipt != "" {
 		fmt.Fprintf(cmd.OutOrStdout(), "receipt: %s\n", r.Receipt)
+	}
+	if r.Probe != nil {
+		p := r.Probe
+		fmt.Fprintf(cmd.OutOrStdout(),
+			"probe: %d runs, stable=%t, flake_upper_bound=%.4f (95%%), certified=%t\n",
+			p.Runs, p.Stable, p.FlakeUpperBound, p.Certified)
+	}
+	if r.Doctor != nil {
+		for _, c := range r.Doctor.Checks {
+			fmt.Fprintf(cmd.OutOrStdout(), "  [%-7s] %s: %s\n", c.Status, c.Name, c.Detail)
+		}
 	}
 	for _, msg := range r.Errors {
 		fmt.Fprintf(cmd.ErrOrStderr(), "error: %s\n", msg)
@@ -484,6 +499,8 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newStatusCmd())
 	cmd.AddCommand(newCheckCmd())
 	cmd.AddCommand(newStepCmd())
+	cmd.AddCommand(newProbeCheckCmd())
+	cmd.AddCommand(newDoctorCmd())
 	return cmd
 }
 

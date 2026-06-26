@@ -11,10 +11,17 @@ This document defines the command surface and machine contract for loopexec.
   - Flags: `--check "<cmd>"` (required external oracle; exit 0 = converged), `--exec "<cmd>"` (work step run each iteration), `--max-iterations N` (fuse, default 10), `--run-id`, `--workdir`, `--budget-usd`.
   - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`), never forced by a flag.
   - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
+- `loopexec probe-check`
+  - Measure check determinism as a confidence bound (SPEC O2): no check, no loop.
+  - Flags: `--check "<cmd>"` (required), `--runs N` (default derived), `--max-flake-rate R` (derives run count via the rule of three, `runs >= 3/R`), `--workdir`.
+  - Reports the achieved 95% upper bound on the flake rate; halts `check_flaky` (exit 14) if the verdict varies across runs.
+- `loopexec doctor`
+  - Gate loop preconditions. Enforces determinism now (via the probe); reports hermeticity, adequacy, and isolation as planned (SPEC O3-O5, section 7).
+  - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`. Exit 0 on a green doctor; `check_flaky` (14) or `workspace_invalid` (30) otherwise.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`
-  - Validate invariants.
+  - Validate invariants (state hygiene, not the application oracle).
 - `loopexec step`
   - Execute a single step.
 
