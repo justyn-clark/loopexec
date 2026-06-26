@@ -1,11 +1,71 @@
 small_version: "1.0.0"
 owner: agent
 entries:
-  - task_id: task-1
-    status: completed
-    evidence: "Staged removal of internal worker prototype, run artifacts, logs, and checked-in build binary."
-    timestamp: "2026-06-06T01:20:00.000000000Z"
-  - task_id: task-2
-    status: in_progress
-    evidence: "Refreshing README, integration docs, license, ignore rules, and SMALL metadata for public release."
-    timestamp: "2026-06-06T02:15:00.000000000Z"
+    - evidence: Staged removal of internal worker prototype, run artifacts, logs, and checked-in build binary.
+      status: completed
+      task_id: task-1
+      timestamp: "2026-06-06T01:20:00.000000000Z"
+    - evidence: Refreshing README, integration docs, license, ignore rules, and SMALL metadata for public release.
+      status: in_progress
+      task_id: task-2
+      timestamp: "2026-06-06T02:15:00.000000000Z"
+    - evidence: Public README.md, MIT LICENSE, docs/integrations.md, and .gitignore are tracked and published; README reconciled with SPEC.md, halt-reason exit codes, and the Go 1.26 toolchain badge.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-2
+      timestamp: "2026-06-26T20:37:39.669924000Z"
+    - evidence: Released v0.1.0 and published to github.com/justyn-clark/loopexec; CI (gofmt, go vet, go test ./...) green on main; SECRETS_POLICY.md in place; git history scrubbed of AI co-author trailers and re-authored to justyn-clark.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-3
+      timestamp: "2026-06-26T20:37:39.713898000Z"
+    - evidence: Added task task-4 via small plan --add
+      notes: 'Define canonical SPEC.md contract: two loop topologies, halt-reason exit-code map, capability matrix'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-4
+      timestamp: "2026-06-26T20:37:53.031298000Z"
+    - evidence: Added task task-5 via small plan --add
+      notes: 'Slice 0: real check_fixpoint run loop with computed halts, typed JSONL receipts, durable state'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-5
+      timestamp: "2026-06-26T20:37:53.068291000Z"
+    - evidence: Added task task-6 via small plan --add
+      notes: 'Slice 1: probe-check (determinism confidence bound) and doctor preconditions gate'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-6
+      timestamp: "2026-06-26T20:37:53.105142000Z"
+    - evidence: Added task task-7 via small plan --add
+      notes: Rebuild loopexec.dev as ASCII-only loop-engineering reference and bump toolchain to Go 1.26
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-7
+      timestamp: "2026-06-26T20:37:53.141508000Z"
+    - evidence: Added task task-8 via small plan --add
+      notes: 'Slice 2: no-regression ratchet, set-based progress/oscillation/feasibility, explain-halt'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-8
+      timestamp: "2026-06-26T20:37:53.178816000Z"
+    - evidence: 'Authored SPEC.md: check_fixpoint vs task_list topologies, canonical halt_reason->exit_code map (added classes 13-19), oracle rules O1-O6, guards/isolation/receipt contract, and the section 11 capability matrix that binary tests and the docs site both reference.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-4
+      timestamp: "2026-06-26T20:38:16.573841000Z"
+    - evidence: 'cmd/loopexec/main.go: run iterates --exec then --check until success_condition_met/max_iterations_reached/execution_failure; refuses without --check (workspace_invalid, O1); computed halts via haltExitCode; typed JSONL receipts (.loopexec/run-<id>.jsonl) + atomic state.json. Contract tests cover halt mapping and receipt validity.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-5
+      timestamp: "2026-06-26T20:38:16.614549000Z"
+    - evidence: 'cmd/loopexec/probe.go: probe-check reports a 95% flake-rate upper bound (rule of three; --max-flake-rate derives runs; check_flaky->exit 14); doctor gates determinism and reports hermeticity/adequacy/isolation as planned. Unit + contract tests added; SPEC section 11 marks both Shipped.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-6
+      timestamp: "2026-06-26T20:38:16.654539000Z"
+    - evidence: loopexec.dev rebuilt into 16 ASCII-only Starlight pages (Loop Engineering, halt-reasons, loop.yml, determinism/reward-hacking/isolation, capability matrix); go.mod 1.25.3->1.26.0 verified gofmt/vet/test on go1.26.0; astro build green; deployed to Vercel.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-7
+      timestamp: "2026-06-26T20:38:16.694186000Z"
