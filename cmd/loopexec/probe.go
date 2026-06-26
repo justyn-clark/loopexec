@@ -164,19 +164,21 @@ type doctorReport struct {
 // enforces determinism (via the probe); hermeticity, adequacy, and isolation
 // are reported as planned, not silently claimed (SPEC.md O3-O5, section 7).
 func newDoctorCmd() *cobra.Command {
-	var check, workdir string
+	var check, workdir, execNetwork string
 	var runs int
 	var maxFlakeRate float64
+	var bindClaudeHome bool
 
 	cmd := &cobra.Command{
 		Use:          "doctor",
-		Short:        "Gate loop preconditions (determinism enforced; hermeticity/adequacy/isolation planned)",
+		Short:        "Gate loop preconditions: determinism + isolation preflight (hermeticity/adequacy planned)",
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			if workdir == "" {
 				workdir = "."
 			}
 			dr := doctorReport{}
+			haltReason := "" // first failing precondition wins the exit class
 
 			if strings.TrimSpace(check) == "" {
 				dr.Checks = []doctorCheck{{Name: "check-present", Status: "fail",
@@ -193,30 +195,57 @@ func newDoctorCmd() *cobra.Command {
 			dr.Checks = append(dr.Checks, doctorCheck{Name: "check-present", Status: "pass",
 				Detail: "external check provided"})
 
+			// Determinism (O2).
 			n, _ := resolveProbeRuns(runs, maxFlakeRate)
 			rep := runProbe(workdir, check, n)
 			rep.MaxFlakeRate = maxFlakeRate
 			rep.Certified = rep.Stable && (maxFlakeRate <= 0 || rep.FlakeUpperBound <= maxFlakeRate)
 			dr.Probe = &rep
-
-			green := rep.Stable
 			if rep.Stable {
 				dr.Checks = append(dr.Checks, doctorCheck{Name: "determinism", Status: "pass",
-					Detail: fmt.Sprintf("stable across %d runs; flake upper bound %.4f (95%%)",
-						rep.Runs, rep.FlakeUpperBound)})
+					Detail: fmt.Sprintf("stable across %d runs; flake upper bound %.4f (95%%)", rep.Runs, rep.FlakeUpperBound)})
 			} else {
 				dr.Checks = append(dr.Checks, doctorCheck{Name: "determinism", Status: "fail",
 					Detail: fmt.Sprintf("verdict varied: %d of %d runs disagreed", rep.FlakeCount, rep.Runs)})
+				if haltReason == "" {
+					haltReason = "check_flaky"
+				}
 			}
 
+			// Isolation preflight (SPEC section 7), fail-closed when declared.
+			if bindClaudeHome {
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "isolation-credentials", Status: "fail",
+					Detail: "a $HOME/.claude bind-mount exposes a long-lived key; mint a per-run scoped, spend-capped key instead"})
+				if haltReason == "" {
+					haltReason = "credential_scope_invalid"
+				}
+			} else {
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "isolation-credentials", Status: "pass",
+					Detail: "no credential-home bind-mount declared"})
+			}
+			switch {
+			case execNetwork == "":
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "isolation-exec-network", Status: "planned",
+					Detail: "exec-zone network not declared (pass --exec-network none to enforce)"})
+			case execNetwork == "none":
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "isolation-exec-network", Status: "pass",
+					Detail: "exec zone is network:none"})
+			default:
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "isolation-exec-network", Status: "fail",
+					Detail: fmt.Sprintf("exec zone must be network:none, got %q (untrusted code must not reach the network)", execNetwork)})
+				if haltReason == "" {
+					haltReason = "isolation_unsatisfiable"
+				}
+			}
+
+			// Still planned: hermeticity + check-adequacy.
 			dr.Checks = append(dr.Checks,
 				doctorCheck{Name: "hermeticity", Status: "planned", Detail: "not yet enforced (SPEC O3)"},
 				doctorCheck{Name: "adequacy", Status: "planned", Detail: "coverage-delta + mutation canary not yet enforced (SPEC O4)"},
-				doctorCheck{Name: "isolation", Status: "planned", Detail: "two-zone isolation not yet enforced (SPEC section 7)"},
 			)
 
 			r := response{Tool: toolName, Version: toolVersion, Errors: []string{}, Doctor: &dr}
-			if green {
+			if haltReason == "" {
 				r.Status = "ok"
 				if err := printResponse(cmd, r); err != nil {
 					return err
@@ -224,12 +253,12 @@ func newDoctorCmd() *cobra.Command {
 				return nil
 			}
 			r.Status = "error"
-			r.HaltReason = "check_flaky"
-			r.Errors = []string{"doctor: determinism precondition failed (check_flaky)"}
+			r.HaltReason = haltReason
+			r.Errors = []string{"doctor: precondition failed (" + haltReason + ")"}
 			if err := printResponse(cmd, r); err != nil {
 				return err
 			}
-			return &cliError{Code: exitOracleUntrusted, Message: "doctor: check_flaky"}
+			return &cliError{Code: haltExitCode(haltReason), Message: "doctor: " + haltReason}
 		},
 	}
 
@@ -237,5 +266,7 @@ func newDoctorCmd() *cobra.Command {
 	cmd.Flags().IntVar(&runs, "runs", 0, "Determinism probe runs (default: derived, else 10)")
 	cmd.Flags().Float64Var(&maxFlakeRate, "max-flake-rate", 0, "Target max flake rate to certify")
 	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory to run the check in (default: current directory)")
+	cmd.Flags().BoolVar(&bindClaudeHome, "bind-claude-home", false, "Declare a $HOME/.claude credential bind-mount (fails the isolation preflight)")
+	cmd.Flags().StringVar(&execNetwork, "exec-network", "", "Declared exec-zone network policy; must be 'none' (SPEC section 7)")
 	return cmd
 }

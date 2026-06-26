@@ -79,3 +79,19 @@ entries:
       status: completed
       task_id: task-8
       timestamp: "2026-06-26T20:48:55.245124000Z"
+    - evidence: Added task task-9 via small plan --add
+      notes: 'Slice 3: metric-integrity gate (guards dominate success) + doctor isolation preflight'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-9
+      timestamp: "2026-06-26T21:07:14.743461000Z"
+    - evidence: 'Starting Slice 3: metric-integrity gate via --integrity-cmd (collected-set monotonicity, evaluated before green) and doctor isolation preflight (fail-closed SPEC section 7 matrix).'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-9
+      timestamp: "2026-06-26T21:07:14.805965000Z"
+    - evidence: 'cmd/loopexec: metric-integrity gate via --integrity-cmd (collected-set monotonicity at t0, evaluated before the green check so guards dominate success; halts metric_integrity_violation, exit 13). doctor isolation preflight: --bind-claude-home -> credential_scope_invalid (13), --exec-network non-none -> isolation_unsatisfiable (30). integrity_test.go; gofmt/vet/test green; SPEC section 11 + docs/cli.md updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-9
+      timestamp: "2026-06-26T21:12:34.264107000Z"

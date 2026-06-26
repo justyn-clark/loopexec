@@ -10,6 +10,7 @@ This document defines the command surface and machine contract for loopexec.
   - Run a bounded `check_fixpoint` loop until the check passes, a bound trips, or the work command fails.
   - Flags: `--check "<cmd>"` (required external oracle; exit 0 = converged), `--exec "<cmd>"` (work step run each iteration), `--max-iterations N` (fuse, default 10), `--run-id`, `--workdir`, `--budget-usd`.
   - Optional set-based progress (section 3.2): `--failures-cmd "<cmd>"` prints the current open failures (one identity per line) and enables the no-regression ratchet; `--no-progress-k N` halts after N iterations with no new best failing-set size.
+  - Optional metric-integrity gate (section 6): `--integrity-cmd "<cmd>"` prints the test-determining surface (one identity per line); its `t0` set MUST NOT lose a member. Evaluated before the green check (guards dominate success); a violation halts `metric_integrity_violation`.
   - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`, plus `no_progress_detected` / `oscillation_detected` / `same_test_regressed` when `--failures-cmd` is set), never forced by a flag.
   - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
 - `loopexec probe-check`
@@ -17,8 +18,9 @@ This document defines the command surface and machine contract for loopexec.
   - Flags: `--check "<cmd>"` (required), `--runs N` (default derived), `--max-flake-rate R` (derives run count via the rule of three, `runs >= 3/R`), `--workdir`.
   - Reports the achieved 95% upper bound on the flake rate; halts `check_flaky` (exit 14) if the verdict varies across runs.
 - `loopexec doctor`
-  - Gate loop preconditions. Enforces determinism now (via the probe); reports hermeticity, adequacy, and isolation as planned (SPEC O3-O5, section 7).
-  - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`. Exit 0 on a green doctor; `check_flaky` (14) or `workspace_invalid` (30) otherwise.
+  - Gate loop preconditions. Enforces determinism (via the probe) and an isolation preflight; reports hermeticity and adequacy as planned (SPEC O3-O5, section 7).
+  - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`, plus isolation preflight `--bind-claude-home` (a `$HOME/.claude` credential mount fails closed -> `credential_scope_invalid`, 13) and `--exec-network <policy>` (must be `none` -> else `isolation_unsatisfiable`, 30).
+  - Exit 0 on a green doctor; `check_flaky` (14), `credential_scope_invalid` (13), `isolation_unsatisfiable` (30), or `workspace_invalid` (30) otherwise.
 - `loopexec explain-halt`
   - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads `.loopexec/state.json`.
 - `loopexec status`

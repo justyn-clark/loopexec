@@ -34,6 +34,20 @@ func setHash(order []string) string {
 	return strings.Join(order, "\n")
 }
 
+// missingMembers returns the baseline identities absent from current, sorted.
+// Used by the metric-integrity gate: the test-determining surface captured at
+// t0 MUST NOT lose a member (you cannot pass by testing less).
+func missingMembers(baseline, current map[string]struct{}) []string {
+	var missing []string
+	for id := range baseline {
+		if _, ok := current[id]; !ok {
+			missing = append(missing, id)
+		}
+	}
+	sort.Strings(missing)
+	return missing
+}
+
 // progressTracker implements the anti-random-walk machinery (SPEC.md section 3.2):
 // a monotone best-so-far ratchet over the failing-test SET, with regression,
 // oscillation, and no-progress detection. "Progress" is a strict decrease in

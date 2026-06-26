@@ -265,6 +265,7 @@ type runConfig struct {
 	workdir       string
 	failuresCmd   string
 	noProgressK   int
+	integrityCmd  string
 }
 
 // executeRun is the real check_fixpoint loop (SPEC.md §4, Slice 0 subset):
@@ -309,6 +310,16 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		tracker = newProgressTracker(cfg.noProgressK)
 	}
 
+	// Metric-integrity baseline captured at t0 (SPEC.md section 6): the
+	// test-determining surface MUST NOT lose a member during the run.
+	var integrityBaseline map[string]struct{}
+	if strings.TrimSpace(cfg.integrityCmd) != "" {
+		_, bout := runShell(cfg.workdir, cfg.integrityCmd)
+		integrityBaseline, _ = parseFailures(bout)
+		n := len(integrityBaseline)
+		rw.emit(0, "integrity_baseline", "", &n)
+	}
+
 	for i := 1; i <= cfg.maxIterations; i++ {
 		st.Iteration = i
 		rw.emit(i, "iter_start", "", nil)
@@ -321,6 +332,20 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				// A non-zero work step is an execution failure, not a blocked
 				// task: the substrate/agent itself failed (SPEC.md §5, exit 40).
 				haltReason = "execution_failure"
+				break
+			}
+		}
+
+		// Guards dominate success (SPEC.md section 6): the metric-integrity gate
+		// is evaluated BEFORE the check can declare green, so a suite that went
+		// green by weakening the test surface halts here instead of succeeding.
+		if integrityBaseline != nil {
+			_, cout := runShell(cfg.workdir, cfg.integrityCmd)
+			cur, _ := parseFailures(cout)
+			if missing := missingMembers(integrityBaseline, cur); len(missing) > 0 {
+				n := len(missing)
+				rw.emit(i, "integrity_violation", strings.Join(missing, ","), &n)
+				haltReason = "metric_integrity_violation"
 				break
 			}
 		}
@@ -453,6 +478,7 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().StringVar(&cfg.workdir, "workdir", "", "Directory to run commands in (default: current directory)")
 	cmd.Flags().StringVar(&cfg.failuresCmd, "failures-cmd", "", "Command printing current open failures (one identity per line); enables set-based progress and the no-regression ratchet")
 	cmd.Flags().IntVar(&cfg.noProgressK, "no-progress-k", 3, "Halt no_progress_detected after K iterations with no new best failing-set size")
+	cmd.Flags().StringVar(&cfg.integrityCmd, "integrity-cmd", "", "Command printing the test-determining surface (one identity per line); its t0 set MUST NOT lose a member (metric-integrity gate)")
 	return cmd
 }
 
