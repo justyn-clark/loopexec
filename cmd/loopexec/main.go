@@ -105,6 +105,9 @@ type response struct {
 	Probe  *probeReport  `json:"probe,omitempty"`
 	Doctor *doctorReport `json:"doctor,omitempty"`
 
+	Verdict string `json:"verdict,omitempty"`
+	Why     string `json:"why,omitempty"`
+
 	Errors []string `json:"errors"`
 }
 
@@ -191,7 +194,27 @@ type loopState struct {
 	LastCheckExit *int    `json:"last_check_exit,omitempty"`
 	HaltReason    string  `json:"halt_reason,omitempty"`
 	CumulativeUSD float64 `json:"cumulative_usd"`
-	UpdatedTS     int64   `json:"updated_ts"`
+
+	// Set-based progress (SPEC.md section 3.2), populated when --failures-cmd is set.
+	InitialFailCount *int `json:"initial_fail_count,omitempty"`
+	BestFailCount    *int `json:"best_fail_count,omitempty"`
+	BestIteration    int  `json:"best_iteration,omitempty"`
+	EverImproved     bool `json:"ever_improved,omitempty"`
+
+	UpdatedTS int64 `json:"updated_ts"`
+}
+
+// readState loads a recorded run state for explain-halt / resume.
+func readState(path string) (loopState, error) {
+	var st loopState
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return st, err
+	}
+	if err := json.Unmarshal(data, &st); err != nil {
+		return st, err
+	}
+	return st, nil
 }
 
 type receiptWriter struct {
@@ -240,6 +263,8 @@ type runConfig struct {
 	execCmd       string
 	budgetUSD     float64
 	workdir       string
+	failuresCmd   string
+	noProgressK   int
 }
 
 // executeRun is the real check_fixpoint loop (SPEC.md §4, Slice 0 subset):
@@ -279,6 +304,11 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	var lastCheckExit *int
 	haltReason := ""
 
+	var tracker *progressTracker
+	if strings.TrimSpace(cfg.failuresCmd) != "" {
+		tracker = newProgressTracker(cfg.noProgressK)
+	}
+
 	for i := 1; i <= cfg.maxIterations; i++ {
 		st.Iteration = i
 		rw.emit(i, "iter_start", "", nil)
@@ -302,6 +332,26 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		if rc == 0 {
 			haltReason = "success_condition_met"
 			break
+		}
+
+		// Set-based progress + ratchet (SPEC.md section 3.2): track the failing
+		// set, halt on regression, oscillation, or no strict decrease over K.
+		if tracker != nil {
+			_, fout := runShell(cfg.workdir, cfg.failuresCmd)
+			F, order := parseFailures(fout)
+			sz := len(F)
+			rw.emit(i, "progress", setHash(order), &sz)
+			pr := tracker.observe(i, F, order)
+			best := tracker.bestSize
+			init := tracker.initialSize
+			st.BestFailCount = &best
+			st.InitialFailCount = &init
+			st.BestIteration = tracker.bestIter
+			st.EverImproved = tracker.everImproved
+			if pr != "" {
+				haltReason = pr
+				break
+			}
 		}
 	}
 
@@ -401,6 +451,8 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().StringVar(&cfg.execCmd, "exec", "", "Work command run each iteration before the check (e.g. an agent invocation)")
 	cmd.Flags().Float64Var(&cfg.budgetUSD, "budget-usd", 0, "Total run budget cap in USD (recorded; metering lands with agent execution)")
 	cmd.Flags().StringVar(&cfg.workdir, "workdir", "", "Directory to run commands in (default: current directory)")
+	cmd.Flags().StringVar(&cfg.failuresCmd, "failures-cmd", "", "Command printing current open failures (one identity per line); enables set-based progress and the no-regression ratchet")
+	cmd.Flags().IntVar(&cfg.noProgressK, "no-progress-k", 3, "Halt no_progress_detected after K iterations with no new best failing-set size")
 	return cmd
 }
 
@@ -501,6 +553,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newStepCmd())
 	cmd.AddCommand(newProbeCheckCmd())
 	cmd.AddCommand(newDoctorCmd())
+	cmd.AddCommand(newExplainHaltCmd())
 	return cmd
 }
 

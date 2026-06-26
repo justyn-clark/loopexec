@@ -69,3 +69,13 @@ entries:
       status: completed
       task_id: task-7
       timestamp: "2026-06-26T20:38:16.694186000Z"
+    - evidence: 'Starting Slice 2: no-regression ratchet acceptance, set-based progress with oscillation/feasibility detection, and explain-halt.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-8
+      timestamp: "2026-06-26T20:40:54.945818000Z"
+    - evidence: 'cmd/loopexec/progress.go: --failures-cmd enables set-based progress with a best-so-far ratchet; halts same_test_regressed (regression), oscillation_detected (exact set repeat), no_progress_detected (no new best in K). New explain-halt command distinguishes raise-the-limit vs do-not-retry via the everImproved feasibility signal. Unit + contract tests; gofmt/vet/test green; SPEC section 11 updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-8
+      timestamp: "2026-06-26T20:48:55.245124000Z"

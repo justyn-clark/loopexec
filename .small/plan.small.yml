@@ -24,4 +24,4 @@ tasks:
       status: completed
     - id: task-8
       title: 'Slice 2: no-regression ratchet, set-based progress/oscillation/feasibility, explain-halt'
-      status: pending
+      status: completed
