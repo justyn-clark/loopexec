@@ -9,7 +9,8 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec run`
   - Run a bounded `check_fixpoint` loop until the check passes, a bound trips, or the work command fails.
   - Flags: `--check "<cmd>"` (required external oracle; exit 0 = converged), `--exec "<cmd>"` (work step run each iteration), `--max-iterations N` (fuse, default 10), `--run-id`, `--workdir`, `--budget-usd`.
-  - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`), never forced by a flag.
+  - Optional set-based progress (section 3.2): `--failures-cmd "<cmd>"` prints the current open failures (one identity per line) and enables the no-regression ratchet; `--no-progress-k N` halts after N iterations with no new best failing-set size.
+  - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`, plus `no_progress_detected` / `oscillation_detected` / `same_test_regressed` when `--failures-cmd` is set), never forced by a flag.
   - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
 - `loopexec probe-check`
   - Measure check determinism as a confidence bound (SPEC O2): no check, no loop.
@@ -18,6 +19,8 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec doctor`
   - Gate loop preconditions. Enforces determinism now (via the probe); reports hermeticity, adequacy, and isolation as planned (SPEC O3-O5, section 7).
   - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`. Exit 0 on a green doctor; `check_flaky` (14) or `workspace_invalid` (30) otherwise.
+- `loopexec explain-halt`
+  - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads `.loopexec/state.json`.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`
