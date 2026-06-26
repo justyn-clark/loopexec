@@ -25,3 +25,6 @@ tasks:
     - id: task-8
       title: 'Slice 2: no-regression ratchet, set-based progress/oscillation/feasibility, explain-halt'
       status: completed
+    - id: task-9
+      title: 'Slice 3: metric-integrity gate (guards dominate success) + doctor isolation preflight'
+      status: completed

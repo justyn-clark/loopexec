@@ -173,11 +173,12 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Computed halt reasons (section 5) replacing `--halt-reason` | Shipped |
 | Typed JSONL receipt + durable state (section 8) | Shipped |
 | `probe-check` confidence bound (O2) | Shipped (core; adversarial perturbation + in-loop sequential monitor Planned) |
-| `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism enforced; hermeticity/adequacy/isolation reported as planned) |
+| `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism + isolation preflight; hermeticity/adequacy reported as planned) |
 | Set-based progress + no-regression ratchet: oscillation / no-progress / regression halts (section 3.2) | Shipped (via `--failures-cmd`; git revert-to-best Planned) |
 | `explain-halt`: raise-the-limit vs do-not-retry (feasibility) | Shipped |
+| Metric-integrity gate: guards dominate success (section 6) | Shipped (collected-set monotonicity via `--integrity-cmd`; assertion-count / manifest-hash / coverage-floor Planned) |
+| `doctor` isolation preflight: credential-mount + exec-network fail-closed (section 7) | Shipped |
 | `build-context`, `replay`/`reexecute`, `escalate`/`watch`, `attest`/`ack` | Planned |
-| Two-zone isolation + per-run minted key (section 7) | Planned |
-| Metric-integrity gate (section 6) | Planned |
+| Two-zone isolation container orchestration + per-run minted key (section 7) | Planned |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.
