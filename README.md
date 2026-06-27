@@ -104,7 +104,7 @@ Example JSON response (a converged run):
 
 ### Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Classes `13`, `14`, `16`, `17`, `18`, and `19` emit today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`); only class `15` (`check_inadequate`) and class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`) stay reserved. A few individual reasons inside active classes, and in-loop budget enforcement during `run`, are still Planned (see SPEC section 11).
+The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`) remain reserved, and those belong to the `task_list` loop topology. A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, and in-loop budget enforcement during `run`, are still Planned (see SPEC section 11).
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`
