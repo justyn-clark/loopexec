@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 	"sort"
 	"strings"
 
@@ -160,18 +161,19 @@ type doctorReport struct {
 	Probe  *probeReport  `json:"probe,omitempty"`
 }
 
-// newDoctorCmd gates the preconditions a non-fraudulent loop requires. Slice 1
-// enforces determinism (via the probe); hermeticity, adequacy, and isolation
-// are reported as planned, not silently claimed (SPEC.md O3-O5, section 7).
+// newDoctorCmd gates the preconditions a non-fraudulent loop requires. It
+// enforces determinism (via the probe), the isolation preflight, and - when
+// --mutate-cmd is given - check-adequacy via a mutation canary (O4); hermeticity
+// (O3) and the coverage-delta tier remain planned (SPEC.md O2-O5, section 7).
 func newDoctorCmd() *cobra.Command {
-	var check, workdir, execNetwork string
+	var check, workdir, execNetwork, mutateCmd string
 	var runs int
 	var maxFlakeRate float64
 	var bindClaudeHome bool
 
 	cmd := &cobra.Command{
 		Use:          "doctor",
-		Short:        "Gate loop preconditions: determinism + isolation preflight (hermeticity/adequacy planned)",
+		Short:        "Gate loop preconditions: determinism + isolation preflight + adequacy canary (--mutate-cmd)",
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			if workdir == "" {
@@ -238,11 +240,39 @@ func newDoctorCmd() *cobra.Command {
 				}
 			}
 
-			// Still planned: hermeticity + check-adequacy.
+			// Hermeticity (O3) is still planned.
 			dr.Checks = append(dr.Checks,
-				doctorCheck{Name: "hermeticity", Status: "planned", Detail: "not yet enforced (SPEC O3)"},
-				doctorCheck{Name: "adequacy", Status: "planned", Detail: "coverage-delta + mutation canary not yet enforced (SPEC O4)"},
-			)
+				doctorCheck{Name: "hermeticity", Status: "planned", Detail: "not yet enforced (SPEC O3)"})
+
+			// Adequacy (O4): a mutation canary in the changed code MUST turn the
+			// check red. The mutation is operator-provided (--mutate-cmd, language
+			// specific); loopexec owns the verdict, run in an isolated copy.
+			// Coverage-delta is the Planned sub-part.
+			switch {
+			case strings.TrimSpace(mutateCmd) == "":
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "adequacy", Status: "planned",
+					Detail: "mutation canary not declared (pass --mutate-cmd to enforce O4); coverage-delta Planned"})
+			case !rep.Stable:
+				dr.Checks = append(dr.Checks, doctorCheck{Name: "adequacy", Status: "planned",
+					Detail: "skipped: the check is not deterministic; fix that first (O2 before O4)"})
+			default:
+				inadequate, detail, aerr := adequacyCanary(workdir, mutateCmd, check)
+				switch {
+				case aerr != nil:
+					dr.Checks = append(dr.Checks, doctorCheck{Name: "adequacy", Status: "fail",
+						Detail: "adequacy canary could not run: " + aerr.Error()})
+					if haltReason == "" {
+						haltReason = "execution_failure"
+					}
+				case inadequate:
+					dr.Checks = append(dr.Checks, doctorCheck{Name: "adequacy", Status: "fail", Detail: detail})
+					if haltReason == "" {
+						haltReason = "check_inadequate"
+					}
+				default:
+					dr.Checks = append(dr.Checks, doctorCheck{Name: "adequacy", Status: "pass", Detail: detail})
+				}
+			}
 
 			r := response{Tool: toolName, Version: toolVersion, Errors: []string{}, Doctor: &dr}
 			if haltReason == "" {
@@ -268,5 +298,32 @@ func newDoctorCmd() *cobra.Command {
 	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory to run the check in (default: current directory)")
 	cmd.Flags().BoolVar(&bindClaudeHome, "bind-claude-home", false, "Declare a $HOME/.claude credential bind-mount (fails the isolation preflight)")
 	cmd.Flags().StringVar(&execNetwork, "exec-network", "", "Declared exec-zone network policy; must be 'none' (SPEC section 7)")
+	cmd.Flags().StringVar(&mutateCmd, "mutate-cmd", "", "Operator command that plants a mutation in the changed code; the --check MUST then turn red, else check_inadequate (SPEC O4)")
 	return cmd
+}
+
+// adequacyCanary runs the operator-provided mutation in an isolated copy of the
+// workdir and verifies the check turns RED (SPEC O4). A check that stays green
+// with a planted bug does not exercise the change, so it is inadequate. The real
+// workdir is never mutated; the copy is discarded.
+func adequacyCanary(workdir, mutateCmd, check string) (inadequate bool, detail string, err error) {
+	tmp, terr := os.MkdirTemp("", "loopexec-adequacy-")
+	if terr != nil {
+		return false, "", terr
+	}
+	defer os.RemoveAll(tmp)
+	if cerr := copyTree(workdir, tmp); cerr != nil {
+		return false, "", cerr
+	}
+	// Plant the mutation. It MUST apply cleanly (exit 0); a failing mutate-cmd
+	// is a setup error, not an adequacy verdict.
+	if rc, _ := runShell(tmp, mutateCmd); rc != 0 {
+		return false, "", fmt.Errorf("--mutate-cmd failed (exit %d)", rc)
+	}
+	// The check MUST now fail. If it still passes, the planted bug went
+	// undetected.
+	if rc, _ := runShell(tmp, check); rc == 0 {
+		return true, "the check still passed after the mutation canary; it does not exercise the change", nil
+	}
+	return false, "the mutation canary turned the check red", nil
 }

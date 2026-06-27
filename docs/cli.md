@@ -20,9 +20,9 @@ This document defines the command surface and machine contract for loopexec.
   - Flags: `--check "<cmd>"` (required), `--runs N` (default derived), `--max-flake-rate R` (derives run count via the rule of three, `runs >= 3/R`), `--workdir`.
   - Reports the achieved 95% upper bound on the flake rate; halts `check_flaky` (exit 14) if the verdict varies across runs.
 - `loopexec doctor`
-  - Gate loop preconditions. Enforces determinism (via the probe) and an isolation preflight; reports hermeticity and adequacy as planned (SPEC O3-O5, section 7).
-  - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`, plus isolation preflight `--bind-claude-home` (a `$HOME/.claude` credential mount fails closed -> `credential_scope_invalid`, 13) and `--exec-network <policy>` (must be `none` -> else `isolation_unsatisfiable`, 30).
-  - Exit 0 on a green doctor; `check_flaky` (14), `credential_scope_invalid` (13), `isolation_unsatisfiable` (30), or `workspace_invalid` (30) otherwise.
+  - Gate loop preconditions. Enforces determinism (via the probe), an isolation preflight, and -- when `--mutate-cmd` is given -- check-adequacy via a mutation canary (O4); hermeticity (O3) and the coverage-delta tier remain planned (SPEC O2-O5, section 7).
+  - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`, plus isolation preflight `--bind-claude-home` (a `$HOME/.claude` credential mount fails closed -> `credential_scope_invalid`, 13), `--exec-network <policy>` (must be `none` -> else `isolation_unsatisfiable`, 30), and `--mutate-cmd "<cmd>"` (an operator command that plants a mutation in the changed code; the `--check` MUST then turn red, else `check_inadequate`, 15). The canary runs in an isolated copy of the workdir, so the real tree is never mutated; it is skipped when the check is not deterministic.
+  - Exit 0 on a green doctor; `check_flaky` (14), `credential_scope_invalid` (13), `isolation_unsatisfiable` (30), `check_inadequate` (15), `execution_failure` (40, if `--mutate-cmd` cannot apply), or `workspace_invalid` (30) otherwise.
 - `loopexec explain-halt`
   - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads the latest run by default; `--run-id <id>` explains a specific recorded run.
 - `loopexec replay`
@@ -87,7 +87,7 @@ Example:
 
 ## Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Classes `13`, `14`, `16`, `17`, `18`, and `19` emit today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`); only class `15` (`check_inadequate`) and class `11`'s task-list reasons stay reserved. A few individual reasons inside active classes, and in-loop budget enforcement during `run`, are still Planned (see `SPEC.md` section 11).
+The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons remain reserved (the `task_list` loop topology). A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, and in-loop budget enforcement during `run`, are still Planned (see `SPEC.md` section 11).
 
 A computed halt is an outcome, not a crash: the command emits its result object (JSON or the human summary) to stdout and exits with the class code, and prints nothing to stderr. A converged run exits `10` cleanly. Only genuine failures (invalid usage, unreadable state, I/O errors) print a message to stderr.
 

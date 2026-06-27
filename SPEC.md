@@ -67,7 +67,7 @@ Each iteration MUST execute as one ordered transaction:
 
 ## 5. Halt reasons -> exit codes (canonical map)
 
-The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` predate this spec; `13-19` are new classes introduced here. The table below is the full normative taxonomy; which `halt_reason` strings the binary emits today versus holds reserved is tracked in section 11 - as of v0.2.0, classes `13`, `14`, `16`, `17`, `18`, and `19` emit (their core reasons; `18` via `inspect-cost`), while only `15` and class `11`'s task-list reasons stay reserved until their detectors ship. Every reason MUST be **computed from observed state** - `--halt-reason` is a hidden test fixture only.
+The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` predate this spec; `13-19` are new classes introduced here. The table below is the full normative taxonomy; which `halt_reason` strings the binary emits today versus holds reserved is tracked in section 11 - as of v0.2.0, every class `13`-`19` emits (their core reasons; `18` via `inspect-cost`, `15` via `doctor --mutate-cmd`), while only class `11`'s task-list reasons (the `task_list` topology) stay reserved until their detectors ship. Every reason MUST be **computed from observed state** - `--halt-reason` is a hidden test fixture only.
 
 | exit | class | `halt_reason` strings | owner |
 |---|---|---|---|
@@ -171,7 +171,7 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Computed halt reasons (section 5) replacing `--halt-reason` | Shipped |
 | Typed JSONL receipt + durable state (section 8) | Shipped |
 | `probe-check` confidence bound (O2) | Shipped (core; adversarial perturbation + in-loop sequential monitor Planned) |
-| `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism + isolation preflight; hermeticity/adequacy reported as planned) |
+| `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism + isolation preflight + adequacy via mutation canary `--mutate-cmd`; hermeticity and the coverage-delta tier reported as planned) |
 | Set-based progress + no-regression ratchet: oscillation / no-progress / regression halts (section 3.2) | Shipped (via `--failures-cmd`; git revert-to-best Planned) |
 | `explain-halt`: raise-the-limit vs do-not-retry (feasibility) | Shipped |
 | Metric-integrity gate: guards dominate success (section 6) | Shipped (collected-set monotonicity via `--integrity-cmd`; assertion-count / manifest-hash / coverage-floor Planned) |
