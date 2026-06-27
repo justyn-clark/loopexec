@@ -66,7 +66,7 @@ The implemented CLI returns deterministic human or JSON output.
 
 - `loopexec init` / `run` / `status` / `check` / `step`
 - `loopexec probe-check` / `doctor` / `explain-halt`
-- `loopexec replay` / `attest` / `reexecute`
+- `loopexec replay` / `attest` / `report` / `reexecute`
 - `loopexec escalate` / `watch` / `ack`
 - `loopexec build-context` / `isolate`
 
