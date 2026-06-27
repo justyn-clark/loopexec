@@ -430,6 +430,7 @@ type runConfig struct {
 	costUSD       float64
 
 	comprehensionEvery int
+	once               bool
 }
 
 // executeRun is the real check_fixpoint loop (SPEC.md section 4, Slice 0 subset):
@@ -674,12 +675,20 @@ func newRunCmd() *cobra.Command {
 			if cfg.workdir == "" {
 				cfg.workdir = "."
 			}
+			// --once is the single-iteration debug form (it absorbs the legacy
+			// `step` stub): run exactly one iteration, then halt on the computed
+			// outcome (success_condition_met if the check passes, else
+			// max_iterations_reached). It overrides --max-iterations.
+			if cfg.once {
+				cfg.maxIterations = 1
+			}
 			return executeRun(cmd, cfg)
 		},
 	}
 
 	cmd.Flags().StringVar(&cfg.runID, "run-id", "", "Run identifier")
 	cmd.Flags().IntVar(&cfg.maxIterations, "max-iterations", 10, "Maximum iterations (fuse)")
+	cmd.Flags().BoolVar(&cfg.once, "once", false, "Run exactly one iteration (debug single-step); overrides --max-iterations")
 	cmd.Flags().StringVar(&cfg.check, "check", "", "External check command; exit 0 means converged (required)")
 	cmd.Flags().StringVar(&cfg.execCmd, "exec", "", "Work command run each iteration before the check (e.g. an agent invocation)")
 	cmd.Flags().Float64Var(&cfg.budgetUSD, "budget-usd", 0, "Total run budget cap in USD (recorded; metering lands with agent execution)")
