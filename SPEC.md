@@ -67,7 +67,7 @@ Each iteration MUST execute as one ordered transaction:
 
 ## 5. Halt reasons -> exit codes (canonical map)
 
-The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` are preserved; `13-19` are reserved new classes. Every reason MUST be **computed from observed state** - `--halt-reason` is a hidden test fixture only.
+The **`halt_reason` string is the stable integration contract**; the **exit code is a coarse class** CI can branch on without parsing JSON. Existing codes `0/10/11/12/20/30/40/50` predate this spec; `13-19` are new classes introduced here. The table below is the full normative taxonomy; which `halt_reason` strings the binary emits today versus holds reserved is tracked in section 11 - as of v0.2.0, classes `13`, `14`, `16`, `17`, and `19` emit (their core reasons), while `15` and `18`, and class `11`'s task-list reasons, stay reserved until their detectors ship. Every reason MUST be **computed from observed state** - `--halt-reason` is a hidden test fixture only.
 
 | exit | class | `halt_reason` strings | owner |
 |---|---|---|---|

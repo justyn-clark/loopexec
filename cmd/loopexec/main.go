@@ -20,7 +20,8 @@ const (
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
 // The halt_reason string is the stable contract; the exit code is its class.
-// Existing codes (0/10/11/12/20/30/40/50) are preserved; 13-19 are reserved.
+// Codes 0/10/11/12/20/30/40/50 predate this; classes 13/14/16/17/19 emit today,
+// while 15 and 18 (and 11's task-list reasons) stay reserved. See SPEC section 11.
 const (
 	exitSuccess           = 0  // nominal: loop ran, no halt
 	exitConverged         = 10 // success_condition_met
