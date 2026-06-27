@@ -7,31 +7,28 @@
 
 `loopexec` is a deterministic runtime for loop engineering: it drives bounded, stateless, auditable execution loops that progress through an external check and stop on a computed reason, never on an agent's say-so. It is the runtime companion to SMALL Protocol: SMALL describes state, constraints, plans, progress, and handoff; loopexec drives one bounded loop against that state and reports machine-readable outcomes.
 
-The normative contract is `SPEC.md`. The binary today implements Slice 0 of that contract (a real bounded `check_fixpoint` loop plus the locked-down CLI, JSON, and exit-code surface) while the rest of the engine is built out slice by slice. See `SPEC.md` section 11 for the per-capability Shipped / In progress / Planned status, and `UPDATES/ref-cross-exam.md` for the rationale.
+The normative contract is `SPEC.md`. As of v0.2.0 the binary implements the engine through Slice 7 - 18 commands covering the real loop, determinism probing, the metric-integrity gate, the no-regression ratchet, pinned and offline-verifiable receipts, and two-zone isolation. Every capability in `SPEC.md` section 11 now has a Shipped core; what remains is named, inline sub-parts. See `SPEC.md` section 11 for the per-capability status, and `UPDATES/ref-cross-exam.md` for the rationale.
 
 ## Current status
 
-Implemented now:
+Implemented now (v0.2.0):
 
-- Go CLI for `loopexec` in `cmd/loopexec`
-- Commands: `init`, `run`, `status`, `check`, `step`
-- Real bounded `run` loop: iterates `--exec` then `--check` until the check passes (`success_condition_met`), a bound trips (`max_iterations_reached`), or the work command fails (`execution_failure`)
-- No check, no loop: `run` without `--check` halts `workspace_invalid` (SPEC O1)
-- Computed halt reasons mapped to a stable exit-code class (SPEC section 5), not a forced flag
-- Typed JSONL receipts (`.loopexec/run-<id>.jsonl`) and atomic durable state (`.loopexec/state.json`)
-- Global `--json` output mode
-- Explicit exit-code contract for success, halt, invariant, workspace, execution, and internal failures
-- Contract tests for machine-readable output, halt mapping, and receipt validity
-- GitHub Actions CI running `gofmt`, `go vet`, and `go test ./...`
+- Real bounded `run` loop: iterates `--exec` then `--check` until the check passes (`success_condition_met`), a bound trips (`max_iterations_reached`), or work fails (`execution_failure`); "no check, no loop"; computed halt reasons mapped to a stable exit-code class; typed JSONL receipts (`.loopexec/run-<id>.jsonl`) and atomic durable state.
+- `probe-check` - determinism as a 95% confidence bound (rule of three); `doctor` - precondition gate (determinism + isolation preflight).
+- Set-based progress + no-regression ratchet (oscillation / no-progress / regression halts) + `explain-halt` (raise-the-limit vs do-not-retry).
+- Metric-integrity gate (`run --integrity-cmd`): guards dominate success (collected-set monotonicity).
+- Receipt pinning (model tuple + sampling + context manifest + cost + check fingerprint); `replay` (verify a receipt offline, agent-free) and `attest` (HMAC-sign + verify).
+- `reexecute` (live re-run distribution), `escalate` / `watch` (heartbeat + structured packet), comprehension `ack` gate.
+- `build-context` - budgeted, workdir-confined, symlink-safe relevant-file slice.
+- `isolate` - two-zone orchestration: detached-clone sandbox + per-run minted/revoked credential + rendered/launched exec/agent zones.
+- Global `--json` output, explicit exit-code contract, 63 contract/unit tests, GitHub Actions CI (`gofmt`, `go vet`, `go test ./...`).
 
-Not implemented yet (specified in `SPEC.md`, see section 11):
+Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 
-- `probe-check` (determinism as a confidence bound) and `doctor` (determinism + hermeticity + adequacy + isolation preconditions)
-- `build-context`, `ratchet`, `replay` / `reexecute`, `report`, `inspect-cost`, `explain-halt`, `escalate` / `watch`, `attest` / `ack`
-- Two-zone isolation + per-run minted credential
-- The metric-integrity gate (guards dominate success)
-- Full SMALL-driven `task_list` loop execution and `small` CLI integration
-- Container, Nix, or remote execution substrates and multi-worker orchestration
+- The operator-provided infra `isolate` composes with: the container engine, the auditing egress proxy, and the provider key API (`--runtime` / `--egress-proxy` / `--mint-cmd` + `--revoke-cmd`).
+- Live cost metering + the rolling-sigma `cost_anomaly` detector; the deeper metric-integrity layers (assertion-count / manifest-hash / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
+- The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator; git revert-to-best for the ratchet.
+- Full SMALL-driven `task_list` loop execution and `small` CLI integration; container, Nix, or remote substrates and multi-worker orchestration.
 
 ## Install
 
@@ -67,11 +64,13 @@ The implemented CLI returns deterministic human or JSON output.
 
 ### Commands
 
-- `loopexec init`
-- `loopexec run`
-- `loopexec status`
-- `loopexec check`
-- `loopexec step`
+- `loopexec init` / `run` / `status` / `check` / `step`
+- `loopexec probe-check` / `doctor` / `explain-halt`
+- `loopexec replay` / `attest` / `reexecute`
+- `loopexec escalate` / `watch` / `ack`
+- `loopexec build-context` / `isolate`
+
+See `docs/cli.md` for flags and exit semantics.
 
 ### Global flag
 
@@ -92,7 +91,7 @@ Example JSON response (a converged run):
 ```json
 {
   "tool": "loopexec",
-  "version": "0.2.0-rc1",
+  "version": "0.2.0",
   "status": "halted",
   "run_id": "local",
   "iteration": 3,

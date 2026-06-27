@@ -159,3 +159,19 @@ entries:
       status: completed
       task_id: task-13
       timestamp: "2026-06-27T01:11:49.469592000Z"
+    - evidence: Added task task-14 via small plan --add
+      notes: Tag and release v0.2.0 (engine complete through Slice 7)
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-14
+      timestamp: "2026-06-27T01:20:27.317073000Z"
+    - evidence: 'Cutting v0.2.0: drop -rc1 in code/docs, promote changelog, push, tag, GitHub release.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-14
+      timestamp: "2026-06-27T01:20:27.378189000Z"
+    - evidence: 'v0.2.0: toolVersion 0.2.0-rc1 -> 0.2.0 in cmd/loopexec/main.go; README + docs/cli.md version examples updated and README Current-status rewritten to the v0.2.0 surface (18 commands, all SPEC section 11 capabilities Shipped-core); docs changelog promoted; tagging v0.2.0 and cutting the GitHub release. gofmt/vet/test green (63 tests).'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-14
+      timestamp: "2026-06-27T01:22:29.523950000Z"

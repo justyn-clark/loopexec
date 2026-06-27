@@ -40,3 +40,6 @@ tasks:
     - id: task-13
       title: 'Slice 7: isolate - two-zone orchestration (detached clone + per-run minted/revoked credential + rendered exec/agent zone launch plan)'
       status: completed
+    - id: task-14
+      title: Tag and release v0.2.0 (engine complete through Slice 7)
+      status: completed
