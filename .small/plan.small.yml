@@ -43,3 +43,6 @@ tasks:
     - id: task-14
       title: Tag and release v0.2.0 (engine complete through Slice 7)
       status: completed
+    - id: task-15
+      title: Purge UPDATES working notes from the repo and git history (vaulted privately); strip in-repo references; ASCII-clean the Go source
+      status: completed

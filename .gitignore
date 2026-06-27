@@ -15,6 +15,9 @@ build/
 # Local build output
 /loopexec
 
+# Private working notes (archived in the vault, never in the public repo)
+UPDATES/
+
 # Runtime artifacts
 .loopexec/
 .small-cache/
@@ -23,3 +26,4 @@ build/
 .small/logs
 .small/runs/
 logs/
+docs/jcn-agent-stack/runs/

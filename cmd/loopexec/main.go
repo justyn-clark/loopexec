@@ -18,7 +18,7 @@ const (
 	toolVersion = "0.2.0"
 )
 
-// Exit-code classes are the coarse CI-branch buckets defined in SPEC.md §5.
+// Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
 // The halt_reason string is the stable contract; the exit code is its class.
 // Existing codes (0/10/11/12/20/30/40/50) are preserved; 13-19 are reserved.
 const (
@@ -40,7 +40,7 @@ const (
 )
 
 // haltExitCode maps a canonical halt_reason string to its exit-code class
-// (SPEC.md §5). This is the single place the mapping lives.
+// (SPEC.md section 5). This is the single place the mapping lives.
 func haltExitCode(reason string) int {
 	switch reason {
 	case "success_condition_met":
@@ -244,7 +244,7 @@ func printResponse(cmd *cobra.Command, r response) error {
 
 // receiptEvent is one typed JSONL line. It is serialized with encoding/json so
 // failure text containing quotes, backslashes, or newlines can never corrupt
-// the receipt (SPEC.md §8; the bug this fixes is in UPDATES/ref-cross-exam.md).
+// the receipt (SPEC.md section 8).
 type receiptEvent struct {
 	TS        int64  `json:"ts"`
 	RunID     string `json:"run_id"`
@@ -288,7 +288,7 @@ type escalationState struct {
 	AckedBy string `json:"acked_by,omitempty"`
 }
 
-// loopState is the durable, resumable machine state (SPEC.md §8). Slice 0 holds
+// loopState is the durable, resumable machine state (SPEC.md section 8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
 	SchemaVersion int     `json:"schema_version"`
@@ -419,7 +419,7 @@ type runConfig struct {
 	comprehensionEvery int
 }
 
-// executeRun is the real check_fixpoint loop (SPEC.md §4, Slice 0 subset):
+// executeRun is the real check_fixpoint loop (SPEC.md section 4, Slice 0 subset):
 // each iteration runs the optional work command then the external check once,
 // derives a COMPUTED halt reason, and records a typed receipt + durable state.
 func executeRun(cmd *cobra.Command, cfg runConfig) error {
@@ -484,7 +484,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			rw.emit(i, "exec", "", &rcCopy)
 			if rc != 0 {
 				// A non-zero work step is an execution failure, not a blocked
-				// task: the substrate/agent itself failed (SPEC.md §5, exit 40).
+				// task: the substrate/agent itself failed (SPEC.md section 5, exit 40).
 				haltReason = "execution_failure"
 				break
 			}
@@ -764,7 +764,7 @@ func newStepCmd() *cobra.Command {
 func newRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:          "loopexec",
-		Short:        "loopexec — deterministic runtime for loop engineering",
+		Short:        "loopexec - deterministic runtime for loop engineering",
 		SilenceUsage: true,
 	}
 

@@ -31,7 +31,7 @@ func TestExitCodeMappings(t *testing.T) {
 }
 
 func TestHaltExitCodeMap(t *testing.T) {
-	// Locks the canonical halt_reason -> exit_code map from SPEC.md §5.
+	// Locks the canonical halt_reason -> exit_code map from SPEC.md section 5.
 	cases := map[string]int{
 		"success_condition_met":      exitConverged,
 		"human_required":             exitTerminalBlocked,

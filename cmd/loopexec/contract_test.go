@@ -149,7 +149,7 @@ func TestContractRunExecFailureJSON(t *testing.T) {
 }
 
 // The receipt MUST be valid JSONL even when failure text contains quotes,
-// backslashes, or newlines (SPEC.md §8). A check whose output is hostile to
+// backslashes, or newlines (SPEC.md section 8). A check whose output is hostile to
 // naive string interpolation must still produce a parseable receipt.
 func TestRunReceiptIsValidJSONL(t *testing.T) {
 	bin := buildTestBinary(t)
