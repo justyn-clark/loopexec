@@ -24,11 +24,13 @@ This document defines the command surface and machine contract for loopexec.
   - Flags: `--check "<cmd>"`, `--runs N`, `--max-flake-rate R`, `--workdir`, plus isolation preflight `--bind-claude-home` (a `$HOME/.claude` credential mount fails closed -> `credential_scope_invalid`, 13) and `--exec-network <policy>` (must be `none` -> else `isolation_unsatisfiable`, 30).
   - Exit 0 on a green doctor; `check_flaky` (14), `credential_scope_invalid` (13), `isolation_unsatisfiable` (30), or `workspace_invalid` (30) otherwise.
 - `loopexec explain-halt`
-  - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads `.loopexec/state.json`.
+  - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads the latest run by default; `--run-id <id>` explains a specific recorded run.
 - `loopexec replay`
-  - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. (`reexecute`, the live re-run, is Planned.)
+  - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. Verifies the latest run by default; `--run-id <id>` verifies a specific recorded run. (`reexecute`, the live re-run, is Planned.)
 - `loopexec attest`
-  - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
+  - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Signs the latest run by default; `--run-id <id>` targets a specific recorded run. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
+
+`run` writes a per-run state snapshot (`.loopexec/run-<id>.state.json`) next to its receipt, so `replay` / `explain-halt` / `attest` can address any recorded run by `--run-id` even after later runs advance the default `.loopexec/state.json` pointer.
 - `loopexec reexecute`
   - Live re-run of the recorded loop config `--samples N` times in isolated copies; reports the halt-reason distribution and convergence rate (a statistical match, not byte identity). `--confirm` required (it burns budget).
 - `loopexec escalate`
@@ -82,6 +84,8 @@ Example:
 ## Exit codes
 
 The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Classes `13`, `14`, `16`, `17`, and `19` emit today alongside the base `0/10/12/20/30/40/50`; classes `15` (`check_inadequate`) and `18` (`budget_exceeded` / `cost_anomaly`) stay reserved until those reasons ship, as do class `11`'s task-list reasons. A few individual reasons inside active classes are still Planned (see `SPEC.md` section 11).
+
+A computed halt is an outcome, not a crash: the command emits its result object (JSON or the human summary) to stdout and exits with the class code, and prints nothing to stderr. A converged run exits `10` cleanly. Only genuine failures (invalid usage, unreadable state, I/O errors) print a message to stderr.
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`

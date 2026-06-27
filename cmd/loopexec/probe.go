@@ -122,7 +122,7 @@ func newProbeCheckCmd() *cobra.Command {
 				if err := printResponse(cmd, r); err != nil {
 					return err
 				}
-				return &cliError{Code: exitOracleUntrusted, Message: "halted: check_flaky"}
+				return &cliError{Code: exitOracleUntrusted, Message: "halted: check_flaky", Silent: true}
 			}
 
 			r.Status = "ok"
@@ -258,7 +258,7 @@ func newDoctorCmd() *cobra.Command {
 			if err := printResponse(cmd, r); err != nil {
 				return err
 			}
-			return &cliError{Code: haltExitCode(haltReason), Message: "doctor: " + haltReason}
+			return &cliError{Code: haltExitCode(haltReason), Message: "doctor: " + haltReason, Silent: true}
 		},
 	}
 

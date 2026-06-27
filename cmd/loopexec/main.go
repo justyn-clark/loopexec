@@ -80,6 +80,10 @@ type cliError struct {
 	Code    int
 	Message string
 	Cause   error
+	// Silent marks an error whose outcome was already emitted via printResponse
+	// (a computed halt or a structured failure). main carries only its exit code
+	// and does NOT echo it to stderr, so a converged run never prints "Error:".
+	Silent bool
 }
 
 func (e *cliError) Error() string {
@@ -381,19 +385,26 @@ func writeHeartbeat(dir string, iteration int, phase string) {
 	_ = os.WriteFile(filepath.Join(dir, "heartbeat"), data, 0o644)
 }
 
-// writeStateAtomic writes state via a temp file + rename so a crash mid-write
-// can never leave a half-written, unparseable state file.
+// writeStateAtomic writes the latest-run state (state.json) via a temp file +
+// rename so a crash mid-write can never leave a half-written, unparseable file.
 func writeStateAtomic(dir string, st loopState) error {
+	return writeStateFile(dir, "state.json", st)
+}
+
+// writeStateFile atomically writes state to dir/name (temp file + rename). It
+// backs both state.json (the latest run) and the per-run snapshot that lets
+// replay / explain-halt / attest target a specific run by --run-id.
+func writeStateFile(dir, name string, st loopState) error {
 	st.UpdatedTS = nowFunc().Unix()
 	data, err := json.MarshalIndent(st, "", "  ")
 	if err != nil {
 		return err
 	}
-	tmp := filepath.Join(dir, ".state.json.tmp")
+	tmp := filepath.Join(dir, "."+name+".tmp")
 	if err := os.WriteFile(tmp, data, 0o644); err != nil {
 		return err
 	}
-	return os.Rename(tmp, filepath.Join(dir, "state.json"))
+	return os.Rename(tmp, filepath.Join(dir, name))
 }
 
 type runConfig struct {
@@ -580,6 +591,13 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	if err := writeStateAtomic(dir, st); err != nil {
 		return &cliError{Code: exitInternalError, Message: "cannot write state", Cause: err}
 	}
+	// Persist a per-run snapshot next to the receipt so replay / explain-halt /
+	// attest can verify THIS run by --run-id, not just the latest in state.json.
+	if runIDRe.MatchString(cfg.runID) {
+		if err := writeStateFile(dir, perRunStateName(cfg.runID), st); err != nil {
+			return &cliError{Code: exitInternalError, Message: "cannot write per-run state", Cause: err}
+		}
+	}
 
 	code := haltExitCode(haltReason)
 	r := response{
@@ -600,7 +618,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	if err := printResponse(cmd, r); err != nil {
 		return err
 	}
-	return &cliError{Code: code, Message: "halted: " + haltReason}
+	return &cliError{Code: code, Message: "halted: " + haltReason, Silent: true}
 }
 
 // failResponse prints one JSON object describing a precondition failure and
@@ -617,7 +635,7 @@ func failResponse(cmd *cobra.Command, runID string, code int, haltReason, msg st
 	if err := printResponse(cmd, r); err != nil {
 		return err
 	}
-	return &cliError{Code: code, Message: msg}
+	return &cliError{Code: code, Message: msg, Silent: true}
 }
 
 func newInitCmd() *cobra.Command {
@@ -729,7 +747,7 @@ func newCheckCmd() *cobra.Command {
 				if err := printResponse(cmd, r); err != nil {
 					return err
 				}
-				return &cliError{Code: exitInvariantFailed, Message: "invariant failed"}
+				return &cliError{Code: exitInvariantFailed, Message: "invariant failed", Silent: true}
 			}
 			return printResponse(cmd, response{
 				Tool:    toolName,
@@ -764,9 +782,13 @@ func newStepCmd() *cobra.Command {
 
 func newRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:          "loopexec",
-		Short:        "loopexec - deterministic runtime for loop engineering",
-		SilenceUsage: true,
+		Use:   "loopexec",
+		Short: "loopexec - deterministic runtime for loop engineering",
+		// We render every outcome ourselves (printResponse + exit code). Cobra
+		// must not also print "Error: ..." - that double-printed and labeled a
+		// converged halt as an error.
+		SilenceUsage:  true,
+		SilenceErrors: true,
 	}
 
 	cmd.PersistentFlags().BoolVar(&jsonOutput, "json", false, "Emit machine-readable JSON output")
@@ -803,7 +825,17 @@ func exitCode(err error) int {
 
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
+		var ce *cliError
+		if errors.As(err, &ce) {
+			// A Silent cliError already emitted its outcome (the JSON object or
+			// human summary) and only carries the exit code - do not echo it,
+			// so a converged loop exits 10 without an "Error:" line.
+			if !ce.Silent {
+				fmt.Fprintln(os.Stderr, ce.Error())
+			}
+			os.Exit(ce.Code)
+		}
 		fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(exitCode(err))
+		os.Exit(exitInternalError)
 	}
 }
