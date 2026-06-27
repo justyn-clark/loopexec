@@ -37,6 +37,8 @@ This document defines the command surface and machine contract for loopexec.
   - Read `.loopexec/heartbeat` and report `alive` or `heartbeat_stale` (19) when its age exceeds `--stall-timeout`. The kill-the-wedged-PID actuator is Planned.
 - `loopexec ack`
   - Clear comprehension debt and any paged escalation, recording `--reviewer` (a forcing/visibility gate, not proof of comprehension).
+- `loopexec build-context`
+  - Assemble a narrow, budgeted context slice (state + the open failure + relevant files) under a code-calibrated token ceiling. Relevance = files named in the `--failure` stack trace + the last git diff (`--diff-base`) + untracked files. Flags: `--failure <file|-|text>`, `--budget-tokens N` (default 8000), `--diff-base`, `--workdir`, `--out` (confined to `--workdir`). Never fatal on no files; `context_budget_unsatisfiable` (19) only if the mandatory state+failure slice cannot fit. File resolution is workdir-confined and symlink-safe (untrusted failure text cannot read outside the workdir), reads are size-bounded, and untrusted content is fence-escaped.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`

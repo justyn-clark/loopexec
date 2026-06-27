@@ -183,7 +183,7 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | `attest`: HMAC-sign a receipt and `--verify` it (section 8) | Shipped |
 | `reexecute`: live re-run of the recorded config N times, halt-reason distribution (section 8) | Shipped |
 | `escalate` / `watch` / `ack` + comprehension gate (section 9) | Shipped (file/stdout channels, heartbeat + staleness detection, comprehension `--comprehension-every`; github/slack channels + kill-the-PID actuator Planned) |
-| `build-context`: budgeted relevant-file slice | Planned |
+| `build-context`: budgeted relevant-file slice with workdir-confined, symlink-safe file resolution (section 4) | Shipped (stacktrace + last-diff + untracked relevance; import_closure / dep_graph tiers Planned) |
 | Two-zone isolation container orchestration + per-run minted key (section 7) | Planned |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.

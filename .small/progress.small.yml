@@ -127,3 +127,19 @@ entries:
       status: completed
       task_id: task-11
       timestamp: "2026-06-26T23:58:54.850456000Z"
+    - evidence: Added task task-12 via small plan --add
+      notes: 'Slice 6: build-context - budgeted relevant-file slice (stacktrace + last-diff, code-calibrated tokens, never fatal)'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-12
+      timestamp: "2026-06-27T00:08:20.154043000Z"
+    - evidence: 'Starting Slice 6: build-context assembles a narrow context (state + failure + relevant files from the failure stack trace and last git diff) under a code-calibrated token budget; never fatal on no files; context_budget_unsatisfiable only if the mandatory header cannot fit.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-12
+      timestamp: "2026-06-27T00:08:20.215860000Z"
+    - evidence: 'cmd/loopexec/context.go: build-context assembles a budgeted context slice (state + failure + relevant files from stack trace, last git diff, and untracked files) under a code-calibrated token ceiling; never fatal on no files; context_budget_unsatisfiable (19) only if the mandatory slice cannot fit. An adversarial review workflow (24 confirmed findings) drove security hardening: workdir-confined + symlink-resolved file resolution (untrusted failure text cannot read outside the workdir, regression-tested), regular-file-only via Lstat (no FIFO/device hang), size-bounded reads, true-ceiling budget gate, fence-injection escaping, --out confinement, --diff-base shell-injection guard, longest-first extensions. context_test.go (54 tests); gofmt/vet/test green; SPEC section 11 + docs/cli.md updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-12
+      timestamp: "2026-06-27T00:37:55.423798000Z"
