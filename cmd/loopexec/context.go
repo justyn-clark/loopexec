@@ -16,7 +16,7 @@ import (
 
 // codeCharsPerToken is a code-calibrated estimate (code tokenizes denser than
 // prose's ~4 chars/token). Tokens are rounded UP so the budget is a true
-// ceiling, not an optimistic label (SPEC.md section 4 / UPDATES/ref-cross-exam.md).
+// ceiling, not an optimistic label (SPEC.md section 4).
 const codeCharsPerToken = 3.3
 
 // maxCandidates caps how many paths untrusted failure text can drive us to stat.

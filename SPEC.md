@@ -4,8 +4,6 @@
 
 **Spec version:** 2.0.0  |  **Conformance keywords:** MUST / MUST NOT / SHOULD / MAY per RFC 2119.
 
-Rationale and the cross-examination that produced this contract live in `UPDATES/ref-cross-exam.md`. This document is the contract; that document is the argument.
-
 ---
 
 ## 1. What loopexec is

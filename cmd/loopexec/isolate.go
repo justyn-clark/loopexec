@@ -23,8 +23,7 @@ var imageRe = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._:/@-]*$`)
 
 // detachedClone makes a real, separate clone (NOT a git worktree, which shares
 // the object DB/refs/hooks/credentials and is therefore not a boundary) and
-// hardens it -- failing CLOSED if any hardening step fails (SPEC.md section 7,
-// UPDATES/ref-cross-exam.md section 6.4).
+// hardens it -- failing CLOSED if any hardening step fails (SPEC.md section 7).
 func detachedClone(repo, branch, into string) error {
 	abs, err := filepath.Abs(repo)
 	if err != nil {

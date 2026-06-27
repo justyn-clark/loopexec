@@ -175,3 +175,19 @@ entries:
       status: completed
       task_id: task-14
       timestamp: "2026-06-27T01:22:29.523950000Z"
+    - evidence: Added task task-15 via small plan --add
+      notes: Purge UPDATES working notes from the repo and git history (vaulted privately); strip in-repo references; ASCII-clean the Go source
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-15
+      timestamp: "2026-06-27T01:35:05.488759000Z"
+    - evidence: Vaulted UPDATES/ref.md + ref-cross-exam.md to the private jcn-obsidian-vault (20 - Projects/loopexec/UPDATES, side-branch loopexec-updates-archive). Stripped all in-repo references (README.md x2, SPEC.md, context.go/isolate.go/main.go comments) and ASCII-cleaned the Go source (section-sign + em dash). Removing the tracked file next.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-15
+      timestamp: "2026-06-27T01:35:16.023006000Z"
+    - evidence: Removed tracked UPDATES/ref-cross-exam.md, dropped the working UPDATES/ dir (vaulted to private jcn-obsidian-vault), and gitignored UPDATES/. Stripped all in-repo references (README.md, SPEC.md, cmd/loopexec/{context,isolate,main}.go) and ASCII-cleaned the Go source (section-sign + em dash). gofmt/vet/build/test green; binary reports 0.2.0. History purge via git-filter-repo next.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-15
+      timestamp: "2026-06-27T01:35:48.227929000Z"

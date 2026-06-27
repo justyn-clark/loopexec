@@ -7,7 +7,7 @@
 
 `loopexec` is a deterministic runtime for loop engineering: it drives bounded, stateless, auditable execution loops that progress through an external check and stop on a computed reason, never on an agent's say-so. It is the runtime companion to SMALL Protocol: SMALL describes state, constraints, plans, progress, and handoff; loopexec drives one bounded loop against that state and reports machine-readable outcomes.
 
-The normative contract is `SPEC.md`. As of v0.2.0 the binary implements the engine through Slice 7 - 18 commands covering the real loop, determinism probing, the metric-integrity gate, the no-regression ratchet, pinned and offline-verifiable receipts, and two-zone isolation. Every capability in `SPEC.md` section 11 now has a Shipped core; what remains is named, inline sub-parts. See `SPEC.md` section 11 for the per-capability status, and `UPDATES/ref-cross-exam.md` for the rationale.
+The normative contract is `SPEC.md`. As of v0.2.0 the binary implements the engine through Slice 7 - 18 commands covering the real loop, determinism probing, the metric-integrity gate, the no-regression ratchet, pinned and offline-verifiable receipts, and two-zone isolation. Every capability in `SPEC.md` section 11 now has a Shipped core; what remains is named, inline sub-parts. See `SPEC.md` section 11 for the per-capability status.
 
 ## Current status
 
@@ -131,7 +131,6 @@ docs/architecture.md      planned loop architecture
 docs/cli.md               current loopexec command contract
 docs/integrations.md      integration guidance for the implemented CLI
 docs/loop-contract.md     task_list mode profile of SPEC.md
-UPDATES/ref-cross-exam.md the cross-examination behind the contract
 .github/workflows/ci.yml  fmt/vet/test CI gate
 scripts/feeltest.sh       deterministic shell feel test helper
 ```
