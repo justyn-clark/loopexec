@@ -34,3 +34,6 @@ tasks:
     - id: task-11
       title: 'Slice 5: reexecute (live re-run distribution), escalate/watch (heartbeat + packet), comprehension ack gate'
       status: completed
+    - id: task-12
+      title: 'Slice 6: build-context - budgeted relevant-file slice (stacktrace + last-diff, code-calibrated tokens, never fatal)'
+      status: completed

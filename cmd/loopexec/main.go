@@ -111,7 +111,8 @@ type response struct {
 	Verified  *bool  `json:"verified,omitempty"`
 	Signature string `json:"signature,omitempty"`
 
-	Ops *opsReport `json:"ops,omitempty"`
+	Ops     *opsReport     `json:"ops,omitempty"`
+	Context *contextReport `json:"context,omitempty"`
 
 	Errors []string `json:"errors"`
 }
@@ -125,6 +126,15 @@ type opsReport struct {
 	Packet          string         `json:"packet,omitempty"`
 	HeartbeatAgeS   *int           `json:"heartbeat_age_s,omitempty"`
 	Stale           *bool          `json:"stale,omitempty"`
+}
+
+// contextReport is the output of build-context (SPEC.md section 4 step 1).
+type contextReport struct {
+	Path            string   `json:"path"`
+	TokensEstimated int      `json:"tokens_estimated"`
+	BudgetTokens    int      `json:"budget_tokens"`
+	FilesIncluded   []string `json:"files_included"`
+	FilesDropped    []string `json:"files_dropped"`
 }
 
 var jsonOutput bool
@@ -735,6 +745,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newEscalateCmd())
 	cmd.AddCommand(newWatchCmd())
 	cmd.AddCommand(newAckCmd())
+	cmd.AddCommand(newBuildContextCmd())
 	return cmd
 }
 
