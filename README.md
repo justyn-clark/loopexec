@@ -104,7 +104,7 @@ Example JSON response (a converged run):
 
 ### Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Existing codes are preserved; `13`-`19` are reserved classes emitted as later slices land.
+The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Classes `13`, `14`, `16`, `17`, and `19` emit today alongside the base `0/10/12/20/30/40/50`; classes `15` (`check_inadequate`) and `18` (`budget_exceeded` / `cost_anomaly`) stay reserved until those reasons ship, as do class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`). A few individual reasons inside active classes are still Planned (see SPEC section 11).
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`
