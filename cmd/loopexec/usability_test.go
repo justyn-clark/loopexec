@@ -9,6 +9,7 @@ import (
 type uResp struct {
 	Status     string `json:"status"`
 	RunID      string `json:"run_id"`
+	Iteration  int    `json:"iteration"`
 	HaltReason string `json:"halt_reason"`
 	Verdict    string `json:"verdict"`
 	Verified   *bool  `json:"verified"`
@@ -100,6 +101,44 @@ func TestRunIDTargetsSpecificRun(t *testing.T) {
 	_, av, _ := runCLI(t, bin, "attest", "--json", "--workdir", dir, "--run-id", "good", "--key", "k", "--verify")
 	if rv := parseUResp(t, av); rv.Verified == nil || !*rv.Verified {
 		t.Fatalf("attest --verify --run-id good = %+v, want verified true", rv)
+	}
+}
+
+// run --once runs exactly one iteration. With a passing check it converges at
+// iteration 1 (exit 10).
+func TestRunOnceConvergesAtIterationOne(t *testing.T) {
+	bin := buildTestBinary(t)
+	dir := t.TempDir()
+	code, out, _ := runCLI(t, bin, "run", "--json", "--once", "--run-id", "o", "--workdir", dir, "--check", "true")
+	if code != 10 {
+		t.Fatalf("exit = %d, want 10 (converged)", code)
+	}
+	if r := parseUResp(t, out); r.Iteration != 1 || r.HaltReason != "success_condition_met" {
+		t.Fatalf("got iteration %d / %s, want 1 / success_condition_met", r.Iteration, r.HaltReason)
+	}
+}
+
+// run --once with a failing check stops after ONE iteration with
+// max_iterations_reached (exit 12) instead of looping.
+func TestRunOnceStopsAfterOneIteration(t *testing.T) {
+	bin := buildTestBinary(t)
+	dir := t.TempDir()
+	code, out, _ := runCLI(t, bin, "run", "--json", "--once", "--run-id", "o", "--workdir", dir, "--check", "false")
+	if code != 12 {
+		t.Fatalf("exit = %d, want 12 (max_iterations_reached)", code)
+	}
+	if r := parseUResp(t, out); r.Iteration != 1 || r.HaltReason != "max_iterations_reached" {
+		t.Fatalf("got iteration %d / %s, want 1 / max_iterations_reached", r.Iteration, r.HaltReason)
+	}
+}
+
+// --once overrides --max-iterations: only one iteration runs regardless.
+func TestRunOnceOverridesMaxIterations(t *testing.T) {
+	bin := buildTestBinary(t)
+	dir := t.TempDir()
+	_, out, _ := runCLI(t, bin, "run", "--json", "--once", "--max-iterations", "9", "--run-id", "o", "--workdir", dir, "--check", "false")
+	if r := parseUResp(t, out); r.Iteration != 1 {
+		t.Fatalf("iteration = %d, want 1 (--once overrides --max-iterations 9)", r.Iteration)
 	}
 }
 
