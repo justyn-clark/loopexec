@@ -26,7 +26,7 @@ Implemented now (v0.2.0):
 Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 
 - The operator-provided infra `isolate` composes with: the container engine, the auditing egress proxy, and the provider key API (`--runtime` / `--egress-proxy` / `--mint-cmd` + `--revoke-cmd`).
-- Live cost metering + the rolling-sigma `cost_anomaly` detector; the deeper metric-integrity layers (assertion-count / manifest-hash / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
+- Live/auto cost metering (parsing provider usage) and in-loop budget enforcement during `run` -- the cost analysis itself ships as `inspect-cost` (run-total cap -> `budget_exceeded`, sigma spike -> `cost_anomaly`) over a supplied ledger; the deeper metric-integrity layers (assertion-count / manifest-hash / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
 - The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator; git revert-to-best for the ratchet.
 - Full SMALL-driven `task_list` loop execution and `small` CLI integration; container, Nix, or remote substrates and multi-worker orchestration.
 
@@ -68,7 +68,7 @@ The implemented CLI returns deterministic human or JSON output.
 - `loopexec probe-check` / `doctor` / `explain-halt`
 - `loopexec replay` / `attest` / `report` / `reexecute`
 - `loopexec escalate` / `watch` / `ack`
-- `loopexec build-context` / `isolate`
+- `loopexec build-context` / `isolate` / `inspect-cost`
 
 See `docs/cli.md` for flags and exit semantics.
 
@@ -104,7 +104,7 @@ Example JSON response (a converged run):
 
 ### Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Classes `13`, `14`, `16`, `17`, and `19` emit today alongside the base `0/10/12/20/30/40/50`; classes `15` (`check_inadequate`) and `18` (`budget_exceeded` / `cost_anomaly`) stay reserved until those reasons ship, as do class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`). A few individual reasons inside active classes are still Planned (see SPEC section 11).
+The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Classes `13`, `14`, `16`, `17`, `18`, and `19` emit today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`); only class `15` (`check_inadequate`) and class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`) stay reserved. A few individual reasons inside active classes, and in-loop budget enforcement during `run`, are still Planned (see SPEC section 11).
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`

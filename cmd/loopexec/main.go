@@ -20,8 +20,8 @@ const (
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
 // The halt_reason string is the stable contract; the exit code is its class.
-// Codes 0/10/11/12/20/30/40/50 predate this; classes 13/14/16/17/19 emit today,
-// while 15 and 18 (and 11's task-list reasons) stay reserved. See SPEC section 11.
+// Codes 0/10/11/12/20/30/40/50 predate this; classes 13/14/16/17/18/19 emit today
+// (18 via inspect-cost); only 15, and 11's task-list reasons, stay reserved.
 const (
 	exitSuccess           = 0  // nominal: loop ran, no halt
 	exitConverged         = 10 // success_condition_met
@@ -120,6 +120,7 @@ type response struct {
 	Context   *contextReport   `json:"context,omitempty"`
 	Isolation *isolationReport `json:"isolation,omitempty"`
 	Report    *reportSummary   `json:"report,omitempty"`
+	Cost      *costReport      `json:"cost,omitempty"`
 
 	Errors []string `json:"errors"`
 }
@@ -819,6 +820,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newAckCmd())
 	cmd.AddCommand(newBuildContextCmd())
 	cmd.AddCommand(newIsolateCmd())
+	cmd.AddCommand(newInspectCostCmd())
 	return cmd
 }
 
