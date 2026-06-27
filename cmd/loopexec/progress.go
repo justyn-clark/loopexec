@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"path/filepath"
 	"sort"
 	"strings"
 
@@ -137,7 +136,7 @@ func (p *progressTracker) observe(iter int, F map[string]struct{}, order []strin
 // "raise the limit" (was still improving) from "do not retry" (stalled,
 // regressed, or oscillating) -- the one fact a 3am operator needs.
 func newExplainHaltCmd() *cobra.Command {
-	var workdir string
+	var workdir, runID string
 
 	cmd := &cobra.Command{
 		Use:          "explain-halt",
@@ -147,9 +146,13 @@ func newExplainHaltCmd() *cobra.Command {
 			if workdir == "" {
 				workdir = "."
 			}
-			st, err := readState(filepath.Join(workdir, ".loopexec", "state.json"))
+			sp, perr := resolveStatePath(workdir, runID)
+			if perr != nil {
+				return perr
+			}
+			st, err := readState(sp)
 			if err != nil {
-				return &cliError{Code: exitWorkspaceInvalid, Message: "no recorded run state", Cause: err}
+				return &cliError{Code: exitWorkspaceInvalid, Message: noStateMsg(runID), Cause: err}
 			}
 
 			advice, rationale := explainHalt(st)
@@ -177,7 +180,8 @@ func newExplainHaltCmd() *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec/state.json (default: current directory)")
+	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec (default: current directory)")
+	cmd.Flags().StringVar(&runID, "run-id", "", "Explain a specific recorded run by id (default: the latest run)")
 	return cmd
 }
 

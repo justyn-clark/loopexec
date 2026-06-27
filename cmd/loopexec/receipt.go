@@ -98,13 +98,42 @@ func statePath(workdir string) string {
 	return filepath.Join(workdir, ".loopexec", "state.json")
 }
 
+// perRunStateName is the per-run state snapshot written alongside run-<id>.jsonl
+// so a specific run can be verified by --run-id after later runs overwrite
+// state.json (the latest-run pointer).
+func perRunStateName(runID string) string {
+	return "run-" + runID + ".state.json"
+}
+
+// resolveStatePath maps an optional --run-id to the state file to read. Empty
+// run-id => the latest run (state.json). A run-id => its per-run snapshot, after
+// validating the id (runIDRe) so it cannot escape .loopexec via path traversal.
+func resolveStatePath(workdir, runID string) (string, error) {
+	if runID == "" {
+		return statePath(workdir), nil
+	}
+	if !runIDRe.MatchString(runID) {
+		return "", &cliError{Code: exitWorkspaceInvalid,
+			Message: "invalid --run-id (allowed: letters, digits, '.', '_', '-'; max 64 chars)"}
+	}
+	return filepath.Join(workdir, ".loopexec", perRunStateName(runID)), nil
+}
+
+// noStateMsg names the run in a not-found error so a typo'd --run-id is obvious.
+func noStateMsg(runID string) string {
+	if runID != "" {
+		return "no recorded state for run-id '" + runID + "' (did this run complete in this workdir?)"
+	}
+	return "no recorded run state"
+}
+
 // newReplayCmd VERIFIES a recorded receipt: re-run the recorded check against
 // the current end-state and confirm the fingerprint matches. Agent-free and
 // budget-free (SPEC.md section 8) -- it never re-runs the agent. This is the
 // "verify a verdict without re-running the agent" half; reexecute is the live,
 // non-deterministic re-run (Planned).
 func newReplayCmd() *cobra.Command {
-	var workdir string
+	var workdir, runID string
 	cmd := &cobra.Command{
 		Use:          "replay",
 		Short:        "VERIFY a recorded receipt: re-run the check and confirm the fingerprint (agent-free)",
@@ -113,9 +142,13 @@ func newReplayCmd() *cobra.Command {
 			if workdir == "" {
 				workdir = "."
 			}
-			st, err := readState(statePath(workdir))
+			sp, perr := resolveStatePath(workdir, runID)
+			if perr != nil {
+				return perr
+			}
+			st, err := readState(sp)
 			if err != nil {
-				return &cliError{Code: exitWorkspaceInvalid, Message: "no recorded run state", Cause: err}
+				return &cliError{Code: exitWorkspaceInvalid, Message: noStateMsg(runID), Cause: err}
 			}
 			if st.Check == "" || st.Fingerprint == nil {
 				return &cliError{Code: exitWorkspaceInvalid, Message: "receipt has no check fingerprint to replay"}
@@ -140,17 +173,18 @@ func newReplayCmd() *cobra.Command {
 			if err := printResponse(cmd, r); err != nil {
 				return err
 			}
-			return &cliError{Code: exitIntegrity, Message: "objective_unverified"}
+			return &cliError{Code: exitIntegrity, Message: "objective_unverified", Silent: true}
 		},
 	}
-	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec/state.json (default: current directory)")
+	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec (default: current directory)")
+	cmd.Flags().StringVar(&runID, "run-id", "", "Verify a specific recorded run by id (default: the latest run)")
 	return cmd
 }
 
 // newAttestCmd signs the receipt (HMAC-SHA256) so provenance is checkable, or
 // verifies an existing signature with --verify.
 func newAttestCmd() *cobra.Command {
-	var workdir, key string
+	var workdir, key, runID string
 	var verify bool
 	cmd := &cobra.Command{
 		Use:          "attest",
@@ -160,9 +194,13 @@ func newAttestCmd() *cobra.Command {
 			if workdir == "" {
 				workdir = "."
 			}
-			st, err := readState(statePath(workdir))
+			sp, perr := resolveStatePath(workdir, runID)
+			if perr != nil {
+				return perr
+			}
+			st, err := readState(sp)
 			if err != nil {
-				return &cliError{Code: exitWorkspaceInvalid, Message: "no recorded run state", Cause: err}
+				return &cliError{Code: exitWorkspaceInvalid, Message: noStateMsg(runID), Cause: err}
 			}
 			sig, err := signReceipt(st, attestKey(key))
 			if err != nil {
@@ -184,7 +222,7 @@ func newAttestCmd() *cobra.Command {
 				if err := printResponse(cmd, r); err != nil {
 					return err
 				}
-				return &cliError{Code: exitIntegrity, Message: "attestation mismatch"}
+				return &cliError{Code: exitIntegrity, Message: "attestation mismatch", Silent: true}
 			}
 
 			if err := os.WriteFile(sigPath, []byte(sig+"\n"), 0o644); err != nil {
@@ -194,8 +232,9 @@ func newAttestCmd() *cobra.Command {
 			return printResponse(cmd, r)
 		},
 	}
-	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec/state.json (default: current directory)")
+	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec (default: current directory)")
 	cmd.Flags().StringVar(&key, "key", "", "Attestation key (else $LOOPEXEC_ATTEST_KEY, else a dev default)")
+	cmd.Flags().StringVar(&runID, "run-id", "", "Attest a specific recorded run by id (default: the latest run)")
 	cmd.Flags().BoolVar(&verify, "verify", false, "Verify the stored signature instead of creating one")
 	return cmd
 }

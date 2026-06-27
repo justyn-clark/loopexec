@@ -242,7 +242,7 @@ func newWatchCmd() *cobra.Command {
 			if perr := printResponse(cmd, r); perr != nil {
 				return perr
 			}
-			return &cliError{Code: exitLivenessDrift, Message: "heartbeat_stale"}
+			return &cliError{Code: exitLivenessDrift, Message: "heartbeat_stale", Silent: true}
 		},
 	}
 	cmd.Flags().StringVar(&workdir, "workdir", "", "Directory containing .loopexec/heartbeat (default: current directory)")

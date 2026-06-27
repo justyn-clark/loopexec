@@ -303,7 +303,7 @@ func newIsolateCmd() *cobra.Command {
 				}
 			}
 			if code != 0 {
-				return &cliError{Code: code, Message: "halted: " + halt}
+				return &cliError{Code: code, Message: "halted: " + halt, Silent: true}
 			}
 			return nil
 		},
