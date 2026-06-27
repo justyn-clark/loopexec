@@ -119,6 +119,7 @@ type response struct {
 	Ops       *opsReport       `json:"ops,omitempty"`
 	Context   *contextReport   `json:"context,omitempty"`
 	Isolation *isolationReport `json:"isolation,omitempty"`
+	Report    *reportSummary   `json:"report,omitempty"`
 
 	Errors []string `json:"errors"`
 }
@@ -802,6 +803,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newExplainHaltCmd())
 	cmd.AddCommand(newReplayCmd())
 	cmd.AddCommand(newAttestCmd())
+	cmd.AddCommand(newReportCmd())
 	cmd.AddCommand(newReexecuteCmd())
 	cmd.AddCommand(newEscalateCmd())
 	cmd.AddCommand(newWatchCmd())

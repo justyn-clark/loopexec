@@ -29,8 +29,10 @@ This document defines the command surface and machine contract for loopexec.
   - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. Verifies the latest run by default; `--run-id <id>` verifies a specific recorded run. (`reexecute`, the live re-run, is Planned.)
 - `loopexec attest`
   - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Signs the latest run by default; `--run-id <id>` targets a specific recorded run. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
+- `loopexec report`
+  - Render a recorded receipt as a digest: the run's outcome (phase, halt reason, exit class), its pins (check, fingerprint, model, sampling, cost, context manifest size), whether it has been attested, and the per-iteration timeline parsed from `.loopexec/run-<id>.jsonl`. Re-runs nothing and exits `0` even for a failed run (it reports, it does not re-decide). Reports the latest run by default; `--run-id <id>` targets a specific recorded run.
 
-`run` writes a per-run state snapshot (`.loopexec/run-<id>.state.json`) next to its receipt, so `replay` / `explain-halt` / `attest` can address any recorded run by `--run-id` even after later runs advance the default `.loopexec/state.json` pointer.
+`run` writes a per-run state snapshot (`.loopexec/run-<id>.state.json`) next to its receipt, so `replay` / `explain-halt` / `attest` / `report` can address any recorded run by `--run-id` even after later runs advance the default `.loopexec/state.json` pointer.
 - `loopexec reexecute`
   - Live re-run of the recorded loop config `--samples N` times in isolated copies; reports the halt-reason distribution and convergence rate (a statistical match, not byte identity). `--confirm` required (it burns budget).
 - `loopexec escalate`
