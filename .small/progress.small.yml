@@ -143,3 +143,19 @@ entries:
       status: completed
       task_id: task-12
       timestamp: "2026-06-27T00:37:55.423798000Z"
+    - evidence: Added task task-13 via small plan --add
+      notes: 'Slice 7: isolate - two-zone orchestration (detached clone + per-run minted/revoked credential + rendered exec/agent zone launch plan)'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-13
+      timestamp: "2026-06-27T00:45:49.152406000Z"
+    - evidence: 'Starting Slice 7: isolate creates a detached-clone sandbox, mints+revokes a per-run credential via operator hooks (--mint-cmd/--revoke-cmd, redacted), renders the security-correct two-zone launch plan (exec zone network:none; agent zone egress-allowlist + injected key + no $HOME), and optionally executes via a pluggable --runtime. Container engine / egress proxy / provider key API are operator-provided boundaries.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-13
+      timestamp: "2026-06-27T00:45:49.214942000Z"
+    - evidence: 'cmd/loopexec/isolate.go: two-zone orchestration - hardened detached clone (fail-closed: enumerates+removes all remotes, checks hooksPath/credential.helper), per-run minted/revoked credential via 0600 --env-file (never on argv / in receipt; mint requires revoke; revoke+cleanup registered before write; signal handler scrubs on SIGINT/SIGTERM; runtime via CommandContext), rendered exec-zone (network:none) + agent-zone (egress-allowlist) with ''--'' flag-injection guard + image/run-id validation; failed zone surfaces execution_failure(40). Adversarial security review workflow (14 confirmed) drove fixes including a CRITICAL docker image argument-injection (--privileged image -> container escape + key exfil) and run-id path traversal. isolate_test.go (63 tests); gofmt/vet/test green; SPEC section 11 + docs/cli.md updated.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-13
+      timestamp: "2026-06-27T01:11:49.469592000Z"

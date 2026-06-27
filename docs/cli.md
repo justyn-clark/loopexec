@@ -39,6 +39,8 @@ This document defines the command surface and machine contract for loopexec.
   - Clear comprehension debt and any paged escalation, recording `--reviewer` (a forcing/visibility gate, not proof of comprehension).
 - `loopexec build-context`
   - Assemble a narrow, budgeted context slice (state + the open failure + relevant files) under a code-calibrated token ceiling. Relevance = files named in the `--failure` stack trace + the last git diff (`--diff-base`) + untracked files. Flags: `--failure <file|-|text>`, `--budget-tokens N` (default 8000), `--diff-base`, `--workdir`, `--out` (confined to `--workdir`). Never fatal on no files; `context_budget_unsatisfiable` (19) only if the mandatory state+failure slice cannot fit. File resolution is workdir-confined and symlink-safe (untrusted failure text cannot read outside the workdir), reads are size-bounded, and untrusted content is fence-escaped.
+- `loopexec isolate`
+  - Orchestrate two-zone isolation (SPEC section 7): a hardened **detached-clone** sandbox (no origin, no host hooks, no inherited credentials), a **per-run minted/revoked credential** (injected via a `0600 --env-file`, never on the argv / in the receipt; `--mint-cmd` requires `--revoke-cmd`), and a rendered exec-zone (`--network none`) + agent-zone (egress-allowlist via `--egress-proxy`) launch plan. `--execute --confirm` launches via `--runtime` (default `docker`); otherwise the plan is rendered only. Image/run-id inputs are validated and a `--` separator stops docker flag parsing (no argument-injection). A failed zone surfaces as `execution_failure` (40). The container engine, the auditing egress proxy, and the provider key API are operator-provided hooks.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`

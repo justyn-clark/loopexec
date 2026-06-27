@@ -37,3 +37,6 @@ tasks:
     - id: task-12
       title: 'Slice 6: build-context - budgeted relevant-file slice (stacktrace + last-diff, code-calibrated tokens, never fatal)'
       status: completed
+    - id: task-13
+      title: 'Slice 7: isolate - two-zone orchestration (detached clone + per-run minted/revoked credential + rendered exec/agent zone launch plan)'
+      status: completed

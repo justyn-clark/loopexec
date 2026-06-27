@@ -111,10 +111,30 @@ type response struct {
 	Verified  *bool  `json:"verified,omitempty"`
 	Signature string `json:"signature,omitempty"`
 
-	Ops     *opsReport     `json:"ops,omitempty"`
-	Context *contextReport `json:"context,omitempty"`
+	Ops       *opsReport       `json:"ops,omitempty"`
+	Context   *contextReport   `json:"context,omitempty"`
+	Isolation *isolationReport `json:"isolation,omitempty"`
 
 	Errors []string `json:"errors"`
+}
+
+// isolationReport is the output of the isolate command (SPEC.md section 7).
+// It NEVER carries the minted credential value, only its lifecycle metadata.
+type isolationReport struct {
+	Sandbox       string   `json:"sandbox"`
+	Clone         string   `json:"clone"`
+	AgentImage    string   `json:"agent_image"`
+	ExecImage     string   `json:"exec_image"`
+	ExecZoneCmd   string   `json:"exec_zone_cmd"`  // redacted, display-only
+	AgentZoneCmd  string   `json:"agent_zone_cmd"` // redacted, display-only
+	EgressAllow   []string `json:"egress_allow"`
+	KeyEnv        string   `json:"key_env,omitempty"`
+	Hardened      bool     `json:"hardened"`
+	Minted        bool     `json:"minted"`
+	Revoked       bool     `json:"revoked"`
+	Executed      bool     `json:"executed"`
+	ExecZoneExit  *int     `json:"exec_zone_exit,omitempty"`
+	AgentZoneExit *int     `json:"agent_zone_exit,omitempty"`
 }
 
 // opsReport carries the output of the reexecute / escalate / watch commands.
@@ -157,6 +177,24 @@ var runShell = func(workdir, command string) (int, string) {
 		return ee.ExitCode(), string(out)
 	}
 	// Command could not be started (e.g. not found): -1 signals "no verdict".
+	return -1, err.Error()
+}
+
+// runArgv runs a program with an explicit argv (no host shell), so untrusted
+// command strings passed into a container or git cannot inject on the host.
+var runArgv = func(workdir, name string, args ...string) (int, string) {
+	c := exec.Command(name, args...)
+	if workdir != "" {
+		c.Dir = workdir
+	}
+	out, err := c.CombinedOutput()
+	if err == nil {
+		return 0, string(out)
+	}
+	var ee *exec.ExitError
+	if errors.As(err, &ee) {
+		return ee.ExitCode(), string(out)
+	}
 	return -1, err.Error()
 }
 
@@ -746,6 +784,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newWatchCmd())
 	cmd.AddCommand(newAckCmd())
 	cmd.AddCommand(newBuildContextCmd())
+	cmd.AddCommand(newIsolateCmd())
 	return cmd
 }
 
