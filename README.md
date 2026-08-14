@@ -38,6 +38,18 @@ go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 
 Requires Go 1.26 or newer.
 
+## 60-second proof
+
+Run the built-in deterministic demo with no API key, model, or network dependency:
+
+```bash
+loopexec demo
+```
+
+The command creates a red local fixture, sends it through the real bounded loop, repairs it, observes the external check turn green, writes a typed JSONL receipt, and verifies the recorded check fingerprint through the same verifier used by `loopexec replay`. It proves LoopExec's execution-integrity contract; it does not run an agent.
+
+The receipt path in the output identifies the retained temporary workdir. To keep the proof at a known path, pass a fresh directory with `--workdir <dir>`; `demo` refuses to overwrite an existing `.loopexec` directory or `status.txt` fixture.
+
 ## Build
 
 From the repo root:
@@ -64,7 +76,7 @@ The implemented CLI returns deterministic human or JSON output.
 
 ### Commands
 
-- `loopexec init` / `run` / `status` / `check` / `step`
+- `loopexec init` / `demo` / `run` / `status` / `check` / `step`
 - `loopexec probe-check` / `doctor` / `explain-halt`
 - `loopexec replay` / `attest` / `report` / `reexecute`
 - `loopexec escalate` / `watch` / `ack`

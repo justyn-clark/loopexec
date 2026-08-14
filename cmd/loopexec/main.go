@@ -804,6 +804,7 @@ func newRootCmd() *cobra.Command {
 
 	cmd.PersistentFlags().BoolVar(&jsonOutput, "json", false, "Emit machine-readable JSON output")
 	cmd.AddCommand(newInitCmd())
+	cmd.AddCommand(newDemoCmd())
 	cmd.AddCommand(newRunCmd())
 	cmd.AddCommand(newStatusCmd())
 	cmd.AddCommand(newCheckCmd())
