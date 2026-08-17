@@ -6,6 +6,11 @@ This document defines the command surface and machine contract for loopexec.
 
 - `loopexec init`
   - Initialize local loopexec workspace metadata.
+- `loopexec demo`
+  - Run a zero-credential deterministic proof of the execution-integrity contract; no agent, model, API key, or network is used.
+  - Creates a red local fixture, executes the real bounded loop, turns the external check green, writes a typed JSONL receipt, and verifies its fingerprint through the same verifier as `loopexec replay`.
+  - `--workdir <dir>` keeps artifacts at a known path. The target may contain unrelated files, but it must not already contain `.loopexec` or `status.txt`; the command refuses to overwrite either. Without the flag, a retained temporary directory is created.
+  - Supports global `--json` and emits exactly one final response object.
 - `loopexec run`
   - Run a bounded `check_fixpoint` loop until the check passes, a bound trips, or the work command fails.
   - Flags: `--check "<cmd>"` (required external oracle; exit 0 = converged), `--exec "<cmd>"` (work step run each iteration), `--max-iterations N` (fuse, default 10), `--once` (run exactly one iteration for debugging; overrides `--max-iterations`; converges or halts `max_iterations_reached`), `--run-id`, `--workdir`, `--budget-usd`.

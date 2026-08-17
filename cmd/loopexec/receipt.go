@@ -127,6 +127,23 @@ func noStateMsg(runID string) string {
 	return "no recorded run state"
 }
 
+// verifyStateFingerprint is the shared replay verifier. Both `replay` and the
+// built-in demo use this path so the first-run proof cannot drift from the
+// receipt-verification contract it is intended to demonstrate.
+func verifyStateFingerprint(st loopState, fallbackWorkdir string) (checkFingerprint, bool, error) {
+	if st.Check == "" || st.Fingerprint == nil {
+		return checkFingerprint{}, false, fmt.Errorf("receipt has no check fingerprint to replay")
+	}
+	runDir := st.Workdir
+	if runDir == "" {
+		runDir = fallbackWorkdir
+	}
+	rc, out := runShell(runDir, st.Check)
+	got := checkFingerprint{ExitCode: rc, OutputSHA256: sha256hex([]byte(normalizeOutput(out)))}
+	match := got.ExitCode == st.Fingerprint.ExitCode && got.OutputSHA256 == st.Fingerprint.OutputSHA256
+	return got, match, nil
+}
+
 // newReplayCmd VERIFIES a recorded receipt: re-run the recorded check against
 // the current end-state and confirm the fingerprint matches. Agent-free and
 // budget-free (SPEC.md section 8) -- it never re-runs the agent. This is the
@@ -150,16 +167,10 @@ func newReplayCmd() *cobra.Command {
 			if err != nil {
 				return &cliError{Code: exitWorkspaceInvalid, Message: noStateMsg(runID), Cause: err}
 			}
-			if st.Check == "" || st.Fingerprint == nil {
-				return &cliError{Code: exitWorkspaceInvalid, Message: "receipt has no check fingerprint to replay"}
+			got, match, verifyErr := verifyStateFingerprint(st, workdir)
+			if verifyErr != nil {
+				return &cliError{Code: exitWorkspaceInvalid, Message: verifyErr.Error()}
 			}
-			runDir := st.Workdir
-			if runDir == "" {
-				runDir = workdir
-			}
-			rc, out := runShell(runDir, st.Check)
-			got := checkFingerprint{ExitCode: rc, OutputSHA256: sha256hex([]byte(normalizeOutput(out)))}
-			match := got.ExitCode == st.Fingerprint.ExitCode && got.OutputSHA256 == st.Fingerprint.OutputSHA256
 
 			r := response{Tool: toolName, Version: toolVersion, RunID: st.RunID, Verified: &match, Errors: []string{}}
 			if match {
