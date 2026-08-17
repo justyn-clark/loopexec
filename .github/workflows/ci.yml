@@ -50,3 +50,4 @@ jobs:
           name: loopexec-dogfood-${{ github.run_id }}
           path: .artifacts/dogfood
           if-no-files-found: error
+          include-hidden-files: true
