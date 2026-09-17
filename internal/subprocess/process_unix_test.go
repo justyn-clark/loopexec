@@ -4,9 +4,11 @@ package subprocess
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
@@ -46,18 +48,38 @@ ready:
 			}
 		}
 	}
+	cancelledAt := time.Now()
 	cancel()
 	r := <-done
 	if r.Cause != "cancelled" || r.Duration > time.Second {
 		t.Fatalf("%+v", r)
 	}
+	// SIGKILL delivery to descendants is asynchronous, and they can disappear
+	// between kill(0) and reading /proc. Still require every owned process to
+	// stop within one second of cancellation, including Run's cleanup time.
 	// Linux init can briefly retain a dead adopted descendant as a zombie.
 	for _, pid := range pids {
-		if err := syscall.Kill(pid, 0); err == nil {
-			b, e := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
-			if e != nil || !strings.Contains(string(b), ") Z ") {
-				t.Fatalf("owned pid %d remains running", pid)
+		for {
+			err := syscall.Kill(pid, 0)
+			if errors.Is(err, syscall.ESRCH) {
+				break
 			}
+			if err != nil {
+				t.Fatalf("inspect owned pid %d: %v", pid, err)
+			}
+			if runtime.GOOS == "linux" {
+				b, err := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
+				if errors.Is(err, os.ErrNotExist) || (err == nil && strings.Contains(string(b), ") Z ")) {
+					break
+				}
+				if err != nil {
+					t.Fatalf("inspect owned pid %d state: %v", pid, err)
+				}
+			}
+			if time.Since(cancelledAt) >= time.Second {
+				t.Fatalf("owned pid %d remains running after cancellation bound", pid)
+			}
+			time.Sleep(time.Millisecond)
 		}
 	}
 }
