@@ -31,7 +31,7 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec explain-halt`
   - Render why the recorded run halted, distinguishing raise-the-limit (the failing set was still shrinking) from do-not-retry (stalled, regressed, oscillating, or infeasible). Reads the latest run by default; `--run-id <id>` explains a specific recorded run.
 - `loopexec replay`
-  - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. Verifies the latest run by default; `--run-id <id>` verifies a specific recorded run. (`reexecute`, the live re-run, is Planned.)
+  - VERIFY a recorded receipt: re-run the recorded check against the current end-state and confirm the fingerprint matches. Agent-free and budget-free; never re-runs the agent. Exit 0 on a match; `objective_unverified` (13) on a mismatch. Verifies the latest run by default; `--run-id <id>` verifies a specific recorded run. (`reexecute --confirm` provides live reruns of legacy configs.)
 - `loopexec attest`
   - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Signs the latest run by default; `--run-id <id>` targets a specific recorded run. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
 - `loopexec report`
@@ -51,7 +51,7 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec isolate`
   - Orchestrate two-zone isolation (SPEC section 7): a hardened **detached-clone** sandbox (no origin, no host hooks, no inherited credentials), a **per-run minted/revoked credential** (injected via a `0600 --env-file`, never on the argv / in the receipt; `--mint-cmd` requires `--revoke-cmd`), and a rendered exec-zone (`--network none`) + agent-zone (egress-allowlist via `--egress-proxy`) launch plan. `--execute --confirm` launches via `--runtime` (default `docker`); otherwise the plan is rendered only. Image/run-id inputs are validated and a `--` separator stops docker flag parsing (no argument-injection). A failed zone surfaces as `execution_failure` (40). The container engine, the auditing egress proxy, and the provider key API are operator-provided hooks.
 - `loopexec inspect-cost`
-  - Analyze a per-iteration cost ledger against a run-total cap and a sigma anomaly bound. loopexec does not meter live token cost (the model call lives in `--exec`); it owns the math over costs you supply. Inputs: `--ledger <file>` (one USD per line) and/or `--cost <usd>` (repeatable). `--budget-usd` is the run-total hard cap (over it halts `budget_exceeded`, 18); `--sigma N` (default 3) flags any iteration exceeding the rolling mean + N standard deviations of the iterations before it (`cost_anomaly`, 18). A flat ledger has no variance, so it raises no anomaly; negative costs and an empty ledger are rejected (`invariant_failed`, 20). Auto-parsing provider usage and in-loop enforcement during `run` are Planned.
+  - Analyze a per-iteration cost ledger against a run-total cap and a sigma anomaly bound. This command analyzes supplied costs; workflow runs meter provider-neutral actuals through adapter hooks. Inputs: `--ledger <file>` (one USD per line) and/or `--cost <usd>` (repeatable). `--budget-usd` is the run-total hard cap (over it halts `budget_exceeded`, 18); `--sigma N` (default 3) flags any iteration exceeding the rolling mean + N standard deviations of the iterations before it (`cost_anomaly`, 18). A flat ledger has no variance, so it raises no anomaly; negative costs and an empty ledger are rejected (`invariant_failed`, 20). Provider-specific parsing lives in adapters; `run --workflow` now reconciles their usage and enforces reservations/allowances.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`
@@ -82,7 +82,7 @@ Example:
 ```json
 {
   "tool": "loopexec",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "ok",
   "run_id": "local",
   "iteration": 1,
@@ -92,7 +92,7 @@ Example:
 
 ## Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons remain reserved (the `task_list` loop topology). A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, and in-loop budget enforcement during `run`, are still Planned (see `SPEC.md` section 11).
+The `halt_reason` string is the stable contract; the exit code is its coarse class (see `SPEC.md` section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost` and workflow runs; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons remain reserved (the `task_list` loop topology). A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, are still Planned (see `SPEC.md` section 11).
 
 A computed halt is an outcome, not a crash: the command emits its result object (JSON or the human summary) to stdout and exits with the class code, and prints nothing to stderr. A converged run exits `10` cleanly. Only genuine failures (invalid usage, unreadable state, I/O errors) print a message to stderr.
 
@@ -127,3 +127,27 @@ JSON mode:
 ```sh
 loopexec run --json
 ```
+
+## Unattended workflow flags
+
+- `run --timeout <duration>`: total deadline, default disabled.
+- `--command-timeout <duration>`: every subprocess/hook, default disabled.
+- `--terminate-grace <duration>`: process-group TERM-to-KILL grace, default 250ms.
+- `--workflow <file>`: schema-1 JSON, relative to workdir or absolute; argv work,
+  verification, reservation/usage hooks, candidate manifest, and numeric policy.
+- `--resume`: same run ID and immutable config/bounds; reconcile pending actuals
+  first, preserve attempt count, original total deadline, and cumulative spending.
+- `--budget-usd`: a nonzero allowance now requires workflow strict/observed mode.
+  It is rejected when metering is absent; `--cost-usd` is metadata only.
+
+See [workflows.md](workflows.md) for the full request/response schemas, strict
+versus observed/unknown guarantees, migration, protected-path rules, and executable
+examples. Existing JSON fields and exit classes remain; workflow state/report
+add metering status, numeric progress, candidate IDs, and explanatory causes.
+Workflow replay verifies the exposed best candidate's saved check. Generic
+reexecute rejects workflow receipts to prevent reuse of absolute live hooks.
+
+## Version identity
+
+Use `loopexec --version` for a standard version string or
+`loopexec version --json` for the normal JSON identity contract.

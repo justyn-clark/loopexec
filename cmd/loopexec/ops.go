@@ -70,6 +70,9 @@ func newReexecuteCmd() *cobra.Command {
 			if err != nil {
 				return &cliError{Code: exitWorkspaceInvalid, Message: "no recorded run state", Cause: err}
 			}
+			if st.Workflow != nil {
+				return failResponse(cmd, st.RunID, 30, "workspace_invalid", "workflow runs require a fresh adapter workspace and explicit bounds; generic reexecute cannot safely relocate provider hooks")
+			}
 			if st.Check == "" {
 				return &cliError{Code: exitWorkspaceInvalid, Message: "recorded receipt has no check to re-execute"}
 			}

@@ -1,14 +1,18 @@
 package main
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/subprocess"
+	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -51,6 +55,12 @@ func buildManifest(workdir string, files []string) []manifestEntry {
 // reconstructed for verification: only the pinned, output-determining fields.
 func canonicalReceipt(st loopState) ([]byte, error) {
 	type rcpt struct {
+		Workflow     *workflow.Config `json:"workflow,omitempty"`
+		WorkflowHash string           `json:"workflow_hash,omitempty"`
+		Budget       *budgetBook      `json:"budget,omitempty"`
+		Numeric      *numericState    `json:"numeric,omitempty"`
+		Candidate    *candidateState  `json:"candidate,omitempty"`
+
 		RunID           string            `json:"run_id"`
 		HaltReason      string            `json:"halt_reason"`
 		Iteration       int               `json:"iteration"`
@@ -61,7 +71,7 @@ func canonicalReceipt(st loopState) ([]byte, error) {
 		CostUSD         float64           `json:"cost_usd"`
 		Fingerprint     *checkFingerprint `json:"fingerprint,omitempty"`
 	}
-	return json.Marshal(rcpt{
+	return json.Marshal(rcpt{Workflow: st.Workflow, WorkflowHash: st.WorkflowHash, Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate,
 		RunID:           st.RunID,
 		HaltReason:      st.HaltReason,
 		Iteration:       st.Iteration,
@@ -112,7 +122,7 @@ func resolveStatePath(workdir, runID string) (string, error) {
 	if runID == "" {
 		return statePath(workdir), nil
 	}
-	if !runIDRe.MatchString(runID) {
+	if !validRunID(runID) {
 		return "", &cliError{Code: exitWorkspaceInvalid,
 			Message: "invalid --run-id (allowed: letters, digits, '.', '_', '-'; max 64 chars)"}
 	}
@@ -131,6 +141,9 @@ func noStateMsg(runID string) string {
 // built-in demo use this path so the first-run proof cannot drift from the
 // receipt-verification contract it is intended to demonstrate.
 func verifyStateFingerprint(st loopState, fallbackWorkdir string) (checkFingerprint, bool, error) {
+	if st.Workflow != nil {
+		return verifyWorkflowFingerprint(st, fallbackWorkdir)
+	}
 	if st.Check == "" || st.Fingerprint == nil {
 		return checkFingerprint{}, false, fmt.Errorf("receipt has no check fingerprint to replay")
 	}
@@ -148,7 +161,7 @@ func verifyStateFingerprint(st loopState, fallbackWorkdir string) (checkFingerpr
 // the current end-state and confirm the fingerprint matches. Agent-free and
 // budget-free (SPEC.md section 8) -- it never re-runs the agent. This is the
 // "verify a verdict without re-running the agent" half; reexecute is the live,
-// non-deterministic re-run (Planned).
+// non-deterministic re-run.
 func newReplayCmd() *cobra.Command {
 	var workdir, runID string
 	cmd := &cobra.Command{
@@ -169,7 +182,7 @@ func newReplayCmd() *cobra.Command {
 			}
 			got, match, verifyErr := verifyStateFingerprint(st, workdir)
 			if verifyErr != nil {
-				return &cliError{Code: exitWorkspaceInvalid, Message: verifyErr.Error()}
+				return failResponse(cmd, st.RunID, exitIntegrity, "objective_unverified", verifyErr.Error())
 			}
 
 			r := response{Tool: toolName, Version: toolVersion, RunID: st.RunID, Verified: &match, Errors: []string{}}
@@ -179,8 +192,7 @@ func newReplayCmd() *cobra.Command {
 			}
 			r.Status = "error"
 			r.HaltReason = "objective_unverified"
-			r.Errors = []string{fmt.Sprintf("receipt fingerprint mismatch: recorded exit=%d hash=%s, got exit=%d hash=%s",
-				st.Fingerprint.ExitCode, st.Fingerprint.OutputSHA256[:12], got.ExitCode, got.OutputSHA256[:12])}
+			r.Errors = []string{fmt.Sprintf("receipt fingerprint mismatch: got exit=%d hash=%s", got.ExitCode, shortHash(got.OutputSHA256))}
 			if err := printResponse(cmd, r); err != nil {
 				return err
 			}
@@ -248,4 +260,55 @@ func newAttestCmd() *cobra.Command {
 	cmd.Flags().StringVar(&runID, "run-id", "", "Attest a specific recorded run by id (default: the latest run)")
 	cmd.Flags().BoolVar(&verify, "verify", false, "Verify the stored signature instead of creating one")
 	return cmd
+}
+
+func verifyWorkflowFingerprint(st loopState, fallback string) (checkFingerprint, bool, error) {
+	root := st.Workdir
+	if root == "" {
+		root = fallback
+	}
+	fp := st.Fingerprint
+	iter := st.Iteration
+	if st.Candidate != nil {
+		if st.Candidate.Best == "" || !st.Candidate.Exposed {
+			return checkFingerprint{}, false, fmt.Errorf("no best candidate is exposed")
+		}
+		fp = st.Candidate.BestFingerprint
+		iter = st.Candidate.BestIteration
+		for _, pin := range st.Candidate.Protected {
+			p, e := workflow.SafePath(root, pin.Path)
+			if e != nil {
+				return checkFingerprint{}, false, e
+			}
+			hash, _, e := workflow.FileHash(context.Background(), p)
+			if e != nil || hash != pin.SHA256 {
+				return checkFingerprint{}, false, fmt.Errorf("protected policy drift")
+			}
+		}
+	}
+	if fp == nil || len(st.Workflow.Check) == 0 {
+		return checkFingerprint{}, false, fmt.Errorf("no completed workflow check")
+	}
+	requestPath := filepath.Join(root, ".loopexec", st.RunID, fmt.Sprintf("request-%06d-check.json", iter))
+	var req workflow.Request
+	if e := workflow.Read(requestPath, &req); e != nil {
+		return checkFingerprint{}, false, e
+	}
+	if req.RunID != st.RunID || req.Iteration != iter || req.ConfigHash != st.WorkflowHash || workflow.JSONHash(st.Workflow) != st.WorkflowHash {
+		return checkFingerprint{}, false, fmt.Errorf("replay request drift")
+	}
+	if st.Candidate != nil && req.CandidateID != st.Candidate.Best {
+		return checkFingerprint{}, false, fmt.Errorf("replay candidate drift")
+	}
+	timeout := time.Duration(st.CommandTimeoutNS)
+	if timeout <= 0 {
+		timeout = 30 * time.Second
+	}
+	args := append(append([]string{}, st.Workflow.Check...), requestPath)
+	r := subprocess.Run(context.Background(), subprocess.Options{Dir: root, Argv: args, Timeout: timeout, Grace: time.Duration(st.GraceNS)})
+	got := checkFingerprint{r.ExitCode, sha256hex([]byte(normalizeOutput(r.Stdout)))}
+	if r.Cause != "" || r.Truncated {
+		return got, false, fmt.Errorf("replay command unavailable")
+	}
+	return got, got == *fp, nil
 }

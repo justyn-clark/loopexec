@@ -106,7 +106,11 @@ func newInspectCostCmd() *cobra.Command {
 		Short:        "Analyze a per-iteration cost ledger against a budget cap and a sigma anomaly bound",
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			if !finite(budget) || budget < 0 || !finite(sigma) {
+				return failResponse(cmd, "", 20, "invariant_failed", "invalid budget or sigma")
+			}
 			var series []float64
+
 			for _, s := range costStrs {
 				v, perr := strconv.ParseFloat(strings.TrimPrefix(strings.TrimSpace(s), "$"), 64)
 				if perr != nil {
@@ -126,9 +130,9 @@ func newInspectCostCmd() *cobra.Command {
 					"invariant failed: no costs (pass --ledger <file> or one or more --cost <usd>)")
 			}
 			for _, c := range series {
-				if c < 0 {
+				if c < 0 || !finite(c) || c > float64(math.MaxInt64)/1e6 {
 					return failResponse(cmd, "", exitInvariantFailed, "invariant_failed",
-						"invariant failed: cost ledger has a negative value")
+						"invariant failed: cost ledger has a negative or nonfinite value")
 				}
 			}
 			if sigma <= 0 {

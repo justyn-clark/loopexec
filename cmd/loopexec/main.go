@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/subprocess"
+	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -15,7 +16,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.2.0"
+	toolVersion = "0.3.0"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
@@ -98,14 +99,16 @@ func (e *cliError) Unwrap() error {
 }
 
 type response struct {
-	Tool       string `json:"tool"`
-	Version    string `json:"version"`
-	Status     string `json:"status"`
-	RunID      string `json:"run_id,omitempty"`
-	Iteration  int    `json:"iteration,omitempty"`
-	HaltReason string `json:"halt_reason,omitempty"`
-	CheckExit  *int   `json:"check_exit,omitempty"`
-	Receipt    string `json:"receipt,omitempty"`
+	FailureCause  string `json:"failure_cause,omitempty"`
+	BestCandidate string `json:"best_candidate,omitempty"`
+	Tool          string `json:"tool"`
+	Version       string `json:"version"`
+	Status        string `json:"status"`
+	RunID         string `json:"run_id,omitempty"`
+	Iteration     int    `json:"iteration,omitempty"`
+	HaltReason    string `json:"halt_reason,omitempty"`
+	CheckExit     *int   `json:"check_exit,omitempty"`
+	Receipt       string `json:"receipt,omitempty"`
 
 	Probe  *probeReport  `json:"probe,omitempty"`
 	Doctor *doctorReport `json:"doctor,omitempty"`
@@ -171,38 +174,12 @@ var jsonOutput bool
 var nowFunc = time.Now
 
 var runShell = func(workdir, command string) (int, string) {
-	c := exec.Command("sh", "-c", command)
-	if workdir != "" {
-		c.Dir = workdir
-	}
-	out, err := c.CombinedOutput()
-	if err == nil {
-		return 0, string(out)
-	}
-	var ee *exec.ExitError
-	if errors.As(err, &ee) {
-		return ee.ExitCode(), string(out)
-	}
-	// Command could not be started (e.g. not found): -1 signals "no verdict".
-	return -1, err.Error()
+	r := subprocess.Run(context.Background(), subprocess.Options{Dir: workdir, Argv: []string{"sh", "-c", command}})
+	return r.ExitCode, r.Combined
 }
-
-// runArgv runs a program with an explicit argv (no host shell), so untrusted
-// command strings passed into a container or git cannot inject on the host.
 var runArgv = func(workdir, name string, args ...string) (int, string) {
-	c := exec.Command(name, args...)
-	if workdir != "" {
-		c.Dir = workdir
-	}
-	out, err := c.CombinedOutput()
-	if err == nil {
-		return 0, string(out)
-	}
-	var ee *exec.ExitError
-	if errors.As(err, &ee) {
-		return ee.ExitCode(), string(out)
-	}
-	return -1, err.Error()
+	r := subprocess.Run(context.Background(), subprocess.Options{Dir: workdir, Argv: append([]string{name}, args...)})
+	return r.ExitCode, r.Combined
 }
 
 func printResponse(cmd *cobra.Command, r response) error {
@@ -253,12 +230,16 @@ func printResponse(cmd *cobra.Command, r response) error {
 // failure text containing quotes, backslashes, or newlines can never corrupt
 // the receipt (SPEC.md section 8).
 type receiptEvent struct {
-	TS        int64  `json:"ts"`
-	RunID     string `json:"run_id"`
-	Iteration int    `json:"iteration"`
-	Event     string `json:"event"`
-	Detail    string `json:"detail,omitempty"`
-	ExitCode  *int   `json:"exit_code,omitempty"`
+	OutputTruncated bool   `json:"output_truncated,omitempty"`
+	Phase           string `json:"phase,omitempty"`
+	DurationMS      int64  `json:"duration_ms"`
+	Cause           string `json:"cause,omitempty"`
+	TS              int64  `json:"ts"`
+	RunID           string `json:"run_id"`
+	Iteration       int    `json:"iteration"`
+	Event           string `json:"event"`
+	Detail          string `json:"detail,omitempty"`
+	ExitCode        *int   `json:"exit_code,omitempty"`
 }
 
 // Receipt-pin types (SPEC.md section 8): everything that determines the output,
@@ -298,6 +279,19 @@ type escalationState struct {
 // loopState is the durable, resumable machine state (SPEC.md section 8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
+	Workflow          *workflow.Config `json:"workflow,omitempty"`
+	WorkflowHash      string           `json:"workflow_hash,omitempty"`
+	RunPolicyHash     string           `json:"run_policy_hash,omitempty"`
+	Budget            *budgetBook      `json:"budget,omitempty"`
+	Numeric           *numericState    `json:"numeric,omitempty"`
+	Candidate         *candidateState  `json:"candidate,omitempty"`
+	BestCandidatePath string           `json:"best_candidate_path,omitempty"`
+	IntegrityBaseline []string         `json:"integrity_baseline,omitempty"`
+	DeadlineNS        int64            `json:"deadline_ns,omitempty"`
+	CommandTimeoutNS  int64            `json:"command_timeout_ns,omitempty"`
+	GraceNS           int64            `json:"grace_ns,omitempty"`
+
+	FailureCause  string  `json:"failure_cause,omitempty"`
 	SchemaVersion int     `json:"schema_version"`
 	RunID         string  `json:"run_id"`
 	Phase         string  `json:"phase"`
@@ -347,6 +341,7 @@ func readState(path string) (loopState, error) {
 }
 
 type receiptWriter struct {
+	err   error
 	f     *os.File
 	runID string
 }
@@ -367,7 +362,9 @@ func (w *receiptWriter) emit(iteration int, event, detail string, exitCode *int)
 	if err != nil {
 		return
 	}
-	_, _ = w.f.Write(append(line, '\n'))
+	if _, e := w.f.Write(append(line, '\n')); e != nil {
+		w.err = e
+	}
 }
 
 // heartbeat is the liveness marker an external `watch` reads (SPEC.md section 9).
@@ -398,27 +395,22 @@ func writeStateAtomic(dir string, st loopState) error {
 // replay / explain-halt / attest target a specific run by --run-id.
 func writeStateFile(dir, name string, st loopState) error {
 	st.UpdatedTS = nowFunc().Unix()
-	data, err := json.MarshalIndent(st, "", "  ")
-	if err != nil {
-		return err
-	}
-	tmp := filepath.Join(dir, "."+name+".tmp")
-	if err := os.WriteFile(tmp, data, 0o644); err != nil {
-		return err
-	}
-	return os.Rename(tmp, filepath.Join(dir, name))
+	return workflow.Atomic(filepath.Join(dir, name), st)
 }
 
 type runConfig struct {
-	runID         string
-	maxIterations int
-	check         string
-	execCmd       string
-	budgetUSD     float64
-	workdir       string
-	failuresCmd   string
-	noProgressK   int
-	integrityCmd  string
+	workflowFile                        string
+	resume                              bool
+	totalTimeout, commandTimeout, grace time.Duration
+	runID                               string
+	maxIterations                       int
+	check                               string
+	execCmd                             string
+	budgetUSD                           float64
+	workdir                             string
+	failuresCmd                         string
+	noProgressK                         int
+	integrityCmd                        string
 
 	// Receipt pinning (SPEC.md section 8).
 	modelProvider string
@@ -432,196 +424,6 @@ type runConfig struct {
 
 	comprehensionEvery int
 	once               bool
-}
-
-// executeRun is the real check_fixpoint loop (SPEC.md section 4, Slice 0 subset):
-// each iteration runs the optional work command then the external check once,
-// derives a COMPUTED halt reason, and records a typed receipt + durable state.
-func executeRun(cmd *cobra.Command, cfg runConfig) error {
-	if cfg.maxIterations < 1 {
-		return failResponse(cmd, cfg.runID, exitInvariantFailed,
-			"invariant_failed", "invariant failed: max-iterations must be >= 1")
-	}
-	if cfg.budgetUSD < 0 {
-		return failResponse(cmd, cfg.runID, exitInvariantFailed,
-			"invariant_failed", "invariant failed: budget-usd must be >= 0")
-	}
-	// No check, no loop (SPEC.md O1). This is the brand-defining precondition.
-	if strings.TrimSpace(cfg.check) == "" {
-		return failResponse(cmd, cfg.runID, exitWorkspaceInvalid,
-			"workspace_invalid", "a loop requires an external check (--check). no check, no loop")
-	}
-
-	dir := filepath.Join(cfg.workdir, ".loopexec")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return &cliError{Code: exitWorkspaceInvalid, Message: "workspace invalid or missing", Cause: err}
-	}
-
-	receiptPath := filepath.Join(dir, "run-"+cfg.runID+".jsonl")
-	f, err := os.Create(receiptPath)
-	if err != nil {
-		return &cliError{Code: exitWorkspaceInvalid, Message: "cannot open receipt", Cause: err}
-	}
-	defer f.Close()
-	rw := &receiptWriter{f: f, runID: cfg.runID}
-
-	st := loopState{SchemaVersion: 1, RunID: cfg.runID, Phase: "running"}
-	rw.emit(0, "run_start", fmt.Sprintf("check=%q exec=%q max=%d", cfg.check, cfg.execCmd, cfg.maxIterations), nil)
-
-	var lastCheckExit *int
-	var lastCheckOut string
-	haltReason := ""
-	diffsUnread := 0
-
-	var tracker *progressTracker
-	if strings.TrimSpace(cfg.failuresCmd) != "" {
-		tracker = newProgressTracker(cfg.noProgressK)
-	}
-
-	// Metric-integrity baseline captured at t0 (SPEC.md section 6): the
-	// test-determining surface MUST NOT lose a member during the run.
-	var integrityBaseline map[string]struct{}
-	if strings.TrimSpace(cfg.integrityCmd) != "" {
-		_, bout := runShell(cfg.workdir, cfg.integrityCmd)
-		integrityBaseline, _ = parseFailures(bout)
-		n := len(integrityBaseline)
-		rw.emit(0, "integrity_baseline", "", &n)
-	}
-
-	for i := 1; i <= cfg.maxIterations; i++ {
-		st.Iteration = i
-		rw.emit(i, "iter_start", "", nil)
-		writeHeartbeat(dir, i, "iter_start")
-
-		if strings.TrimSpace(cfg.execCmd) != "" {
-			rc, _ := runShell(cfg.workdir, cfg.execCmd)
-			rcCopy := rc
-			rw.emit(i, "exec", "", &rcCopy)
-			if rc != 0 {
-				// A non-zero work step is an execution failure, not a blocked
-				// task: the substrate/agent itself failed (SPEC.md section 5, exit 40).
-				haltReason = "execution_failure"
-				break
-			}
-		}
-
-		// Guards dominate success (SPEC.md section 6): the metric-integrity gate
-		// is evaluated BEFORE the check can declare green, so a suite that went
-		// green by weakening the test surface halts here instead of succeeding.
-		if integrityBaseline != nil {
-			_, cout := runShell(cfg.workdir, cfg.integrityCmd)
-			cur, _ := parseFailures(cout)
-			if missing := missingMembers(integrityBaseline, cur); len(missing) > 0 {
-				n := len(missing)
-				rw.emit(i, "integrity_violation", strings.Join(missing, ","), &n)
-				haltReason = "metric_integrity_violation"
-				break
-			}
-		}
-
-		rc, checkOut := runShell(cfg.workdir, cfg.check)
-		rcCopy := rc
-		lastCheckExit = &rcCopy
-		lastCheckOut = checkOut
-		rw.emit(i, "check", "", &rcCopy)
-		if rc == 0 {
-			haltReason = "success_condition_met"
-			break
-		}
-
-		// Set-based progress + ratchet (SPEC.md section 3.2): track the failing
-		// set, halt on regression, oscillation, or no strict decrease over K.
-		if tracker != nil {
-			_, fout := runShell(cfg.workdir, cfg.failuresCmd)
-			F, order := parseFailures(fout)
-			sz := len(F)
-			rw.emit(i, "progress", setHash(order), &sz)
-			pr := tracker.observe(i, F, order)
-			best := tracker.bestSize
-			init := tracker.initialSize
-			st.BestFailCount = &best
-			st.InitialFailCount = &init
-			st.BestIteration = tracker.bestIter
-			st.EverImproved = tracker.everImproved
-			if pr != "" {
-				haltReason = pr
-				break
-			}
-		}
-
-		// Comprehension gate (SPEC.md section 9): after N merged-but-unread
-		// iterations, halt to force a human read (cleared by `loopexec ack`).
-		diffsUnread++
-		if cfg.comprehensionEvery > 0 && diffsUnread >= cfg.comprehensionEvery {
-			haltReason = "comprehension_debt_exceeded"
-			break
-		}
-	}
-
-	if haltReason == "" {
-		haltReason = "max_iterations_reached"
-	}
-
-	st.HaltReason = haltReason
-	st.LastCheckExit = lastCheckExit
-	st.Phase = "halted"
-
-	// Receipt pinning (SPEC.md section 8): everything needed to verify offline.
-	st.Check = cfg.check
-	st.Workdir = cfg.workdir
-	st.CostUSD = cfg.costUSD
-	st.Exec = cfg.execCmd
-	st.MaxIterations = cfg.maxIterations
-	st.FailuresCmd = cfg.failuresCmd
-	st.IntegrityCmd = cfg.integrityCmd
-	st.NoProgressK = cfg.noProgressK
-	st.DiffsMergedUnread = diffsUnread
-	if cfg.modelID != "" {
-		st.Model = &modelPin{Provider: cfg.modelProvider, ID: cfg.modelID, Version: cfg.modelVersion}
-		st.Sampling = &samplingPin{Temperature: cfg.temperature, Seed: cfg.seed, MaxTokens: cfg.maxTokens}
-	}
-	if man := buildManifest(cfg.workdir, cfg.contextFiles); len(man) > 0 {
-		st.ContextManifest = man
-	}
-	if lastCheckExit != nil {
-		st.Fingerprint = &checkFingerprint{
-			ExitCode:     *lastCheckExit,
-			OutputSHA256: sha256hex([]byte(normalizeOutput(lastCheckOut))),
-		}
-	}
-
-	rw.emit(st.Iteration, "halt", haltReason, nil)
-	if err := writeStateAtomic(dir, st); err != nil {
-		return &cliError{Code: exitInternalError, Message: "cannot write state", Cause: err}
-	}
-	// Persist a per-run snapshot next to the receipt so replay / explain-halt /
-	// attest can verify THIS run by --run-id, not just the latest in state.json.
-	if runIDRe.MatchString(cfg.runID) {
-		if err := writeStateFile(dir, perRunStateName(cfg.runID), st); err != nil {
-			return &cliError{Code: exitInternalError, Message: "cannot write per-run state", Cause: err}
-		}
-	}
-
-	code := haltExitCode(haltReason)
-	r := response{
-		Tool:       toolName,
-		Version:    toolVersion,
-		Status:     "halted",
-		RunID:      cfg.runID,
-		Iteration:  st.Iteration,
-		HaltReason: haltReason,
-		CheckExit:  lastCheckExit,
-		Receipt:    receiptPath,
-		Errors:     []string{},
-	}
-	if haltReason == "execution_failure" {
-		r.Status = "error"
-		r.Errors = []string{"execution failure during work command"}
-	}
-	if err := printResponse(cmd, r); err != nil {
-		return err
-	}
-	return &cliError{Code: code, Message: "halted: " + haltReason, Silent: true}
 }
 
 // failResponse prints one JSON object describing a precondition failure and
@@ -687,12 +489,17 @@ func newRunCmd() *cobra.Command {
 		},
 	}
 
+	cmd.Flags().StringVar(&cfg.workflowFile, "workflow", "", "Pinned workflow JSON (argv hooks, metering, candidates, numeric policy)")
+	cmd.Flags().BoolVar(&cfg.resume, "resume", false, "Resume a workflow run with identical policy and cumulative bounds")
+	cmd.Flags().DurationVar(&cfg.totalTimeout, "timeout", 0, "Total run deadline (0 = disabled)")
+	cmd.Flags().DurationVar(&cfg.commandTimeout, "command-timeout", 0, "Deadline for every command and collector (0 = disabled)")
+	cmd.Flags().DurationVar(&cfg.grace, "terminate-grace", 250*time.Millisecond, "Grace between process-group TERM and KILL")
 	cmd.Flags().StringVar(&cfg.runID, "run-id", "", "Run identifier")
 	cmd.Flags().IntVar(&cfg.maxIterations, "max-iterations", 10, "Maximum iterations (fuse)")
 	cmd.Flags().BoolVar(&cfg.once, "once", false, "Run exactly one iteration (debug single-step); overrides --max-iterations")
 	cmd.Flags().StringVar(&cfg.check, "check", "", "External check command; exit 0 means converged (required)")
 	cmd.Flags().StringVar(&cfg.execCmd, "exec", "", "Work command run each iteration before the check (e.g. an agent invocation)")
-	cmd.Flags().Float64Var(&cfg.budgetUSD, "budget-usd", 0, "Total run budget cap in USD (recorded; metering lands with agent execution)")
+	cmd.Flags().Float64Var(&cfg.budgetUSD, "budget-usd", 0, "Run-total USD allowance; requires workflow strict or observed metering")
 	cmd.Flags().StringVar(&cfg.workdir, "workdir", "", "Directory to run commands in (default: current directory)")
 	cmd.Flags().StringVar(&cfg.failuresCmd, "failures-cmd", "", "Command printing current open failures (one identity per line); enables set-based progress and the no-regression ratchet")
 	cmd.Flags().IntVar(&cfg.noProgressK, "no-progress-k", 3, "Halt no_progress_detected after K iterations with no new best failing-set size")
@@ -704,7 +511,7 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().IntVar(&cfg.seed, "seed", 0, "Recorded sampling seed")
 	cmd.Flags().IntVar(&cfg.maxTokens, "max-tokens", 0, "Recorded sampling max_tokens")
 	cmd.Flags().StringArrayVar(&cfg.contextFiles, "context-file", nil, "File to include in the receipt context manifest (path + sha256); repeatable")
-	cmd.Flags().Float64Var(&cfg.costUSD, "cost-usd", 0, "Recorded run cost in USD (live metering is Planned)")
+	cmd.Flags().Float64Var(&cfg.costUSD, "cost-usd", 0, "Legacy recorded cost metadata; workflow actuals are metered separately")
 	cmd.Flags().IntVar(&cfg.comprehensionEvery, "comprehension-every", 0, "Halt comprehension_debt_exceeded after N iterations without a `loopexec ack` (0 = off)")
 	return cmd
 }
@@ -793,8 +600,9 @@ func newStepCmd() *cobra.Command {
 
 func newRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "loopexec",
-		Short: "loopexec - deterministic runtime for loop engineering",
+		Use:     "loopexec",
+		Version: toolVersion,
+		Short:   "loopexec - deterministic runtime for loop engineering",
 		// We render every outcome ourselves (printResponse + exit code). Cobra
 		// must not also print "Error: ..." - that double-printed and labeled a
 		// converged halt as an error.
@@ -803,6 +611,12 @@ func newRootCmd() *cobra.Command {
 	}
 
 	cmd.PersistentFlags().BoolVar(&jsonOutput, "json", false, "Emit machine-readable JSON output")
+	cmd.AddCommand(&cobra.Command{
+		Use: "version", Short: "Print the CLI identity",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return printResponse(cmd, response{Tool: toolName, Version: toolVersion, Status: "ok", Errors: []string{}})
+		},
+	})
 	cmd.AddCommand(newInitCmd())
 	cmd.AddCommand(newDemoCmd())
 	cmd.AddCommand(newRunCmd())
