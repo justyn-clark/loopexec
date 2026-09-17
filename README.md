@@ -7,11 +7,11 @@
 
 `loopexec` is a deterministic runtime for loop engineering: it drives bounded, stateless, auditable execution loops that progress through an external check and stop on a computed reason, never on an agent's say-so. It is the runtime companion to SMALL Protocol: SMALL describes state, constraints, plans, progress, and handoff; loopexec drives one bounded loop against that state and reports machine-readable outcomes.
 
-The normative contract is `SPEC.md`. As of v0.2.0 the binary implements the engine through Slice 7 - 18 commands covering the real loop, determinism probing, the metric-integrity gate, the no-regression ratchet, pinned and offline-verifiable receipts, and two-zone isolation. Every capability in `SPEC.md` section 11 now has a Shipped core; what remains is named, inline sub-parts. See `SPEC.md` section 11 for the per-capability status.
+The normative contract is `SPEC.md`. The current source implements bounded execution, determinism probing, integrity and regression guards, offline-verifiable receipts, and opt-in unattended workflows. See `SPEC.md` section 11 for the implemented scope and remaining sub-parts.
 
 ## Current status
 
-Implemented now (v0.2.0):
+Implemented in v0.3.0:
 
 - Real bounded `run` loop: iterates `--exec` then `--check` until the check passes (`success_condition_met`), a bound trips (`max_iterations_reached`), or work fails (`execution_failure`); "no check, no loop"; computed halt reasons mapped to a stable exit-code class; typed JSONL receipts (`.loopexec/run-<id>.jsonl`) and atomic durable state.
 - `probe-check` - determinism as a 95% confidence bound (rule of three); `doctor` - precondition gate (determinism + isolation preflight).
@@ -20,14 +20,20 @@ Implemented now (v0.2.0):
 - Receipt pinning (model tuple + sampling + context manifest + cost + check fingerprint); `replay` (verify a receipt offline, agent-free) and `attest` (HMAC-sign + verify).
 - `reexecute` (live re-run distribution), `escalate` / `watch` (heartbeat + structured packet), comprehension `ack` gate.
 - `build-context` - budgeted, workdir-confined, symlink-safe relevant-file slice.
+- Shared subprocess deadlines/cancellation with bounded diagnostics; fail-closed collectors.
+- `run --workflow`: exact usage/reservations, explicit strict/observed/unknown money,
+  numeric progress/patience, and manifest-based best-candidate restoration.
+- An offline Go creative-workflow adapter with independent simulated roles and
+  candidate-bound signed reviews. No Python loop, model key, network, or engine required.
+
 - `isolate` - two-zone orchestration: detached-clone sandbox + per-run minted/revoked credential + rendered/launched exec/agent zones.
-- Global `--json` output, explicit exit-code contract, 63 contract/unit tests, GitHub Actions CI (`gofmt`, `go vet`, `go test ./...`).
+- Global `--json` output, explicit exit-code contract, contract and unit tests, GitHub Actions CI (`gofmt`, `go vet`, `go test ./...`).
 
 Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 
 - The operator-provided infra `isolate` composes with: the container engine, the auditing egress proxy, and the provider key API (`--runtime` / `--egress-proxy` / `--mint-cmd` + `--revoke-cmd`).
-- Live/auto cost metering (parsing provider usage) and in-loop budget enforcement during `run` -- the cost analysis itself ships as `inspect-cost` (run-total cap -> `budget_exceeded`, sigma spike -> `cost_anomaly`) over a supplied ledger; the deeper metric-integrity layers (assertion-count / manifest-hash / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
-- The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator; git revert-to-best for the ratchet.
+- Provider-specific live usage wrappers; the deeper metric-integrity layers (assertion-count / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
+- The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator.
 - Full SMALL-driven `task_list` loop execution and `small` CLI integration; container, Nix, or remote substrates and multi-worker orchestration.
 
 ## Install
@@ -36,7 +42,11 @@ Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 ```
 
-Requires Go 1.26 or newer.
+Requires Go 1.26 or newer. For a pinned install, use `@v0.3.0`. Prebuilt archives and SHA256 checksums are available in the [v0.3.0 release](https://github.com/justyn-clark/loopexec/releases/tag/v0.3.0).
+
+`loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.3.0.md) for compatibility and platform limits.
+
+SMALL is optional. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
 
 ## 60-second proof
 
@@ -103,7 +113,7 @@ Example JSON response (a converged run):
 ```json
 {
   "tool": "loopexec",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "halted",
   "run_id": "local",
   "iteration": 3,
@@ -116,7 +126,7 @@ Example JSON response (a converged run):
 
 ### Exit codes
 
-The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost`; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`) remain reserved, and those belong to the `task_list` loop topology. A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, and in-loop budget enforcement during `run`, are still Planned (see SPEC section 11).
+The `halt_reason` string is the stable contract; the exit code is its coarse class (SPEC section 5). Every class `13`-`19` emits today alongside the base `0/10/12/20/30/40/50` (class `18`, `budget_exceeded` / `cost_anomaly`, via `inspect-cost` and workflow runs; class `15`, `check_inadequate`, via the `doctor --mutate-cmd` adequacy canary); only class `11`'s task-list reasons (`no_actionable_tasks` / `human_required`) remain reserved, and those belong to the `task_list` loop topology. A few individual reasons inside active classes, the `doctor` coverage-delta and hermeticity tiers, are still Planned (see SPEC section 11).
 
 - `0` success (loop ran, no halt)
 - `10` converged: `success_condition_met`
@@ -167,3 +177,20 @@ Read the docs in this order:
 ## License
 
 MIT. See `LICENSE`.
+
+## Offline creative workflow
+
+```bash
+mkdir -p build
+go build -o build/loopexec ./cmd/loopexec
+go build -o build/creative-workflow ./examples/creative-workflow
+./scripts/creative-proof.sh ./build/loopexec ./build/creative-workflow build/creative-proof
+```
+
+The proof asserts convergence, budget stop before further work, regression
+restoration, stale-evidence rejection, critic skip after technical failure, and a
+four-attempt cap. Expected convergence is loopexec exit 10 (external check exit 0).
+All fixture scores, captures, and charges are synthetic; they prove runtime wiring.
+Read [the workflow contract](docs/workflows.md) for interfaces, receipts, trust
+boundaries, and live setup. Migration: a nonzero `--budget-usd` now requires
+explicit workflow metering; legacy set-based progress remains the default.

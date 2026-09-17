@@ -1,0 +1,3 @@
+# Reviewed synthetic marker written by TestBuildContextRejectsTraversal.
+# Keep the path/rule/line scope narrow; do not ignore generic API-key findings.
+cmd/loopexec/context_test.go:generic-api-key:179

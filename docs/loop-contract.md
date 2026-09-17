@@ -1,4 +1,9 @@
-Note: This document describes planned behavior. Some commands may not yet be implemented.
+Historical design: this document specifies the planned SMALL v1 `task_list` topology.
+That topology is not implemented by LoopExec v0.3.0. The shipped external-check
+contract is [SPEC.md](../SPEC.md); current SMALL v1/v2 CLI composition is documented
+in [the SMALL integration guide](small-integration.md). The five-file and
+single-in-progress requirements below apply to this historical v1 design, not
+to SMALL v2 collaborative sessions.
 
 # Loop Contract Specification
 

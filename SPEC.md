@@ -123,13 +123,13 @@ A single `--network none` container cannot both run a cloud agent and isolate un
 
 A live-LLM trajectory is not reproducible; only the **verdict** is. Marketing copy MUST say "replayable **verdicts**," not "replayable runs."
 
-**State (durable, resumable).** `.loop_state.json` MUST carry at least: `phase`, `iteration`, `last_green_commit`, `open_failures`, `cumulative_usd`, `baseline` (Step-1 measurement), `determinism_probe` result, `metric_integrity` snapshot, `model_pin`, and `escalation` state. On resume, the runtime MUST revalidate `determinism_probe` and `metric_integrity` before the first agent call and halt on drift.
+**State (durable, resumable).** The implemented snapshot is `.loopexec/state.json` with per-run snapshots. The target full-state profile MUST carry at least: `phase`, `iteration`, `last_green_commit`, `open_failures`, `cumulative_usd`, `baseline` (Step-1 measurement), `determinism_probe` result, `metric_integrity` snapshot, `model_pin`, and `escalation` state. In the full-state profile, the runtime MUST revalidate `determinism_probe` and `metric_integrity` before the first agent call and halt on drift.
 
 ---
 
 ## 9. Cost & liveness
 
-- **Budget** MUST be a **run-total** hard cap (not only per-turn), accumulated from parsed provider usage, with a rolling-sigma anomaly detector (`cost_anomaly`) distinct from the absolute cap (`budget_exceeded`). The cost model includes agent tokens **+ judge cost + per-iteration check-execution cost**; the ceiling is a quantile, not a mean mislabeled "upper bound."
+- **Budget:** strict monetary caps require run-total accounting plus credible per-call upper bounds enforced by the invoking adapter/provider (section 12). Observed metering is explicitly post-call and MUST NOT claim a preventive cap. Unmetered usage reports unknown dollars. Parsed actuals include builder, critic, and explicitly priced tool/test calls. `cost_anomaly` remains distinct from `budget_exceeded`. A historical quantile alone is not a hard reservation bound.
 - **Liveness.** The heartbeat MUST be read by an external watchdog (`loopexec watch`) that times out a wedged agent call and emits `heartbeat_stale`. Every exit - including a non-zero agent exit - MUST pass through the typed logger; a `set -e`-style silent death is non-conformant.
 - **Comprehension.** `diffs_merged_unread` MUST be tracked; the loop SHOULD halt `comprehension_debt_exceeded` after a configured threshold, cleared by a signed `ack`. (A forcing/visibility gate, not proof of comprehension.)
 
@@ -139,7 +139,7 @@ A live-LLM trajectory is not reproducible; only the **verdict** is. Marketing co
 
 | Command | Purpose | Exit semantics |
 |---|---|---|
-| `init` | scaffold versioned `.loop_state.json` + `loop.yml` | 0 / `workspace_invalid` |
+| `init` | create `.loopexec/` runtime directory | 0 / `workspace_invalid` |
 | `run` | the real iterating loop (section 4); computed halt | per section 5 |
 | `run --once` | single iteration (debug); absorbs legacy `step` | per section 5 |
 | `probe-check` | determinism as a confidence bound (O2); agent-free | 0 / class 14 |
@@ -172,18 +172,69 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Typed JSONL receipt + durable state (section 8) | Shipped |
 | `probe-check` confidence bound (O2) | Shipped (core; adversarial perturbation + in-loop sequential monitor Planned) |
 | `doctor` precondition gate (O3-O5, section 7) | Shipped (determinism + isolation preflight + adequacy via mutation canary `--mutate-cmd`; hermeticity and the coverage-delta tier reported as planned) |
-| Set-based progress + no-regression ratchet: oscillation / no-progress / regression halts (section 3.2) | Shipped (via `--failures-cmd`; git revert-to-best Planned) |
+| Set-based progress + no-regression ratchet: oscillation / no-progress / regression halts (section 3.2) | Shipped (legacy `--failures-cmd`; opt-in manifest snapshots and best-candidate restoration via `--workflow`) |
 | `explain-halt`: raise-the-limit vs do-not-retry (feasibility) | Shipped |
-| Metric-integrity gate: guards dominate success (section 6) | Shipped (collected-set monotonicity via `--integrity-cmd`; assertion-count / manifest-hash / coverage-floor Planned) |
+| Metric-integrity gate: guards dominate success (section 6) | Shipped (fail-closed collected-set monotonicity and configured protected-file hashes; assertion-count / coverage-floor Planned) |
 | `doctor` isolation preflight: credential-mount + exec-network fail-closed (section 7) | Shipped |
-| Receipt pinning: model-identity tuple + sampling + context manifest (sha256) + cost + check fingerprint (section 8) | Shipped (recorded from flags; live cost metering Planned) |
+| Receipt pinning: model-identity tuple + sampling + context manifest (sha256) + cost + check fingerprint (section 8) | Shipped (legacy flags record metadata; workflow usage hooks support exact in-loop strict/observed/unmetered accounting) |
 | `replay`: verify a receipt offline by re-running the check and matching the fingerprint (section 8) | Shipped |
 | `attest`: HMAC-sign a receipt and `--verify` it (section 8) | Shipped |
 | `reexecute`: live re-run of the recorded config N times, halt-reason distribution (section 8) | Shipped |
 | `escalate` / `watch` / `ack` + comprehension gate (section 9) | Shipped (file/stdout channels, heartbeat + staleness detection, comprehension `--comprehension-every`; github/slack channels + kill-the-PID actuator Planned) |
 | `build-context`: budgeted relevant-file slice with workdir-confined, symlink-safe file resolution (section 4) | Shipped (stacktrace + last-diff + untracked relevance; import_closure / dep_graph tiers Planned) |
 | Two-zone isolation orchestration (`isolate`): detached-clone sandbox + per-run minted/revoked credential (0600 env-file, never on the argv) + rendered/launched exec-zone (`network:none`) and agent-zone (egress-allowlist) (section 7) | Shipped (orchestration; the container engine, the auditing egress proxy, and the provider key API are operator-provided hooks: `--runtime`, `--egress-proxy`, `--mint-cmd`/`--revoke-cmd`) |
+| Shared command lifecycle: total/per-command deadlines, process-group cancellation, bounded output | Shipped (macOS/Linux groups; other platforms direct child only) |
+| Numeric score/patience and candidate-bound acceptance guards | Shipped (opt-in workflow policy) |
+| Offline one-attempt Go creative adapter with signed synthetic review evidence | Shipped (fixtures only; live engines/models are operator integrations) |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.
 
-Every row above now has a Shipped core. The remaining work is named, inline sub-parts (the operator-provided infra hooks, live cost metering + `cost_anomaly`, the deeper metric-integrity layers, the `import_closure`/`dep_graph` context tiers, github/slack escalation channels, the kill-the-PID watchdog actuator, and git revert-to-best for the ratchet) -- not whole capabilities.
+Every row above now has a Shipped core. The remaining work is named, inline sub-parts (the operator-provided infra hooks, provider-specific metering wrappers, the deeper metric-integrity layers, the `import_closure`/`dep_graph` context tiers, github/slack escalation channels, the kill-the-PID watchdog actuator) -- not whole capabilities.
+
+## 12. Unattended workflow extension
+
+Implementation status: shipped, with offline unit, subprocess, and CLI tests. The following extension
+is opt-in; legacy set-based progression remains the default. No model-provider,
+Blender, Godot, or Python orchestration dependency belongs in the governor.
+
+All run hooks share --timeout (total), --command-timeout, and --terminate-grace.
+Zero deadlines preserve legacy unlimited time. Linux/macOS own a process group,
+TERM on deadline/cancellation, KILL after grace, wait, and close bounded pipes.
+Other platforms bound only the direct child; process-tree containment is not
+claimed there. SIGINT/SIGTERM yield a final atomic state; SIGKILL recovery is
+limited to journaled state, never an assertion that interrupted work completed.
+Command events identify phase, duration, exit, and cause, never raw tool output.
+Output capture is bounded to 1 MiB; separate 16 KiB tails are retained in private run-owned diagnostic files, never printed or stored in receipts. There are no default full logs. Collector stdout is separate from stderr. Collector stderr, nonzero,
+truncated, or malformed structured output fails closed. Identity collectors
+accept legacy lines or {"ids":[]}; valid empty stdout with no stderr remains an empty set.
+All configured guards run before the success branch (external check 0, CLI 10).
+
+The --workflow JSON contract pins metering, numeric score policy, and constrained
+candidate management before the first attempt. Monetary strict mode requires
+per-call upper bounds AND adapter/provider enforcement. Observed mode reports
+post-call totals without claiming a preventive cap. Unmetered usage has unknown
+monetary cost, with iteration/time/call/token bounds where supplied. Money uses
+integer micro-USD (six decimal places), never float accumulation. A nonzero
+--budget-usd without a metering contract is invalid. Reservations and actuals use
+stable run/iteration/phase/call IDs; unresolved reservations block restart work.
+
+Numeric progression compares domain-checked scores with distinct acceptance
+tolerance and meaningful-improvement thresholds. Best accepted score and last
+patience-resetting score are separate. Only reviewed technical successes consume
+visual patience. Technical failures consume attempts but are unreviewed. Stable
+failure IDs with improving scores do not cause oscillation in numeric mode.
+
+Candidates are confined to a configured manifest under a dedicated candidate
+root, with runtime journals/evidence outside it. The governor snapshots binary
+and untracked files as well as text, pins protected policy/config hashes, and
+restores the best technically valid candidate after rejection. There is no
+reset/clean of the user's checkout. No valid baseline means best is absent until
+a technically valid candidate is accepted. Promotion is journaled before an
+atomic best-pointer update; interrupted promotion is not accepted. Failed restore
+is terminal and invalidates exposure of the best candidate. Filesystem naming
+and hashes are not an adversarial security boundary: production builders must
+run with OS-enforced write access only to candidate content, with verifier,
+policy, controller state and critic evidence inaccessible for modification.
+
+The exact workflow schemas, comparison boundaries, restart behavior, trust boundary,
+and offline commands are normative in [docs/workflows.md](docs/workflows.md).

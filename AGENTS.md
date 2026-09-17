@@ -7,7 +7,10 @@ This is the operating contract for any AI agent or human acting like one. Follow
 
 SMALL governs state, not execution. The CLI is the only valid way to mutate `.small/`.
 
-Target version: SMALL CLI 1.0.0
+Target tooling: SMALL CLI 1.1.0 (supports protocol profiles 1.0.0 and 2.0.0).
+This checkout remains on the v1 profile unless explicitly migrated through SMALL.
+Check the resolved binary with `small version`; never use an old v1-only CLI to
+write migrated v2 state.
 
 Scope: all repos that claim SMALL compliance
 
@@ -31,7 +34,8 @@ Scope: all repos that claim SMALL compliance
 - `.small/plan.small.yml` - planned tasks
 - `.small/progress.small.yml` - append-only audit trail
 - `.small/handoff.small.yml` - resume context
-- `.small/runs/` - archived lineage
+- `.small-runs/` - local run snapshots
+- `.small-archive/` - local archived lineage
 
 ---
 

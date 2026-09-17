@@ -2,52 +2,67 @@ name: CI
 
 on:
   push:
+    branches: ['**']
   pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   go-ci:
-    runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.26.x'
           check-latest: true
-
-      - name: Go version
-        run: go version
-
-      - name: Format check (gofmt)
-        run: |
-          files=$(find . -type f -name '*.go' -not -path './vendor/*')
-          out=$(gofmt -l $files)
-          if [ -n "$out" ]; then
-            echo "Unformatted files:"
-            echo "$out"
-            exit 1
-          fi
-
+      - name: Format
+        run: test -z "$(gofmt -l cmd internal examples)"
       - name: Vet
         run: go vet ./...
-
       - name: Test
         run: go test ./...
-
-      - name: Build dogfood binary
-        run: go build -o "$RUNNER_TEMP/loopexec" ./cmd/loopexec
-
-      - name: Dogfood execution-integrity contract
+      - name: Race checks
+        run: go test -race ./internal/...
+      - name: Build proof binaries
+        run: |
+          go build -o "$RUNNER_TEMP/loopexec" ./cmd/loopexec
+          go build -o "$RUNNER_TEMP/creative-workflow" ./examples/creative-workflow
+      - name: Legacy proof
         run: ./scripts/dogfood-proof.sh "$RUNNER_TEMP/loopexec" .artifacts/dogfood
-
-      - name: Upload dogfood receipts
+      - name: Creative proof
+        run: ./scripts/creative-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/creative-workflow" .artifacts/creative
+      - name: Fetch pinned SMALL release
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/small"
+          cd "$RUNNER_TEMP/small"
+          archive="small-v1.1.0-$(go env GOOS)-$(go env GOARCH).tar.gz"
+          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0"
+          curl --fail --location --retry 2 "$base/checksums.txt" -o checksums.txt
+          curl --fail --location --retry 2 "$base/$archive" -o "$archive"
+          awk -v archive="$archive" '$2 == archive {print}' checksums.txt > selected.txt
+          test -s selected.txt
+          shasum -a 256 -c selected.txt
+          tar -xzf "$archive"
+          ./small version
+      - name: SMALL v1 and collaborative v2 compatibility
+        run: ./scripts/small-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/small/small" .artifacts/small
+      - name: Upload proof receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: loopexec-dogfood-${{ github.run_id }}
-          path: .artifacts/dogfood
+          name: loopexec-proof-${{ runner.os }}-${{ github.run_id }}
+          path: |
+            .artifacts
+            !.artifacts/**/private/**
+            !.artifacts/**/diagnostics/**
+            !.artifacts/**/.small-cache/**
           if-no-files-found: error
           include-hidden-files: true

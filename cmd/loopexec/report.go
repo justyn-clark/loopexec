@@ -15,19 +15,23 @@ import (
 // nothing (unlike replay / reexecute): it reads the durable state plus the
 // typed JSONL event log and presents them. It is the read-only audit view.
 type reportSummary struct {
-	Phase        string            `json:"phase"`
-	ExitCode     int               `json:"exit_code"`
-	Iterations   int               `json:"iterations"`
-	Check        string            `json:"check,omitempty"`
-	Workdir      string            `json:"workdir,omitempty"`
-	CostUSD      float64           `json:"cost_usd,omitempty"`
-	Model        *modelPin         `json:"model,omitempty"`
-	Sampling     *samplingPin      `json:"sampling,omitempty"`
-	ContextFiles int               `json:"context_files,omitempty"`
-	Fingerprint  *checkFingerprint `json:"fingerprint,omitempty"`
-	Events       int               `json:"events"`
-	Receipt      string            `json:"receipt,omitempty"`
-	Attested     bool              `json:"attested"`
+	Budget        *budgetBook       `json:"budget,omitempty"`
+	Numeric       *numericState     `json:"numeric,omitempty"`
+	Candidate     *candidateState   `json:"candidate,omitempty"`
+	BestCandidate string            `json:"best_candidate,omitempty"`
+	Phase         string            `json:"phase"`
+	ExitCode      int               `json:"exit_code"`
+	Iterations    int               `json:"iterations"`
+	Check         string            `json:"check,omitempty"`
+	Workdir       string            `json:"workdir,omitempty"`
+	CostUSD       float64           `json:"cost_usd,omitempty"`
+	Model         *modelPin         `json:"model,omitempty"`
+	Sampling      *samplingPin      `json:"sampling,omitempty"`
+	ContextFiles  int               `json:"context_files,omitempty"`
+	Fingerprint   *checkFingerprint `json:"fingerprint,omitempty"`
+	Events        int               `json:"events"`
+	Receipt       string            `json:"receipt,omitempty"`
+	Attested      bool              `json:"attested"`
 }
 
 // readReceiptEvents parses the typed JSONL receipt. A missing receipt is not
@@ -86,7 +90,7 @@ func newReportCmd() *cobra.Command {
 			}
 			_, attestErr := os.Stat(filepath.Join(workdir, ".loopexec", "attest-"+st.RunID+".sig"))
 
-			sum := &reportSummary{
+			sum := &reportSummary{Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate, BestCandidate: st.BestCandidatePath,
 				Phase:        st.Phase,
 				ExitCode:     haltExitCode(st.HaltReason),
 				Iterations:   st.Iteration,
@@ -146,7 +150,20 @@ func renderReport(cmd *cobra.Command, st loopState, sum *reportSummary, events [
 	if st.Fingerprint != nil {
 		fmt.Fprintf(w, "fingerprint: exit %d, sha256 %s\n", st.Fingerprint.ExitCode, shortHash(st.Fingerprint.OutputSHA256))
 	}
-	fmt.Fprintf(w, "cost: $%.2f\n", st.CostUSD)
+	if st.Budget == nil {
+		fmt.Fprintf(w, "cost: $%.2f\n", st.CostUSD)
+	} else {
+		if st.Budget.MonetaryKnown {
+			fmt.Fprintf(w, "metered cost: $%.6f (%s)\n", float64(st.Budget.MicroUSD)/1e6, st.Budget.Mode)
+		} else {
+			fmt.Fprintf(w, "monetary usage: unknown (%s)\n", st.Budget.Mode)
+		}
+		fmt.Fprintf(w, "calls: %d, tokens: %d, pending usage: %t\n", st.Budget.Calls, st.Budget.Tokens, st.Budget.Pending != nil)
+	}
+	if st.BestCandidatePath != "" {
+		fmt.Fprintf(w, "best candidate: %s\n", st.BestCandidatePath)
+	}
+
 	if st.Model != nil {
 		fmt.Fprintf(w, "model: %s/%s %s\n", st.Model.Provider, st.Model.ID, st.Model.Version)
 	}
