@@ -69,7 +69,7 @@ ready:
 			}
 			if runtime.GOOS == "linux" {
 				b, err := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
-				if errors.Is(err, os.ErrNotExist) || (err == nil && strings.Contains(string(b), ") Z ")) {
+				if errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ESRCH) || (err == nil && strings.Contains(string(b), ") Z ")) {
 					break
 				}
 				if err != nil {
