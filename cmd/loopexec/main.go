@@ -16,7 +16,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.3.0"
+	toolVersion = "0.4.0"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
@@ -119,11 +119,12 @@ type response struct {
 	Verified  *bool  `json:"verified,omitempty"`
 	Signature string `json:"signature,omitempty"`
 
-	Ops       *opsReport       `json:"ops,omitempty"`
-	Context   *contextReport   `json:"context,omitempty"`
-	Isolation *isolationReport `json:"isolation,omitempty"`
-	Report    *reportSummary   `json:"report,omitempty"`
-	Cost      *costReport      `json:"cost,omitempty"`
+	Ops         *opsReport          `json:"ops,omitempty"`
+	Context     *contextReport      `json:"context,omitempty"`
+	Isolation   *isolationReport    `json:"isolation,omitempty"`
+	Report      *reportSummary      `json:"report,omitempty"`
+	Cost        *costReport         `json:"cost,omitempty"`
+	BudgetScope *scopedBudgetReport `json:"budget_scope,omitempty"`
 
 	Errors []string `json:"errors"`
 }
@@ -202,6 +203,9 @@ func printResponse(cmd *cobra.Command, r response) error {
 	}
 	if r.Receipt != "" {
 		fmt.Fprintf(cmd.OutOrStdout(), "receipt: %s\n", r.Receipt)
+	}
+	if r.BudgetScope != nil {
+		fmt.Fprintf(cmd.OutOrStdout(), "budget_scope: %s (%d/%d calls used)\n", r.BudgetScope.Scope, r.BudgetScope.Used, r.BudgetScope.MaxCalls)
 	}
 	if r.Probe != nil {
 		p := r.Probe
@@ -621,6 +625,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newDemoCmd())
 	cmd.AddCommand(newRunCmd())
 	cmd.AddCommand(newStatusCmd())
+	cmd.AddCommand(newScopedBudgetCmd())
 	cmd.AddCommand(newCheckCmd())
 	cmd.AddCommand(newStepCmd())
 	cmd.AddCommand(newProbeCheckCmd())

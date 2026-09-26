@@ -30,6 +30,8 @@ jobs:
         run: go test ./...
       - name: Race checks
         run: go test -race ./internal/...
+      - name: Scoped budget race checks
+        run: go test -race ./cmd/loopexec -run TestScopedBudget -count=3
       - name: Build proof binaries
         run: |
           go build -o "$RUNNER_TEMP/loopexec" ./cmd/loopexec
@@ -38,6 +40,8 @@ jobs:
         run: ./scripts/dogfood-proof.sh "$RUNNER_TEMP/loopexec" .artifacts/dogfood
       - name: Creative proof
         run: ./scripts/creative-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/creative-workflow" .artifacts/creative
+      - name: Scoped budget offline proof
+        run: ./scripts/scoped-budget-proof.sh "$RUNNER_TEMP/loopexec" .artifacts/scoped-budget
       - name: Fetch pinned SMALL release
         shell: bash
         run: |

@@ -11,7 +11,7 @@ The normative contract is `SPEC.md`. The current source implements bounded execu
 
 ## Current status
 
-Implemented in v0.3.0:
+Implemented through v0.4.0:
 
 - Real bounded `run` loop: iterates `--exec` then `--check` until the check passes (`success_condition_met`), a bound trips (`max_iterations_reached`), or work fails (`execution_failure`); "no check, no loop"; computed halt reasons mapped to a stable exit-code class; typed JSONL receipts (`.loopexec/run-<id>.jsonl`) and atomic durable state.
 - `probe-check` - determinism as a 95% confidence bound (rule of three); `doctor` - precondition gate (determinism + isolation preflight).
@@ -25,6 +25,8 @@ Implemented in v0.3.0:
   numeric progress/patience, and manifest-based best-candidate restoration.
 - An offline Go creative-workflow adapter with independent simulated roles and
   candidate-bound signed reviews. No Python loop, model key, network, or engine required.
+- Opt-in shared model-call budgets across run IDs, with pinned per-phase allowances and
+  durable pre-call reservations. See the [offline adapter proof](examples/scoped-budget/README.md).
 
 - `isolate` - two-zone orchestration: detached-clone sandbox + per-run minted/revoked credential + rendered/launched exec/agent zones.
 - Global `--json` output, explicit exit-code contract, contract and unit tests, GitHub Actions CI (`gofmt`, `go vet`, `go test ./...`).
@@ -42,9 +44,9 @@ Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 ```
 
-Requires Go 1.26 or newer. For a pinned install, use `@v0.3.0`. Prebuilt archives and SHA256 checksums are available in the [v0.3.0 release](https://github.com/justyn-clark/loopexec/releases/tag/v0.3.0).
+Requires Go 1.26 or newer. For a pinned install, use `@v0.4.0`. Prebuilt archives and SHA256 checksums are available in the [v0.4.0 release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.0).
 
-`loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.3.0.md) for compatibility and platform limits.
+`loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.4.0.md) for compatibility and platform limits.
 
 SMALL is optional. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
 
@@ -91,8 +93,9 @@ The implemented CLI returns deterministic human or JSON output.
 - `loopexec replay` / `attest` / `report` / `reexecute`
 - `loopexec escalate` / `watch` / `ack`
 - `loopexec build-context` / `isolate` / `inspect-cost`
+- `loopexec budget status` / `budget reserve` for cross-run child-call limits
 
-See `docs/cli.md` for flags and exit semantics.
+See `docs/cli.md` for flags and exit semantics. The opt-in scoped budget reserves a child model call before an adapter launches it; changing the run ID does not reset the allowance. It counts calls, not tokens or dollars.
 
 ### Global flag
 
@@ -113,7 +116,7 @@ Example JSON response (a converged run):
 ```json
 {
   "tool": "loopexec",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "halted",
   "run_id": "local",
   "iteration": 3,

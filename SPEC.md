@@ -185,6 +185,7 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Two-zone isolation orchestration (`isolate`): detached-clone sandbox + per-run minted/revoked credential (0600 env-file, never on the argv) + rendered/launched exec-zone (`network:none`) and agent-zone (egress-allowlist) (section 7) | Shipped (orchestration; the container engine, the auditing egress proxy, and the provider key API are operator-provided hooks: `--runtime`, `--egress-proxy`, `--mint-cmd`/`--revoke-cmd`) |
 | Shared command lifecycle: total/per-command deadlines, process-group cancellation, bounded output | Shipped (macOS/Linux groups; other platforms direct child only) |
 | Numeric score/patience and candidate-bound acceptance guards | Shipped (opt-in workflow policy) |
+| Shared scoped model-call budget | Shipped (opt-in call-count gate across run IDs; independent of monetary metering) |
 | Offline one-attempt Go creative adapter with signed synthetic review evidence | Shipped (fixtures only; live engines/models are operator integrations) |
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.
@@ -217,6 +218,11 @@ monetary cost, with iteration/time/call/token bounds where supplied. Money uses
 integer micro-USD (six decimal places), never float accumulation. A nonzero
 --budget-usd without a metering contract is invalid. Reservations and actuals use
 stable run/iteration/phase/call IDs; unresolved reservations block restart work.
+A separate opt-in scoped call budget lets adapters reserve individual child model calls
+across run IDs before launch. Its absolute shared store pins the scope policy,
+counts crash/failed-launch reservations conservatively, and refuses changed
+limits or damaged records. It caps call count by scope and phase, not tokens or
+dollars; it never substitutes for provider-enforced monetary limits.
 
 Numeric progression compares domain-checked scores with distinct acceptance
 tolerance and meaningful-improvement thresholds. Best accepted score and last

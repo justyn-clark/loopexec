@@ -52,6 +52,10 @@ This document defines the command surface and machine contract for loopexec.
   - Orchestrate two-zone isolation (SPEC section 7): a hardened **detached-clone** sandbox (no origin, no host hooks, no inherited credentials), a **per-run minted/revoked credential** (injected via a `0600 --env-file`, never on the argv / in the receipt; `--mint-cmd` requires `--revoke-cmd`), and a rendered exec-zone (`--network none`) + agent-zone (egress-allowlist via `--egress-proxy`) launch plan. `--execute --confirm` launches via `--runtime` (default `docker`); otherwise the plan is rendered only. Image/run-id inputs are validated and a `--` separator stops docker flag parsing (no argument-injection). A failed zone surfaces as `execution_failure` (40). The container engine, the auditing egress proxy, and the provider key API are operator-provided hooks.
 - `loopexec inspect-cost`
   - Analyze a per-iteration cost ledger against a run-total cap and a sigma anomaly bound. This command analyzes supplied costs; workflow runs meter provider-neutral actuals through adapter hooks. Inputs: `--ledger <file>` (one USD per line) and/or `--cost <usd>` (repeatable). `--budget-usd` is the run-total hard cap (over it halts `budget_exceeded`, 18); `--sigma N` (default 3) flags any iteration exceeding the rolling mean + N standard deviations of the iterations before it (`cost_anomaly`, 18). A flat ledger has no variance, so it raises no anomaly; negative costs and an empty ledger are rejected (`invariant_failed`, 20). Provider-specific parsing lives in adapters; `run --workflow` now reconciles their usage and enforces reservations/allowances.
+- `loopexec budget status` / `loopexec budget reserve`
+  - Opt-in shared call allowance for child model subprocesses across independent run IDs. Both require `--store-dir <absolute-existing-directory>` and `--policy <file>`. Reserve also requires `--phase <name>` and a unique `--call-id <id>`; call it immediately before launching that child. A reservation consumes its slot even if the child later fails, and a duplicate call ID is rejected rather than granting a free retry.
+  - Policy JSON: `{"schema_version":1,"scope":"studio-floor-rack","max_calls":2,"phase_limits":{"builder":1,"critic":1}}`. The first reservation pins this policy in the shared store. Later runs must supply the same policy; a changed limit or damaged ledger fails closed. A zero limit blocks all calls. The store is independent of the run workdir, and `status` is read-only.
+  - Exceeding the total or phase allowance returns `budget_exceeded` (18). Duplicate calls, changed policy, or malformed records return `cost_anomaly` (18). This is a call-count gate, not a provider token or monetary cap; adapters must still report usage through workflow metering where available.
 - `loopexec status`
   - Show loop status.
 - `loopexec check`
@@ -82,7 +86,7 @@ Example:
 ```json
 {
   "tool": "loopexec",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "ok",
   "run_id": "local",
   "iteration": 1,

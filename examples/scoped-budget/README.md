@@ -1,0 +1,9 @@
+# Scoped model-call budget adapter
+
+This offline example shows where a project adapter must reserve a model-call slot: immediately before starting its child process. It uses `/bin/sh` as a harmless stand-in, so the proof spends no tokens, makes no network request, and requires no model credentials.
+
+Build `loopexec` and run `scripts/scoped-budget-proof.sh /absolute/path/to/loopexec /fresh/output/dir` from the repository root. The proof starts a builder under `run-a` and a critic under `run-b`, then attempts a builder under `run-c`. The third command exits with `budget_exceeded` (18), and the proof checks that its child never starts. The resulting `status.json` and reservation files are inspectable.
+
+For a real adapter, call `adapter.sh <loopexec> <absolute-shared-store> <policy.json> <run-id> <phase> -- <model-command> [args...]`. The store must live outside individual run workdirs and survive restarts. Keep one stable scope per asset, and never create a new scope or raise the policy to erase spent calls. A reservation is consumed even when the child fails or the process is interrupted. The adapter must still capture the model's real token and monetary usage when available: the scoped budget enforces call counts only.
+
+The home-3D-world project currently has a JavaScript guard in `tools/loopexec/spend-guard.mjs`. Before replacing it, finish any active asset under that guard. For a new asset, choose its stable asset ID as the LoopExec scope, map `default_max_model_calls_per_asset` and `asset_limits` to `max_calls`, and carry over all `phase_limits` (including zero-call phases). Keep the old ledger read-only and migrate each existing reservation into the new store before any new model launch; otherwise a fresh store could incorrectly restore spent calls. Verify `budget status --json` reports the expected used and remaining counts before enabling the new adapter. Never treat a migration as permission to reset the asset budget.
