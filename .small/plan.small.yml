@@ -46,3 +46,54 @@ tasks:
     - id: task-15
       title: Purge UPDATES working notes from the repo and git history (vaulted privately); strip in-repo references; ASCII-clean the Go source
       status: completed
+    - id: task-16
+      title: Audit LoopExec against LoopX and prepare evidence-safe public response
+      status: completed
+    - id: task-17
+      title: Productize LoopExec v0.3 demo and dogfood proof pack
+      status: completed
+    - id: task-18
+      title: Include hidden dogfood receipts in CI artifact
+      status: completed
+    - id: task-19
+      title: Sync merged main and remove feature branch
+      status: completed
+    - id: task-20
+      title: 'Stage A: bounded subprocess lifecycle and fail-closed collectors'
+      status: completed
+    - id: task-21
+      title: 'Stage B: exact in-loop usage and reservation budgets'
+      status: completed
+    - id: task-22
+      title: 'Stage C: constrained candidate checkpoints and rollback'
+      status: completed
+    - id: task-23
+      title: 'Stage D: numeric progress and reviewed-revision patience'
+      status: completed
+    - id: task-24
+      title: 'Stage E: offline Go creative workflow adapter and scenarios'
+      status: completed
+    - id: task-25
+      title: Acceptance gates, compatibility documentation, and SMALL handoff
+      status: completed
+    - id: task-26
+      title: Assess release readiness with a real local documentation workflow
+      status: completed
+    - id: task-27
+      title: Prepare SMALL evolution handoff for session-safe state and Git reconciliation
+      status: completed
+    - id: task-28
+      title: Verify LoopExec integration with released SMALL v1.1.0 and collaborative sessions
+      status: completed
+    - id: task-29
+      title: Prepare and validate LoopExec v0.3.0 release candidate and binary packages
+      status: completed
+    - id: task-30
+      title: Publish verified LoopExec v0.3.0 and verify installation and release assets
+      status: completed
+    - id: task-31
+      title: Add cross-run model-call reservations with shared scoped budget
+      status: completed
+    - id: task-32
+      title: Release v0.4.0 shared model-call budgets with offline adapter proof and migration guide
+      status: completed
