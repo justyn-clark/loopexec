@@ -1967,3 +1967,90 @@ entries:
       status: completed
       task_id: task-32
       timestamp: "2026-09-27T01:14:24.284407000Z"
+    - command: 'git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml && git commit -m ''chore: sync canonical SMALL history through v0.4.0'''
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021052.553804000Z.txt
+      command_sha256: 8c8fd2926bd9557347b87fc48aafb2c26f536b1d638112451b7d91fc2c80e617
+      command_summary: 'git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml && git commit -m ''chore: sync canonical SMALL history through v0.4.0'''
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-27T02:10:52.553804000Z"
+    - command: git branch codex/sync-small-history-2026-09 48c0ed1 && git push -u origin codex/sync-small-history-2026-09
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021107.370959000Z.txt
+      command_sha256: 9b8aebea3971b2603148d278f1e6405c2c5e77346e1f1f2057248f935da0d68d
+      command_summary: git branch codex/sync-small-history-2026-09 48c0ed1 && git push -u origin codex/sync-small-history-2026-09
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-27T02:11:07.370959000Z"
+    - command: gh pr create --repo justyn-clark/loopexec --base main --head codex/sync-small-history-2026-09 --title 'Sync canonical SMALL history through v0.4.0' --body-file /private/tmp/loopexec-small-sync-pr.md
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021137.863122000Z.txt
+      command_sha256: 2bb9c38713e5de2f6f89d4f8ed00a8649799332e6a187d8b0e5ae31ad759e414
+      command_summary: gh pr create --repo justyn-clark/loopexec --base main --head codex/sync-small-history-2026-09 --title 'Sync canonical SMALL history through v0.4.0' --body-file /private/tmp/loopexec-small-sync-pr.md
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-27T02:11:37.863122000Z"
+    - command: gh pr merge 5 --repo justyn-clark/loopexec --merge
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021340.636037000Z.txt
+      command_sha256: 4cf280422c858edda1e3196a6696f1a24534f3d434a3a4c7a00fc89e4c63030a
+      command_summary: gh pr merge 5 --repo justyn-clark/loopexec --merge
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-27T02:13:40.636037000Z"
+    - evidence: Added task task-33 via small plan --add
+      notes: Enforce canonical SMALL progress for LoopExec development changes in CI
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-33
+      timestamp: "2026-09-27T02:15:02.269538000Z"
+    - evidence: Adding repository CI gate for development diffs without canonical SMALL progress, plus strict validation of tracked SMALL state
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-33
+      timestamp: "2026-09-27T02:15:19.592283000Z"
+    - command: cp /private/tmp/loopexec-small-ci-gate.sh scripts/check-small-sync.sh && chmod +x scripts/check-small-sync.sh && python3 /private/tmp/loopexec-small-ci-edit.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021558.379425000Z.txt
+      command_sha256: f91b3afe84ff8e646906202dbf2a749894ca880cc2483b4699535f7502647b93
+      command_summary: cp /private/tmp/loopexec-small-ci-gate.sh scripts/check-small-sync.sh && chmod +x scripts/check-small-sync.sh && python3 /private/tmp/loopexec-small-ci-edit.py
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:15:58.379425000Z"
+    - command: /private/tmp/loopexec-small-gate-proof.sh && git diff --check && small check --strict
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021640.375841000Z.txt
+      command_sha256: 6e2fdd321db6785f83324da9626904265a92d048ebb930b73637ec91bde1296b
+      command_summary: /private/tmp/loopexec-small-gate-proof.sh && git diff --check && small check --strict
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:16:40.375841000Z"
+    - command: /private/tmp/loopexec-small-v11-check.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021724.398581000Z.txt
+      command_sha256: 6062ea9d96dd8d05fd36e7d125d24b031a82824093d669ca89d95d61bce0c9e9
+      command_summary: /private/tmp/loopexec-small-v11-check.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:17:24.398581000Z"
+    - evidence: Added CI co-change gate requiring .small/progress.small.yml for source or documentation PR/main diffs, plus pinned SMALL v1.1.0 strict check; local negative/positive gate proof, git diff check, and pinned CLI strict validation passed
+      notes: PR and remote CI publication are the remaining transport steps; canonical development evidence is recorded before commit.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:17:48.523074000Z"
