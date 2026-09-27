@@ -191,3 +191,1779 @@ entries:
       status: completed
       task_id: task-15
       timestamp: "2026-06-27T01:35:48.227929000Z"
+    - command: /bin/bash /tmp/loopexec-local-refresh.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260706T234409.145706000Z.txt
+      command_sha256: c8e39125fc0a92b738373064ab31bcad933c26ac2bd144ae85efd0449d055ff4
+      command_summary: /bin/bash /tmp/loopexec-local-refresh.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: meta/historical/task-16
+      timestamp: "2026-07-06T23:44:09.145706000Z"
+    - evidence: Rewrote orphan progress task_ids for replayId scope f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96 (operational=0 historical=1 unknown=0)
+      notes: 'original hashes: task-16:e8fbefcd984c75618aaf75cf439368b15fd289f296d373fb81b96bd0a14d2c31'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: meta/reconcile-plan
+      timestamp: "2026-07-06T23:44:50.485367000Z"
+    - evidence: Added task task-16 via small plan --add
+      notes: Audit LoopExec against LoopX and prepare evidence-safe public response
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-16
+      timestamp: "2026-08-05T14:09:54.078974000Z"
+    - evidence: Started evidence audit of public GitHub chronology, repository contracts, distinctive terminology, product surfaces, and public-campaign risk
+      notes: Read-only product analysis; no product code or publication changes authorized
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-16
+      timestamp: "2026-08-05T14:09:59.816781000Z"
+    - command: git clone --depth 1 --filter=blob:none https://github.com/huangruiteng/loopx.git /tmp/loopexec-loopx-audit-20260805
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141026.385739000Z.txt
+      command_sha256: 318b84293d5d014c5c1bac6f273c0424eb30812671feec37839e1738d25be2bc
+      command_summary: git clone --depth 1 --filter=blob:none https://github.com/huangruiteng/loopx.git /tmp/loopexec-loopx-audit-20260805
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:10:26.385739000Z"
+    - command: GOTOOLCHAIN=auto go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141454.400573000Z.txt
+      command_sha256: b9d9b0ad1bfde75eabdf6dbc29190e8cfd2baf63a5fc5f24e68c13d4023d58ea
+      command_summary: GOTOOLCHAIN=auto go test ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:14:54.400573000Z"
+    - command: git -C /tmp/loopexec-loopx-audit-20260805 fetch --depth=1 origin 7dcdc9dc79226d157ba57d3e8ff4bae664f020c1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141504.058639000Z.txt
+      command_sha256: 2f3d89c5b2f13d6a484d9a25910daa151d4e34106d3254b9a50a385d64a5525b
+      command_summary: git -C /tmp/loopexec-loopx-audit-20260805 fetch --depth=1 origin 7dcdc9dc79226d157ba57d3e8ff4bae664f020c1
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:15:04.058639000Z"
+    - command: git -C /tmp/loopexec-loopx-audit-20260805 fetch --unshallow --filter=blob:none origin main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141544.464770000Z.txt
+      command_sha256: 15eb040b4cc97f918d109f3d9f266ca62b362c743aa13cd7c88f981adba0d608
+      command_summary: git -C /tmp/loopexec-loopx-audit-20260805 fetch --unshallow --filter=blob:none origin main
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:15:44.464770000Z"
+    - command: kill 84743 84746
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141816.749793000Z.txt
+      command_sha256: 6cc10565a5f9f1b99a987f95960434a6de2758f7e1ffddda4e68a1b21aba6982
+      command_summary: kill 84743 84746
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:18:16.749793000Z"
+    - command: kill 84747
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260805T141824.565990000Z.txt
+      command_sha256: 1dae7aad50d2f0fbdfe46bd5638f46e47efb7bd36c4999c843afb9d80d19bf7f
+      command_summary: kill 84747
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:18:24.565990000Z"
+    - evidence: 'Audited dated public history and current products: LoopExec public 2026-01-20 and v0.1.0 on 2026-02-22; LoopX first public commit 2026-05-31 and rename 2026-06-21. Dated initial snapshots shared zero exact five-word sequences; current 24,854-gram scan found only two generic seven-word overlaps. No LoopExec references appeared in LoopX code, issues, commits, stars, or forks. LoopExec 83-test Go suite passed; LoopX current main Full Public Smokes failed in four checks. Prepared evidence-safe X thread and adoption roadmap; no product code or external posts changed.'
+      notes: Public priority is strong; direct copying or access is not established. Preserve factual chronology and avoid targeted thief allegations.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-16
+      timestamp: "2026-08-05T14:21:50.524874000Z"
+    - evidence: Added task task-17 via small plan --add
+      notes: Productize LoopExec v0.3 demo and dogfood proof pack
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-17
+      timestamp: "2026-08-14T04:33:12.830588000Z"
+    - evidence: 'Starting canonical v0.3 productization from Drive acceptance contract: Go 1.26.5 baseline, real-loop demo, three-scenario dogfood proof, CI artifacts, onboarding, full validation, and scoped GitHub delivery'
+      notes: Preserve pre-existing uncommitted SMALL task-16 state; do not reset or stage unrelated changes
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-17
+      timestamp: "2026-08-14T04:33:16.885061000Z"
+    - command: mktemp -d /tmp/loopexec-v03-ref.XXXXXX
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043325.838626000Z.txt
+      command_sha256: 3a764d7fae199600161a927356c4dc90d925244e546ab056762e9640b2045f41
+      command_summary: mktemp -d /tmp/loopexec-v03-ref.XXXXXX
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:33:25.838626000Z"
+    - command: base64 --decode > /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043343.894642000Z.txt
+      command_sha256: 1168760511bbb58beeeda1e5cb9ea1aec6c55e223a9102f8fc09343ba3e7bfd1
+      command_summary: base64 --decode > /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:33:43.894642000Z"
+    - command: base64 --decode .codex-tmp-loopexec-productized-source.b64 > /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip && base64 --decode .codex-tmp-loopexec-proof-pack.b64 > /tmp/loopexec-v03-r...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043608.829172000Z.txt
+      command_sha256: debe7260d2b39768887542081181614afc447f17f30995b075eb3be222f2fa17
+      command_summary: base64 --decode .codex-tmp-loopexec-productized-source.b64 > /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip && base64 --decode .codex-tmp-loopexec-proof-pack.b64 > /tmp/loopexec-v03-r...
+      evidence: Command failed with exit code 64
+      notes: 'apply: failed with exit code 64'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-17
+      timestamp: "2026-08-14T04:36:08.829172000Z"
+    - command: base64 -D -i .codex-tmp-loopexec-productized-source.b64 -o /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip && base64 -D -i .codex-tmp-loopexec-proof-pack.b64 -o /tmp/loopexec-v03-ref.K...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043616.404499000Z.txt
+      command_sha256: 8bb19226fcf8bb217308f8b2609b884fb83fa15cda7bc67dca6ff86cb1b66f7a
+      command_summary: base64 -D -i .codex-tmp-loopexec-productized-source.b64 -o /tmp/loopexec-v03-ref.Kgo6OW/loopexec-productized-source.zip && base64 -D -i .codex-tmp-loopexec-proof-pack.b64 -o /tmp/loopexec-v03-ref.K...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:36:16.404499000Z"
+    - command: rm -- .codex-tmp-loopexec-productized-source.b64 .codex-tmp-loopexec-proof-pack.b64
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043625.419044000Z.txt
+      command_sha256: eac79aaa23297e0525b498119059e06de4140df468f89aa70d5078838cc9ed8b
+      command_summary: rm -- .codex-tmp-loopexec-productized-source.b64 .codex-tmp-loopexec-proof-pack.b64
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:36:25.419044000Z"
+    - command: GOTOOLCHAIN=go1.26.5 go version
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043743.379260000Z.txt
+      command_sha256: b97ba1b4c09e0ba6197424203125d10088eb862e99e62253ea16748617b52d31
+      command_summary: GOTOOLCHAIN=go1.26.5 go version
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:37:43.379260000Z"
+    - command: set -e; loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; loopexec_fmt_out="$(git ls-files -z "*.go" | xargs -0 "$loopexec_goroot/bin/gofmt" -l)"; if [ -n "$loopexec_fmt_out" ]; then printf ...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043837.894149000Z.txt
+      command_sha256: ed67fa45536541f3e28429d8b18f94d3908a301b2e837ce4805cdce8949e95e0
+      command_summary: set -e; loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; loopexec_fmt_out="$(git ls-files -z "*.go" | xargs -0 "$loopexec_goroot/bin/gofmt" -l)"; if [ -n "$loopexec_fmt_out" ]; then printf ...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:38:37.894149000Z"
+    - command: set -e; loopexec_baseline_json=/tmp/loopexec-v03-ref.Kgo6OW/baseline-go-test.jsonl; GOTOOLCHAIN=go1.26.5 go test -json -count=1 ./... > "$loopexec_baseline_json"; loopexec_test_pattern="\"Action\":...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T043937.177120000Z.txt
+      command_sha256: e0b70d1de04c63037b5bc780da879921c0a0a15cea5dc2f1d25977ee0742692c
+      command_summary: set -e; loopexec_baseline_json=/tmp/loopexec-v03-ref.Kgo6OW/baseline-go-test.jsonl; GOTOOLCHAIN=go1.26.5 go test -json -count=1 ./... > "$loopexec_baseline_json"; loopexec_test_pattern="\"Action\":...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:39:37.177120000Z"
+    - command: git switch -c agent/loopexec-v0.3-productization
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044009.336667000Z.txt
+      command_sha256: 1685889429a2735f513966894c3521907e5c89f009d75ba4bb2922d2c32c84b1
+      command_summary: git switch -c agent/loopexec-v0.3-productization
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:40:09.336667000Z"
+    - command: loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; "$loopexec_goroot/bin/gofmt" -w cmd/loopexec/demo.go cmd/loopexec/demo_test.go cmd/loopexec/main.go cmd/loopexec/receipt.go; chmod 0755 scri...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044531.183125000Z.txt
+      command_sha256: dcd03e2a37dc411af56f428bfdcd17c8a41b7aaf3bf712de262d665eabe48559
+      command_summary: loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; "$loopexec_goroot/bin/gofmt" -w cmd/loopexec/demo.go cmd/loopexec/demo_test.go cmd/loopexec/main.go cmd/loopexec/receipt.go; chmod 0755 scri...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:45:31.183125000Z"
+    - command: GOTOOLCHAIN=go1.26.5 go test ./cmd/loopexec -run "TestContractDemoJSON|TestPrepareDemoWorkspacePreservesReservedPaths|TestReplayVerifiesAndDetectsMismatch" -count=1 && bash -n scripts/dogfood-proof.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044552.088091000Z.txt
+      command_sha256: e6bdb39be304dc2ca58f264418de4177f76827cd533ecd4db3a27f4ce99d9bb2
+      command_summary: GOTOOLCHAIN=go1.26.5 go test ./cmd/loopexec -run "TestContractDemoJSON|TestPrepareDemoWorkspacePreservesReservedPaths|TestReplayVerifiesAndDetectsMismatch" -count=1 && bash -n scripts/dogfood-proof.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:45:52.088091000Z"
+    - command: GOTOOLCHAIN=go1.26.5 go build -o /tmp/loopexec-v03-ref.Kgo6OW/loopexec-under-test ./cmd/loopexec && ./scripts/dogfood-proof.sh /tmp/loopexec-v03-ref.Kgo6OW/loopexec-under-test /tmp/loopexec-v03-ref...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044603.358915000Z.txt
+      command_sha256: c6827d1b7dc0bde56e2c6e916663d7012e2d3e0ac4994a0611e9dc75e4bce23d
+      command_summary: GOTOOLCHAIN=go1.26.5 go build -o /tmp/loopexec-v03-ref.Kgo6OW/loopexec-under-test ./cmd/loopexec && ./scripts/dogfood-proof.sh /tmp/loopexec-v03-ref.Kgo6OW/loopexec-under-test /tmp/loopexec-v03-ref...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:46:03.358915000Z"
+    - command: set -e; loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; loopexec_fmt_out="$(find . -type f -name "*.go" -not -path "./vendor/*" -print0 | xargs -0 "$loopexec_goroot/bin/gofmt" -l)"; if [ -...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044824.544477000Z.txt
+      command_sha256: f130a0c13f4c12b599ab3efe782d4c9ea91c78a5df5d3dc278db6f5fc611b7a1
+      command_summary: set -e; loopexec_goroot="$(GOTOOLCHAIN=go1.26.5 go env GOROOT)"; loopexec_fmt_out="$(find . -type f -name "*.go" -not -path "./vendor/*" -print0 | xargs -0 "$loopexec_goroot/bin/gofmt" -l)"; if [ -...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:48:24.544477000Z"
+    - command: set -e; loopexec_final_json=/tmp/loopexec-v03-ref.Kgo6OW/final-go-test.jsonl; GOTOOLCHAIN=go1.26.5 go test -json -count=1 ./... > "$loopexec_final_json"; loopexec_top_level=$(jq -s "[.[] | select(....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044914.386692000Z.txt
+      command_sha256: 7f5bef5f8ca0eba41e2cd36203c8f95a44c59e7925394da670dd9310467bb023
+      command_summary: set -e; loopexec_final_json=/tmp/loopexec-v03-ref.Kgo6OW/final-go-test.jsonl; GOTOOLCHAIN=go1.26.5 go test -json -count=1 ./... > "$loopexec_final_json"; loopexec_top_level=$(jq -s "[.[] | select(....
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:49:14.386692000Z"
+    - command: set -e; GOTOOLCHAIN=go1.26.5 go build -o /tmp/loopexec-v03-ref.Kgo6OW/final-bin ./cmd/loopexec; /tmp/loopexec-v03-ref.Kgo6OW/final-bin demo --json --workdir /tmp/loopexec-v03-ref.Kgo6OW/final-demo ...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044939.960583000Z.txt
+      command_sha256: 4c058f0cb2a0c2c5e3b3263670fd43f9113c3f6bbc1e98021893cf4273d3b73b
+      command_summary: set -e; GOTOOLCHAIN=go1.26.5 go build -o /tmp/loopexec-v03-ref.Kgo6OW/final-bin ./cmd/loopexec; /tmp/loopexec-v03-ref.Kgo6OW/final-bin demo --json --workdir /tmp/loopexec-v03-ref.Kgo6OW/final-demo ...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:49:39.960583000Z"
+    - command: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.go-ci.steps[] | select(.name == \"Setup Go\") | .with.\"go-version\" == \"1.26.x\"" .github/...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T044955.510705000Z.txt
+      command_sha256: cbaae9af22e15a3a814177c1dd1f9e7a1a9d16cc669451d0eef3c1352f2ec26e
+      command_summary: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.go-ci.steps[] | select(.name == \"Setup Go\") | .with.\"go-version\" == \"1.26.x\"" .github/...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-17
+      timestamp: "2026-08-14T04:49:55.510705000Z"
+    - command: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.\"go-ci\".steps[] | select(.name == \"Setup Go\") | .with.\"go-version\" == \"1.26.x\"" .git...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045008.753112000Z.txt
+      command_sha256: 83b5b8bef3c18a02acab1357b96f7d225fa5ff82ddbe48bb59ef4bb7653c1b70
+      command_summary: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.\"go-ci\".steps[] | select(.name == \"Setup Go\") | .with.\"go-version\" == \"1.26.x\"" .git...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-17
+      timestamp: "2026-08-14T04:50:08.753112000Z"
+    - command: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.\"go-ci\".steps[] | select(.name == \"Setup Go\") | (.with.\"go-version\" == \"1.26.x\") and...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045045.036674000Z.txt
+      command_sha256: e047a5122820b4a2877281ab6042efda872a3ba992de7563b525a449600252ed
+      command_summary: set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; yq -e ".jobs.\"go-ci\".steps[] | select(.name == \"Setup Go\") | (.with.\"go-version\" == \"1.26.x\") and...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-17
+      timestamp: "2026-08-14T04:50:45.036674000Z"
+    - command: 'set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; rg -F "go-version: ''1.26.x''" .github/workflows/ci.yml > /dev/null; rg -F "if: always()" .github/workflows...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045140.505479000Z.txt
+      command_sha256: 5c0a2dcf8eeff2b6ca8aa2dd77dec988773a8335efa4141f05997ae731c8d683
+      command_summary: 'set -e; bash -n scripts/dogfood-proof.sh; yq eval "." .github/workflows/ci.yml > /dev/null; rg -F "go-version: ''1.26.x''" .github/workflows/ci.yml > /dev/null; rg -F "if: always()" .github/workflows...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:51:40.505479000Z"
+    - command: git fetch origin main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045206.006297000Z.txt
+      command_sha256: 05e2077c251d64162391621ca90e0b72d0016d41f428112323f1c7df61b1f0c3
+      command_summary: git fetch origin main
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:52:06.006297000Z"
+    - command: git add -- .github/workflows/ci.yml README.md cmd/loopexec/demo.go cmd/loopexec/demo_test.go cmd/loopexec/main.go cmd/loopexec/receipt.go docs/cli.md scripts/dogfood-proof.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045220.393222000Z.txt
+      command_sha256: 0621946e9e4a09d44b773f2fb683890bddfd3dc3f543958896932046dce1ed07
+      command_summary: git add -- .github/workflows/ci.yml README.md cmd/loopexec/demo.go cmd/loopexec/demo_test.go cmd/loopexec/main.go cmd/loopexec/receipt.go docs/cli.md scripts/dogfood-proof.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:52:20.393222000Z"
+    - command: git add -- scripts/dogfood-proof.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045241.491806000Z.txt
+      command_sha256: 65699b48a8ce7d57e7da2740c3f575acc6b0568a848628fa6d8e32b78ad5864a
+      command_summary: git add -- scripts/dogfood-proof.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:52:41.491806000Z"
+    - command: bash -n scripts/dogfood-proof.sh; git diff --cached --check
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045250.388908000Z.txt
+      command_sha256: 96adc5b52144c24d735a2ab9de12ddbd6450b9619ecb564a98820ff974e46694
+      command_summary: bash -n scripts/dogfood-proof.sh; git diff --cached --check
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:52:50.388908000Z"
+    - command: set -e; if git diff --cached --name-only | rg -q "(^|/)\.env($|\.)"; then printf "forbidden env file staged\n" >&2; exit 1; fi; if git diff --cached --no-ext-diff | rg -q "BEGIN (RSA |EC |OPENSSH )...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045318.531573000Z.txt
+      command_sha256: b32aba359e3a946d7ead3e6fe0868799c23e19dcfed87630227cb54d6d15471a
+      command_summary: set -e; if git diff --cached --name-only | rg -q "(^|/)\.env($|\.)"; then printf "forbidden env file staged\n" >&2; exit 1; fi; if git diff --cached --no-ext-diff | rg -q "BEGIN (RSA |EC |OPENSSH )...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:53:18.531573000Z"
+    - command: 'git commit -m ''feat(cli): add deterministic demo and dogfood proof'''
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045324.320492000Z.txt
+      command_sha256: 8d64601973dfd646127d6665419b0f0f38d56c16993024a2695649927c060e2c
+      command_summary: 'git commit -m ''feat(cli): add deterministic demo and dogfood proof'''
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:53:24.320492000Z"
+    - command: git push -u origin agent/loopexec-v0.3-productization
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045353.285292000Z.txt
+      command_sha256: bbe095e27e26b41b635ef697527e8ab84759468750d862aef1c789abb278233b
+      command_summary: git push -u origin agent/loopexec-v0.3-productization
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:53:53.285292000Z"
+    - command: 'gh pr create --repo justyn-clark/loopexec --base main --head agent/loopexec-v0.3-productization --draft --title ''feat(cli): productize deterministic demo and dogfood proof'' --body-file .codex-pr-bo...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260814T045459.155428000Z.txt
+      command_sha256: 598a59d545d87c93f9988ffe02556a436e006893c6127f01e7506ab6b415f131
+      command_summary: 'gh pr create --repo justyn-clark/loopexec --base main --head agent/loopexec-v0.3-productization --draft --title ''feat(cli): productize deterministic demo and dogfood proof'' --body-file .codex-pr-bo...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:54:59.155428000Z"
+    - evidence: 'Implemented canonical LoopExec v0.3 productization in eight scoped files: real-loop demo with shared replay verifier and collision-safe workdir, contract/unit coverage, strict three-scenario dogfood proof, Go 1.26.x CI artifact upload, and onboarding docs. Official Go 1.26.5 gofmt/vet/build passed; 85 top-level tests and 90 test/subtest events passed; fresh demo verified; dogfood returned DOGFOOD_OK; CI YAML, secret scan, diff check, and strict governance passed. Commit e8585574aa3c4e59c01adc55b7c7cbbefa7e1011 pushed on agent/loopexec-v0.3-productization; draft PR https://github.com/justyn-clark/loopexec/pull/2 is open, unmerged, CLEAN, with both go-ci runs and GitGuardian green plus proof artifact loopexec-dogfood-31771351342.'
+      notes: Preserved and excluded pre-existing uncommitted SMALL task-16 state from the commit. GitHub app PR creation returned 403, so authenticated gh fallback created the draft PR. CI emits a non-blocking Node.js 20 action-runtime deprecation annotation while forcing Node.js 24; acceptance-required upload-artifact@v4 remains green.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-17
+      timestamp: "2026-08-14T04:58:22.259632000Z"
+    - evidence: Added task task-18 via small plan --add
+      notes: Include hidden dogfood receipts in CI artifact
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-18
+      timestamp: "2026-08-17T00:20:35.951270000Z"
+    - evidence: 'Starting: include hidden .loopexec receipts and state snapshots in the dedicated CI dogfood artifact'
+      notes: One-line workflow correction; preserve all unrelated worktree changes
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-18
+      timestamp: "2026-08-17T00:20:49.223967000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .github/workflows/ci.yml @@ name: loopexec-dogfood-${{ github.run_id }} path: .artifacts/dogfood if-no-files-found: error + include-hidden-fil...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002053.780158000Z.txt
+      command_sha256: de3679eb58c4809c1826a487a0fe9f08e4d435e184bf61e00d6f7ccac420c878
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .github/workflows/ci.yml @@ name: loopexec-dogfood-${{ github.run_id }} path: .artifacts/dogfood if-no-files-found: error + include-hidden-fil...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:20:53.780158000Z"
+    - command: go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002135.995260000Z.txt
+      command_sha256: 3d4b424f6fcd11f530525ddea9a46aeaffec7c883b6c04b6baf7df36bf47800b
+      command_summary: go vet ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:21:35.995260000Z"
+    - command: go test -count=1 ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002229.408763000Z.txt
+      command_sha256: a8496b1836c1e6e44f6f4dfa908c3942ddebce2e0be73e5411aba70c6471789a
+      command_summary: go test -count=1 ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:22:29.408763000Z"
+    - command: set -eu loopexec_validation_dir=$(mktemp -d) trap 'rm -rf "$loopexec_validation_dir"' EXIT HUP INT TERM go build -o "$loopexec_validation_dir/loopexec" ./cmd/loopexec ./scripts/dogfood-proof.sh "$l...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002244.071971000Z.txt
+      command_sha256: 3a9255926f6e90bb20a4215bebc73183ba542979492685dd1fcd88153783b5fa
+      command_summary: set -eu loopexec_validation_dir=$(mktemp -d) trap 'rm -rf "$loopexec_validation_dir"' EXIT HUP INT TERM go build -o "$loopexec_validation_dir/loopexec" ./cmd/loopexec ./scripts/dogfood-proof.sh "$l...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:22:44.071971000Z"
+    - command: git add -- .github/workflows/ci.yml
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002300.196230000Z.txt
+      command_sha256: 2a5947e3a52998635cfb4c3d1185e003239b985d058ee1b5eae4600f772a44c8
+      command_summary: git add -- .github/workflows/ci.yml
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:23:00.196230000Z"
+    - command: 'git commit -m ''fix(ci): include dogfood receipts in artifact'''
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002310.416464000Z.txt
+      command_sha256: d93e7b231935538f0a2ce00dc435e4d74121af6280a590ce412c0ebb9bc85fe4
+      command_summary: 'git commit -m ''fix(ci): include dogfood receipts in artifact'''
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:23:10.416464000Z"
+    - command: git push -u origin agent/loopexec-v0.3-productization
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002322.049318000Z.txt
+      command_sha256: bbe095e27e26b41b635ef697527e8ab84759468750d862aef1c789abb278233b
+      command_summary: git push -u origin agent/loopexec-v0.3-productization
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:23:22.049318000Z"
+    - command: gh pr ready 2 --repo justyn-clark/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T002510.695507000Z.txt
+      command_sha256: e18368fee2b56697156445f58413f27240dd06f543cb3ccb3481ebe876eb4cf8
+      command_summary: gh pr ready 2 --repo justyn-clark/loopexec
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:25:10.695507000Z"
+    - evidence: 'Added include-hidden-files: true to .github/workflows/ci.yml so the dedicated dogfood artifact retains .loopexec receipts and state snapshots. Local Go 1.26.0 gofmt, go vet, fresh go test, build, dogfood, YAML, Bash, diff, secret, and SMALL gates passed. Commit b150c68de2051eb02313f7c14115753b8b424e91 pushed; PR CI run 31981884256 passed on Go 1.26.6 with DOGFOOD_OK. Artifact 9272586690 contains 38 files, including all eight required non-empty receipts/states. PR #2 is ready, open, unmerged, MERGEABLE/CLEAN with push CI, PR CI, and GitGuardian green.'
+      notes: Preserved and excluded existing uncommitted .small files from the commit. Non-blocking Node.js 20 action-runtime deprecation warning remains.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-18
+      timestamp: "2026-08-17T00:25:36.371273000Z"
+    - evidence: Added task task-19 via small plan --add
+      notes: Sync merged main and remove feature branch
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-19
+      timestamp: "2026-08-17T02:33:33.040574000Z"
+    - evidence: 'Starting: fetch merged main, verify no overlap with unstaged SMALL state, fast-forward, and delete the merged local feature branch'
+      notes: Remote feature branch already absent; exact local target agent/loopexec-v0.3-productization
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-19
+      timestamp: "2026-08-17T02:33:38.396517000Z"
+    - command: git fetch origin main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T023339.043174000Z.txt
+      command_sha256: 05e2077c251d64162391621ca90e0b72d0016d41f428112323f1c7df61b1f0c3
+      command_summary: git fetch origin main
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-19
+      timestamp: "2026-08-17T02:33:39.043174000Z"
+    - command: git switch main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T023402.311144000Z.txt
+      command_sha256: 3e6ae7b3c669879303007b7760304662078bd55c6ead5f66dc1998352f28d906
+      command_summary: git switch main
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-19
+      timestamp: "2026-08-17T02:34:02.311144000Z"
+    - command: git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T023409.547494000Z.txt
+      command_sha256: 4aed0d4c25c58873bccfde8d8e5c7db9f056f1c5708928d058d1f53b2fac43ed
+      command_summary: git merge --ff-only origin/main
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-19
+      timestamp: "2026-08-17T02:34:09.547494000Z"
+    - command: git branch -d agent/loopexec-v0.3-productization
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260817T023423.840525000Z.txt
+      command_sha256: c3b3aac75737bb4adc6fee317f4d605acdc78897e81e431a2342e38f019a2a18
+      command_summary: git branch -d agent/loopexec-v0.3-productization
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-19
+      timestamp: "2026-08-17T02:34:23.840525000Z"
+    - evidence: 'Confirmed PR #2 merged as 4c893508e87d4861b98257e3fa38f49a7845c249. Fetched origin/main, verified the eight incoming PR paths had no overlap with unstaged .small state, switched to main, and fast-forwarded exactly to origin/main. GitHub had already removed remote branch agent/loopexec-v0.3-productization; deleted the verified merged local branch with git branch -d. Final branch is main at origin/main with only the three preserved .small files modified.'
+      notes: No code or PR history changed; no force operations used.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-19
+      timestamp: "2026-08-17T02:34:54.626798000Z"
+    - evidence: Added task task-20 via small plan --add
+      notes: 'Stage A: bounded subprocess lifecycle and fail-closed collectors'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-20
+      timestamp: "2026-09-13T05:31:06.239052000Z"
+    - evidence: Added task task-21 via small plan --add
+      notes: 'Stage B: exact in-loop usage and reservation budgets'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-21
+      timestamp: "2026-09-13T05:31:06.259029000Z"
+    - evidence: Added task task-22 via small plan --add
+      notes: 'Stage C: constrained candidate checkpoints and rollback'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-22
+      timestamp: "2026-09-13T05:31:06.277964000Z"
+    - evidence: Added task task-23 via small plan --add
+      notes: 'Stage D: numeric progress and reviewed-revision patience'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-23
+      timestamp: "2026-09-13T05:31:06.296918000Z"
+    - evidence: Added task task-24 via small plan --add
+      notes: 'Stage E: offline Go creative workflow adapter and scenarios'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-24
+      timestamp: "2026-09-13T05:31:06.315596000Z"
+    - evidence: Added task task-25 via small plan --add
+      notes: Acceptance gates, compatibility documentation, and SMALL handoff
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-25
+      timestamp: "2026-09-13T05:31:06.332405000Z"
+    - evidence: Starting Stage A on main 4c893508. Strict gate passed; baseline gaps confirmed in main.go. Preserving pre-existing SMALL history and handoff. Active replayId f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-20
+      timestamp: "2026-09-13T05:31:06.350053000Z"
+    - command: git switch -c codex/unattended-creative-workflow
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053106.435699000Z.txt
+      command_sha256: b1f807fe9e5749746e126253f42239e196f1575091df7e44c8ad53e82be950d6
+      command_summary: git switch -c codex/unattended-creative-workflow
+      evidence: Command failed with exit code 128
+      notes: 'apply: failed with exit code 128'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-20
+      timestamp: "2026-09-13T05:31:06.435699000Z"
+    - command: git switch -c codex/unattended-creative-workflow
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053112.475540000Z.txt
+      command_sha256: b1f807fe9e5749746e126253f42239e196f1575091df7e44c8ad53e82be950d6
+      command_summary: git switch -c codex/unattended-creative-workflow
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-20
+      timestamp: "2026-09-13T05:31:12.475540000Z"
+    - command: go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053113.185177000Z.txt
+      command_sha256: 1bb497e3e13a1105cf24e3359fa3ef75de08b66ff8a2839cd7f9ea97824d9eb3
+      command_summary: go test ./...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-20
+      timestamp: "2026-09-13T05:31:13.185177000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053231.208096000Z.txt
+      command_sha256: d5d49bef0689e10d3aaeab13abe1e5b78dedd06ebefe15308006f471b93b5e0e
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-20
+      timestamp: "2026-09-13T05:32:31.208096000Z"
+    - command: mkdir -p internal/subprocess cat > internal/subprocess/process.go <<'LOOPEXEC_FILE' // Package subprocess owns bounded output and subprocess lifetimes. package subprocess import ( "context" "errors...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053430.078269000Z.txt
+      command_sha256: 8aefbaa0e5615ac266df868c874a3493f4991ae1b273d165cb19fc8fffc5d282
+      command_summary: mkdir -p internal/subprocess cat > internal/subprocess/process.go <<'LOOPEXEC_FILE' // Package subprocess owns bounded output and subprocess lifetimes. package subprocess import ( "context" "errors...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-20
+      timestamp: "2026-09-13T05:34:30.078269000Z"
+    - command: cat > internal/subprocess/process_test.go <<'FILE' package subprocess import("context";"strings";"testing";"time") func TestBoundedOutput(t *testing.T) { r:=Run(context.Background(),Options{Argv:[]...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053540.202266000Z.txt
+      command_sha256: 86ec14108d42034c5ed15667427d803eb3d8bab0d3e5bf88216e2d3b39460415
+      command_summary: cat > internal/subprocess/process_test.go <<'FILE' package subprocess import("context";"strings";"testing";"time") func TestBoundedOutput(t *testing.T) { r:=Run(context.Background(),Options{Argv:[]...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-20
+      timestamp: "2026-09-13T05:35:40.202266000Z"
+    - evidence: Starting provider-neutral exact micro-USD reservations and actuals. Baseline go test ./... passed with sandbox-safe GOCACHE. Run/phase identifiers and pending charges will be durable before work launches.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-21
+      timestamp: "2026-09-13T05:36:06.305402000Z"
+    - evidence: Starting manifest-confined checkpoints with atomic promotion journal, protected policy hashes, and restoration outside user checkout state.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-22
+      timestamp: "2026-09-13T05:36:06.334967000Z"
+    - evidence: Starting opt-in numeric score policy with separate best and patience anchors; legacy set policy retained.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-23
+      timestamp: "2026-09-13T05:36:06.365578000Z"
+    - command: ruby -e 'p="cmd/loopexec/main.go";s=File.read(p).sub("ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)","parent := cmd.Context(); if parent==nil { parent=context.Back...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053621.848965000Z.txt
+      command_sha256: 533c9f4f412311500cae841404af7f7e898d81bda0aa4a22c41ab59d1199b754
+      command_summary: ruby -e 'p="cmd/loopexec/main.go";s=File.read(p).sub("ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)","parent := cmd.Context(); if parent==nil { parent=context.Back...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-20
+      timestamp: "2026-09-13T05:36:21.848965000Z"
+    - command: mkdir -p internal/workflow cat > internal/workflow/contract.go <<'FILE' // Package workflow defines provider-neutral, offline workflow contracts. package workflow import ( "bytes" "crypto/sha256" "...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T053810.213849000Z.txt
+      command_sha256: b7b7981e9e73d8945e15fac82e0dba0fa7c7cf54183e3a9403022f2887ab49e7
+      command_summary: mkdir -p internal/workflow cat > internal/workflow/contract.go <<'FILE' // Package workflow defines provider-neutral, offline workflow contracts. package workflow import ( "bytes" "crypto/sha256" "...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T05:38:10.213849000Z"
+    - command: cat > internal/workflow/candidate.go <<'FILE' package workflow import ( "context" "crypto/sha256" "encoding/hex" "fmt" "io" "io/fs" "os" "path/filepath" "sort" "strings" ) type Artifact struct { Pa...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T054003.429715000Z.txt
+      command_sha256: bba4fb6f22e69dc262a9d7e8d85f29206dc2f05b2b14be6d4e5673ef01df0067
+      command_summary: cat > internal/workflow/candidate.go <<'FILE' package workflow import ( "context" "crypto/sha256" "encoding/hex" "fmt" "io" "io/fs" "os" "path/filepath" "sort" "strings" ) type Artifact struct { Pa...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-22
+      timestamp: "2026-09-13T05:40:03.429715000Z"
+    - evidence: Shared internal/subprocess runner replaced unbounded CombinedOutput defaults. Focused collector, deadline, cancellation, output-bound, and owned parent/child tests passed after fixing nil context in embedded demo commands. Initial suite baseline passed; final full suite remains task-25.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-20
+      timestamp: "2026-09-13T05:40:32.223449000Z"
+    - command: cat > cmd/loopexec/workflow.go <<'FILE' package main import ( "fmt" "os" "path/filepath" "github.com/justyn-clark/loopexec/internal/subprocess" "github.com/justyn-clark/loopexec/internal/workflow" ...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T054449.341826000Z.txt
+      command_sha256: b94d59931d83b197e1cc32d1a1cc413c59aadcad21a0756ea7c91f92e96b8c1f
+      command_summary: cat > cmd/loopexec/workflow.go <<'FILE' package main import ( "fmt" "os" "path/filepath" "github.com/justyn-clark/loopexec/internal/subprocess" "github.com/justyn-clark/loopexec/internal/workflow" ...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T05:44:49.341826000Z"
+    - command: cat > cmd/loopexec/run.go <<'FILE' package main import( "context" "fmt" "os" "os/signal" "path/filepath" "syscall" "time" "github.com/spf13/cobra" "github.com/justyn-clark/loopexec/internal/workflo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T054703.560164000Z.txt
+      command_sha256: ecac00cf081c3f0a286ef1bfeb9b0ac75878b3822a6ce9d6c1272ccbd97bec5b
+      command_summary: cat > cmd/loopexec/run.go <<'FILE' package main import( "context" "fmt" "os" "os/signal" "path/filepath" "syscall" "time" "github.com/spf13/cobra" "github.com/justyn-clark/loopexec/internal/workflo...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T05:47:03.560164000Z"
+    - evidence: 'Starting offline Go adapter: one builder/test/conditional critic invocation per attempt, signed synthetic review evidence, read-only canonical verifier, and convergence/budget/regression/stale fixtures.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-24
+      timestamp: "2026-09-13T05:47:52.224131000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/budget.go';s=File.read(p) s=s.sub('if b.Pending != nil && (!reserved || c.Phase != p.Phase) {','if b.Pending != nil && b.Pending.Calls != nil && (!reserved || c.Phas...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T054930.335986000Z.txt
+      command_sha256: 6097a867c070d22fcb1ad8d4a4267dbe91d6d20e55197582dbe0d408ee628a04
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/budget.go';s=File.read(p) s=s.sub('if b.Pending != nil && (!reserved || c.Phase != p.Phase) {','if b.Pending != nil && b.Pending.Calls != nil && (!reserved || c.Phas...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T05:49:30.335986000Z"
+    - command: mkdir -p examples/creative-workflow cat > examples/creative-workflow/contract.go <<'FILE' package main import( "crypto/ed25519" "encoding/base64" "encoding/json" "fmt" "os" "path/filepath" "github....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055112.606513000Z.txt
+      command_sha256: a7f0053feee609bbadfa9b370bdb3d21d14b189ad3f6689da53c5ce06d756604
+      command_summary: mkdir -p examples/creative-workflow cat > examples/creative-workflow/contract.go <<'FILE' package main import( "crypto/ed25519" "encoding/base64" "encoding/json" "fmt" "os" "path/filepath" "github....
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-24
+      timestamp: "2026-09-13T05:51:12.606513000Z"
+    - command: cat > examples/creative-workflow/attempt.go <<'FILE' package main import( "context" "crypto/ed25519" "encoding/base64" "encoding/json" "fmt" "os" "path/filepath" "time" "github.com/justyn-clark/loo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055246.371425000Z.txt
+      command_sha256: ac4f71f195f94aed31f7f04bc3a31816e03650e4f5864e273eaee9e5383e22af
+      command_summary: cat > examples/creative-workflow/attempt.go <<'FILE' package main import( "context" "crypto/ed25519" "encoding/base64" "encoding/json" "fmt" "os" "path/filepath" "time" "github.com/justyn-clark/loo...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-24
+      timestamp: "2026-09-13T05:52:46.371425000Z"
+    - command: cat > examples/creative-workflow/main.go <<'FILE' // creative-workflow is a one-attempt fixture adapter, never an outer loop. package main import( "crypto/ed25519" "crypto/rand" "encoding/base64" "...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055402.328137000Z.txt
+      command_sha256: 9f65bf13c208994b5c47fe68fae526c2d11f513487e1b76c163a20365c015fe5
+      command_summary: cat > examples/creative-workflow/main.go <<'FILE' // creative-workflow is a one-attempt fixture adapter, never an outer loop. package main import( "crypto/ed25519" "crypto/rand" "encoding/base64" "...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-24
+      timestamp: "2026-09-13T05:54:02.328137000Z"
+    - command: mkdir -p build && GOCACHE=/private/tmp/loopexec-go-cache go build -o build/loopexec ./cmd/loopexec && GOCACHE=/private/tmp/loopexec-go-cache go build -o build/creative-workflow ./examples/creative-...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055424.189651000Z.txt
+      command_sha256: c9e000adc9c690fa2d2d0af5d6381caf2f94b4b81ee3f927056e8bd359c4d5b2
+      command_summary: mkdir -p build && GOCACHE=/private/tmp/loopexec-go-cache go build -o build/loopexec ./cmd/loopexec && GOCACHE=/private/tmp/loopexec-go-cache go build -o build/creative-workflow ./examples/creative-...
+      evidence: Command failed with exit code 10
+      notes: 'apply: failed with exit code 10'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-24
+      timestamp: "2026-09-13T05:54:24.189651000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/candidate.go';s=File.read(p).sub('type candidateState struct {',"type candidateState struct {\n BestIteration int `json:\"best_iteration,omitempty\"`\n Numeric *nume...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055646.154018000Z.txt
+      command_sha256: 3de5f1da2ddbd67d98ebeb46dcc4200f4b4b7d5b3c25e637a96299c7d96928c3
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/candidate.go';s=File.read(p).sub('type candidateState struct {',"type candidateState struct {\n BestIteration int `json:\"best_iteration,omitempty\"`\n Numeric *nume...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-22
+      timestamp: "2026-09-13T05:56:46.154018000Z"
+    - command: ruby -e 'p="cmd/loopexec/receipt.go";s=File.read(p).sub(/^func shortHash\(s string\) string.*\n/,"");File.write(p,s)' gofmt -w cmd/loopexec/receipt.go GOCACHE=/private/tmp/loopexec-go-cache go test...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055658.390649000Z.txt
+      command_sha256: 87a8b259d8dd4dc868578ca8e5fb890a10a224cb2411db2dc461241fb4f5f276
+      command_summary: ruby -e 'p="cmd/loopexec/receipt.go";s=File.read(p).sub(/^func shortHash\(s string\) string.*\n/,"");File.write(p,s)' gofmt -w cmd/loopexec/receipt.go GOCACHE=/private/tmp/loopexec-go-cache go test...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-22
+      timestamp: "2026-09-13T05:56:58.390649000Z"
+    - command: cat > examples/creative-workflow/workflow_test.go <<'FILE' package main import( "crypto/ed25519" "crypto/rand" "encoding/base64" "encoding/json" "os" "os/exec" "path/filepath" "strings" "testing" "...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T055849.296442000Z.txt
+      command_sha256: 80f2b3eb885064dd1d345a6df1126569b5b54db55616de9ccf95351aebea3228
+      command_summary: cat > examples/creative-workflow/workflow_test.go <<'FILE' package main import( "crypto/ed25519" "crypto/rand" "encoding/base64" "encoding/json" "os" "os/exec" "path/filepath" "strings" "testing" "...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-24
+      timestamp: "2026-09-13T05:58:49.296442000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/candidate.go';s=File.read(p).sub('type candidateManager struct {',"type candidateManager struct {\n iteration int") s=s.sub('next := c.state',"next := c.state\n next...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060147.489480000Z.txt
+      command_sha256: 21a3053bc9e65ef5b4d4fb71f3bb2cf430485f93d296a48f78b5c0244a3af8fb
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/candidate.go';s=File.read(p).sub('type candidateManager struct {',"type candidateManager struct {\n iteration int") s=s.sub('next := c.state',"next := c.state\n next...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-22
+      timestamp: "2026-09-13T06:01:47.489480000Z"
+    - command: cat > internal/workflow/lock_unix.go <<'FILE' //go:build darwin || linux package workflow import("fmt";"os";"path/filepath";"syscall") func Lock(dir string)(func(),error){ f,e:=os.OpenFile(filepath...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060303.468648000Z.txt
+      command_sha256: e2dbd41539567706edb421ebcd4e54ba718512765c17178474f0797763138bd8
+      command_summary: cat > internal/workflow/lock_unix.go <<'FILE' //go:build darwin || linux package workflow import("fmt";"os";"path/filepath";"syscall") func Lock(dir string)(func(),error){ f,e:=os.OpenFile(filepath...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-22
+      timestamp: "2026-09-13T06:03:03.468648000Z"
+    - command: ruby -e 'p="cmd/loopexec/candidate.go";s=File.read(p).sub(/^ Recovery discards.*$/, "// Recovery discards an interrupted promotion.");File.write(p,s)' gofmt -w cmd/loopexec/candidate.go GOCACHE=/pr...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060319.298085000Z.txt
+      command_sha256: 5496d29ecc0dc09ef8a88a450c65589cbf108773e5b0c6a6a22036a59041ee94
+      command_summary: ruby -e 'p="cmd/loopexec/candidate.go";s=File.read(p).sub(/^ Recovery discards.*$/, "// Recovery discards an interrupted promotion.");File.write(p,s)' gofmt -w cmd/loopexec/candidate.go GOCACHE=/pr...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-22
+      timestamp: "2026-09-13T06:03:19.298085000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/lifecycle.go';s=File.read(p).sub('if r.ExitCode != 0 || r.Cause != "" || r.Truncated {','if r.ExitCode != 0 || r.Cause != "" || r.Truncated || strings.TrimSpace(r.St...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060430.218005000Z.txt
+      command_sha256: f6e6571d011c7e718e54ebad8267c29bb048fd2c776f7d8b1c1cf606b7d3b0eb
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/lifecycle.go';s=File.read(p).sub('if r.ExitCode != 0 || r.Cause != "" || r.Truncated {','if r.ExitCode != 0 || r.Cause != "" || r.Truncated || strings.TrimSpace(r.St...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T06:04:30.218005000Z"
+    - command: cat > cmd/loopexec/workflow_test.go <<'FILE' package main import( "encoding/json" "io" "os" "path/filepath" "strconv" "strings" "testing" "time" "github.com/spf13/cobra" "github.com/justyn-clark/lo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060704.900363000Z.txt
+      command_sha256: 4a0b46550d674127b5b0cdcc1656156b08ca06a80f41c4dfd79a98757877027a
+      command_summary: cat > cmd/loopexec/workflow_test.go <<'FILE' package main import( "encoding/json" "io" "os" "path/filepath" "strconv" "strings" "testing" "time" "github.com/spf13/cobra" "github.com/justyn-clark/lo...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-23
+      timestamp: "2026-09-13T06:07:04.900363000Z"
+    - command: ruby -e 'p="cmd/loopexec/workflow_test.go";s=File.read(p).sub("select {}", "time.Sleep(time.Hour)").sub("60 * time.Millisecond","500 * time.Millisecond").sub("500*time.Millisecond","2*time.Second")...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060742.065832000Z.txt
+      command_sha256: 8ab083f99e2025ca6d6d9ab35c148e8ceca46f1672576b0cc9c37b71a155b756
+      command_summary: ruby -e 'p="cmd/loopexec/workflow_test.go";s=File.read(p).sub("select {}", "time.Sleep(time.Hour)").sub("60 * time.Millisecond","500 * time.Millisecond").sub("500*time.Millisecond","2*time.Second")...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-23
+      timestamp: "2026-09-13T06:07:42.065832000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/main.go';s=File.read(p).sub('type receiptWriter struct {',"type receiptWriter struct {\n err error") s=s.sub('_, _ = w.f.Write(append(line, \'\\n\'))','if _,e:=w.f.W...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T060858.528917000Z.txt
+      command_sha256: c4d10df70e2bd9db842d4035be9b800632a2cecf3b94f37e307289da4e8fd8ec
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/main.go';s=File.read(p).sub('type receiptWriter struct {',"type receiptWriter struct {\n err error") s=s.sub('_, _ = w.f.Write(append(line, \'\\n\'))','if _,e:=w.f.W...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:08:58.528917000Z"
+    - evidence: All six offline scenarios passed with real CLI subprocesses; finishing compatibility docs, report/attestation additions, final gofmt/vet/tests, platform builds, and persistent proof script.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-25
+      timestamp: "2026-09-13T06:09:15.883696000Z"
+    - command: 'cat > docs/workflows.md <<''FILE'' # Bounded unattended workflows The Go governor remains the only retry controller. The opt-in `run --workflow` contract composes an argv adapter with exact accountin...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T061309.122771000Z.txt
+      command_sha256: 4b6586e10c088c0b4d0ba3e90e910e6f7cb862eaca61fd1b5019c0368d181e52
+      command_summary: 'cat > docs/workflows.md <<''FILE'' # Bounded unattended workflows The Go governor remains the only retry controller. The opt-in `run --workflow` contract composes an argv adapter with exact accountin...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:13:09.122771000Z"
+    - command: 'ruby - <<''RUBY'' p=''.github/workflows/ci.yml'';s=File.read(p).sub('' - name: Upload dogfood receipts'',<<''YAML''+'' - name: Upload dogfood receipts'') - name: Build offline creative adapter run: go build ...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T061631.113232000Z.txt
+      command_sha256: 1be10f2ae7c0fb198958784ddf3bff5e5e2f0ba5536ded090e65692ec47d24b6
+      command_summary: 'ruby - <<''RUBY'' p=''.github/workflows/ci.yml'';s=File.read(p).sub('' - name: Upload dogfood receipts'',<<''YAML''+'' - name: Upload dogfood receipts'') - name: Build offline creative adapter run: go build ...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:16:31.113232000Z"
+    - command: ruby - <<'RUBY' p='cmd/loopexec/run.go';s=File.read(p) s=s.sub('if cfg.resume && prior.HaltReason == "success_condition_met" {\n\t\thalt = prior.HaltReason\n\t}'.gsub('\\n',"\n"),'') s=s.sub('st.Ch...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T061730.479747000Z.txt
+      command_sha256: 626ab22d92e3723aa628caa121ba029ae0b872cb4ac0be25cab9f802ae6dbbde
+      command_summary: ruby - <<'RUBY' p='cmd/loopexec/run.go';s=File.read(p) s=s.sub('if cfg.resume && prior.HaltReason == "success_condition_met" {\n\t\thalt = prior.HaltReason\n\t}'.gsub('\\n',"\n"),'') s=s.sub('st.Ch...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:17:30.479747000Z"
+    - command: set -e ruby - <<'RUBY' p='cmd/loopexec/run.go';s=File.read(p) s=s.sub(/halt := ""\n\s*if cfg.resume && prior.HaltReason == "success_condition_met" \{\n\s*halt = prior.HaltReason\n\s*\}/,'halt := ""...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T062011.599333000Z.txt
+      command_sha256: b62c78d6e2cd325fe6c493b4b088dc42e06be0b266fae49421ce6b0cbde5662a
+      command_summary: set -e ruby - <<'RUBY' p='cmd/loopexec/run.go';s=File.read(p) s=s.sub(/halt := ""\n\s*if cfg.resume && prior.HaltReason == "success_condition_met" \{\n\s*halt = prior.HaltReason\n\s*\}/,'halt := ""...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:20:11.599333000Z"
+    - command: set -e ruby - <<'RUBY' p='cmd/loopexec/receipt.go';s=File.read(p) a=s.index('\t\t\tr.Errors = []string{fmt.Sprintf("receipt fingerprint mismatch:'.gsub('\\t',"\t"));raise 'missing mismatch message'...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T062259.833472000Z.txt
+      command_sha256: f1d3f5bacd3d83481939488d3d12cd7f788cdad4bfb70fc268f1708a80c354e6
+      command_summary: set -e ruby - <<'RUBY' p='cmd/loopexec/receipt.go';s=File.read(p) a=s.index('\t\t\tr.Errors = []string{fmt.Sprintf("receipt fingerprint mismatch:'.gsub('\\t',"\t"));raise 'missing mismatch message'...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:22:59.833472000Z"
+    - command: 'set -e ruby - <<''RUBY'' p=''cmd/loopexec/workflow_test.go'';s=File.read(p) needle=''write(workflow.Usage{SchemaVersion: 1, RunID: req.RunID'' a=s.index(needle);raise ''usage helper anchor missing'' unless...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T062426.147516000Z.txt
+      command_sha256: db65ead5616f4a1145bbf048ddf308d2710e31768d79f67d68187e84f8db6cbd
+      command_summary: 'set -e ruby - <<''RUBY'' p=''cmd/loopexec/workflow_test.go'';s=File.read(p) needle=''write(workflow.Usage{SchemaVersion: 1, RunID: req.RunID'' a=s.index(needle);raise ''usage helper anchor missing'' unless...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:24:26.147516000Z"
+    - command: set -e mkdir -p build test -z "$(gofmt -l cmd internal examples)" printf 'gofmt PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go vet ./... printf 'go vet PASS\n' GOCACHE=/private/tmp/loopexec-go-c...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T062808.762647000Z.txt
+      command_sha256: c4aedb0828e2cdd6b132f9a8262f392035c427e704bb8e57875d566bc0954e85
+      command_summary: set -e mkdir -p build test -z "$(gofmt -l cmd internal examples)" printf 'gofmt PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go vet ./... printf 'go vet PASS\n' GOCACHE=/private/tmp/loopexec-go-c...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-25
+      timestamp: "2026-09-13T06:28:08.762647000Z"
+    - command: set -e ruby - <<'RUBY' p='internal/workflow/contract.go';s=File.read(p).sub('type Score struct {',"type Score struct {\n Veto bool `json:\"veto,omitempty\"`");File.write(p,s) p='cmd/loopexec/numeri...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T063014.347414000Z.txt
+      command_sha256: b5697597d47c92376b24686b3bceb63ce6e696399c6be131423a30539b1147c3
+      command_summary: set -e ruby - <<'RUBY' p='internal/workflow/contract.go';s=File.read(p).sub('type Score struct {',"type Score struct {\n Veto bool `json:\"veto,omitempty\"`");File.write(p,s) p='cmd/loopexec/numeri...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:30:14.347414000Z"
+    - command: set -e ruby - <<'RUBY' p='cmd/loopexec/main.go';s=File.read(p).sub('type receiptEvent struct {',"type receiptEvent struct {\n OutputTruncated bool `json:\"output_truncated,omitempty\"`");File.write...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T063142.372723000Z.txt
+      command_sha256: 193a327a7bb7563527a589f22480c79ca3ae6a3d1e8ab31753c9dadda55212bf
+      command_summary: set -e ruby - <<'RUBY' p='cmd/loopexec/main.go';s=File.read(p).sub('type receiptEvent struct {',"type receiptEvent struct {\n OutputTruncated bool `json:\"output_truncated,omitempty\"`");File.write...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:31:42.372723000Z"
+    - command: set -e test -z "$(gofmt -l cmd internal examples)" printf 'gofmt PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go vet ./... printf 'go vet PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go test -j...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T063608.546135000Z.txt
+      command_sha256: d1a8cc9d8d058e77035c1fe2dffc080077b30d65e849f15ff7f22215f86c7878
+      command_summary: set -e test -z "$(gofmt -l cmd internal examples)" printf 'gofmt PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go vet ./... printf 'go vet PASS\n' GOCACHE=/private/tmp/loopexec-go-cache go test -j...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:36:08.546135000Z"
+    - command: set -e ruby -rjson - <<'RUBY' root=Dir.pwd tests=JSON.parse(File.read('build/acceptance-test-summary.json')) scenarios=%w[convergence budget regression stale technical cap].map do |name| result=JSO...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T063904.477848000Z.txt
+      command_sha256: 0fd6ea92348ecc974b8f117d6141cde8d4abe41c88d8da10e5c6ce23dd52f364
+      command_summary: set -e ruby -rjson - <<'RUBY' root=Dir.pwd tests=JSON.parse(File.read('build/acceptance-test-summary.json')) scenarios=%w[convergence budget regression stale technical cap].map do |name| result=JSO...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:39:04.477848000Z"
+    - evidence: 'Shipped workflow metering in budget.go/workflow.go: checked integer micro-USD, per-call reservations, exact boundary/denial, duplicate-ID and resume accounting, observed/unmetered modes, typed malformed/unknown usage failures. Final go test ./... produced 151 passing test/subtest results, zero failures. Receipts: build/implementation-receipt.json and .small-cache/final-acceptance-v2.log.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-21
+      timestamp: "2026-09-13T06:39:04.599730000Z"
+    - evidence: Shipped manifest-confined binary/untracked snapshots, protected hashes, atomic promotion journal, rollback and restart revalidation in candidate.go/internal/workflow. Tests verified unrelated files and failed evidence preserved, interrupted promotion and corrupt/failed restore never expose invalid best, checkpoint failure dominates green. Offline regression proof restored then converged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-22
+      timestamp: "2026-09-13T06:39:04.647033000Z"
+    - evidence: Shipped opt-in numeric direction/domain/target/tolerance/improvement/patience, separate best/anchor, explicit unreviewed technical failures and critic veto. Tested repeated stable failure IDs, cumulative small gains, equality/tolerance, regressions, and veto preventing a rejected high score from becoming best.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-23
+      timestamp: "2026-09-13T06:39:04.696273000Z"
+    - evidence: Shipped examples/creative-workflow Go one-attempt adapter, independent simulated builder/test/critic invocations, signed candidate-bound evidence, read-only verifier/replay, per-call synthetic reservations, and scripts/creative-proof.sh. All six scenarios passed with persistent receipts in build/creative-proof; no Python runner, engine, network service, or paid model required.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-24
+      timestamp: "2026-09-13T06:39:04.744602000Z"
+    - evidence: 'Final gates passed on Go 1.26.0 darwin/arm64: gofmt, go vet ./..., go test -json ./... (151 test/subtest passes across four packages), go test -race ./internal/..., Linux/Windows amd64 cross-builds, DOGFOOD_OK, CREATIVE_PROOF_OK, git diff --check, ASCII and CI YAML checks. Updated SPEC, README, CLI, integrations, workflow contract and CI. Existing SMALL history and supplied handoff preserved. No commit/push/merge/deploy/paid usage. See build/implementation-receipt.json.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-25
+      timestamp: "2026-09-13T06:39:04.791173000Z"
+    - evidence: Added task task-26 via small plan --add
+      notes: Assess release readiness with a real local documentation workflow
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-26
+      timestamp: "2026-09-13T07:21:48.373339000Z"
+    - evidence: Assessing current source, release metadata and saved acceptance receipts; run a real README metadata repair through bounded unmetered LoopExec with independent red/green verification and replay. No model calls or publication.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-26
+      timestamp: "2026-09-13T07:22:07.165219000Z"
+    - command: set -eu test ! -e build/readiness-real-task mkdir -p build/readiness-real-task/candidate build/readiness-real-task/tools cp README.md build/readiness-real-task/candidate/README.md cp README.md buil...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T072307.560706000Z.txt
+      command_sha256: e60b6cb8dc64089bf9308fbbbb3421ae13cf9e40bdff0608df95495f77290c2d
+      command_summary: set -eu test ! -e build/readiness-real-task mkdir -p build/readiness-real-task/candidate build/readiness-real-task/tools cp README.md build/readiness-real-task/candidate/README.md cp README.md buil...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-26
+      timestamp: "2026-09-13T07:23:07.560706000Z"
+    - command: set -eu mv build/readiness-real-task/run.json build/readiness-real-task/invalid-config-run.json cat > build/readiness-real-task/tools/usage.rb <<'RUBY' require "json" request = JSON.parse(File.read...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T072435.948474000Z.txt
+      command_sha256: 4f268ad018078b52b41eb6464380c21542ebce13f45937428ebe7d7d8cb3d161
+      command_summary: set -eu mv build/readiness-real-task/run.json build/readiness-real-task/invalid-config-run.json cat > build/readiness-real-task/tools/usage.rb <<'RUBY' require "json" request = JSON.parse(File.read...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-26
+      timestamp: "2026-09-13T07:24:35.948474000Z"
+    - command: set -eu cmp README.md build/readiness-real-task/tools/original.md cp build/readiness-real-task/candidate/README.md README.md ruby <<'RUBY' p = "docs/workflows.md" body = File.read(p) needle = "The ...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T072507.693519000Z.txt
+      command_sha256: 6b255e0fb00eca313a5570350ddb8fc8857a4bf17788d0da606f7319c1013489
+      command_summary: set -eu cmp README.md build/readiness-real-task/tools/original.md cp build/readiness-real-task/candidate/README.md README.md ruby <<'RUBY' p = "docs/workflows.md" body = File.read(p) needle = "The ...
+      evidence: Command failed with exit code 1
+      notes: 'apply: failed with exit code 1'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-26
+      timestamp: "2026-09-13T07:25:07.693519000Z"
+    - command: set -eu printf '%s\n' 'build/readiness-real-task/scan-source/cmd/loopexec/context_test.go:generic-api-key:179' > build/readiness-real-task/gitleaks-fixture-ignore gitleaks dir --redact=100 --no-ban...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T072606.511230000Z.txt
+      command_sha256: 26dee8bb632dc77cbbd43eaf563cdd6c50d51d161cb1dcb1dbb069a1acb84cb6
+      command_summary: set -eu printf '%s\n' 'build/readiness-real-task/scan-source/cmd/loopexec/context_test.go:generic-api-key:179' > build/readiness-real-task/gitleaks-fixture-ignore gitleaks dir --redact=100 --no-ban...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-26
+      timestamp: "2026-09-13T07:26:06.511230000Z"
+    - command: 'set -eu cat > build/readiness-real-task/assessment.md <<''READINESS_REPORT'' # Local release-readiness assessment Latest remote release and tag verified with GitHub API and git ls-remote: v0.2.0. Cur...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T072742.174679000Z.txt
+      command_sha256: 01ffe6483ad3d17181d9fc4eee9f4a2ca3e1d239cf7dd531c2b698321741ce18
+      command_summary: 'set -eu cat > build/readiness-real-task/assessment.md <<''READINESS_REPORT'' # Local release-readiness assessment Latest remote release and tag verified with GitHub API and git ls-remote: v0.2.0. Cur...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-26
+      timestamp: "2026-09-13T07:27:42.174679000Z"
+    - evidence: 'Real README task converged in one Go-governed attempt (exit 10); independent check four issues to zero, best candidate exposed, replay verified. Applied README and clarified required unmetered usage hook in docs/workflows.md. Fresh build, traversal regression, ASCII and diff checks passed; Gitleaks 77-file scan had one verified existing dummy fixture, run-local exception scan passed. Latest remote release v0.2.0; recommend v0.3.0-rc.1 preparation, pending reviewed commit/version/CI/install evidence. Details: build/readiness-real-task/assessment.md. No paid model or publication.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-26
+      timestamp: "2026-09-13T07:27:42.327887000Z"
+    - evidence: Added task task-27 via small plan --add
+      notes: Prepare SMALL evolution handoff for session-safe state and Git reconciliation
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-27
+      timestamp: "2026-09-13T07:47:16.474988000Z"
+    - evidence: 'Preparing implementation handoff only: inspect SMALL checkout and in-flight health/reconstruct/digest work, ground handoff defect in code, specify opt-in session identity and safe Git reconciliation with explicit conflict semantics. Preserve both repositories'' existing changes.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-27
+      timestamp: "2026-09-13T07:47:44.338070000Z"
+    - command: 'set -eu cat > docs/small-protocol-session-implementation-handoff.md <<''SMALL_HANDOFF_SPEC'' # SMALL implementation handoff: reliable context, sessions, and Git reconciliation Status: implementation ...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T075414.052094000Z.txt
+      command_sha256: 47eb79db051806b396bc0c0c18cdad13f26c920d7592fedf776eea128da1f7d6
+      command_summary: 'set -eu cat > docs/small-protocol-session-implementation-handoff.md <<''SMALL_HANDOFF_SPEC'' # SMALL implementation handoff: reliable context, sessions, and Git reconciliation Status: implementation ...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-27
+      timestamp: "2026-09-13T07:54:14.052094000Z"
+    - command: set -eu ruby <<'RUBY' p = "docs/small-protocol-session-implementation-handoff.md" body = File.read(p) needle = "- map shared baseline records consistently when two clones migrate independently;\n" ...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260913T075518.304717000Z.txt
+      command_sha256: ad37d858fc5abe152c0123492ae306f89b0079be988ed70e2e516e9a0379fc5f
+      command_summary: set -eu ruby <<'RUBY' p = "docs/small-protocol-session-implementation-handoff.md" body = File.read(p) needle = "- map shared baseline records consistently when two clones migrate independently;\n" ...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-27
+      timestamp: "2026-09-13T07:55:18.304717000Z"
+    - evidence: Created docs/small-protocol-session-implementation-handoff.md after reading current SMALL checkout 567efe6 plus uncommitted health/reconstruct/digest work. Confirmed ignored summary argument, apply command/task-status ambiguity, strict v1 schema and timestamp constraints. Spec defines default solo and opt-in collaborative modes, immutable event storage, causal conflict reconciliation, portable evidence, loss-preserving migration, and two-clone acceptance proof. Handoff ASCII/structure/source-reference checks and git diff --check passed. SMALL project inspected only; no implementation or publication.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-27
+      timestamp: "2026-09-13T07:55:47.645061000Z"
+    - evidence: Added task task-28 via small plan --add
+      notes: Verify LoopExec integration with released SMALL v1.1.0 and collaborative sessions
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-28
+      timestamp: "2026-09-17T21:38:48.012363000Z"
+    - evidence: Added task task-29 via small plan --add
+      notes: Prepare and validate LoopExec v0.3.0 release candidate and binary packages
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-29
+      timestamp: "2026-09-17T21:38:48.033712000Z"
+    - evidence: Added task task-30 via small plan --add
+      notes: Publish verified LoopExec v0.3.0 and verify installation and release assets
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-30
+      timestamp: "2026-09-17T21:38:48.053463000Z"
+    - evidence: Remote SMALL v1.1.0 release and LoopExec main baseline verified. Use pinned checksum-verified SMALL release locally; preserve legacy state and existing implementation. Add optional real-CLI v1/v2 collaborative compatibility proof without core dependency or orchestration duplication.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-28
+      timestamp: "2026-09-17T21:38:48.076742000Z"
+    - command: set -eu test ! -e build/release-tools/small-v1.1.0 mkdir -p build/release-tools/small-v1.1.0 gh release download v1.1.0 --repo justyn-clark/small-protocol --pattern checksums.txt --pattern small-v1...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T213855.262378000Z.txt
+      command_sha256: f65368321d9013579be7097398d91e9d41d9ef0228c4419f4033ba877f615d00
+      command_summary: set -eu test ! -e build/release-tools/small-v1.1.0 mkdir -p build/release-tools/small-v1.1.0 gh release download v1.1.0 --repo justyn-clark/small-protocol --pattern checksums.txt --pattern small-v1...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-28
+      timestamp: "2026-09-17T21:38:55.262378000Z"
+    - command: set -eu mkdir -p build/release-v0.3.0 "./build/release-tools/small-v1.1.0/small" init --dir build/release-v0.3.0/small-probe --no-agents --intent "Offline LoopExec integration proof" "./build/relea...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T213952.439945000Z.txt
+      command_sha256: ea72c6c8bf82657d28aff129adaf20fb0955b33d9038a2f25dff51f253aeead8
+      command_summary: set -eu mkdir -p build/release-v0.3.0 "./build/release-tools/small-v1.1.0/small" init --dir build/release-v0.3.0/small-probe --no-agents --intent "Offline LoopExec integration proof" "./build/relea...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-28
+      timestamp: "2026-09-17T21:39:52.439945000Z"
+    - command: set -eu ruby -e 'require "json" files = JSON.parse(STDIN.read) files.each { |p,body| File.write(p, body) } p = "cmd/loopexec/main.go" s = File.read(p).sub('\''toolVersion = "0.2.0"'\'', '\''toolVer...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214217.777732000Z.txt
+      command_sha256: 98dbdd106c44da4cf62fb6f0faed7663f15e230e6da9cb92e5c4ae053b823792
+      command_summary: set -eu ruby -e 'require "json" files = JSON.parse(STDIN.read) files.each { |p,body| File.write(p, body) } p = "cmd/loopexec/main.go" s = File.read(p).sub('\''toolVersion = "0.2.0"'\'', '\''toolVer...
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-28
+      timestamp: "2026-09-17T21:42:17.777732000Z"
+    - command: set -eu ruby -e 'require "json"; require "fileutils" JSON.parse(STDIN.read).each { |p,body| FileUtils.mkdir_p(File.dirname(p)); File.write(p,body) } p="scripts/small-proof.sh"; s=File.read(p).gsub(...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214513.507936000Z.txt
+      command_sha256: b75bccc72389825894adb88fa3820dca3694a66669d76da3002735a2e8ce3a57
+      command_summary: set -eu ruby -e 'require "json"; require "fileutils" JSON.parse(STDIN.read).each { |p,body| FileUtils.mkdir_p(File.dirname(p)); File.write(p,body) } p="scripts/small-proof.sh"; s=File.read(p).gsub(...
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-28
+      timestamp: "2026-09-17T21:45:13.507936000Z"
+    - evidence: Preparing v0.3.0 identity, release notes, SMALL guide and v1/v2 proof, Linux/macOS CI, six-platform packaging, secret scan and complete local gates before a scoped release commit. Existing unrelated SMALL history and handoff documents stay local.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:46:37.209109000Z"
+    - command: 'set -eu cat > docs/small-integration.md <<''SMALL_GUIDE'' # SMALL integration LoopExec v0.3.0 composes with SMALL CLI v1.1.0, supporting both v1 artifact workspaces and explicitly migrated v2 session...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214639.309339000Z.txt
+      command_sha256: a32ccca27f2672d5ec7ef3ee55866b012ed11fcade72e0532a4f030369973200
+      command_summary: 'set -eu cat > docs/small-integration.md <<''SMALL_GUIDE'' # SMALL integration LoopExec v0.3.0 composes with SMALL CLI v1.1.0, supporting both v1 artifact workspaces and explicitly migrated v2 session...'
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-28
+      timestamp: "2026-09-17T21:46:39.309339000Z"
+    - command: set -eu test -z "$(gofmt -l cmd internal examples)" GOCACHE=/private/tmp/loopexec-go-cache go vet ./... GOCACHE=/private/tmp/loopexec-go-cache go test -json ./... > build/release-v0.3.0/tests.jsonl...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214849.653417000Z.txt
+      command_sha256: 5299a5503af577238b54f164bba69e052629d36d36d25c7e7e48272b1c6c5c3b
+      command_summary: set -eu test -z "$(gofmt -l cmd internal examples)" GOCACHE=/private/tmp/loopexec-go-cache go vet ./... GOCACHE=/private/tmp/loopexec-go-cache go test -json ./... > build/release-v0.3.0/tests.jsonl...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:48:49.653417000Z"
+    - command: set -eu ruby -e 'p="scripts/small-proof.sh"; s=File.read(p).sub(%q{--resume --limit 50}, %q{--resume --session "$b" --limit 50}); File.write(p,s)' ./scripts/small-proof.sh ./build/release-v0.3.0/lo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214856.610487000Z.txt
+      command_sha256: 6c2da8dd62df260da7cd079d028efd79946b3aa89684c9f4062fa41fb585ba13
+      command_summary: set -eu ruby -e 'p="scripts/small-proof.sh"; s=File.read(p).sub(%q{--resume --limit 50}, %q{--resume --session "$b" --limit 50}); File.write(p,s)' ./scripts/small-proof.sh ./build/release-v0.3.0/lo...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:48:56.610487000Z"
+    - command: set -eu ruby -e 'require "fileutils"; require "open3"; require "json" published = JSON.parse(STDIN.read) names, result = Open3.capture2("git", "ls-files", "-z") raise "git inventory" unless result....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T214906.589091000Z.txt
+      command_sha256: 9a27c1350b5f4eda819435052a2f0300193aec398ecd3c337bac27a2d4474a40
+      command_summary: set -eu ruby -e 'require "fileutils"; require "open3"; require "json" published = JSON.parse(STDIN.read) names, result = Open3.capture2("git", "ls-files", "-z") raise "git inventory" unless result....
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:49:06.589091000Z"
+    - command: 'set -eu cat > .gitleaksignore <<''IGNORE'' # Reviewed synthetic marker written by TestBuildContextRejectsTraversal. # Keep the path/rule/line scope narrow; do not ignore generic API-key findings. cmd...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215008.699601000Z.txt
+      command_sha256: 48be7d2e1f71eefce24a25f43e0b02333baa69b46ed7605bf1f64acd95fe7435
+      command_summary: 'set -eu cat > .gitleaksignore <<''IGNORE'' # Reviewed synthetic marker written by TestBuildContextRejectsTraversal. # Keep the path/rule/line scope narrow; do not ignore generic API-key findings. cmd...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:50:08.699601000Z"
+    - evidence: 'Pinned GitHub SMALL v1.1.0 download checksum verified. scripts/small-proof.sh passed against real released CLI: v1 state plus two distinct v2 collaborative sessions, explicit task acceptance unchanged by apply, portable convergence evidence, replay, strict gates, narrative handoffs, and closed-session resume. No project migration or mandatory SMALL dependency. Proof: build/release-v0.3.0/small-proof-final.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-28
+      timestamp: "2026-09-17T21:50:08.860437000Z"
+    - command: set -eu git add -- '.github/workflows/ci.yml' '.github/workflows/release.yml' 'AGENTS.md' 'CHANGELOG.md' 'README.md' 'SPEC.md' 'cmd/loopexec' 'internal' 'examples' 'docs/cli.md' 'docs/integrations....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215013.667067000Z.txt
+      command_sha256: d1dc30ea60755329c153670303670911429ce8d2b0687f7599b2a9fb3f8a2408
+      command_summary: set -eu git add -- '.github/workflows/ci.yml' '.github/workflows/release.yml' 'AGENTS.md' 'CHANGELOG.md' 'README.md' 'SPEC.md' 'cmd/loopexec' 'internal' 'examples' 'docs/cli.md' 'docs/integrations....
+      evidence:
+        exit_code: 2
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:50:13.667067000Z"
+    - command: set -eu ruby -e 'ARGV.each { |p| File.write(p, File.read(p).rstrip + "\n") }' docs/workflows.md scripts/creative-proof.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215043.806115000Z.txt
+      command_sha256: f8c63f10c164df2dc157dc917944463c7eea066f829d67b7c6d271df97b7f900
+      command_summary: set -eu ruby -e 'ARGV.each { |p| File.write(p, File.read(p).rstrip + "\n") }' docs/workflows.md scripts/creative-proof.sh
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:50:43.806115000Z"
+    - command: set -eu git add -- docs/workflows.md scripts/creative-proof.sh git diff --cached --check git diff --cached --stat git diff --cached --name-only > build/release-v0.3.0/staged-files.txt test -z "$(gi...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215048.467644000Z.txt
+      command_sha256: 2f492acb11aca05eb49e6d6461ecd8f584579015ecb109bad16a59dfbde1e42f
+      command_summary: set -eu git add -- docs/workflows.md scripts/creative-proof.sh git diff --cached --check git diff --cached --stat git diff --cached --name-only > build/release-v0.3.0/staged-files.txt test -z "$(gi...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:50:48.467644000Z"
+    - command: set -eu cat > build/release-v0.3.0/pr-body.md <<'PR_BODY' LoopExec can now govern unattended argv workflows with bounded subprocesses, exact usage accounting, numeric progress, and best-candidate r...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215132.689609000Z.txt
+      command_sha256: 007272e331df9ecdd2b91fffd081feca551a0bd3f109a40cd51ef87ffad0cd7b
+      command_summary: set -eu cat > build/release-v0.3.0/pr-body.md <<'PR_BODY' LoopExec can now govern unattended argv workflows with bounded subprocesses, exact usage accounting, numeric progress, and best-candidate r...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-29
+      timestamp: "2026-09-17T21:51:32.689609000Z"
+    - evidence: 'Committed release candidate 4809df2 with 51 scoped files; unrelated SMALL state and handoffs excluded. Local gates: 152 test/subtest passes in four packages, vet, internal race, formatting/diff, DOGFOOD_OK, CREATIVE_PROOF_OK, SMALL_PROOF_OK, six OS/arch packages/checksums, extracted macOS demo verified, exact-index Gitleaks pass with one documented existing fixture exception. Evidence in build/release-v0.3.0.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-29
+      timestamp: "2026-09-17T21:51:32.768607000Z"
+    - evidence: 'Publish release requested by user: push verified candidate, inspect Linux/macOS CI and retained proof artifacts, merge exact passing head, tag v0.3.0, verify release assets and fresh installation. No paid model usage.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T21:51:32.870268000Z"
+    - command: set -eu for script in scripts/*.sh; do bash -n "$script"; done jq -e '.all_verified == true and (.receipts | length) == 6' build/release-v0.3.0/small-proof-final/evidence-verified.json >/dev/null j...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T215557.063539000Z.txt
+      command_sha256: acdb199a4588b28c674b7c90057923599fa64b26aab020193487944bf829ea9f
+      command_summary: set -eu for script in scripts/*.sh; do bash -n "$script"; done jq -e '.all_verified == true and (.receipts | length) == 6' build/release-v0.3.0/small-proof-final/evidence-verified.json >/dev/null j...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T21:55:57.063539000Z"
+    - evidence: Local release candidate 4809df2 is verified. Automatic approval review rejected pushing the release branch and creating a PR because earlier user instructions explicitly prohibited publishing/merging/deploying. Explicit replacement authorization is pending. No push, PR, merge, tag, release, or paid model usage occurred; remote CI and public installation cannot yet be verified.
+      notes: Ready PR title/body and local gate receipt are in build/release-v0.3.0/pr-body.md and release-receipt.json. Resume task-30 only after explicit release authorization. Preserve unrelated .small/workspace.small.yml change and untracked handoff documents.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-30
+      timestamp: "2026-09-17T21:56:23.238024000Z"
+    - evidence: Updated task task-30 to pending
+      notes: small plan --pending
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-30
+      timestamp: "2026-09-17T22:06:32.140220000Z"
+    - evidence: User explicitly authorized pushing the branch, opening and merging its PR after CI passes, tagging v0.3.0, and publishing the release. Resume exact-candidate remote CI, proof artifact inspection, merge, release, and fresh installation verification.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:06:32.242983000Z"
+    - command: set -eu test "$(git rev-parse HEAD)" = 4809df2fae1182e79f5e349cfcf008fd4efc74d1 git push -u origin HEAD:refs/heads/codex/unattended-creative-workflow gh pr create --repo justyn-clark/loopexec --bas...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T220650.991459000Z.txt
+      command_sha256: bbecd7f665b7f6e3336d762e85807f2c8e04b000829acd2c253d7e42d98dddf8
+      command_summary: set -eu test "$(git rev-parse HEAD)" = 4809df2fae1182e79f5e349cfcf008fd4efc74d1 git push -u origin HEAD:refs/heads/codex/unattended-creative-workflow gh pr create --repo justyn-clark/loopexec --bas...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:06:50.991459000Z"
+    - command: set -eu ruby <<'RUBY' path = "internal/subprocess/process_unix_test.go" source = File.read(path) source.sub!("\t\"context\"\n", "\t\"context\"\n\t\"errors\"\n") source.sub!("\t\"path/filepath\"\n",...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T220942.386870000Z.txt
+      command_sha256: 06254c2d4c4dd124b98b43b65c93f0bbe168a456a629691fc15dae0f19930d69
+      command_summary: set -eu ruby <<'RUBY' path = "internal/subprocess/process_unix_test.go" source = File.read(path) source.sub!("\t\"context\"\n", "\t\"context\"\n\t\"errors\"\n") source.sub!("\t\"path/filepath\"\n",...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:09:42.386870000Z"
+    - command: set -eu gh run view 35280355541 --repo justyn-clark/loopexec --log-failed > build/release-v0.3.0/ci-linux-initial-failure.txt git add -- internal/subprocess/process_unix_test.go git diff --cached -...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221021.566867000Z.txt
+      command_sha256: 45c827e6183976955889a7871044cc11bcb2a9696271c74b89bfc4bb249f8b21
+      command_summary: set -eu gh run view 35280355541 --repo justyn-clark/loopexec --log-failed > build/release-v0.3.0/ci-linux-initial-failure.txt git add -- internal/subprocess/process_unix_test.go git diff --cached -...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:10:21.566867000Z"
+    - command: set -eu gh run view 35280670149 --repo justyn-clark/loopexec --json databaseId,headSha,event,status,conclusion,jobs,url > build/release-v0.3.0/ci-pr-passed.json jq -e '.headSha == "245ee2d8d153a7c1...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221225.619557000Z.txt
+      command_sha256: 4d07b99a05e7691bd0e81d8b8c81095581412d6d558da46550d2c0aa111fb44a
+      command_summary: set -eu gh run view 35280670149 --repo justyn-clark/loopexec --json databaseId,headSha,event,status,conclusion,jobs,url > build/release-v0.3.0/ci-pr-passed.json jq -e '.headSha == "245ee2d8d153a7c1...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:12:25.619557000Z"
+    - command: set -eu for platform in Linux macOS; do proof="build/release-v0.3.0/ci-pr-35280670149/loopexec-proof-$platform-35280670149" grep -qx DOGFOOD_OK "$proof/dogfood/00-summary.txt" grep -qx SMALL_PROOF_...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221322.890543000Z.txt
+      command_sha256: 306af2fa52d4e41468e188a1a0e177fc8e7a5f755065ff01b482be44b601b3f9
+      command_summary: set -eu for platform in Linux macOS; do proof="build/release-v0.3.0/ci-pr-35280670149/loopexec-proof-$platform-35280670149" grep -qx DOGFOOD_OK "$proof/dogfood/00-summary.txt" grep -qx SMALL_PROOF_...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:13:22.890543000Z"
+    - command: set -eu gh pr view 3 --repo justyn-clark/loopexec --json number,url,state,headRefOid,mergeStateStatus,mergeable,statusCheckRollup > build/release-v0.3.0/pr-premerge.json jq -e '.state=="OPEN" and ....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221402.436978000Z.txt
+      command_sha256: f0acb0a808bcdc7ff1c5bc29217db00ef23cb1684e498b73cdeb1c63a68dbc3c
+      command_summary: set -eu gh pr view 3 --repo justyn-clark/loopexec --json number,url,state,headRefOid,mergeStateStatus,mergeable,statusCheckRollup > build/release-v0.3.0/pr-premerge.json jq -e '.state=="OPEN" and ....
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:14:02.436978000Z"
+    - command: set -eu git fetch origin main merge_commit="$(jq -er '.mergeCommit.oid' build/release-v0.3.0/pr-merged.json)" git merge-base --is-ancestor "$merge_commit" origin/main git diff --exit-code 245ee2d8d...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221421.217741000Z.txt
+      command_sha256: 0f7c764360122f576bac67df0de9f6e9d28f0d315782351c2240ce34c2929cc2
+      command_summary: set -eu git fetch origin main merge_commit="$(jq -er '.mergeCommit.oid' build/release-v0.3.0/pr-merged.json)" git merge-base --is-ancestor "$merge_commit" origin/main git diff --exit-code 245ee2d8d...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:14:21.217741000Z"
+    - command: set -eu mkdir -p build/release-v0.3.0/from-public-tag/bin GOBIN="$PWD/build/release-v0.3.0/from-public-tag/bin" GOMODCACHE="$PWD/build/release-v0.3.0/from-public-tag/modcache" GOPATH="$PWD/build/re...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221510.052931000Z.txt
+      command_sha256: 160add93abf6723414ffff5c1b0832acb9b64de6516a2e919f8f0981e335e837
+      command_summary: set -eu mkdir -p build/release-v0.3.0/from-public-tag/bin GOBIN="$PWD/build/release-v0.3.0/from-public-tag/bin" GOMODCACHE="$PWD/build/release-v0.3.0/from-public-tag/modcache" GOPATH="$PWD/build/re...
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:15:10.052931000Z"
+    - command: set -eu release_go="$(go env GOROOT)/bin/go" "$release_go" version GOBIN="$PWD/build/release-v0.3.0/from-public-tag/bin" GOMODCACHE="$PWD/build/release-v0.3.0/from-public-tag/modcache" GOPATH="$PWD...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221553.005645000Z.txt
+      command_sha256: 2055012d78edb833a844d39b7bcade8fd669d84454616f59006ce9e90dbbfc6b
+      command_summary: set -eu release_go="$(go env GOROOT)/bin/go" "$release_go" version GOBIN="$PWD/build/release-v0.3.0/from-public-tag/bin" GOMODCACHE="$PWD/build/release-v0.3.0/from-public-tag/modcache" GOPATH="$PWD...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:15:53.005645000Z"
+    - command: set -eu gh run view 35280999316 --repo justyn-clark/loopexec --json databaseId,headSha,headBranch,status,conclusion,jobs,url > build/release-v0.3.0/release-ci-passed.json jq -e '.headSha=="9dd2ad3b...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T221819.256912000Z.txt
+      command_sha256: 8f5a6e3b1f625dd08c357d33e08f13ef13dbfaeaa547469ecc6f5cc5c307df45
+      command_summary: set -eu gh run view 35280999316 --repo justyn-clark/loopexec --json databaseId,headSha,headBranch,status,conclusion,jobs,url > build/release-v0.3.0/release-ci-passed.json jq -e '.headSha=="9dd2ad3b...
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:18:19.256912000Z"
+    - command: set -eu gh run view 35280999316 --repo justyn-clark/loopexec --json databaseId,headSha,headBranch,status,conclusion,jobs,url > build/release-v0.3.0/release-ci-passed.json jq -e '.headSha=="9dd2ad3b...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T222006.234786000Z.txt
+      command_sha256: 9fd9e89e416bb257e521cb3fea2f2ed2a84c8a7870b3760a709539fd0bbed209
+      command_summary: set -eu gh run view 35280999316 --repo justyn-clark/loopexec --json databaseId,headSha,headBranch,status,conclusion,jobs,url > build/release-v0.3.0/release-ci-passed.json jq -e '.headSha=="9dd2ad3b...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:20:06.234786000Z"
+    - command: set -eu ruby <<'RUBY' require "json" require "digest" require "time" base = "build/release-v0.3.0" receipt = JSON.parse(File.read("#{base}/release-receipt.json")) release = JSON.parse(File.read("#{...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260917T222059.472351000Z.txt
+      command_sha256: 14a4c62c8b424acc9f921eff06e7f345a6118db1314959ab3d8cebc8f338e4f8
+      command_summary: set -eu ruby <<'RUBY' require "json" require "digest" require "time" base = "build/release-v0.3.0" receipt = JSON.parse(File.read("#{base}/release-receipt.json")) release = JSON.parse(File.read("#{...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-30
+      timestamp: "2026-09-17T22:20:59.472351000Z"
+    - evidence: 'Published https://github.com/justyn-clark/loopexec/releases/tag/v0.3.0 after explicit user authorization. PR #3 merged exact passing candidate 245ee2d at 9dd2ad3; annotated v0.3.0 resolves to that merge. Linux/macOS PR CI 35280670149 and release CI 35280999316 passed. Downloaded proof artifacts retain hidden receipts, reverify all SMALL evidence, exclude private outputs, and pass Gitleaks. All six downloaded package checksums and seven GitHub asset digests match. Public Go module installation with Go 1.26.0 and downloaded macOS binary both pass offline demo. Final evidence: build/release-v0.3.0/release-receipt.json.'
+      notes: Linux CI exposed a test assertion timing race; corrected in 245ee2d with the original one-second cancellation bound, 30 focused repetitions, and subprocess race checks. No production cancellation changes, paid model calls, real-project SMALL migration, or unrelated change loss. Native Windows and live model/engine integrations remain explicitly unverified.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-30
+      timestamp: "2026-09-17T22:21:35.742593000Z"
+    - evidence: Added task task-31 via small plan --add
+      notes: Add cross-run model-call reservations with shared scoped budget
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-31
+      timestamp: "2026-09-26T21:10:46.108807000Z"
+    - evidence: Implementing an opt-in shared reservation command for child model calls; will test cross-run and concurrent limits
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-31
+      timestamp: "2026-09-26T21:11:12.817428000Z"
+    - command: /bin/sh /private/tmp/loopexec-apply-budget.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T211714.695862000Z.txt
+      command_sha256: acb384c307efda2829280f700f104b9c3d4b1a82c23d4ee433c6204a996ce824
+      command_summary: /bin/sh /private/tmp/loopexec-apply-budget.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:17:14.695862000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestScopedBudget -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T211736.413096000Z.txt
+      command_sha256: e549a3d7020b00e70a4293c338f2d8484cf513a38267f4841dd78c77f0060428
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestScopedBudget -count=1
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:17:36.413096000Z"
+    - command: python3 /private/tmp/loopexec-doc-edit.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T211847.530048000Z.txt
+      command_sha256: e987f1dee1de6e788a8fc2be89d9e1e9c2fe8cfdcabef98785b0c5f0924176a0
+      command_summary: python3 /private/tmp/loopexec-doc-edit.py
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:18:47.530048000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./cmd/loopexec -run TestScopedBudget -count=10
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T211914.168754000Z.txt
+      command_sha256: 0e57b822a749c5e74bbdc037a526713339ebec28cb7fe30ade9d0751e3c558b6
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./cmd/loopexec -run TestScopedBudget -count=10
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:19:14.168754000Z"
+    - command: /bin/sh /private/tmp/loopexec-budget-smoke.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T212001.995907000Z.txt
+      command_sha256: 8516cb2a48f450e2c7bf0aaa1ab258b2a83dd8afa6b1b771ec012dacd5b60e3d
+      command_summary: /bin/sh /private/tmp/loopexec-budget-smoke.sh
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:20:01.995907000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T212108.472878000Z.txt
+      command_sha256: d159f113bd67acab05478d5c3286d3f2b1ed04b400eb7fa055c8ba635beb1f1c
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:21:08.472878000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T212133.859819000Z.txt
+      command_sha256: d70b02884b7ec922f307a45754a9eeab267484d383d7c89976e406bfda3f77fa
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:21:33.859819000Z"
+    - evidence: Added opt-in cross-run budget status/reserve CLI with pinned shared policy, per-phase call caps, durable fail-closed reservations, docs and tests; race test, full go test, go vet, CLI smoke passed
+      notes: Unreleased; home project remains on its local v0.3.0 guard until a reviewed release is published and pinned.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-31
+      timestamp: "2026-09-26T21:22:10.174406000Z"
+    - evidence: Added task task-32 via small plan --add
+      notes: Release v0.4.0 shared model-call budgets with offline adapter proof and migration guide
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-32
+      timestamp: "2026-09-26T22:10:32.621589000Z"
+    - evidence: Beginning v0.4.0 offline scoped-budget adapter proof, release docs, and validation
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-32
+      timestamp: "2026-09-26T22:11:08.700884000Z"
+    - command: mkdir -p examples/scoped-budget && cp /private/tmp/loopexec-v04-adapter.sh examples/scoped-budget/adapter.sh && cp /private/tmp/loopexec-v04-example-readme.md examples/scoped-budget/README.md && cp...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221241.994864000Z.txt
+      command_sha256: b469edfbc75513bb7dde4167f14825ad37983c7200d1acacc9e48dbed5f723a9
+      command_summary: mkdir -p examples/scoped-budget && cp /private/tmp/loopexec-v04-adapter.sh examples/scoped-budget/adapter.sh && cp /private/tmp/loopexec-v04-example-readme.md examples/scoped-budget/README.md && cp...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:12:41.994864000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/loopexec-v04 ./cmd/loopexec && ./scripts/scoped-budget-proof.sh /private/tmp/loopexec-v04 /private/tmp/loopexec-v04-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221300.156328000Z.txt
+      command_sha256: eeac298d87d1edcf4f6b712e4afcb52c1a8c721df7a7bdca44e3f1bef4487a47
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/loopexec-v04 ./cmd/loopexec && ./scripts/scoped-budget-proof.sh /private/tmp/loopexec-v04 /private/tmp/loopexec-v04-proof
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:13:00.156328000Z"
+    - command: test -z "$(gofmt -l cmd internal examples)" && env GOCACHE=/private/tmp/loopexec-go-cache go test ./... && env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./cmd/loopexec -run TestScopedBud...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221415.298979000Z.txt
+      command_sha256: abc170b59f4e66b71a25ac2750ef9e594cf7acd9f023731fe5966ab1c64f1217
+      command_summary: test -z "$(gofmt -l cmd internal examples)" && env GOCACHE=/private/tmp/loopexec-go-cache go test ./... && env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./cmd/loopexec -run TestScopedBud...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:14:15.298979000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/creative-v04 ./examples/creative-workflow && ./scripts/dogfood-proof.sh /private/tmp/loopexec-v04 /private/tmp/loopexec-v04-dogfo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221536.578334000Z.txt
+      command_sha256: 5166b38cd0bf19da85814438dad403e53292f777d77b9b8359aeb0e71df60f20
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/creative-v04 ./examples/creative-workflow && ./scripts/dogfood-proof.sh /private/tmp/loopexec-v04 /private/tmp/loopexec-v04-dogfo...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:15:36.578334000Z"
+    - command: git add .github/workflows/ci.yml README.md SPEC.md cmd/loopexec/main.go cmd/loopexec/scoped_budget.go cmd/loopexec/scoped_budget_test.go docs/cli.md docs/releases/v0.4.0.md examples/scoped-budget/R...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221650.984454000Z.txt
+      command_sha256: aa8bbd63e21a6651d8ffc7760dcbc6eea510133a32c12aaee990eeeb623361d6
+      command_summary: git add .github/workflows/ci.yml README.md SPEC.md cmd/loopexec/main.go cmd/loopexec/scoped_budget.go cmd/loopexec/scoped_budget_test.go docs/cli.md docs/releases/v0.4.0.md examples/scoped-budget/R...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:16:50.984454000Z"
+    - command: git branch codex/scoped-budget-v0.4.0 f296bab && git push -u origin codex/scoped-budget-v0.4.0
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221731.140090000Z.txt
+      command_sha256: 0a2bd76e1c9f58d6396f31ab90cf23a53f011a320f3c1bae5c9783a2c41a7d5f
+      command_summary: git branch codex/scoped-budget-v0.4.0 f296bab && git push -u origin codex/scoped-budget-v0.4.0
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:17:31.140090000Z"
+    - command: gh pr create --repo justyn-clark/loopexec --base main --head codex/scoped-budget-v0.4.0 --title 'Release v0.4.0 scoped model-call budgets' --body-file /private/tmp/loopexec-v04-pr.md
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221801.888706000Z.txt
+      command_sha256: 1a4882cbc5e09062b6f631fcb908c90e8dab968ad7d10d440456f69b444aaa61
+      command_summary: gh pr create --repo justyn-clark/loopexec --base main --head codex/scoped-budget-v0.4.0 --title 'Release v0.4.0 scoped model-call budgets' --body-file /private/tmp/loopexec-v04-pr.md
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:18:01.888706000Z"
+    - command: env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./internal/...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T221916.285034000Z.txt
+      command_sha256: 60bcd7705e111fc8e1c854a61181f9676acffeb4cc97ba0d0ddfce8df00c64c3
+      command_summary: env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./internal/...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:19:16.285034000Z"
+    - command: python3 /private/tmp/loopexec-v04-race-fix.py && env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./internal/... -count=10
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T222046.282704000Z.txt
+      command_sha256: 9f2324212eca4ae2d9c1de20ee30d2d71ed797cb4838c98470f76fa755fc4244
+      command_summary: python3 /private/tmp/loopexec-v04-race-fix.py && env GOCACHE=/private/tmp/loopexec-go-cache go test -race ./internal/... -count=10
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:20:46.282704000Z"
+    - command: 'git add internal/subprocess/process_unix_test.go && git commit -m ''test: tolerate vanished Linux proc entry after cancellation'' && git push origin HEAD:refs/heads/codex/scoped-budget-v0.4.0'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T222120.280917000Z.txt
+      command_sha256: 4ecc6da89484138012739e94abe0f5c89c455051ec6c974feb04cd4a1c4bb06c
+      command_summary: 'git add internal/subprocess/process_unix_test.go && git commit -m ''test: tolerate vanished Linux proc entry after cancellation'' && git push origin HEAD:refs/heads/codex/scoped-budget-v0.4.0'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:21:20.280917000Z"
+    - command: gh pr merge 4 --repo justyn-clark/loopexec --merge
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T222318.306136000Z.txt
+      command_sha256: 55583c493048979d67d4f752611e52a41882b89b11ce3358734ea0efee363ede
+      command_summary: gh pr merge 4 --repo justyn-clark/loopexec --merge
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:23:18.306136000Z"
+    - command: git fetch origin main && git diff --exit-code c0e4cc2653b428faa2fceb6485f94a98aa3167d5 HEAD && git tag -a v0.4.0 c0e4cc2653b428faa2fceb6485f94a98aa3167d5 -m 'LoopExec v0.4.0' && git push origin v0.4.0
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T222401.404488000Z.txt
+      command_sha256: ca25a10979eb7ee0e93ee670f3c342da0243c858a0ffe8e2c5361a3874f357d3
+      command_summary: git fetch origin main && git diff --exit-code c0e4cc2653b428faa2fceb6485f94a98aa3167d5 HEAD && git tag -a v0.4.0 c0e4cc2653b428faa2fceb6485f94a98aa3167d5 -m 'LoopExec v0.4.0' && git push origin v0.4.0
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:24:01.404488000Z"
+    - command: mkdir -p /private/tmp/loopexec-v04-fresh && gh release download v0.4.0 --repo justyn-clark/loopexec --dir /private/tmp/loopexec-v04-fresh --pattern checksums.txt --pattern loopexec-v0.4.0-darwin-ar...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260926T222722.672311000Z.txt
+      command_sha256: 2143a7df854fc238d2da9db3908b31727f1bbf014fbde0966948a0be35ec806a
+      command_summary: mkdir -p /private/tmp/loopexec-v04-fresh && gh release download v0.4.0 --repo justyn-clark/loopexec --dir /private/tmp/loopexec-v04-fresh --pattern checksums.txt --pattern loopexec-v0.4.0-darwin-ar...
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:27:22.672311000Z"
+    - evidence: 'Released v0.4.0 from merged PR #4; Linux/macOS CI, offline shared-budget proof, race checks, Go tests/vet, six package checksums, and downloaded macOS package verification passed'
+      notes: Scoped budget is opt-in; home project remains on its existing local guard until an intentional migration. Unrelated dirty SMALL and handoff files were preserved.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-26T22:27:45.142358000Z"
+    - command: gitleaks dir .small --no-banner --redact --report-format json --report-path /private/tmp/loopexec-small-leaks.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T011424.284407000Z.txt
+      command_sha256: 4bc134620f2a42986711a8b2c006faa4ebba3c5b4ee9642ce7820dca1b948ac1
+      command_summary: gitleaks dir .small --no-banner --redact --report-format json --report-path /private/tmp/loopexec-small-leaks.json
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-32
+      timestamp: "2026-09-27T01:14:24.284407000Z"
