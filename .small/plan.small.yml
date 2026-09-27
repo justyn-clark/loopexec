@@ -97,3 +97,6 @@ tasks:
     - id: task-32
       title: Release v0.4.0 shared model-call budgets with offline adapter proof and migration guide
       status: completed
+    - id: task-33
+      title: Enforce canonical SMALL progress for LoopExec development changes in CI
+      status: completed

@@ -22,6 +22,14 @@ jobs:
         with:
           go-version: '1.26.x'
           check-latest: true
+      - name: Require canonical SMALL progress with development changes
+        if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          git diff --name-only "$BASE_SHA" HEAD | ./scripts/check-small-sync.sh
       - name: Format
         run: test -z "$(gofmt -l cmd internal examples)"
       - name: Vet
@@ -56,6 +64,9 @@ jobs:
           shasum -a 256 -c selected.txt
           tar -xzf "$archive"
           ./small version
+      - name: Validate canonical SMALL state
+        run: |
+          "$RUNNER_TEMP/small/small" check --strict
       - name: SMALL v1 and collaborative v2 compatibility
         run: ./scripts/small-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/small/small" .artifacts/small
       - name: Upload proof receipts

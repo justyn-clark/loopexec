@@ -48,7 +48,7 @@ Requires Go 1.26 or newer. For a pinned install, use `@v0.4.0`. Prebuilt archive
 
 `loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.4.0.md) for compatibility and platform limits.
 
-SMALL is optional. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
+SMALL is optional for LoopExec consumers. This repository uses the tracked `.small/` files for its own development audit; CI requires a canonical progress update with source or documentation changes and validates the tracked state. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
 
 ## 60-second proof
 
