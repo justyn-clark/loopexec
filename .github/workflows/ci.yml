@@ -65,7 +65,8 @@ jobs:
           tar -xzf "$archive"
           ./small version
       - name: Validate canonical SMALL state
-        run: "$RUNNER_TEMP/small/small" check --strict
+        run: |
+          "$RUNNER_TEMP/small/small" check --strict
       - name: SMALL v1 and collaborative v2 compatibility
         run: ./scripts/small-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/small/small" .artifacts/small
       - name: Upload proof receipts

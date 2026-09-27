@@ -2054,3 +2054,48 @@ entries:
       status: completed
       task_id: task-33
       timestamp: "2026-09-27T02:17:48.523074000Z"
+    - command: 'git add .github/workflows/ci.yml README.md scripts/check-small-sync.sh .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml && git commit -m ''ci: require canonical SMALL progr...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021922.035424000Z.txt
+      command_sha256: 55ce193a0c4ad84ed9b80ba1354f1977853e676c6a30face856a9b40f4a4dce9
+      command_summary: 'git add .github/workflows/ci.yml README.md scripts/check-small-sync.sh .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml && git commit -m ''ci: require canonical SMALL progr...'
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:19:22.035424000Z"
+    - command: git branch codex/require-small-progress 66d1213 && git push -u origin codex/require-small-progress
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T021937.639949000Z.txt
+      command_sha256: 8969e1e1c2c8a523adbf83b330b6984d4a1584a56f368d870648743589b183f2
+      command_summary: git branch codex/require-small-progress 66d1213 && git push -u origin codex/require-small-progress
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:19:37.639949000Z"
+    - command: gh pr create --repo justyn-clark/loopexec --base main --head codex/require-small-progress --title 'Require canonical SMALL progress in LoopExec CI' --body-file /private/tmp/loopexec-small-gate-pr.md
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T022014.953278000Z.txt
+      command_sha256: a611632f5ef184b333e52afeb5a59a1165527aa6d00b65d4f280b55828a12fe9
+      command_summary: gh pr create --repo justyn-clark/loopexec --base main --head codex/require-small-progress --title 'Require canonical SMALL progress in LoopExec CI' --body-file /private/tmp/loopexec-small-gate-pr.md
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:20:14.953278000Z"
+    - command: python3 /private/tmp/loopexec-small-yaml-fix.py && ruby -e 'require "yaml"; YAML.load_file(".github/workflows/ci.yml")' && git diff --check && /private/tmp/loopexec-small-v11-ci/small check --strict
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20260927T022325.360311000Z.txt
+      command_sha256: 54c89a3833cdb2827cc430b7dc09eee31a737005fdac4230d5e42e5030874a9b
+      command_summary: python3 /private/tmp/loopexec-small-yaml-fix.py && ruby -e 'require "yaml"; YAML.load_file(".github/workflows/ci.yml")' && git diff --check && /private/tmp/loopexec-small-v11-ci/small check --strict
+      evidence: Command completed successfully
+      notes: 'apply: exit code 0'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:23:25.360311000Z"
+    - evidence: Corrected YAML quoting in the new canonical SMALL CI validation step after GitHub rejected workflow parsing; local YAML parse, diff check, and pinned SMALL v1.1.0 strict check pass
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-33
+      timestamp: "2026-09-27T02:23:47.528293000Z"
