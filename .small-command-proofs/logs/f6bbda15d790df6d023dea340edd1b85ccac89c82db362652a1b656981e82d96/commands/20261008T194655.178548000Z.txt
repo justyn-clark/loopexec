@@ -1,0 +1,67 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: .gitignore
+@@
+ logs/
++# Only individually reviewed command proof belongs here, never the private cache.
++!.small-command-proofs/logs/
+ docs/jcn-agent-stack/runs/
+*** Update File: AGENTS.md
+@@
+ Target tooling: SMALL CLI 1.1.0 (supports protocol profiles 1.0.0 and 2.0.0).
++This development checkout's historical command summaries require the upstream
++command-summary correction. Use an explicitly verified patched binary until a
++compatible stable release is adopted; do not use the Homebrew 1.0.2 default.
++Preserve existing receipts. Review and retain only required non-secret command
++proof in `.small-command-proofs/`; never export `.small-cache/` wholesale. New
++truncated captures also require exact-byte proof before cache-free validation.
++Local validation does not update the CI pin or prove hosted release gates.
+ This checkout remains on the v1 profile unless explicitly migrated through SMALL.
+*** Update File: docs/small-integration.md
+@@
+ benchmark. Use separate worktrees/candidate directories and runtime storage for
+ independent live work. A single workflow runtime has one governor.
++
++## Development-state command proof
++
++The released SMALL v1.1.0 can truncate an allowed localhost URL inside a command
++summary, then reject that display during strict validation. This checkout has
++two such historical screenshot captures. Keep their original receipts unchanged
++and use an explicitly verified CLI containing the upstream command-summary fix.
++An old Homebrew `small` is not a substitute for that binary.
++
++The correction validates exact original command bytes against the saved ref,
++SHA256 and legacy summary. Individually reviewed, non-secret proof can be kept
++under `.small-command-proofs/`, mirroring the supported `.small-cache/` ref.
++The proof store is portable validation input, not replacement audit history.
++Never export the whole private cache. Missing or changed proof must fail closed.
++
++New truncated captures marked `command_summary_version: 2` also need portable
++exact-byte proof before committing state for a cache-free checkout. Review each
++full command for private material before copying it; do not strip the marker.
++Short captures retain the existing metadata contract. See the upstream
++[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/88261152c8643d121b4ff642881b1f701fc016d5/docs/command-proof.md).
++
++Validate with the explicitly selected binary:
++
++```sh
++/path/to/patched-small version
++/path/to/patched-small check --strict
++```
++
++Check a disposable snapshot with no cache: selected proof must pass, while
++missing or tampered proof must fail without changing the saved state. CI still
++pins the released v1.1.0 until the correction is explicitly adopted there;
++local success alone does not establish hosted compatibility or release readiness.
+ 
+ ## Exit codes and acceptance
+*** Update File: CHANGELOG.md
+@@
+ Future recipes and workflow adapters will remain configurable, opt-in integrations.
++
++- Prepared selective portable SMALL command proof for preserved development
++  receipts and documented explicit patched-CLI validation. Cache-free validation
++  passes with reviewed proof and fails for missing or tampered bytes. Hosted
++  adoption remains separate; the current CI pin has not yet changed.
+*** End Patch
+PATCH

@@ -26,4 +26,6 @@ UPDATES/
 .small/logs
 .small/runs/
 logs/
+# Only individually reviewed command proof belongs here, never the private cache.
+!.small-command-proofs/logs/
 docs/jcn-agent-stack/runs/

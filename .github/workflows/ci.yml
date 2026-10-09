@@ -22,7 +22,7 @@ jobs:
         with:
           go-version: '1.26.x'
           check-latest: true
-      - name: Require canonical SMALL progress with development changes
+      - name: Require canonical SMALL progress and code/docs co-changes
         if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         shell: bash
         env:
@@ -30,8 +30,14 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin "$BASE_SHA"
           git diff --name-only "$BASE_SHA" HEAD | ./scripts/check-small-sync.sh
+          git diff --name-only "$BASE_SHA" HEAD | bash ./scripts/check-docs-sync.sh
+      - name: Verify documentation contract and source-bound bundle
+        run: |
+          go test ./cmd/loopexec -run '^TestDocumentationContract' -count=1
+          go test ./tools/docs-continuity -count=1
+          go run ./tools/docs-continuity bundle "$RUNNER_TEMP/loopexec-documentation"
       - name: Format
-        run: test -z "$(gofmt -l cmd internal examples)"
+        run: test -z "$(gofmt -l cmd internal examples tools)"
       - name: Vet
         run: go vet ./...
       - name: Test
@@ -55,8 +61,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/small"
           cd "$RUNNER_TEMP/small"
-          archive="small-v1.1.0-$(go env GOOS)-$(go env GOARCH).tar.gz"
-          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0"
+          archive="small-v1.1.2-$(go env GOOS)-$(go env GOARCH).tar.gz"
+          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.2"
           curl --fail --location --retry 2 "$base/checksums.txt" -o checksums.txt
           curl --fail --location --retry 2 "$base/$archive" -o "$archive"
           awk -v archive="$archive" '$2 == archive {print}' checksums.txt > selected.txt

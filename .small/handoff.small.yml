@@ -1,8 +1,10 @@
 small_version: "1.0.0"
 owner: agent
-summary: Run complete. strict check passed. All plan tasks completed.
+summary: 'SMALL audit blocker resolved: installed stable1.1.2, root/site CI configs and prose updated, exact retained QA proof unchanged. Task41 completed; task36 is the deployment continuation. Cache-free root/site strict pass and missing proof remains fail-closed; CLI/docs contract tests, canonical tests/build and refreshed desktop/mobile QA pass. Source-bound bundle sourcee0d04802 docscb4c8adb in build/deployment/small112-documentation and docs-checkout. Rebuild older platform packages before publication. Next commit paired PRs, verify hosted CI/protections, authorized deployment, official-origin docs readback and release; recipes remain after release. No remote publication or production action.'
 resume:
-    next_steps: []
+    current_task_id: task-36
+    next_steps:
+        - Unblock task-36
 links: []
 replayId:
     value: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96

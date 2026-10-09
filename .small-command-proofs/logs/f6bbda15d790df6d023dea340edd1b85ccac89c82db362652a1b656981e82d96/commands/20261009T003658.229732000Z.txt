@@ -1,0 +1,10 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/run-docs-build.mjs
++import { fileURLToPath } from 'node:url';
++process.chdir(fileURLToPath(new URL('./docs-checkout/apps/docs/', import.meta.url)));
++const cli = process.cwd() + '/node_modules/astro/astro.js';
++process.argv = [process.argv[0], cli, 'build'];
++await import(cli);
+*** End Patch
+PATCH

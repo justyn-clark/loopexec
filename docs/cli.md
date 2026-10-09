@@ -2,6 +2,10 @@
 
 This document defines the command surface and machine contract for loopexec.
 
+The [generated command, flag and JSON field contract](cli-reference.generated.md)
+is checked against the actual runtime by tests. This guide defines value semantics
+and examples; both must be updated together when the behavior changes.
+
 ## Commands
 
 - `loopexec init`
@@ -35,7 +39,9 @@ This document defines the command surface and machine contract for loopexec.
 - `loopexec attest`
   - HMAC-sign the receipt (over the model pin, sampling, context manifest, cost, and fingerprint) so provenance is checkable; `--verify` checks the stored signature. Signs the latest run by default; `--run-id <id>` targets a specific recorded run. Key from `--key`, else `$LOOPEXEC_ATTEST_KEY`, else a dev default.
 - `loopexec report`
-  - Render a recorded receipt as a digest: the run's outcome (phase, halt reason, exit class), its pins (check, fingerprint, model, sampling, cost, context manifest size), whether it has been attested, and the per-iteration timeline parsed from `.loopexec/run-<id>.jsonl`. Re-runs nothing and exits `0` even for a failed run (it reports, it does not re-decide). Reports the latest run by default; `--run-id <id>` targets a specific recorded run.
+  - Render a recorded receipt as a digest: the run's outcome (phase, halt reason, exit class), its pins (check, fingerprint, model, sampling, cost, context manifest size), signature-file presence, and the per-iteration timeline parsed from `.loopexec/run-<id>.jsonl`. Re-runs nothing and exits `0` even for a failed run (it reports, it does not re-decide). Reports the latest run by default; `--run-id <id>` targets a specific recorded run.
+  - Unreleased reporting additions: `report.timeline` contains readable typed events, including phase, duration, cause and output-truncation flags; the response preserves `failure_cause`. `report.receipt_status` is `readable`, `incomplete`, `missing`, or `unreadable`; `report.warnings` names lost evidence. Invalid JSON/events and mismatched run IDs are excluded with warnings, while valid events remain visible. `readable` means parsing succeeded, not that the trajectory or receipt integrity was verified. Warnings do not change the read-only report exit code.
+  - `report.attestation_status` is `absent`, `present_unverified`, or `unreadable`. The legacy `report.attested` boolean retains its signature-file-presence meaning. Verify explicitly with `attest --verify` and the signing key. Human reports show the best retained score, configured `score_target`, review counts and candidate retention separately from convergence; an `accepted` candidate from a capped run is not quality approval.
 
 `run` writes a per-run state snapshot (`.loopexec/run-<id>.state.json`) next to its receipt, so `replay` / `explain-halt` / `attest` / `report` can address any recorded run by `--run-id` even after later runs advance the default `.loopexec/state.json` pointer.
 - `loopexec reexecute`

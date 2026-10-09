@@ -1,0 +1,1 @@
+node /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/cli.js screenshot --viewport-size 390,844 --wait-for-timeout 800 --timeout 15000 http://127.0.0.1:4345/ build/deployment/docs-mobile.png

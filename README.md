@@ -11,6 +11,11 @@ The normative contract is `SPEC.md`. The current source implements bounded execu
 
 ## Current status
 
+Source identity: **v0.4.1**. This patch adds evidence-complete reports and enforced
+code/docs release continuity. See [v0.4.1 notes](docs/releases/v0.4.1.md); the
+[Releases page](https://github.com/justyn-clark/loopexec/releases) establishes
+publication status. Workflow thresholds remain supplied by each integration.
+
 Implemented through v0.4.0:
 
 - Real bounded `run` loop: iterates `--exec` then `--check` until the check passes (`success_condition_met`), a bound trips (`max_iterations_reached`), or work fails (`execution_failure`); "no check, no loop"; computed halt reasons mapped to a stable exit-code class; typed JSONL receipts (`.loopexec/run-<id>.jsonl`) and atomic durable state.
@@ -44,9 +49,12 @@ Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 ```
 
-Requires Go 1.26 or newer. For a pinned install, use `@v0.4.0`. Prebuilt archives and SHA256 checksums are available in the [v0.4.0 release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.0).
+Requires Go 1.26 or newer. For a pinned v0.4.1 install, use `@v0.4.1` once that
+release is published. Until then, v0.4.0 remains the prior published stable release.
+Prebuilt archives and SHA256 checksums are linked from
+[GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
 
-`loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.4.0.md) for compatibility and platform limits.
+`loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.4.1.md) for compatibility and platform limits.
 
 SMALL is optional for LoopExec consumers. This repository uses the tracked `.small/` files for its own development audit; CI requires a canonical progress update with source or documentation changes and validates the tracked state. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
 
@@ -82,6 +90,12 @@ CI enforces:
 - `go vet ./...`
 - `go test ./...`
 
+Code/tooling changes also require canonical documentation and changelog updates.
+The generated [CLI and JSON contract](docs/cli-reference.generated.md) is checked
+against the runtime. Every release packages source-bound docs and publication
+requires matching deployed content. See [continuity policy](docs/documentation-continuity.md)
+for enforcement and the pending website rollout boundary.
+
 ## CLI
 
 The implemented CLI returns deterministic human or JSON output.
@@ -96,6 +110,12 @@ The implemented CLI returns deterministic human or JSON output.
 - `loopexec budget status` / `budget reserve` for cross-run child-call limits
 
 See `docs/cli.md` for flags and exit semantics. The opt-in scoped budget reserves a child model call before an adapter launches it; changing the run ID does not reset the allowance. It counts calls, not tokens or dollars.
+
+See [acceptance and evidence](docs/acceptance-policy.md) for general-purpose
+objective, retention, convergence and owner-decision boundaries. The
+[creative verification guide](docs/creative-verification.md) is an optional example.
+The [status and roadmap](docs/status-and-roadmap.md) distinguishes published
+capabilities, local improvements, and remaining work.
 
 ### Global flag
 

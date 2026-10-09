@@ -244,3 +244,22 @@ policy, controller state and critic evidence inaccessible for modification.
 
 The exact workflow schemas, comparison boundaries, restart behavior, trust boundary,
 and offline commands are normative in [docs/workflows.md](docs/workflows.md).
+
+## 13. Documentation and acceptance continuity
+
+Implementation changes MUST ship with matching canonical documentation and release
+notes. CLI command/flag/default/help and JSON field contracts MUST pass the generated
+reference comparison. Release archives MUST include their source-bound public docs
+snapshot. Automated publication MUST fail closed until the official docs site serves
+the matching manifest, source files and homepage build marker. Semantic review and
+account-level release protections remain required; automated provenance is not a
+claim that every sentence or rendered page is correct. See the normative
+[continuity policy](docs/documentation-continuity.md) for the gates and rollout limits.
+
+LoopExec is a general-purpose governor. Domain-specific targets and oracle policies
+belong to integrations. Candidate retention, convergence under the recorded run
+contract, explicit human acceptance and publication MUST remain distinct. Owner
+adjustments MUST preserve original receipts and desired objectives, with separate
+decision evidence; they MUST NOT silently reset budgets or authorize new work.
+See [acceptance policy](docs/acceptance-policy.md). Native cross-run decision history
+is not implemented; these records currently belong to the adapter/operator.
