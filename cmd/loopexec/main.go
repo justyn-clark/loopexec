@@ -16,7 +16,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.4.0"
+	toolVersion = "0.4.1"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.

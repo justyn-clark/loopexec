@@ -1,13 +1,40 @@
 # HARD RULES
  Never directly edit .env files
 
+## Code and documentation continuity
+
+- LoopExec is a general-purpose bounded agentic loop governor. Project-specific
+  quality standards belong to adapters, not the runtime's product definition.
+- Runtime, CLI, dependency, tooling, workflow or policy changes MUST include
+  matching canonical prose and CHANGELOG.md in the same change. Review behavior
+  against docs; a path-co-change check alone cannot prove semantic correctness.
+- Regenerate the CLI contract for command/flag/default/help changes, never hand
+  edit it. Default tests MUST pass against the checked-in reference.
+- Public documentation is allowlisted in docs/documentation-files.json. Add new
+  public guides/release notes there; never bundle private handoffs or state.
+- Releases MUST package the matching source-bound documentation and pass deployed
+  docs readback before publication. Stale, missing or unreachable docs block
+  release; do not bypass the gate to ship code alone.
+- Follow docs/documentation-continuity.md. Never call local gates enforced on
+  GitHub until committed workflows and required branch checks are verified live.
+- Acceptance adjustments require an explicit owner decision and separate policy
+  evidence. Never rewrite original receipts, silently lower an ideal target,
+  reset shared allowances or launch more paid reviews to force convergence.
+
 # SMALL Protocol Agent Guide
 
 This is the operating contract for any AI agent or human acting like one. Follow it exactly. If anything here conflicts with `small --help`, the CLI wins.
 
 SMALL governs state, not execution. The CLI is the only valid way to mutate `.small/`.
 
-Target tooling: SMALL CLI 1.1.0 (supports protocol profiles 1.0.0 and 2.0.0).
+Target tooling: SMALL CLI 1.1.2 (supports protocol profiles 1.0.0 and 2.0.0).
+This stable release includes command-summary correction and narrow captured-code
+loopback URL handling required by this checkout's historical receipts. Verify the
+resolved binary; older releases do not validate the retained QA template capture.
+Preserve existing receipts. Review and retain only required non-secret command
+proof in `.small-command-proofs/`; never export `.small-cache/` wholesale. New
+truncated captures also require exact-byte proof before cache-free validation.
+Local validation does not update the CI pin or prove hosted release gates.
 This checkout remains on the v1 profile unless explicitly migrated through SMALL.
 Check the resolved binary with `small version`; never use an old v1-only CLI to
 write migrated v2 state.

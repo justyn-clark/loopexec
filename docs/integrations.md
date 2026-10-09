@@ -29,11 +29,12 @@ fingerprint. It never runs an agent. `report` reads state/receipts without
 executing anything. `reexecute --confirm` is a live rerun of legacy configs;
 workflow receipts require explicit initialization of a new adapter workspace.
 
-For unattended creative work, use the [workflow contract](workflows.md).
-Its Go adapter executes one builder/test/conditional-critic sequence.
+For unattended agentic work, use the [workflow contract](workflows.md).
+Each adapter executes one bounded work/check/optional-review sequence.
 The governor owns retries, subprocess bounds, exact accounting, candidate
-promotion/restoration, and numeric patience. The executable fixture needs no
-Python runner, network, model key, Blender, or Godot.
+promotion/restoration, and numeric patience. The creative example is one
+integration, not the product boundary; its fixture needs no Python runner,
+network, model key, Blender, or Godot.
 
 A nonzero `--budget-usd` now requires workflow metering. Strict caps require
 enforced per-call reservations; observed metering only stops subsequent work.

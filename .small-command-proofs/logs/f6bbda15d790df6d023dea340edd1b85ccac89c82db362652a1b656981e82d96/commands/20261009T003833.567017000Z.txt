@@ -1,0 +1,61 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/site-qa.mjs
++import { chromium } from '/Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
++import { createServer } from 'node:http';
++import { readFileSync, existsSync, statSync } from 'node:fs';
++import { join, extname, resolve } from 'node:path';
++import assert from 'node:assert/strict';
++const root = resolve('build/deployment/docs-checkout/apps/docs/dist');
++const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.wasm': 'application/wasm' };
++const server = createServer((req, res) => {
++  let file = join(root, decodeURIComponent(new URL(req.url, 'http://localhost').pathname));
++  if (!file.startsWith(root + '/')) { res.writeHead(403).end(); return; }
++  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
++  if (!existsSync(file)) { res.writeHead(404).end(); return; }
++  res.setHeader('Content-Type', mime[extname(file)] ?? 'application/octet-stream');
++  res.end(readFileSync(file));
++});
++await new Promise(r => server.listen(0, '127.0.0.1', r));
++const origin = `http://127.0.0.1:${server.address().port}`;
++const browser = await chromium.launch({ headless: true });
++const results = [];
++try {
++  for (const [label, viewport] of [['desktop', {width:1440,height:1000}], ['mobile', {width:390,height:844}]]) {
++    const page = await browser.newPage({ viewport });
++    const errors = [];
++    page.on('pageerror', error => errors.push(error.message));
++    for (const route of ['/', '/getting-started/', '/cli-reference/', '/acceptance-policy/', '/small-integration/', '/release-notes/']) {
++      assert.equal((await page.goto(origin + route)).status(), 200);
++      await page.waitForLoadState('networkidle');
++      const proof = await page.evaluate(() => ({
++        title: document.title,
++        width: document.documentElement.scrollWidth,
++        viewport: innerWidth,
++        text: document.body.innerText,
++        links: [...document.querySelectorAll('a[href]')].map(a=>a.href),
++        images: [...document.images].filter(i=>i.clientWidth).map(i=>({src:i.src,ok:i.complete && i.naturalWidth>0})),
++      }));
++      assert.ok(proof.width <= proof.viewport, `${label} overflow on ${route}: ${proof.width}`);
++      assert.match(proof.text, /Documentation source v0\.4\.1/);
++      assert.ok(proof.images.every(i=>i.ok), `broken image on ${route}`);
++      for (const href of new Set(proof.links)) {
++        const url = new URL(href);
++        if (url.origin !== origin) continue;
++        let path = join(root, decodeURIComponent(url.pathname));
++        if (existsSync(path) && statSync(path).isDirectory()) path = join(path, 'index.html');
++        assert.ok(existsSync(path), `broken local link: ${route} -> ${url.pathname}`);
++      }
++      if (route === '/') await page.screenshot({ path: `build/deployment/docs-${label}-v0.4.1.png`, fullPage: false });
++      results.push({label,route,title:proof.title,width:proof.width,images:proof.images.length});
++    }
++    assert.deepEqual(errors, []);
++    await page.close();
++  }
++  console.log(JSON.stringify({status:'SITE_QA_OK',results},null,2));
++} finally {
++  await browser.close();
++  await new Promise(r=>server.close(r));
++}
+*** End Patch
+PATCH

@@ -2099,3 +2099,2404 @@ entries:
       status: completed
       task_id: task-33
       timestamp: "2026-09-27T02:23:47.528293000Z"
+    - evidence: Added task task-34 via small plan --add
+      notes: Audit published LoopExec and home verifier; improve receipt reporting and capture usability roadmap
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-34
+      timestamp: "2026-10-07T20:23:05.625276000Z"
+    - evidence: 'Starting: verify live v0.4.0 release/main/CI and deployed docs, inspect the read-only home verifier, reproduce report omissions, add bounded reporting fixes and durable integration/status guidance'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:23:05.857369000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/loopexec-product-audit ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202616.051738000Z.txt
+      command_sha256: ff3a273bbecbf4914eef0e7469ff852c39ac078391e1d3a702361d409c97d1ce
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go build -o /private/tmp/loopexec-product-audit ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:26:16.051738000Z"
+    - command: /private/tmp/loopexec-product-audit demo --workdir /private/tmp/loopexec-report-before
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202644.966625000Z.txt
+      command_sha256: ee999d6db59adb51f34e741e98f0917d2c6099a4d4c2be97d88c0a18b9f63903
+      command_summary: /private/tmp/loopexec-product-audit demo --workdir /private/tmp/loopexec-report-before
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:26:44.966625000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report_test.go @@ import ( "encoding/json" + "os" + "path/filepath" "s...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202825.168365000Z.txt
+      command_sha256: a60935172a937dac9b2acdaeccebb68d625c98ecfba256802009c6e71d0686a6
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report_test.go @@ import ( "encoding/json" + "os" + "path/filepath" "s...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:28:25.168365000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202839.907962000Z.txt
+      command_sha256: f8c6b88a1b900bc8a64d2c6e87df33522b856baf7fe2f95596eddb00023f79a2
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:28:39.907962000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report.go @@ import ( "bufio" + "bytes" @@ Receipt string `json:"recei...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202947.725843000Z.txt
+      command_sha256: e9eea5b1ffdeb8075e2a779a2ff5fc779523b8d0755455037cd2b8cd15047a19
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report.go @@ import ( "bufio" + "bytes" @@ Receipt string `json:"recei...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:29:47.725843000Z"
+    - command: gofmt -w cmd/loopexec/report.go cmd/loopexec/report_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202947.914163000Z.txt
+      command_sha256: 614bd43fd598a2da45eb725b19298f80fa0e2cc018a73640f3a758f02da8e35a
+      command_summary: gofmt -w cmd/loopexec/report.go cmd/loopexec/report_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:29:47.914163000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T202958.145561000Z.txt
+      command_sha256: f8c6b88a1b900bc8a64d2c6e87df33522b856baf7fe2f95596eddb00023f79a2
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:29:58.145561000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report.go @@ -func yesNo(b bool) string { - if b { - return "yes" - } ...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203227.005555000Z.txt
+      command_sha256: ab6f38ca9f57a238ebd77f4736007321d03fad0ccbe688db7c0f2cfa9c1b4ce9
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/cmd/loopexec/report.go @@ -func yesNo(b bool) string { - if b { - return "yes" - } ...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:32:27.005555000Z"
+    - command: gofmt -w cmd/loopexec/report.go cmd/loopexec/report_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203227.168905000Z.txt
+      command_sha256: 614bd43fd598a2da45eb725b19298f80fa0e2cc018a73640f3a758f02da8e35a
+      command_summary: gofmt -w cmd/loopexec/report.go cmd/loopexec/report_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:32:27.168905000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203237.261405000Z.txt
+      command_sha256: f8c6b88a1b900bc8a64d2c6e87df33522b856baf7fe2f95596eddb00023f79a2
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestReport -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:32:37.261405000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203242.449827000Z.txt
+      command_sha256: 0302737bffd9d7eef237fbc63875221dbf5831230271b8901d66c42f2b32e024
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:32:42.449827000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/creative-verification.md @@ -The shared budget counts calls only. Do not confu...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203342.583251000Z.txt
+      command_sha256: e7b7310f4bd83420ef31ce7b4403442b14139416374601cddc7b2539445bd8a4
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/creative-verification.md @@ -The shared budget counts calls only. Do not confu...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:33:42.583251000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go build -o build/product-audit/loopexec ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203343.559845000Z.txt
+      command_sha256: 5c7f46ad66cfaaad97a2cb8f9f9f6f4dc78fb0da3fb53a3b9bdf25fb74389bd4
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go build -o build/product-audit/loopexec ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:33:43.559845000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203538.222477000Z.txt
+      command_sha256: d5d49bef0689e10d3aaeab13abe1e5b78dedd06ebefe15308006f471b93b5e0e
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:35:38.222477000Z"
+    - command: ./scripts/dogfood-proof.sh build/product-audit/loopexec build/product-audit/dogfood
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203635.884800000Z.txt
+      command_sha256: 2aa794d3618d569a72cf0ea4f491da30e79acb68a4b0035762cf1588cfdbf2ba
+      command_summary: ./scripts/dogfood-proof.sh build/product-audit/loopexec build/product-audit/dogfood
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:36:35.884800000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/audit.md +# LoopExec product audit + +Verified October 7, 2026. Public status: [status and roadmap](../../docs/status-and-roa...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T203818.496414000Z.txt
+      command_sha256: 3ac5601b365c1e1711a1a75a22dc123d775bea9cbab86970f0d3b8fd4fc7bcbb
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/audit.md +# LoopExec product audit + +Verified October 7, 2026. Public status: [status and roadmap](../../docs/status-and-roa...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:38:18.496414000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/product-audit/audit.md @@ The current private project correctly blocks further spending. New IDs cannot be treated as permission for ano...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T204103.240261000Z.txt
+      command_sha256: fa359668a00a6159874da4eaf8e3270dcfe9c36a0b0b938d591ae0e3cb79bd20
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/product-audit/audit.md @@ The current private project correctly blocks further spending. New IDs cannot be treated as permission for ano...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-34
+      timestamp: "2026-10-07T20:41:03.240261000Z"
+    - evidence: Verified live v0.4.0 release (7 assets), exact main CI and open backlog; captured 29 floor-rack snapshots, current 12 reservations and 4 analog review/readiness summaries in ignored build/product-audit. Fixed cmd/loopexec/report.go receipt warnings/timeline/failure cause/retention and signature status; added regression tests, changelog v0.4.0 and public evidence guide/roadmap. Focused tests, go vet ./..., go test ./..., DOGFOOD_OK, real read-only home report, format/diff and canonical SMALL sync checks pass. No publication, deployment, paid review or consumer mutation.
+      notes: Unrelated untracked handoff files and the separate dirty Jev worktree preserved. Public docs v0.2.0 and home pin v0.3.0 still need rollout; pre-ledger history and post-review asset edits remain explicit. Updated local report binary is build/product-audit/loopexec; artifact metadata was checked but release archives were not redownloaded.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-34
+      timestamp: "2026-10-07T20:41:03.407764000Z"
+    - evidence: Added task task-35 via small plan --add
+      notes: Enforce general-purpose code/docs release continuity and correct project-specific quality interpretation
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-35
+      timestamp: "2026-10-07T20:53:05.327929000Z"
+    - evidence: 'Starting: add CI/packaging/publication docs parity gates, source-bound documentation artifacts and negative tests; preserve owner-adjusted acceptance versus aspirational quality and keep LoopExec domain-neutral'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T20:53:05.499433000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: cmd/loopexec/documentation_test.go +package main + +import ( + "bytes" + "flag" + "fmt" + "os" + "path/filepath" + "sort" + "strings" + "testing"...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T205657.284429000Z.txt
+      command_sha256: 90d8d8cd511fad0c096706374bf92585191dddf1b4914ca141932b329dd522e0
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: cmd/loopexec/documentation_test.go +package main + +import ( + "bytes" + "flag" + "fmt" + "os" + "path/filepath" + "sort" + "strings" + "testing"...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T20:56:57.284429000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: tools/docs-continuity/main.go +// docs-continuity binds public documentation to the exact source being released. +package main + +import ( + "byt...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T205827.165486000Z.txt
+      command_sha256: b1c38b1d4d093c3a7bb27e136e471e2d0cacaf1f2e518555baf25da79204f969
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: tools/docs-continuity/main.go +// docs-continuity binds public documentation to the exact source being released. +package main + +import ( + "byt...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T20:58:27.165486000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: tools/docs-continuity/main_test.go +package main + +import ( + "encoding/json" + "fmt" + "net/http" + "net/http/httptest" + "os" + "os/exec" + "p...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T205934.391997000Z.txt
+      command_sha256: e18310fbd1f1595e9f7b4f9c651f7f3ce6a54596fd1c764ad2ba8a7813077daf
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: tools/docs-continuity/main_test.go +package main + +import ( + "encoding/json" + "fmt" + "net/http" + "net/http/httptest" + "os" + "os/exec" + "p...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T20:59:34.391997000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .github/workflows/ci.yml @@ git diff --name-only "$BASE_SHA" HEAD | ./scripts/check-small-sync.sh + git diff --name-only "$BASE_SHA" HEAD | ba...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210106.236546000Z.txt
+      command_sha256: b8c608cbacdfb1d546b9adfe15d1dac619e7df0fac125e1db8871d020ef2183a
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .github/workflows/ci.yml @@ git diff --name-only "$BASE_SHA" HEAD | ./scripts/check-small-sync.sh + git diff --name-only "$BASE_SHA" HEAD | ba...'
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:01:06.236546000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: cmd/loopexec/documentation_test.go @@ "path/filepath" + "reflect" @@ visit(root) + fmt.Fprintln(&out, "## JSON field contract\n\nTypes and JSO...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210319.247705000Z.txt
+      command_sha256: 0014d3dbaf6308251d3e8038b8fd61de15363c51290dfa8e2678b0d7e8e8d20a
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: cmd/loopexec/documentation_test.go @@ "path/filepath" + "reflect" @@ visit(root) + fmt.Fprintln(&out, "## JSON field contract\n\nTypes and JSO...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:03:19.247705000Z"
+    - command: gofmt -w cmd/loopexec/documentation_test.go tools/docs-continuity
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210328.142415000Z.txt
+      command_sha256: c1e1f344ce2ea9e2f52043700eb8bbaa1532f2d3e7a4d612f683347cc4a24500
+      command_summary: gofmt -w cmd/loopexec/documentation_test.go tools/docs-continuity
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:03:28.142415000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run '^TestDocumentationContract$' -args -update-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210330.421384000Z.txt
+      command_sha256: 20ef83012185e4a919daced4d0b59f016f7076177661efec255b7ac9b953ab34
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run '^TestDocumentationContract$' -args -update-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:03:30.421384000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210343.242162000Z.txt
+      command_sha256: bcc1987239d0f7f470328034e61082e2ca6e2646599867a93e59763b60f3ea5f
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:03:43.242162000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main.go @@ for _, path := range allowlist.Files { + if !publicPath(path) { + return m, fmt.Errorf("non-public documentat...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210524.983033000Z.txt
+      command_sha256: dd8db2f89d4a42879831ad9230b78769c1994f7aba991b729e96dba23e5dbb04
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main.go @@ for _, path := range allowlist.Files { + if !publicPath(path) { + return m, fmt.Errorf("non-public documentat...'
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:05:24.983033000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main.go @@ for _, path := range allowlist.Files { + if !publicPath(path) { + return m, fmt.Errorf("non-public documentat...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210611.331248000Z.txt
+      command_sha256: 64363a0fc9d18e0fe7b2a33838bfd3bff9c4463c562dd6d205febc9d7f3fb6bc
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main.go @@ for _, path := range allowlist.Files { + if !publicPath(path) { + return m, fmt.Errorf("non-public documentat...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:06:11.331248000Z"
+    - command: gofmt -w cmd/loopexec/documentation_test.go cmd/loopexec/report_test.go tools/docs-continuity
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210641.180230000Z.txt
+      command_sha256: 120cc6df0f564da7fc210d5f7eec1a9c7d2268548b3bf1a84804c43142182adc
+      command_summary: gofmt -w cmd/loopexec/documentation_test.go cmd/loopexec/report_test.go tools/docs-continuity
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:06:41.180230000Z"
+    - command: chmod +x scripts/check-docs-sync.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210641.344462000Z.txt
+      command_sha256: 5d5a1969bca3a6329fdcf959ccb587e22e945a3b97194fe9c7c6316c33f52fae
+      command_summary: chmod +x scripts/check-docs-sync.sh
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:06:41.344462000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGate|TestBundleBoundTo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210650.228364000Z.txt
+      command_sha256: ad93c24536aefc377bbe24009fff8aeb8f85bcd9877dff3889c9c50f1c35bceb
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGate|TestBundleBoundTo...
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:06:50.228364000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main_test.go @@ "strings" "testing" ) + +type roundTripFunc func(*http.Request) (*http.Response, error) + +func (f round...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210730.097682000Z.txt
+      command_sha256: 7b3dd0fd1c70c0cafa69f2a302fe3944e6297dd491839f700dc7c2d58e84f4a4
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: tools/docs-continuity/main_test.go @@ "strings" "testing" ) + +type roundTripFunc func(*http.Request) (*http.Response, error) + +func (f round...'
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:07:30.097682000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: docs/cli.md @@ This document defines the command surface and machine contract for loopexec. + +The [generated command, flag and JSON field con...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210823.858950000Z.txt
+      command_sha256: 0bf1c1224f8cf0095a30114c7923b0b2893496d1d8eef4da1138bc972c59aea0
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: docs/cli.md @@ This document defines the command surface and machine contract for loopexec. + +The [generated command, flag and JSON field con...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:08:23.858950000Z"
+    - command: gofmt -w tools/docs-continuity
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210824.019009000Z.txt
+      command_sha256: 40562218719832f22d8bbe22e42f2f0ab9b02e6bd820890ee38038824f391e57
+      command_summary: gofmt -w tools/docs-continuity
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:08:24.019009000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGate|TestBundleBoundTo...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210833.076607000Z.txt
+      command_sha256: ad93c24536aefc377bbe24009fff8aeb8f85bcd9877dff3889c9c50f1c35bceb
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGate|TestBundleBoundTo...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:08:33.076607000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T210903.882322000Z.txt
+      command_sha256: 0302737bffd9d7eef237fbc63875221dbf5831230271b8901d66c42f2b32e024
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:09:03.882322000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211011.876191000Z.txt
+      command_sha256: e9c67368d139c67c55c697d1248ede62de6edfcd5381e250c225f094c5905ba7
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:10:11.876191000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.0 build/continuity-release-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211051.019593000Z.txt
+      command_sha256: f38225195e2d1041ad728b9d5fcfc411c94ae66b4a1b8b257ea4ef73b9be00e0
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.0 build/continuity-release-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:10:51.019593000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/verify-packaged-docs.sh +#!/usr/bin/env bash +set -euo pipefail +out="$1" +manifest="$out/documentation/manifest.json" +jq -e...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211115.824969000Z.txt
+      command_sha256: 0d71293268f649209320a8921acefce6277dafc5a00352cd5244a7169eae7966
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/verify-packaged-docs.sh +#!/usr/bin/env bash +set -euo pipefail +out="$1" +manifest="$out/documentation/manifest.json" +jq -e...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:11:15.824969000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity verify-site build/continuity-release-proof/documentation/manifest.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211135.382179000Z.txt
+      command_sha256: c52082b7453bb84cb5fff9b686eec6f46826ae63ed09c34842ec568dfbea8e3b
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity verify-site build/continuity-release-proof/documentation/manifest.json
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:11:35.382179000Z"
+    - command: bash build/product-audit/verify-packaged-docs.sh build/continuity-release-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211136.789116000Z.txt
+      command_sha256: 419c75e07012f214e9112bec45277a4c7a7cf6f0742bffd7914120d6c3c95c1a
+      command_summary: bash build/product-audit/verify-packaged-docs.sh build/continuity-release-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:11:36.789116000Z"
+    - command: mkdir -p build/continuity-release-proof/install-darwin-arm64
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211202.499001000Z.txt
+      command_sha256: 533848850e20685a8c2ce816e7820855bb006d2869b3cf70a310d15a5be8eb20
+      command_summary: mkdir -p build/continuity-release-proof/install-darwin-arm64
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:12:02.499001000Z"
+    - command: tar -xzf build/continuity-release-proof/loopexec-v0.4.0-darwin-arm64.tar.gz -C build/continuity-release-proof/install-darwin-arm64
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211202.692259000Z.txt
+      command_sha256: 26c563517912898f9a041ca546ce9464aab0c1c58c8a6df7f3716140302ecc10
+      command_summary: tar -xzf build/continuity-release-proof/loopexec-v0.4.0-darwin-arm64.tar.gz -C build/continuity-release-proof/install-darwin-arm64
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:12:02.692259000Z"
+    - command: ./scripts/dogfood-proof.sh build/continuity-release-proof/install-darwin-arm64/loopexec build/product-audit/continuity-dogfood
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211203.979527000Z.txt
+      command_sha256: 646843fbdea3b090f09fbf0992f26ba4267361e7a19dff1c5159a5dce83812e0
+      command_summary: ./scripts/dogfood-proof.sh build/continuity-release-proof/install-darwin-arm64/loopexec build/product-audit/continuity-dogfood
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:12:03.979527000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: scripts/build-release.sh @@ - cp LICENSE README.md "$stage/" + cp -R "$OUT/documentation/." "$stage/" @@ - (cd "$stage" && zip -qr "$OUT/$name...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211418.341529000Z.txt
+      command_sha256: 5992b69a90e9e4a3f89aabe2301de7758ea84a9945500ef934ab9a0f0c258aeb
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: scripts/build-release.sh @@ - cp LICENSE README.md "$stage/" + cp -R "$OUT/documentation/." "$stage/" @@ - (cd "$stage" && zip -qr "$OUT/$name...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:14:18.341529000Z"
+    - command: gofmt -w tools/docs-continuity
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211418.503233000Z.txt
+      command_sha256: 40562218719832f22d8bbe22e42f2f0ab9b02e6bd820890ee38038824f391e57
+      command_summary: gofmt -w tools/docs-continuity
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:14:18.503233000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211419.630111000Z.txt
+      command_sha256: bcc1987239d0f7f470328034e61082e2ca6e2646599867a93e59763b60f3ea5f
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:14:19.630111000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go vet ./tools/docs-continuity
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211435.365423000Z.txt
+      command_sha256: bf79fdc11f5fd0a308ff22e021e5850e90ca298f7435bf4c0aa68440ee060514
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go vet ./tools/docs-continuity
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:14:35.365423000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.0 build/continuity-release-proof-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211441.661659000Z.txt
+      command_sha256: df4a7a5af66b8fdfbf04a6b8578ebe887217e6e35f518206849ac30381bf3d5f
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.0 build/continuity-release-proof-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:14:41.661659000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity verify-site build/continuity-release-proof-final/documentation/manifest.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211513.704855000Z.txt
+      command_sha256: 28d10685487306d919569882b2e858c59e28878927bfa282edd72381c78483f4
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity verify-site build/continuity-release-proof-final/documentation/manifest.json
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:15:13.704855000Z"
+    - command: bash build/product-audit/verify-packaged-docs.sh build/continuity-release-proof-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211515.127432000Z.txt
+      command_sha256: 58a5cd31ae09503049ada654b61c351afb80085fa6a97260f4fe5b00fdedf97e
+      command_summary: bash build/product-audit/verify-packaged-docs.sh build/continuity-release-proof-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:15:15.127432000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/continuity-hardening.md +# Code/docs continuity hardening receipt + +Outcome: local hardening verified; no-ship until the doc...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T211656.345834000Z.txt
+      command_sha256: ddb8cba85bec49ea848b5b1be7d3d3e3c0a119527161c0e03533ea31aa152d80
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/product-audit/continuity-hardening.md +# Code/docs continuity hardening receipt + +Outcome: local hardening verified; no-ship until the doc...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-35
+      timestamp: "2026-10-07T21:16:56.345834000Z"
+    - evidence: 'Implemented AGENTS/SPEC continuity, canonical prose+changelog co-change gate, generated Cobra CLI/JSON contract, source-bound allowlisted docs builder/verifier, six-platform paired docs packaging and fail-closed official site checks before draft/publication. General-purpose acceptance guide and corrected owner-adjusted 8.1 versus desired 8.5 interpretation; private quality-gap plan. Full suite/vet, focused final tests, seven archive document hashes/root paths, checksums and identical fresh macOS dogfood binary pass; live site manifest HTTP404 correctly blocks release. Receipt: build/product-audit/continuity-hardening.md.'
+      notes: Local uncommitted work only; no consumer mutation, model/engine call, spending, commit, push or deployment. Separate docs-site adoption and hosted branch/tag/release protection verification remain required before publication. Unrelated handoff notes preserved.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-35
+      timestamp: "2026-10-07T21:16:56.487264000Z"
+    - evidence: Added task task-36 via small plan --add
+      notes: Adopt canonical docs-site handshake and hosted release protections before publication
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-36
+      timestamp: "2026-10-07T21:16:56.637017000Z"
+    - evidence: Live official endpoint https://loopexec.dev/loopexec-documentation.json returns HTTP404 against the final source-bound bundle; release gate must remain closed. Canonical site integration/build/render/deploy requires the separate loopexec.dev checkout, outside this workspace write roots. Hosted CI/main protection/tag/release write rules also need authorized rollout and live verification. No bypass or publication attempted.
+      notes: Prepared contract and exact commands in docs/documentation-continuity.md; receipt and rollout steps in build/product-audit/continuity-hardening.md. Local task-35 hardening is complete; rollout is not.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-07T21:17:31.304771000Z"
+    - evidence: User authorized deployment. Starting exact-source docs-site integration/build/publishing checks, v0.4.1 patch release preparation, hosted CI and live readback. GitHub connector core repo accessible; companion docs repo returns404; local gh auth invalid and git DNS fails. Checking existing Vercel access before declaring deployment blocked.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-07T22:51:29.864265000Z"
+    - evidence: Added task task-37 via small plan --add
+      notes: Prepare v0.4.1 release and source-bound docs deployment artifacts with verified CI handoff
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-37
+      timestamp: "2026-10-07T22:52:11.181275000Z"
+    - evidence: Starting patch release preparation and isolated docs-site integration in writable build artifacts. User authorized deployment and requested recipes afterward. Preserve unrelated files and original home evidence/budgets. No stable publication until matching site and exact CI checks pass.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:52:11.362383000Z"
+    - command: mkdir -p build/deployment/docs-site
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T225229.084574000Z.txt
+      command_sha256: d48ba89ef5b472ec5957aa24c128523e6169528325a23033f2520976b9f47278
+      command_summary: mkdir -p build/deployment/docs-site
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:52:29.084574000Z"
+    - command: git -C /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev archive HEAD | tar -xf - -C build/deployment/docs-site
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T225229.291700000Z.txt
+      command_sha256: 31c3fa789bdf3f15548be6ddbf1a19fcbbc8d809d15bbd01616101e96571b8c7
+      command_summary: git -C /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev archive HEAD | tar -xf - -C build/deployment/docs-site
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:52:29.291700000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: cmd/loopexec/main.go @@ - toolVersion = "0.4.0" + toolVersion = "0.4.1" *** Update File: docs/documentation-files.json @@ "docs/releases/v0.4....'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T225707.456433000Z.txt
+      command_sha256: c9fcd86ecea0f0f72f8e90fb9f753e145f41f45e84ea4fa95c050730d1878340
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: cmd/loopexec/main.go @@ - toolVersion = "0.4.0" + toolVersion = "0.4.1" *** Update File: docs/documentation-files.json @@ "docs/releases/v0.4....'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:57:07.456433000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run '^TestDocumentationContract$' -args -update-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T225709.393136000Z.txt
+      command_sha256: 20ef83012185e4a919daced4d0b59f016f7076177661efec255b7ac9b953ab34
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run '^TestDocumentationContract$' -args -update-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:57:09.393136000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs +import { createHash } from "node:crypto"; +import { lstatSync, mkdirSync, readFi...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T225937.219629000Z.txt
+      command_sha256: 0963ae9646742b573e7ca11fd4c737340e5cbc0c3a2caae7b22eb998f23e007f
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs +import { createHash } from "node:crypto"; +import { lstatSync, mkdirSync, readFi...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T22:59:37.219629000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/astro.config.mjs @@ import { ion } from "starlight-ion-theme"; +import { canonicalLinks } from "./scripts...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230039.738593000Z.txt
+      command_sha256: 8a4e1bb0143fd3533efff22569236e1ced7defdc684aeb0ae9ce0310f42e10dc
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/astro.config.mjs @@ import { ion } from "starlight-ion-theme"; +import { canonicalLinks } from "./scripts...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:00:39.738593000Z"
+    - command: mkdir -p build/deployment/docs-site/apps/docs/canonical
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230039.901237000Z.txt
+      command_sha256: 8cf996d37415b41fd3eeea717aac81cea5abe87e9b125d65669f481ab9ddfd3d
+      command_summary: mkdir -p build/deployment/docs-site/apps/docs/canonical
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:00:39.901237000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/docs-site/apps/docs/canonical/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230040.406444000Z.txt
+      command_sha256: bf02d7d3881b822617505ea9681e55b252ff5e5497b3827a66362a3d370d3ecd
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/docs-site/apps/docs/canonical/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:00:40.406444000Z"
+    - command: mkdir -p build/deployment/docs-site/node_modules
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230111.744326000Z.txt
+      command_sha256: 0b2a160dff9c696a6a0c01e8b84e517e9d393a1af932bf96301669c516c4d4b4
+      command_summary: mkdir -p build/deployment/docs-site/node_modules
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:11.744326000Z"
+    - command: ln -s /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/node_modules/.pnpm build/deployment/docs-site/node_modules/.pnpm
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230111.918047000Z.txt
+      command_sha256: c67ab169cfe13da3f8a5ba86b4159245b418f1ba4105695f7c6d5d8a158fab5a
+      command_summary: ln -s /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/node_modules/.pnpm build/deployment/docs-site/node_modules/.pnpm
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:11.918047000Z"
+    - command: cp -R /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/apps/docs/node_modules build/deployment/docs-site/apps/docs/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230112.112142000Z.txt
+      command_sha256: d71e433d0d3288f5740015b94588e5e6850000093dd53683269ec9b908271bd5
+      command_summary: cp -R /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/apps/docs/node_modules build/deployment/docs-site/apps/docs/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:12.112142000Z"
+    - command: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230112.542706000Z.txt
+      command_sha256: b6a1b594bc84d12a4f38a489d60b36f31f99efc2797265cf9574d011d5dc949a
+      command_summary: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:12.542706000Z"
+    - command: pnpm --dir build/deployment/docs-site/apps/docs run build
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230116.122229000Z.txt
+      command_sha256: d79f4bbb26dd397693dfa62255055e7183f75fe069650f8abb4918572eabf747
+      command_summary: pnpm --dir build/deployment/docs-site/apps/docs run build
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:16.122229000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestVersionIdentity|TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGa...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230151.525330000Z.txt
+      command_sha256: f73778a007a8472409f12008c72e665d69f2dba8057699c00ce9b26f53748c00
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -run 'TestVersionIdentity|TestDocumentationContract|TestReport|TestDeployedDocumentationGate|TestDocsCoChangeGa...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:01:51.525330000Z"
+    - command: cp -R /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/packages/starlight-ion-theme/node_modules build/deployment/docs-site/packages/starlight-ion-theme/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230212.499627000Z.txt
+      command_sha256: e4c0d2cc3458441d008c9efaa3f5c258a9ab4d2e2dd58629fd1c6400107adc28
+      command_summary: cp -R /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev/packages/starlight-ion-theme/node_modules build/deployment/docs-site/packages/starlight-ion-theme/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:02:12.499627000Z"
+    - command: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230220.387562000Z.txt
+      command_sha256: f4ed496b615cd4a461f5c0838bb06dea62267fb0ed875eea901635d630644f2d
+      command_summary: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:02:20.387562000Z"
+    - evidence: Added task task-38 via small plan --add
+      notes: Add tested configurable software, game-development and audio-engineering recipes after deployment
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-38
+      timestamp: "2026-10-07T23:03:04.020034000Z"
+    - evidence: Added dependency task-36 to task-38
+      notes: small plan --depends
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-38
+      timestamp: "2026-10-07T23:03:04.189698000Z"
+    - evidence: Added dependency task-37 to task-38
+      notes: small plan --depends
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-38
+      timestamp: "2026-10-07T23:03:04.395297000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230305.592333000Z.txt
+      command_sha256: 0302737bffd9d7eef237fbc63875221dbf5831230271b8901d66c42f2b32e024
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:03:05.592333000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230427.244844000Z.txt
+      command_sha256: e9c67368d139c67c55c697d1248ede62de6edfcd5381e250c225f094c5905ba7
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:04:27.244844000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs @@ for (const page of [...pages, release]) { @@ writeFileSync(join(contentRoot...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230437.480725000Z.txt
+      command_sha256: 7b05a79c65ad94d228f7bd5942dc3d63dca9dcbe66a3845cf1e8c21fecbc7319
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs @@ for (const page of [...pages, release]) { @@ writeFileSync(join(contentRoot...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:04:37.480725000Z"
+    - command: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230438.521307000Z.txt
+      command_sha256: b6a1b594bc84d12a4f38a489d60b36f31f99efc2797265cf9574d011d5dc949a
+      command_summary: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:04:38.521307000Z"
+    - command: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230451.977112000Z.txt
+      command_sha256: f4ed496b615cd4a461f5c0838bb06dea62267fb0ed875eea901635d630644f2d
+      command_summary: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:04:51.977112000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs @@ export function canonicalLinks() { + const manifest = verifyCanonical(); @@...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230636.869115000Z.txt
+      command_sha256: 1c722850b88850fc7e467762304479854a3ea75993c8e61088aebc43e32c6acb
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: build/deployment/docs-site/apps/docs/scripts/canonical-docs.mjs @@ export function canonicalLinks() { + const manifest = verifyCanonical(); @@...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:06:36.869115000Z"
+    - command: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230642.196234000Z.txt
+      command_sha256: b6a1b594bc84d12a4f38a489d60b36f31f99efc2797265cf9574d011d5dc949a
+      command_summary: node --test build/deployment/docs-site/apps/docs/scripts/canonical-docs.test.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:06:42.196234000Z"
+    - command: node /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/cli.js screenshot --viewport-size 1440,1000 --wait-for-timeout 800 --timeout 15000 http://12...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230645.843552000Z.txt
+      command_sha256: 3a9159b8ed0e83cadee0ccc34e8fb70164815a20f165c86402bbfa7edfd6f607
+      command_summary: node /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/cli.js screenshot --viewport-size 1440,1000 --wait-for-timeout 800 --timeout 15000 http://12...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:06:45.843552000Z"
+    - evidence: v0.4.1 source/reference/allowlist/notes prepared. go vet ./... and full suite pass (CLI80.454s; creative14.048s). Isolated docs-site canonical tests4/4 and Astro static build pass,18 searchable canonical pages plus redirects; source marker is generated from exact imported bundle. Preparing source branch/PR via accessible GitHub connector; stable publication remains gated on companion repo/Vercel access and hosted protections.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:07:37.121912000Z"
+    - command: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230740.173696000Z.txt
+      command_sha256: f4ed496b615cd4a461f5c0838bb06dea62267fb0ed875eea901635d630644f2d
+      command_summary: ASTRO_TELEMETRY_DISABLED=1 pnpm --dir build/deployment/docs-site/apps/docs run build
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:07:40.173696000Z"
+    - command: node /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/cli.js screenshot --viewport-size 390,844 --wait-for-timeout 800 --timeout 15000 http://127....
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T230805.581332000Z.txt
+      command_sha256: f967306198f45f0b60b0e9eae2d03399e082d970c7ed26d7da916fc2eaf982c1
+      command_summary: node /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/cli.js screenshot --viewport-size 390,844 --wait-for-timeout 800 --timeout 15000 http://127....
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:08:05.581332000Z"
+    - command: kill -TERM 48890
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261007T231303.561109000Z.txt
+      command_sha256: a36133c4ef1348f24550344b04f1553b4a267b1ae60bda1c294db5552b7d81bc
+      command_summary: kill -TERM 48890
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-07T23:13:03.561109000Z"
+    - evidence: 'Deployment authorized but not performed: GitHub connector can read justyn-clark/loopexec; justyn-clark/loopexec.dev repo and main return404. gh default token invalid; git remote DNS unavailable; Vercel CLI fails resolving api.vercel.com. Vercel plugin suggestion was made but no connection confirmed. Official docs manifest readback returned404. Hosted main protections not configured; core main protected=false. Need docs-repo access and Vercel connection, followed by canonical site deployment/readback and exact-head hosted gates.'
+      notes: No production changes, remote commits, PR, tag, merge or release created.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-07T23:13:45.930872000Z"
+    - evidence: 'Prepared v0.4.1 CLI identity, generated reference, docs allowlist and release notes. go vet ./... and fresh go test ./... -count=1 passed. Isolated companion site in build/deployment/docs-site: canonical tests4/4, static Astro build, visually inspected desktop/mobile screenshots pass. Bundle source cdc25eb53140c51956b9ecfc1be343e7f83aa3eda7736755cabb7121807a877d; docs16c95e02dd11b8c5af567f26918faf822d389b4ae055893667bc60e9550d7b89;20files. Final SMALL strict fails4 lint violations: two apply command summaries truncated loopback URL hosts; both command and command_summary duplicates fail. Full command refs and SHA256 intact. Supported CLI has no audit-entry repair; no manual history edits or gate bypass performed.'
+      notes: Screenshots build/deployment/docs-desktop.png and docs-mobile.png. Preview PID48890 terminated; port4345 no listener. Original preview apply ended143 and failed recording because concurrent cleanup held state.lock; not retried. No current v0.4.1 packages built or hosted CI verified; do not publish. Need supported SMALL repair before resumed work; handoff forbidden while strict fails.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-37
+      timestamp: "2026-10-07T23:13:46.139515000Z"
+    - evidence: 'Waiting for deployment prerequisites task-36/task-37, preserving requested order: deploy first, then add more software-engineering, coding/programming, game-development and audio-engineering workflows. No new recipes implemented this turn. Core remains general-purpose with caller-supplied policies;8.5/8.1 are project-specific creative quality criteria, not global acceptance defaults.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-38
+      timestamp: "2026-10-07T23:13:46.360881000Z"
+    - evidence: Owner requests mobile-authorized headless login. Attempting official GitHub and Vercel device flows only; deployment remains stopped behind existing SMALL strict failure. Auth config will be isolated in ignored build/deployment/auth; never capture access tokens or change .env.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T03:58:37.499431000Z"
+    - command: GH_CONFIG_DIR=$PWD/build/deployment/auth/github GH_BROWSER=/usr/bin/true gh auth login --web --hostname github.com --git-protocol https --scopes workflow
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T040339.764400000Z.txt
+      command_sha256: 10c943bc13aff77e744d4e9f1c2506b94cf96b6ca5405917cbbb34462aff4b83
+      command_summary: GH_CONFIG_DIR=$PWD/build/deployment/auth/github GH_BROWSER=/usr/bin/true gh auth login --web --hostname github.com --git-protocol https --scopes workflow
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T04:03:39.764400000Z"
+    - command: chmod 700 build/deployment/auth build/deployment/auth/vercel build/deployment/auth/github
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T040542.566245000Z.txt
+      command_sha256: 1088ade535733c249d1f6634ff038c79575bc664bdd59876f2cc231f9dac0231
+      command_summary: chmod 700 build/deployment/auth build/deployment/auth/vercel build/deployment/auth/github
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T04:05:42.566245000Z"
+    - command: BROWSER=/usr/bin/true vercel login --future --global-config build/deployment/auth/vercel
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T040843.582737000Z.txt
+      command_sha256: 154b5de203de6f2da0138863dbc4070a359f35eabe13c8e0744ee18b2a5879d7
+      command_summary: BROWSER=/usr/bin/true vercel login --future --global-config build/deployment/auth/vercel
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T04:08:43.582737000Z"
+    - evidence: GitHub official device flow completed as justyn-clark; gh API validation is blocked by api.github.com DNS failure (curl exit6), so earlier auth-status invalid-token output is not credential proof. Vercel CLI device request expired; mobile Brave/Android finds no passkey. Owner has signed in from computer with existing passkey; desktop Vercel session visibly confirmed via native Brave UI. Guided owner to add mobile TOTP as additional factor without removing passkey or weakening2FA; new credential creation handed to owner. Owner now reports Vercel sudo-mode timeout; checking vendor-supported reauthentication. No production/account-security changes made by agent.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T04:13:26.406217000Z"
+    - evidence: 'Mobile authorization attempt: GitHub device flow completed; API verification still fails because api.github.com cannot resolve. Vercel device code expired before approval. Owner Android/Brave could not find Vercel passkey; owner can sign in from computer with existing passkey. Desktop signed-in Vercel project session confirmed through native Brave UI. New mobile authentication credential setup requires owner entry/confirmation and was handed off: add TOTP authenticator or second Android passkey while retaining computer key. Owner reports sudo-mode timeout; advised refreshing Authentication and fresh existing-passkey confirmation, not reuse expired setup QR. Mobile access and Vercel CLI credentials remain unverified. No account methods removed,2FA disabled, secrets read/displayed, production deployment or code changes performed this turn.'
+      notes: CLI auth config isolated under ignored build/deployment/auth with700directories; existing credential files600. GitHub login and expired Vercel login sessions have ended. Need owner completion/test of mobile factor, then fresh Vercel device approval. Existing SMALL command-summary lint blocker persists; no manual audit edits or handoff performed.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-08T04:15:27.749187000Z"
+    - evidence: Added task task-39 via small plan --add
+      notes: Install latest published SMALL locally and recheck preserved strict-gate failure
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-39
+      timestamp: "2026-10-08T04:28:18.612240000Z"
+    - evidence: Owner requests latest SMALL locally. Live GitHub release metadata resolves v1.1.0, published2026-09-16. Default PATH is Homebrew1.0.2; prior agent binary is unreleased1.1.1 development snapshot. Installing verified official darwin-arm64 archive under ignored build/tooling/small-v1.1.0 and testing unchanged canonical audit. No protocol migration or history edits; global Homebrew path outside writable scope.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:28:39.060602000Z"
+    - command: mkdir -p build/tooling/small-v1.1.0
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T042839.266406000Z.txt
+      command_sha256: e45c763ff902c51d4f04402ee7bc2af07e4a2df4f27c027d748af3a57424abf0
+      command_summary: mkdir -p build/tooling/small-v1.1.0
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:28:39.266406000Z"
+    - command: curl -fLsS --connect-timeout 10 --max-time 60 https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0/small-v1.1.0-darwin-arm64.tar.gz -o build/tooling/small-v1.1.0/release.tar.gz
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T042840.191176000Z.txt
+      command_sha256: 49a2bac17809bff7044d937b06e9464fe2ba4a43172882ee0654e903cc24c4e3
+      command_summary: curl -fLsS --connect-timeout 10 --max-time 60 https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0/small-v1.1.0-darwin-arm64.tar.gz -o build/tooling/small-v1.1.0/release.tar.gz
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:28:40.191176000Z"
+    - command: curl -fLsS --connect-timeout 10 --max-time 60 https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0/checksums.txt -o build/tooling/small-v1.1.0/checksums.txt
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T042852.591355000Z.txt
+      command_sha256: 4eebb32ddc2fd0cdb3b90e81ddc953ed0906bee6fc6add9bcc0a32150fae4221
+      command_summary: curl -fLsS --connect-timeout 10 --max-time 60 https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0/checksums.txt -o build/tooling/small-v1.1.0/checksums.txt
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:28:52.591355000Z"
+    - command: tar -xzf build/tooling/small-v1.1.0/release.tar.gz -C build/tooling/small-v1.1.0
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T042939.604437000Z.txt
+      command_sha256: 26bf6f2bd3cd4465524213b9d18c154c0b4d2bdebc84405839da4d77ba199da9
+      command_summary: tar -xzf build/tooling/small-v1.1.0/release.tar.gz -C build/tooling/small-v1.1.0
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:29:39.604437000Z"
+    - command: build/tooling/small-v1.1.0/small init --no-agents --dir build/tooling/small-summary-repro --intent "Isolated official-release command summary and strict lint reproduction"
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T043126.315327000Z.txt
+      command_sha256: 86cc683cd1d456bca43c4dd207f4b45e04975209649d02967b9925adcc3382b2
+      command_summary: build/tooling/small-v1.1.0/small init --no-agents --dir build/tooling/small-summary-repro --intent "Isolated official-release command summary and strict lint reproduction"
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:31:26.315327000Z"
+    - command: build/tooling/small-v1.1.0/small plan --dir build/tooling/small-summary-repro --add "Test URL summary preservation"
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T043126.554846000Z.txt
+      command_sha256: 2037acd67022a493448ca83ec3712abf00fb6ed2cff46c5729748ecae4bb292d
+      command_summary: build/tooling/small-v1.1.0/small plan --dir build/tooling/small-summary-repro --add "Test URL summary preservation"
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:31:26.554846000Z"
+    - command: build/tooling/small-v1.1.0/small apply --dir build/tooling/small-summary-repro --task task-2 --cmd 'printf '\''%s\n'\'' '\''aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T043203.116423000Z.txt
+      command_sha256: 2219dab42a8f1a882eb89025681b59e44d2d06fcf81dc2746276ac7d2a541677
+      command_summary: build/tooling/small-v1.1.0/small apply --dir build/tooling/small-summary-repro --task task-2 --cmd 'printf '\''%s\n'\'' '\''aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:32:03.116423000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/tooling/small-v1.1.0/verification.md +# SMALL local installation and strict-gate...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T043351.071438000Z.txt
+      command_sha256: b439fdf05b7e690ad1eddbeda14664fb943d86a9476d8afd9aa5f4b627af53f2
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/tooling/small-v1.1.0/verification.md +# SMALL local installation and strict-gate...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-39
+      timestamp: "2026-10-08T04:33:51.071438000Z"
+    - evidence: 'Installed checksum-verified official latest stable SMALLv1.1.0 under build/tooling/small-v1.1.0; version and explicit PATH resolution pass. Release and checksum digests independently match live GitHub API. Fresh isolated fixture build/tooling/small-summary-repro passes strict before harmless printf capture, then fails2 insecure-link findings after the released CLI truncates its allowed loopback URL. Canonical state remains4 findings. Confirmed defect is in SMALL CLI, not LoopExec runtime. Receipt: build/tooling/small-v1.1.0/verification.md. No audit edits, profile migration, gate suppression or production changes.'
+      notes: Workspace-local installation is active for agent calls. Global Homebrew small remains1.0.2 outside writable scope; machine-wide update not completed. Supported upstream repair still needed for preserved audit; strict handoff remains forbidden. Earlier development binary no longer used for state mutations.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-39
+      timestamp: "2026-10-08T04:33:51.253539000Z"
+    - evidence: Added task task-40 via small plan --add
+      notes: Prepare audit-preserving SMALL correction brief for upstream fix and authorized push
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-40
+      timestamp: "2026-10-08T04:47:18.641785000Z"
+    - evidence: Owner requests correction brief to run in SMALL project, implement fix and push. Preparing private UPDATES/small-command-summary-correction-handoff.md with released-CLI reproduction, original command hashes, secure legacy validation, portable CI evidence requirements, scoped push authorization and LoopExec unblock checks. This is an implementation brief, not a gated SMALL state handoff. No upstream writes or release authorization inferred.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-40
+      timestamp: "2026-10-08T04:49:27.697863000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/UPDATES/small-command-summary-correction-handoff.md +# SMALL correction handoff: trunc...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T045400.358984000Z.txt
+      command_sha256: d853f7d5358d692605cefecf3546ebcac52304f0e7094410701b261bd10a284d
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/UPDATES/small-command-summary-correction-handoff.md +# SMALL correction handoff: trunc...'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-40
+      timestamp: "2026-10-08T04:54:00.358984000Z"
+    - command: git diff --check
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T045427.260373000Z.txt
+      command_sha256: 466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b
+      command_summary: git diff --check
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-40
+      timestamp: "2026-10-08T04:54:27.260373000Z"
+    - evidence: 'Prepared private UPDATES/small-command-summary-correction-handoff.md: official v1.1.0 reproduction, original command refs and verified hashes, audit-preserving secure compatibility, selective CI proof, regression matrix, scoped push and LoopExec unblock criteria. File readback, whitespace check, ignore verification, original-log hash recheck and git diff --check pass. No upstream code changes or push performed.'
+      notes: Engineering correction brief only; not a formal SMALL handoff. Canonical strict gate remains blocked by four known upstream truncation/lint findings. Stable publication and global installation require their own authorized scope.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-40
+      timestamp: "2026-10-08T04:54:27.445582000Z"
+    - evidence: Resuming after owner confirms upstream SMALL correction. Explicit patched binary v1.1.0-dev.command-summary.3069dab8ab25 passes canonical strict; progress SHA256 remains548b49b1aa30761f09f1253e101d7080fc1ac55c7f7421cc1f887521956df253 before new entries. Saved next task36. Rechecking canonical docs-site access, hosted protections, stable SMALL release and CI pin; protocol repair alone does not authorize clearing deployment gates.
+      notes: Append-only continuation; no reset, migration or historical receipt edits. Plain small remains Homebrew1.0.2 and will not be used.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:39:38.571545000Z"
+    - command: mkdir -p .small-command-proofs/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194420.636308000Z.txt
+      command_sha256: e86ac867a052edff01216f468b1dd7f5184c4c4acf4c36a0399dec7c64623a91
+      command_summary: mkdir -p .small-command-proofs/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:20.636308000Z"
+    - command: cp .small-cache/logs/*/commands/20261007T230645.843552000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194420.812173000Z.txt
+      command_sha256: a1499e1e7f59a67d32a880d89f87d2d4c55f2d5514a529eaa157935b7b6bca10
+      command_summary: cp .small-cache/logs/*/commands/20261007T230645.843552000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:20.812173000Z"
+    - command: cp .small-cache/logs/*/commands/20261007T230805.581332000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194420.982794000Z.txt
+      command_sha256: a1d1cc46e08e8d7ffd80d9ba189f840c1ff41a887c095d2f45c97741bea24be3
+      command_summary: cp .small-cache/logs/*/commands/20261007T230805.581332000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:20.982794000Z"
+    - command: mkdir -p build/deployment/small-cacheless-with-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194421.156622000Z.txt
+      command_sha256: 21c1e3169280b9fbdb0b2962fe1d0479a8acbb3bcdaf983bf58d4acbfdb75b78
+      command_summary: mkdir -p build/deployment/small-cacheless-with-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:21.156622000Z"
+    - command: cp -R .small build/deployment/small-cacheless-with-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194421.336495000Z.txt
+      command_sha256: e72ebb57d8e25d78ede7f8db22ef6db7e702e0a503c6173e31c0ff3553c82288
+      command_summary: cp -R .small build/deployment/small-cacheless-with-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:21.336495000Z"
+    - command: cp -R .small-command-proofs build/deployment/small-cacheless-with-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194421.516975000Z.txt
+      command_sha256: 18f50aaba420276f04025c6ac2b01e10dddf4228dd31d56ebc4dbf65ca66471a
+      command_summary: cp -R .small-command-proofs build/deployment/small-cacheless-with-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:21.516975000Z"
+    - command: mkdir -p build/deployment/small-cacheless-without-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194421.696088000Z.txt
+      command_sha256: a56f74f0b6753fa1c0f47a835af4a9c981c0173c1d8af0900c9503378fffce65
+      command_summary: mkdir -p build/deployment/small-cacheless-without-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:21.696088000Z"
+    - command: cp -R .small build/deployment/small-cacheless-without-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194421.875361000Z.txt
+      command_sha256: 9932f1122f5870d7614fa9cbd1864defd40f938fc4d07e84911a318214fbda4c
+      command_summary: cp -R .small build/deployment/small-cacheless-without-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:44:21.875361000Z"
+    - command: cp -R build/deployment/small-cacheless-with-proof build/deployment/small-cacheless-tamper
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194523.682788000Z.txt
+      command_sha256: 6d09d07f68b72e06d4308cc73a0cdf17432126171c343dfea472bc264dd731ec
+      command_summary: cp -R build/deployment/small-cacheless-with-proof build/deployment/small-cacheless-tamper
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:45:23.682788000Z"
+    - command: printf '\n' >> build/deployment/small-cacheless-tamper/.small-command-proofs/logs/*/commands/20261007T230645.843552000Z.txt
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194523.865589000Z.txt
+      command_sha256: bd999c051b802a746f432600837a6eda182f7d6ba676a63edebdb180da75cce7
+      command_summary: printf '\n' >> build/deployment/small-cacheless-tamper/.small-command-proofs/logs/*/commands/20261007T230645.843552000Z.txt
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:45:23.865589000Z"
+    - command: git diff --check
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194524.368008000Z.txt
+      command_sha256: 466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b
+      command_summary: git diff --check
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:45:24.368008000Z"
+    - command: for f in build/deployment/small-cacheless-tamper/.small-command-proofs/logs/*/commands/20261007T230645.843552000Z.txt; do printf '\n' >> "$f"; done
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194539.619113000Z.txt
+      command_sha256: 778836dee093ffaf26d81fac2959d97895d5895a746aafe0707b57bfe519dacd
+      command_summary: for f in build/deployment/small-cacheless-tamper/.small-command-proofs/logs/*/commands/20261007T230645.843552000Z.txt; do printf '\n' >> "$f"; done
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:45:39.619113000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .gitignore @@ logs/ +# Only individually reviewed command proof belongs here, never the private cache. +!.small-command-proofs/logs/ docs/jcn-...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194655.178548000Z.txt
+      command_sha256: e06c6b4155f25bc89d095369ea0f57493f093f0e97540bfb85ef72d46f697978
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: .gitignore @@ logs/ +# Only individually reviewed command proof belongs here, never the private cache. +!.small-command-proofs/logs/ docs/jcn-...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:46:55.178548000Z"
+    - command: cp .small-cache/logs/*/commands/20261008T194655.178548000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194750.721631000Z.txt
+      command_sha256: 12033240b6d50614150612b628dfe3aee5c06c58d68b43c9b3d2f8a8f16d43a7
+      command_summary: cp .small-cache/logs/*/commands/20261008T194655.178548000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:50.721631000Z"
+    - command: cp -R .small build/deployment/small-cacheless-with-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194750.916948000Z.txt
+      command_sha256: e72ebb57d8e25d78ede7f8db22ef6db7e702e0a503c6173e31c0ff3553c82288
+      command_summary: cp -R .small build/deployment/small-cacheless-with-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:50.916948000Z"
+    - command: cp -R .small-command-proofs build/deployment/small-cacheless-with-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194751.102997000Z.txt
+      command_sha256: 18f50aaba420276f04025c6ac2b01e10dddf4228dd31d56ebc4dbf65ca66471a
+      command_summary: cp -R .small-command-proofs build/deployment/small-cacheless-with-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:51.102997000Z"
+    - command: cp -R .small build/deployment/small-cacheless-without-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194751.290073000Z.txt
+      command_sha256: 9932f1122f5870d7614fa9cbd1864defd40f938fc4d07e84911a318214fbda4c
+      command_summary: cp -R .small build/deployment/small-cacheless-without-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:51.290073000Z"
+    - command: git diff --name-only | bash scripts/check-docs-sync.sh
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194751.500408000Z.txt
+      command_sha256: 5bc970449335df35ad4f483066da4139bec81d0bb3d5e7be495efde79f9f0e61
+      command_summary: git diff --name-only | bash scripts/check-docs-sync.sh
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:51.500408000Z"
+    - command: git diff --check
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194751.709403000Z.txt
+      command_sha256: 466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b
+      command_summary: git diff --check
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:51.709403000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestDocumentationContract -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194753.961757000Z.txt
+      command_sha256: 88698b31027e9affe4ed2bad1e35886024bc0db8e38ee7f0643b4077bed0c961
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestDocumentationContract -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:47:53.961757000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194824.646580000Z.txt
+      command_sha256: bcc1987239d0f7f470328034e61082e2ca6e2646599867a93e59763b60f3ea5f
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:48:24.646580000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/task36-resumed-documentation
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T194917.870961000Z.txt
+      command_sha256: 371ce9f29537168be6c7e8c4c56791b4671b45172a71f713ff20f22de0959d2c
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/task36-resumed-documentation
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:49:17.870961000Z"
+    - evidence: 'Prepared three individually reviewed non-secret portable proofs: two original screenshot refs plus new public-policy patch capture. Proof SHA256 matches saved refs. Cache-free snapshot passes with proof and preserves its audit files; missing proof fails closed, tampered proof rejects SHA256 mismatch. .gitignore now permits supported proof store only while private cache stays ignored. AGENTS.md, docs/small-integration.md and CHANGELOG.md document explicit patched CLI and hosted-adoption boundary. CLI documentation contract and docs-continuity Go tests pass; docs co-change gate and git diff --check pass. Fresh source-bound bundle: build/deployment/task36-resumed-documentation. Canonical strict passes without mutating saved state during validation.'
+      notes: One disposable tamper attempt failed because POSIX redirection did not expand a glob; corrected generated-data loop then reproduced the intended hash-mismatch rejection. No original proof/history edits or runtime changes.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T19:50:21.437352000Z"
+    - evidence: 'Protocol blocker cleared and continuation proof prepared. Remaining deployment gates rechecked live: canonical docs endpoint displays404 in Brave; Vercel production remains ea9e69d from Jun27 and browser session is authenticated. Docs GitHub repo connection returns404; companion local checkout is outside writable roots. Core main protected=false; branch-protection API returns403. Published SMALL remainsv1.1.0; LoopExec CI still pins that incompatible release. Asked owner to choose immutable merged correction pin versus waiting for stable patch, and supply writable companion docs context/repo connection. CLI networking cannot resolve hosts; Vercel CLI isolated config has no credentials. No push, deployment, publication or account-security change.'
+      notes: Do not reopen the resolved SMALL defect or use plain Homebrew small1.0.2. Task37/38 remain blocked pending docs-site adoption and compatible exact-head hosted gates. Existing original receipts and consumer allowances preserved.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-08T19:50:21.665840000Z"
+    - evidence: 'Owner expects access to all owned GitHub repositories, local and remote. Diagnosing access rather than treating ownership as permission denial: connected login justyn-clark; owned GitHub App installation105323366 has repository_selection selected. Docs repo still connector404; CLI git/gh fail DNS before authorization. Companion checkout readable, clean except unrelated .zed, outside current writable roots. Checking signed-in GitHub UI and installation scope before any security-sensitive permission changes.'
+      notes: No credential values read, no broad grant saved, no sandbox or auth bypass. User ownership intention does not itself change current connector/network/filesystem enforcement.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T20:04:29.816859000Z"
+    - command: git clone --no-hardlinks /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev build/deployment/docs-checkout
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T200834.495069000Z.txt
+      command_sha256: b1769dd8150810801253866284203ad311ce48c67784ef6a26577fd4589a62d7
+      command_summary: git clone --no-hardlinks /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec.dev build/deployment/docs-checkout
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T20:08:34.495069000Z"
+    - command: git -C build/deployment/docs-checkout remote set-url origin git@github.com:justyn-clark/loopexec.dev.git
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261008T200940.315263000Z.txt
+      command_sha256: b1047924645dccbcf3063f4d4873630ae1bf616abd227c73d17250eebdac1cc1
+      command_summary: git -C build/deployment/docs-checkout remote set-url origin git@github.com:justyn-clark/loopexec.dev.git
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T20:09:40.315263000Z"
+    - evidence: 'Confirmed private justyn-clark/loopexec.dev exists and is accessible in owner Brave GitHub session. Connector scope cause verified in GitHub UI: ChatGPT Codex Connector installed105323366, only15 selected repositories, excludes docs and core LoopExec. Owner mobile reauthentication succeeded with fresh85 after99 timed out. At actual All repositories setting, requested explicit confirmation before expanding existing read/write app access to all current/future owner repos; no grant saved yet. Created clean standalone writable clone build/deployment/docs-checkout at ea9e69d77a1c6fa2ae9d31f475a4f30e43353309, set origin to canonical GitHub repo, patched strict passes. Original checkout and unrelated .zed remain untouched.'
+      notes: 'Local docs implementation need not wait for expanded filesystem roots: work in the bounded writable clone. CLI DNS/network limitation remains distinct from remote connector scope. No account credential creation or security weakening.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T20:09:40.879684000Z"
+    - evidence: Owner explicitly confirmed ChatGPT Codex Connector All repositories grant for current/future justyn-clark repos with existing code/actions/workflows/issues/PR permissions. GitHub mobile85 reauthentication accepted. Saved installation105323366 All repositories in owner settings; live installation API confirms repository_selection all. Connected private docs repo now succeeds and reports pull/push/admin owner permissions; core repo also accessible with push. Remote repository scope blocker resolved. Writable clean docs clone build/deployment/docs-checkout at canonical ea9e69d passes patched strict, original checkout preserved. No password/passkey/2FA weakening, credentials exposed, other-account installation changes or production deployment.
+      notes: CLI DNS restriction still exists for direct git/gh; use functioning GitHub connection for remote operations. App scope is not a promise of administration API scopes or unrestricted filesystem writes. Repository work can proceed within the writable clone without those bypasses. Stable publication is not a blocker for local implementation.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-08T20:11:47.532227000Z"
+    - evidence: Verified global /opt/homebrew/bin/small v1.1.1, Homebrew Cellar1.1.1, Go module v1.1.1 revision6e1270b with vcs.modified=false; live official v1.1.1 release exists. Stable strict passes in LoopExec and docs clone without modifying existing receipts. CI adoption remains task36.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-39
+      timestamp: "2026-10-09T00:32:34.140610000Z"
+    - evidence: Resuming paired deployment using verified stable SMALL1.1.1. Root and writable docs clone strict passed; GitHub connector access was granted by owner. Adopt stable CI pin and canonical prose, import source-bound docs, then verify hosted checks and official deployed handshake before release.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:32:34.295385000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml @@ - archive="small-v1.1.0-$(go env GOOS)-$(go env GOARCH)...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003234.483715000Z.txt
+      command_sha256: 4e96767c0e6e193af2afc5d5182bb940e41815e70390c01393376bf49a80d4af
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml @@ - archive="small-v1.1.0-$(go env GOOS)-$(go env GOARCH)...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:32:34.483715000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T003234.483715000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003302.519873000Z.txt
+      command_sha256: 0934633b87cfd2f8830c9b0e4d43a49e70b0b25ec2ef893f608380e93475351b
+      command_summary: cp .small-cache/logs/*/commands/20261009T003234.483715000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:33:02.519873000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003352.726936000Z.txt
+      command_sha256: 5b348a410a79c9ae9caa58a996db46c53962d72073b59859ee4a380e9ca644f6
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:33:52.726936000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/release.yml @@ on: push: tags: [''v*''] + workflow_dispatch: @@ ver...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003414.303312000Z.txt
+      command_sha256: 60ace4050aa19d6da5d7824c3acd2d1d42f51077f9ac5d0826b2a45ca5e0ff63
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/release.yml @@ on: push: tags: [''v*''] + workflow_dispatch: @@ ver...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:34:14.303312000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T003414.303312000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003450.645408000Z.txt
+      command_sha256: 9933e5a507772932d5b5bd922afb87b22e1114efbad2f6d5e7d6f7cd1e3eecf2
+      command_summary: cp .small-cache/logs/*/commands/20261009T003414.303312000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:34:50.645408000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/release-documentation-v0.4.1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003450.898358000Z.txt
+      command_sha256: 479b4bdbe7fd3196db982211c1d451fdba919d7b28a4cf06ab44711691954be6
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/release-documentation-v0.4.1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:34:50.898358000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003602.130952000Z.txt
+      command_sha256: e9c67368d139c67c55c697d1248ede62de6edfcd5381e250c225f094c5905ba7
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:36:02.130952000Z"
+    - command: mkdir -p build/deployment/release-cacheless-core build/deployment/release-cacheless-site
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003624.898090000Z.txt
+      command_sha256: 23a68ff6cb94752a9c4747acb6cbe42e22cc33fb5ca7c616fe1c69cc79fcf339
+      command_summary: mkdir -p build/deployment/release-cacheless-core build/deployment/release-cacheless-site
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:36:24.898090000Z"
+    - command: cp -R .small .small-command-proofs build/deployment/release-cacheless-core/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003625.044973000Z.txt
+      command_sha256: c4c5f6a53e01a462fcab9e955e097c66dd7cd04e20a7fc59fff227c2f0664426
+      command_summary: cp -R .small .small-command-proofs build/deployment/release-cacheless-core/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:36:25.044973000Z"
+    - command: cp -R build/deployment/docs-checkout/.small build/deployment/docs-checkout/.small-command-proofs build/deployment/release-cacheless-site/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003625.189972000Z.txt
+      command_sha256: 5d27acc9fc8c816da9d46c71d9ba8046b7443cb9b89c2fcd6348d6e826d5aea3
+      command_summary: cp -R build/deployment/docs-checkout/.small build/deployment/docs-checkout/.small-command-proofs build/deployment/release-cacheless-site/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:36:25.189972000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/run-docs-build.mjs +import { fileURLToPath } from ''node:url''; +proces...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003658.229732000Z.txt
+      command_sha256: 6faa3db9ba826362f1bf448d1eea7bc86ebc1ab0f4e8434c95be23b0c40d1b0d
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/run-docs-build.mjs +import { fileURLToPath } from ''node:url''; +proces...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:36:58.229732000Z"
+    - command: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/run-docs-build.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003702.171674000Z.txt
+      command_sha256: 287e1ba943433763c7fae83ff524780bb6d689b13eb3cdc01cc95da99043035e
+      command_summary: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/run-docs-build.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:37:02.171674000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T003658.229732000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003706.876270000Z.txt
+      command_sha256: 6892b4ed8d06704333dcce0e12d654994bcc57cf334eb8aea266122e33fb64f7
+      command_summary: cp .small-cache/logs/*/commands/20261009T003658.229732000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:37:06.876270000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/site-qa.mjs +import { chromium } from ''/Users/justin/.cache/codex-run...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003833.567017000Z.txt
+      command_sha256: 5f06e6615a251c4124e5fd85bd580f405c8ba27c7b20e5d576b3aa4f6d9d0996
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/build/deployment/site-qa.mjs +import { chromium } from ''/Users/justin/.cache/codex-run...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:38:33.567017000Z"
+    - command: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/site-qa.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003841.543203000Z.txt
+      command_sha256: 8540138e3e7ec90522bf32136dca753305c5a6d38cf32aa38e88452cc55a0dde
+      command_summary: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/site-qa.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:38:41.543203000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.1 build/deployment/release-packages-v0.4.1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003842.544315000Z.txt
+      command_sha256: db1950c1bfe948d01dca050c31552591da5904503a80a75c152f493df9f91934
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache ./scripts/build-release.sh v0.4.1 build/deployment/release-packages-v0.4.1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:38:42.544315000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T003833.567017000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T003845.248371000Z.txt
+      command_sha256: 3d3779a4ab558375fa2b7d3e0dc5f54f4e4ccc85a6ed096c7f69e260b5102131
+      command_summary: cp .small-cache/logs/*/commands/20261009T003833.567017000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:38:45.248371000Z"
+    - evidence: 'Verified stable SMALL1.1.1 tag resolves to installed revision6e1270b. Adopted CI pin and canonical prose/changelog. Go test ./... passes; 4 canonical site tests and Astro build pass. Playwright checked six routes at1440x1000 and390x844: no document overflow, missing internal links, broken visible images or page errors. Built six platform archives plus source-bound docs archive with matching SHA256 checksums. Manifest source34f5732e and docs85f78953. Browser controls unavailable while Mac locked; no merge/tag/deployment/publication yet.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:39:17.551010000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-template-command-validation-handoff.md +# SMALL Command-Literal Validation ...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T004202.466623000Z.txt
+      command_sha256: c159e3fe4a2fb113341384ed389fdbde8d2701131fac495c89e8bc31d235dadc
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-template-command-validation-handoff.md +# SMALL Command-Literal Validation ...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:42:02.466623000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T004202.466623000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T004232.633247000Z.txt
+      command_sha256: 187375ce6bb548f5315112eb785e51208868019903c26f7097963fea362316cf
+      command_summary: cp .small-cache/logs/*/commands/20261009T004202.466623000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T00:42:32.633247000Z"
+    - evidence: Local candidate tests, canonical docs build, twelve desktop/mobile route checks and seven checksummed archives pass. Stable SMALL1.1.1 strict now fails on exact QA-helper patch capture20261009T003833.567017000Z, SHA5f06e661, containing a templated loopback origin. Agent introduced this capture; history is preserved. No supported amend/retract command exists. Internal reproduction and required policy decision saved in docs/small-template-command-validation-handoff.md. Mac locked also prevents owner browser controls. No remote PR/merge/tag/deployment/publication.
+      notes: No strict bypass, receipt rewrite, reset, paid review or quality-threshold change. Root handoff cannot run while strict fails; task39 global stable install remains completed. Resolve exact-command policy upstream or approve a documented loss-preserving remediation before task36 resumes.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-09T00:42:32.798024000Z"
+    - evidence: Added task task-41 via small plan --add
+      notes: Adopt stable SMALL1.1.2 for preserved QA command validation in local and CI tooling
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:07.207464000Z"
+    - evidence: Official latest release is v1.1.2 with narrowly scoped captured-code local URL support. Installed module v1.1.2 revision1a101564, vcs.modified=false. Strict passes against original root state; all14 authoritative audit and reviewed proof hashes unchanged across read-only validation. Align CI and canonical prose; no protocol migration, receipt rewrite or runtime-quality change.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:07.387077000Z"
+    - command: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml @@ - archive="small-v1.1.1-$(go env GOOS)-$(go env GOARCH)...'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132707.643132000Z.txt
+      command_sha256: 011527af69e8bafa7291f43ccd53727504836502c173ca6a9bd17a78e09c9172
+      command_summary: 'apply_patch <<''PATCH'' *** Begin Patch *** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml @@ - archive="small-v1.1.1-$(go env GOOS)-$(go env GOARCH)...'
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:07.643132000Z"
+    - command: cp .small-cache/logs/*/commands/20261009T132707.643132000Z.txt .small-command-proofs/logs/*/commands/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132748.733619000Z.txt
+      command_sha256: 17a4a9f5911e82155d382860490090368999882801719bf224d3736544ea4109
+      command_summary: cp .small-cache/logs/*/commands/20261009T132707.643132000Z.txt .small-command-proofs/logs/*/commands/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:48.733619000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132751.065840000Z.txt
+      command_sha256: bcc1987239d0f7f470328034e61082e2ca6e2646599867a93e59763b60f3ea5f
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:51.065840000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestDocumentationContract -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132751.326675000Z.txt
+      command_sha256: 88698b31027e9affe4ed2bad1e35886024bc0db8e38ee7f0643b4077bed0c961
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go test ./cmd/loopexec -run TestDocumentationContract -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:27:51.326675000Z"
+    - command: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/small112-documentation
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132827.390175000Z.txt
+      command_sha256: 5f38acd7a045b2e9ab8427f4e724297792c6106438855d61b3b4c21c8de5bf02
+      command_summary: GOCACHE=/private/tmp/loopexec-go-cache go run ./tools/docs-continuity bundle build/deployment/small112-documentation
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:28:27.390175000Z"
+    - command: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/run-docs-build.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132834.988212000Z.txt
+      command_sha256: 287e1ba943433763c7fae83ff524780bb6d689b13eb3cdc01cc95da99043035e
+      command_summary: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/run-docs-build.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:28:34.988212000Z"
+    - command: mkdir -p build/deployment/small112-cacheless/core build/deployment/small112-cacheless/site build/deployment/small112-cacheless/missing-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132920.701102000Z.txt
+      command_sha256: 342a4b4065c8b99e4d859619b2bd7bd8c6b7da5ca98936a2478c7a2c4ad2d3d5
+      command_summary: mkdir -p build/deployment/small112-cacheless/core build/deployment/small112-cacheless/site build/deployment/small112-cacheless/missing-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:29:20.701102000Z"
+    - command: cp -R .small .small-command-proofs build/deployment/small112-cacheless/core/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132920.988627000Z.txt
+      command_sha256: 6c2f7a4fdc3f693de7fb8a2b50fe3256dbb8ba0437bdcbcbc01424391fd03bc0
+      command_summary: cp -R .small .small-command-proofs build/deployment/small112-cacheless/core/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:29:20.988627000Z"
+    - command: cp -R .small build/deployment/small112-cacheless/missing-proof/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132921.255167000Z.txt
+      command_sha256: 7f8847a77bc871ba9cb21603859460e3353e16688a015577b2a0c2626672cef3
+      command_summary: cp -R .small build/deployment/small112-cacheless/missing-proof/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:29:21.255167000Z"
+    - command: cp -R build/deployment/docs-checkout/.small build/deployment/docs-checkout/.small-command-proofs build/deployment/small112-cacheless/site/
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T132921.503779000Z.txt
+      command_sha256: 5afc075efc538ad2a42d232b0af5605cc51a4f11ce84d9268b88178fa913a720
+      command_summary: cp -R build/deployment/docs-checkout/.small build/deployment/docs-checkout/.small-command-proofs build/deployment/small112-cacheless/site/
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:29:21.503779000Z"
+    - command: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/site-qa.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T133001.348682000Z.txt
+      command_sha256: 8540138e3e7ec90522bf32136dca753305c5a6d38cf32aa38e88452cc55a0dde
+      command_summary: /Users/justin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node build/deployment/site-qa.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-41
+      timestamp: "2026-10-09T13:30:01.348682000Z"
+    - evidence: Stable SMALL1.1.2 resolves retained QA capture without rewriting history. Updated root and writable docs-site CI pins, agent policy, canonical prose and changelogs; refreshed bundle sourcee0d04802 docs cb4c8adb. Root/site strict and cache-free snapshots pass; missing-proof snapshot fails as expected. CLI contract and docs-continuity tests pass; canonical site tests4/4 and Astro build pass. Exact QA proof SHA5f06e661 unchanged. No remote enforcement, deployment or publication claimed.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-41
+      timestamp: "2026-10-09T13:30:59.128182000Z"
+    - evidence: Audit blocker cleared by verified installed stable SMALL1.1.2; task41 tooling/docs adoption completed. Continue paired commit/PR hosted CI, approved main protections, matching docs deployment/readback and release. Current bundle sourcee0d04802 docs cb4c8adb in build/deployment/small112-documentation and writable docs clone. Prior packages were built against older source34f5732e; rebuild before publication. No global quality score, receipt rewrite, shared allowance reset, protocol migration or production changes.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:30:59.484953000Z"
+    - evidence: Updated task task-36 to pending
+      notes: small plan --pending
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-36
+      timestamp: "2026-10-09T13:38:09.401327000Z"
+    - evidence: Resuming after task41 completed stable SMALL1.1.2 CI/prose adoption and the originating agent became idle. Default shell CLI now resolves verified v1.1.2; root and docs strict pass. Prepare isolated, reviewable paired PRs from the existing release changes, run hosted CI, retain original dirty checkouts and all audit/proof bytes. GitHub access includes admin/push for both repos; core main has no protection and private docs protection is rejected by GitHub account-plan HTTP403. No production deployment, repository visibility change, paid plan purchase, merge or publication is part of preparation.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:38:22.348241000Z"
+    - command: python3 /private/tmp/prepare-loopexec-release-candidates.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T134432.636938000Z.txt
+      command_sha256: 4e5399b967b3d9e310726870a3c7d13c635efcda8a38aab7b7ca314a4c8953ba
+      command_summary: python3 /private/tmp/prepare-loopexec-release-candidates.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:44:32.636938000Z"
+    - command: python3 /private/tmp/prepare-loopexec-release-candidates.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T134619.761503000Z.txt
+      command_sha256: 4e5399b967b3d9e310726870a3c7d13c635efcda8a38aab7b7ca314a4c8953ba
+      command_summary: python3 /private/tmp/prepare-loopexec-release-candidates.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:46:19.761503000Z"
+    - command: python3 /private/tmp/verify-loopexec-release-core.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T135148.983325000Z.txt
+      command_sha256: 8b7368c61a57fa9c4de45a30eff91a9dec825defff2250306a35b78265f41c2b
+      command_summary: python3 /private/tmp/verify-loopexec-release-core.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:51:48.983325000Z"
+    - command: python3 /private/tmp/verify-loopexec-release-core.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T135501.491614000Z.txt
+      command_sha256: 8b7368c61a57fa9c4de45a30eff91a9dec825defff2250306a35b78265f41c2b
+      command_summary: python3 /private/tmp/verify-loopexec-release-core.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T13:55:01.491614000Z"
+    - command: python3 /private/tmp/loopexec-playwright-help.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T140126.031973000Z.txt
+      command_sha256: 98f07f284f4fd6ef46c93c3d23e279e196168f8ceb41cea7dfc700a81057bbd4
+      command_summary: python3 /private/tmp/loopexec-playwright-help.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T14:01:26.031973000Z"
+    - command: python3 /private/tmp/loopexec-playwright-help.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T140514.660479000Z.txt
+      command_sha256: 98f07f284f4fd6ef46c93c3d23e279e196168f8ceb41cea7dfc700a81057bbd4
+      command_summary: python3 /private/tmp/loopexec-playwright-help.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T14:05:14.660479000Z"
+    - command: python3 /private/tmp/qa-loopexec-docs-candidate.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T140938.811806000Z.txt
+      command_sha256: 61f1081fc7cd69205b21d74c473cb4af09c1be7ff0e82c17e439cc46d3a73f9a
+      command_summary: python3 /private/tmp/qa-loopexec-docs-candidate.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T14:09:38.811806000Z"
+    - evidence: Updated task task-37 to pending
+      notes: small plan --pending
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-37
+      timestamp: "2026-10-09T14:20:27.303642000Z"
+    - evidence: Prepared isolated candidate at /private/tmp/loopexec-v0.4.1-continuation-20261009/core. Full local CI, race checks, offline proofs and v1/v2 SMALL compatibility pass. Seven platform/documentation archives verify checksums; source e0d04802b2c1a0a58ed03216c3a76b6e56899fa7d5a045dd835973de2ebb51fd and docs cb4c8adb7f9656839d5210d0c03b9502ffc0c2268be806310564dc1ebd43255f match the canonical site import. Clean pnpm installation, scoped formatting, canonical tests, Astro build, twelve real desktop/mobile route checks and exact raw source verification pass. Next is offline redacted secret scanning and paired hosted PR/CI proof; no release tag or production publication yet.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-37
+      timestamp: "2026-10-09T14:20:28.783805000Z"
+    - command: python3 /private/tmp/commit-loopexec-release-candidates.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261009T142109.461009000Z.txt
+      command_sha256: f1bcdae30ac504bdf32a7647ce4d19b0f365cba3b3510f3e3bbb5477512ce961
+      command_summary: python3 /private/tmp/commit-loopexec-release-candidates.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-36
+      timestamp: "2026-10-09T14:21:09.461009000Z"

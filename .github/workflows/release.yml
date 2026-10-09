@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -10,18 +11,43 @@ permissions:
 jobs:
   verify:
     uses: ./.github/workflows/ci.yml
-  publish:
+  documentation:
     needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+      - name: Require source on main
+        run: git merge-base --is-ancestor HEAD origin/main
+      - name: Read back source-bound deployed docs
+        run: |
+          go run ./tools/docs-continuity bundle "$RUNNER_TEMP/documentation"
+          go run ./tools/docs-continuity verify-site "$RUNNER_TEMP/documentation/manifest.json"
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: documentation
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.x'
+      - name: Require documentation continuity since previous release
+        run: |
+          base="$(git describe --tags --abbrev=0 --match 'v[0-9]*' HEAD^)"
+          git diff --name-only "$base" HEAD | bash ./scripts/check-docs-sync.sh
       - name: Package six targets
         run: ./scripts/build-release.sh "${{ github.ref_name }}" dist
+      - name: Require matching deployed documentation
+        run: go run ./tools/docs-continuity verify-site dist/documentation/manifest.json
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -29,4 +55,5 @@ jobs:
         run: |
           gh release create "$RELEASE_TAG" dist/loopexec-*.tar.gz dist/loopexec-*.zip dist/checksums.txt \
             --verify-tag --draft --title "LoopExec $RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md"
+          go run ./tools/docs-continuity verify-site dist/documentation/manifest.json
           gh release edit "$RELEASE_TAG" --draft=false --latest

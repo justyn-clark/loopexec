@@ -1,0 +1,64 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-template-command-validation-handoff.md
++# SMALL Command-Literal Validation Reproduction
++
++Internal correction context, not public LoopExec documentation and not a gated
++SMALL handoff. Prepared October 8, 2026. No release/deployment occurred.
++
++## Observed
++
++- Installed and CI-candidate tooling: stable SMALL v1.1.1, upstream commit
++  `6e1270b77f0cf93ab11f7cc45874b16c83e0f39e` (official tag verified).
++- LoopExec strict passed before the new QA-helper patch capture. It now fails
++  with two insecure-link violations in progress; schemas/non-strict doctor pass.
++- I introduced that captured inline script. It contains a template literal
++  assembling an HTTP origin from exact loopback host plus the ephemeral server
++  port. Strict scans source text as a URL; the template port is not a numeric URL.
++  This is observed behavior, not proof that the intended policy is defective.
++- The server actually binds loopback. Playwright completed all twelve desktop/
++  mobile route checks; no overflow, broken internal links/images or page errors.
++
++## Immutable Evidence
++
++- Replay: `f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96`.
++- Capture: `.small-cache/logs/<replay>/commands/20261009T003833.567017000Z.txt`.
++- Reviewed exact portable copy:
++  `.small-command-proofs/logs/<replay>/commands/20261009T003833.567017000Z.txt`.
++- SHA256: `5f06e6615a251c4124e5fd85bd580f405c8ba27c7b20e5d576b3aa4f6d9d0996`.
++- Full reproduction command is already preserved there, without an added newline.
++- Do not edit the command bytes, ref, SHA, summary marker, timestamp or old progress.
++  Do not purge history, migrate/reset state to evade lint, or weaken strict policy.
++
++## Required Decision And Correction
++
++Determine whether source-code literals in verified command bodies should receive
++context-aware URL handling, or whether SMALL needs an explicit loss-preserving
++remediation for newly captured commands outside its URL grammar. Preserve fail-
++closed treatment of real external HTTP, lookalike hosts, userinfo, malformed ports,
++missing/tampered proof and credentials beyond the summary cap. A blanket HTTP
++allowance or stripping `command_summary_version` is not acceptable.
++
++Add regression fixtures for the exact capture and negative cases. The installed
++1.1.1 CLI has no supported command to amend/retract this receipt. A documented
++upstream resolution is needed before adopting a compatible binary in LoopExec CI.
++
++## Resume Gates
++
++Run strict against the existing root state and a fresh cache-free snapshot with
++reviewed proof. Hash original history before/after validation; never rewrite it.
++Then resume task-36, paired GitHub PR/CI, protected main, matching Vercel docs,
++official-origin readback and v0.4.1 publication. Browser operations also require
++the Mac to be unlocked. General recipes remain task-38, after deployment/release.
++
++Local completed checks: `go test ./...`, CLI/docs contract tests, four site bundle
++tests, Astro build, twelve Playwright route checks, six platform archives and
++documentation archive with checksums. Source bundle identity: source
++`34f5732e494ebf8391f338fc8599bb194cf6d3b86d5c8ba535c697a819a2e9a6`, docs
++`85f789531ea6e9665a5d07b139683f02731e872ebe087189ba46bd31c989dbee`.
++
++Canonical site changes are in `build/deployment/docs-checkout`; original companion
++checkout and unrelated work were preserved. Local direct Node verification used
++the existing dependency cache; clean pnpm installation still needs hosted CI.
+*** End Patch
+PATCH

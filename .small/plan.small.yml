@@ -100,3 +100,30 @@ tasks:
     - id: task-33
       title: Enforce canonical SMALL progress for LoopExec development changes in CI
       status: completed
+    - id: task-34
+      title: Audit published LoopExec and home verifier; improve receipt reporting and capture usability roadmap
+      status: completed
+    - id: task-35
+      title: Enforce general-purpose code/docs release continuity and correct project-specific quality interpretation
+      status: completed
+    - id: task-36
+      title: Adopt canonical docs-site handshake and hosted release protections before publication
+      status: pending
+    - id: task-37
+      title: Prepare v0.4.1 release and source-bound docs deployment artifacts with verified CI handoff
+      status: pending
+    - id: task-38
+      title: Add tested configurable software, game-development and audio-engineering recipes after deployment
+      status: blocked
+      dependencies:
+        - task-36
+        - task-37
+    - id: task-39
+      title: Install latest published SMALL locally and recheck preserved strict-gate failure
+      status: completed
+    - id: task-40
+      title: Prepare audit-preserving SMALL correction brief for upstream fix and authorized push
+      status: completed
+    - id: task-41
+      title: Adopt stable SMALL1.1.2 for preserved QA command validation in local and CI tooling
+      status: completed

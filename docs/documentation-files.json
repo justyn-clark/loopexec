@@ -1,0 +1,24 @@
+{
+  "files": [
+    "LICENSE",
+    "README.md",
+    "SPEC.md",
+    "CHANGELOG.md",
+    "docs/documentation-files.json",
+    "docs/cli.md",
+    "docs/cli-reference.generated.md",
+    "docs/architecture.md",
+    "docs/workflows.md",
+    "docs/integrations.md",
+    "docs/loop-contract.md",
+    "docs/small-integration.md",
+    "docs/acceptance-policy.md",
+    "docs/documentation-continuity.md",
+    "docs/creative-verification.md",
+    "docs/status-and-roadmap.md",
+    "docs/releases/v0.3.0.md",
+    "docs/releases/v0.4.0.md",
+    "docs/releases/v0.4.1.md",
+    "examples/scoped-budget/README.md"
+  ]
+}

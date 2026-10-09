@@ -1,0 +1,67 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml
+@@
+-          archive="small-v1.1.1-$(go env GOOS)-$(go env GOARCH).tar.gz"
+-          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.1"
++          archive="small-v1.1.2-$(go env GOOS)-$(go env GOARCH).tar.gz"
++          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.2"
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/AGENTS.md
+@@
+-Target tooling: SMALL CLI 1.1.1 (supports protocol profiles 1.0.0 and 2.0.0).
+-This stable release includes the command-summary correction required by this
+-checkout's historical receipts. Verify the resolved binary; do not use 1.0.2
+-or the uncorrected 1.1.0 release to write or validate this development state.
++Target tooling: SMALL CLI 1.1.2 (supports protocol profiles 1.0.0 and 2.0.0).
++This stable release includes command-summary correction and narrow captured-code
++loopback URL handling required by this checkout's historical receipts. Verify the
++resolved binary; older releases do not validate the retained QA template capture.
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-integration.md
+@@
+-CI pins and checksum-verifies v1.1.1. It creates disposable workspaces; your
++CI pins and checksum-verifies v1.1.2. It creates disposable workspaces; your
+@@
+-and use the released SMALL v1.1.1, which includes the command-summary fix.
++and use the released SMALL v1.1.2, which includes the command-summary fix and
++the captured-source correction needed for the retained QA script.
+@@
+-[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/v1.1.1/docs/command-proof.md).
++[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/v1.1.2/docs/command-proof.md).
++
++v1.1.2 recognizes a narrowly defined backtick-quoted local URL with a supported
++runtime-port expression only after exact command SHA256 and summary verification.
++It does not execute source to validate links. Authored fields, external HTTP,
++unsupported expressions, credentials and missing/tampered proof remain strict.
++The existing QA capture can therefore pass without rewriting its original bytes.
+@@
+-small version # must resolve to v1.1.1 for this checkout
++small version # must resolve to v1.1.2 for this checkout
+@@
+-the same v1.1.1 release; local success alone does not establish hosted compatibility
++the same v1.1.2 release; local success alone does not establish hosted compatibility
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/CHANGELOG.md
+@@
+-- Adopted stable SMALL v1.1.1 in checksum-verified CI. Preserved historical
++- Adopted stable SMALL v1.1.2 in checksum-verified CI. Its narrowly scoped
++  captured-source validation resolves the retained local QA template capture.
++  Preserved historical
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/releases/v0.4.1.md
+@@
+-CI pins checksum-verified SMALL v1.1.1, including its command-summary correction.
++CI pins checksum-verified SMALL v1.1.2, including command-summary correction and
++narrow, exact-proof-backed local URL source-literal handling.
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-template-command-validation-handoff.md
+@@
+ # SMALL Command-Literal Validation Reproduction
++
++## Resolution Verified October 9, 2026
++
++Stable SMALL v1.1.2 now supports narrowly defined captured-source local URL
++templates after exact command proof verification. The installed binary is
++v1.1.2, revision `1a101564cac8d22e200b965f912df7c9c37ab0e4`, unmodified.
++Root strict now passes; all 14 audit/proof files remained byte-identical across
++read-only validation. The reproduction below is preserved as historical context,
++not a current audit blocker. CI adoption is paired with canonical prose/changelog.
++Hosted CI, docs readback and release publication remain separate gates.
+*** End Patch
+PATCH

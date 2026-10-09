@@ -20,7 +20,7 @@ small version
 ```
 
 The optional proof requires Bash, jq, a POSIX shell, and SMALL v1.1.0 or newer.
-CI pins and checksum-verifies v1.1.0. It creates disposable workspaces; your
+CI pins and checksum-verifies v1.1.2. It creates disposable workspaces; your
 project's profile is unchanged. The proof covers:
 
 - v1 state with explicit task checkpoint after verified LoopExec convergence;
@@ -34,6 +34,45 @@ The two session runs execute sequentially in this proof. This verifies CLI
 composition and attribution; it is not a distributed-concurrency or live-model
 benchmark. Use separate worktrees/candidate directories and runtime storage for
 independent live work. A single workflow runtime has one governor.
+
+## Development-state command proof
+
+The released SMALL v1.1.0 can truncate an allowed localhost URL inside a command
+summary, then reject that display during strict validation. This checkout has
+two such historical screenshot captures. Keep their original receipts unchanged
+and use the released SMALL v1.1.2, which includes the command-summary fix and
+the captured-source correction needed for the retained QA script.
+Verify the resolved binary rather than assuming a Homebrew installation updated.
+
+The correction validates exact original command bytes against the saved ref,
+SHA256 and legacy summary. Individually reviewed, non-secret proof can be kept
+under `.small-command-proofs/`, mirroring the supported `.small-cache/` ref.
+The proof store is portable validation input, not replacement audit history.
+Never export the whole private cache. Missing or changed proof must fail closed.
+
+New truncated captures marked `command_summary_version: 2` also need portable
+exact-byte proof before committing state for a cache-free checkout. Review each
+full command for private material before copying it; do not strip the marker.
+Short captures retain the existing metadata contract. See the upstream
+[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/v1.1.2/docs/command-proof.md).
+
+v1.1.2 recognizes a narrowly defined backtick-quoted local URL with a supported
+runtime-port expression only after exact command SHA256 and summary verification.
+It does not execute source to validate links. Authored fields, external HTTP,
+unsupported expressions, credentials and missing/tampered proof remain strict.
+The existing QA capture can therefore pass without rewriting its original bytes.
+
+Validate with the explicitly selected binary:
+
+```sh
+small version # must resolve to v1.1.2 for this checkout
+small check --strict
+```
+
+Check a disposable snapshot with no cache: selected proof must pass, while
+missing or tampered proof must fail without changing the saved state. CI adopts
+the same v1.1.2 release; local success alone does not establish hosted compatibility
+or release readiness. Verify checks for the committed candidate before publication.
 
 ## Exit codes and acceptance
 

@@ -1,0 +1,65 @@
+apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/.github/workflows/ci.yml
+@@
+-          archive="small-v1.1.0-$(go env GOOS)-$(go env GOARCH).tar.gz"
+-          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.0"
++          archive="small-v1.1.1-$(go env GOOS)-$(go env GOARCH).tar.gz"
++          base="https://github.com/justyn-clark/small-protocol/releases/download/v1.1.1"
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/AGENTS.md
+@@
+-Target tooling: SMALL CLI 1.1.0 (supports protocol profiles 1.0.0 and 2.0.0).
+-This development checkout's historical command summaries require the upstream
+-command-summary correction. Use an explicitly verified patched binary until a
+-compatible stable release is adopted; do not use the Homebrew 1.0.2 default.
++Target tooling: SMALL CLI 1.1.1 (supports protocol profiles 1.0.0 and 2.0.0).
++This stable release includes the command-summary correction required by this
++checkout's historical receipts. Verify the resolved binary; do not use 1.0.2
++or the uncorrected 1.1.0 release to write or validate this development state.
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/small-integration.md
+@@
+-CI pins and checksum-verifies v1.1.0. It creates disposable workspaces; your
++CI pins and checksum-verifies v1.1.1. It creates disposable workspaces; your
+@@
+-and use an explicitly verified CLI containing the upstream command-summary fix.
+-An old Homebrew `small` is not a substitute for that binary.
++and use the released SMALL v1.1.1, which includes the command-summary fix.
++Verify the resolved binary rather than assuming a Homebrew installation updated.
+@@
+-[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/88261152c8643d121b4ff642881b1f701fc016d5/docs/command-proof.md).
++[command-proof guide](https://github.com/justyn-clark/small-protocol/blob/v1.1.1/docs/command-proof.md).
+@@
+-/path/to/patched-small version
+-/path/to/patched-small check --strict
++small version # must resolve to v1.1.1 for this checkout
++small check --strict
+@@
+-missing or tampered proof must fail without changing the saved state. CI still
+-pins the released v1.1.0 until the correction is explicitly adopted there;
+-local success alone does not establish hosted compatibility or release readiness.
++missing or tampered proof must fail without changing the saved state. CI adopts
++the same v1.1.1 release; local success alone does not establish hosted compatibility
++or release readiness. Verify checks for the committed candidate before publication.
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/CHANGELOG.md
+@@
+-- Prepared selective portable SMALL command proof for preserved development
+-  receipts and documented explicit patched-CLI validation. Cache-free validation
+-  passes with reviewed proof and fails for missing or tampered bytes. Hosted
+-  adoption remains separate; the current CI pin has not yet changed.
+-
+@@
+ on [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
+ 
++- Adopted stable SMALL v1.1.1 in checksum-verified CI. Preserved historical
++  command receipts with individually reviewed portable proof; missing or tampered
++  proof fails closed. Local validation is not proof of hosted release readiness.
+*** Update File: /Users/justin/jcnagent/Agent/Projects/ai-protocol/loopexec/docs/releases/v0.4.1.md
+@@
+ ## Validation and limits
+ 
++CI pins checksum-verified SMALL v1.1.1, including its command-summary correction.
++Historical command receipts remain unchanged; reviewed portable command proof
++supports cache-free strict validation without exporting the private cache.
++
+*** End Patch
+PATCH
