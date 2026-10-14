@@ -14,6 +14,7 @@ func TestHostPath(t *testing.T) {
 		"/home/example/repo", "(/var/tmp/output)", "'/opt/homebrew/bin/small'",
 		`C:\Users\example\repo`, `D:/temp/output`, `\\server\share\file`,
 		"file:///workspace/output", "~/private-file", "//server/share/file",
+		"~example/private-file",
 		"https://example.org/?path=/Users/example/repo",
 	} {
 		if !hostPath(value) {

@@ -4767,3 +4767,31 @@ entries:
       status: blocked
       task_id: task-36
       timestamp: "2026-10-14T07:09:17.829923000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T071537.902434000Z.txt
+      command_sha256: 8b277df3b57be97c2290bd1528193ec1250ba249e8cbd04224b487e4ba3610f0
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T07:15:37.902434000Z"
+    - command: go test ./tools/audit-privacy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T071538.124582000Z.txt
+      command_sha256: 485bf811b6c8a062db277a5f7ef514bd370f74314849d76d0fe52ba777f13cd3
+      command_summary: go test ./tools/audit-privacy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T07:15:38.124582000Z"

@@ -22,7 +22,7 @@ import (
 var uri = regexp.MustCompile(`(?i)\b[a-z][a-z0-9+.-]*://[^\s\x22\x27\x60<>]+`)
 var fileURI = regexp.MustCompile(`(?i)\bfile:`)
 var hostRoot = regexp.MustCompile(`(?i)(^|[\s\x22\x27\x60=(:,\[])/(Users|home|private|tmp|var|Volumes|root|opt|usr|etc)/`)
-var absolutePath = regexp.MustCompile("(?m)(^|[\\s\\x22\\x27\\x60=(:,\\[])(/[^/\\s\\x22\\x27\\x60;,)}\\]]|[a-zA-Z]:[/\\\\]|\\\\\\\\|//[^/\\s]|~[/\\\\])")
+var absolutePath = regexp.MustCompile("(?m)(^|[\\s\\x22\\x27\\x60=(:,\\[])(/[^/\\s\\x22\\x27\\x60;,)}\\]]|[a-zA-Z]:[/\\\\]|\\\\\\\\|//[^/\\s]|~[^/\\\\\\s\\x22\\x27\\x60]*[/\\\\])")
 
 func hostPath(value string) bool {
 	return fileURI.MatchString(value) || hostRoot.MatchString(value) || absolutePath.MatchString(uri.ReplaceAllString(value, "<uri>"))

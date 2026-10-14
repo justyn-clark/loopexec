@@ -5,6 +5,7 @@
 - Added canonical audit privacy policy and a publication gate rejecting new
   absolute host paths in SMALL metadata and command proofs. Historical receipts
   remain unchanged; unpublished private captures are excluded from delivery.
+  Named-home references are rejected along with absolute paths.
 
 - Corrected architecture to describe the shipped external-check runtime; marked
   the historical SMALL task-list design as planned.

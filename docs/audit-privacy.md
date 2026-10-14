@@ -11,6 +11,7 @@ mappings in untracked private configuration. Prefer helper scripts invoked
 by relative path rather than capturing large inline scripts. Do not expose
 usernames, home directories, temporary host directories, absolute tool
 locations, Windows drives, network shares or local file URIs.
+Named-home shell references are machine-specific too; use a logical alias instead.
 
 ## Enforcement
 
