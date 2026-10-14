@@ -5,16 +5,28 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Go version](https://img.shields.io/badge/go-1.26.0-00ADD8?logo=go&logoColor=white)](https://go.dev)
 
-`loopexec` is a deterministic runtime for loop engineering: it drives bounded, stateless, auditable execution loops that progress through an external check and stop on a computed reason, never on an agent's say-so. It is the runtime companion to SMALL Protocol: SMALL describes state, constraints, plans, progress, and handoff; loopexec drives one bounded loop against that state and reports machine-readable outcomes.
+## Overview
+
+LoopExec is a deterministic runtime for bounded agentic execution loops. Work progresses through an external check and stops on a computed reason — never because an agent says it is done.
+
+Supply a work command and an external check. LoopExec bounds execution, detects regression, no progress and oscillation, applies integrity guards, and records replayable receipts. Opt-in workflows add usage evidence, scoped model-call budgets and candidate restoration. Isolation orchestration composes with operator-provided container, egress and credential hooks.
+
+The runtime governs execution; adapters supply models, checks and infrastructure. Synthetic creative examples prove runtime mechanics, not production model quality. Observed spending cannot enforce a provider-side cap, a signature file requires explicit verification, and retaining a candidate does not establish owner acceptance.
+
+[Getting Started](docs/getting-started.md) begins with an offline deterministic proof.
+SMALL describes plans, constraints, progress and handoff; LoopExec drives one bounded loop. SMALL is optional for consumers.
 
 The normative contract is `SPEC.md`. The current source implements bounded execution, determinism probing, integrity and regression guards, offline-verifiable receipts, and opt-in unattended workflows. See `SPEC.md` section 11 for the implemented scope and remaining sub-parts.
 
 ## Current status
 
-Source identity: **v0.4.1**. This patch adds evidence-complete reports and enforced
+Source identity: **v0.4.1**. Documentation describes current source; the public
+binary version is established by GitHub Releases, not this source badge. This patch adds evidence-complete reports and enforced
 code/docs release continuity. See [v0.4.1 notes](docs/releases/v0.4.1.md); the
 [Releases page](https://github.com/justyn-clark/loopexec/releases) establishes
 publication status. Workflow thresholds remain supplied by each integration.
+
+## Implemented capabilities
 
 Implemented through v0.4.0:
 
@@ -36,12 +48,14 @@ Implemented through v0.4.0:
 - `isolate` - two-zone orchestration: detached-clone sandbox + per-run minted/revoked credential + rendered/launched exec/agent zones.
 - Global `--json` output, explicit exit-code contract, contract and unit tests, GitHub Actions CI (`gofmt`, `go vet`, `go test ./...`).
 
-Not implemented yet (named sub-parts; see `SPEC.md` section 11):
+## Integration boundaries and planned sub-parts
+
+See `SPEC.md` section 11:
 
 - The operator-provided infra `isolate` composes with: the container engine, the auditing egress proxy, and the provider key API (`--runtime` / `--egress-proxy` / `--mint-cmd` + `--revoke-cmd`).
 - Provider-specific live usage wrappers; the deeper metric-integrity layers (assertion-count / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
 - The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator.
-- Full SMALL-driven `task_list` loop execution and `small` CLI integration; container, Nix, or remote substrates and multi-worker orchestration.
+- Full SMALL-driven `task_list` loop execution; container, Nix, or remote substrates and multi-worker orchestration.
 
 ## Install
 
@@ -49,24 +63,25 @@ Not implemented yet (named sub-parts; see `SPEC.md` section 11):
 go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 ```
 
-Requires Go 1.26 or newer. For a pinned v0.4.1 install, use `@v0.4.1` once that
-release is published. Until then, v0.4.0 remains the prior published stable release.
+Requires Go 1.26 or newer. The command resolves the latest public stable release. Source identity and
+publication are distinct: use a pinned tag only when it is listed as public on GitHub Releases.
 Prebuilt archives and SHA256 checksums are linked from
 [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
 
 `loopexec --version` prints the installed version; `loopexec version --json` emits its machine-readable identity. See the [release notes](docs/releases/v0.4.1.md) for compatibility and platform limits.
 
-SMALL is optional for LoopExec consumers. This repository uses the tracked `.small/` files for its own development audit; CI requires a canonical progress update with source or documentation changes and validates the tracked state. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.0 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
+SMALL is optional for LoopExec consumers. This repository uses the tracked `.small/` files for its own development audit; CI requires a canonical progress update with source or documentation changes and validates the tracked state. The [SMALL integration guide](docs/small-integration.md) covers SMALL CLI v1.1.2 with legacy v1 artifacts and opt-in collaborative v2 sessions; LoopExec remains the loop governor.
 
 ## 60-second proof
 
-Run the built-in deterministic demo with no API key, model, or network dependency:
+Run the built-in deterministic demo with no model, API key, Python runner, or network access:
 
 ```bash
 loopexec demo
 ```
 
-The command creates a red local fixture, sends it through the real bounded loop, repairs it, observes the external check turn green, writes a typed JSONL receipt, and verifies the recorded check fingerprint through the same verifier used by `loopexec replay`. It proves LoopExec's execution-integrity contract; it does not run an agent.
+The command creates a red local fixture, sends it through the real bounded loop, repairs it, observes the external check turn green, writes a typed JSONL receipt, and verifies the recorded check fingerprint through the same verifier used by `loopexec replay`. It proves the execution/check/receipt/replay contract, not agent intelligence.
+For your own work command and check, follow [Getting Started](docs/getting-started.md).
 
 The receipt path in the output identifies the retained temporary workdir. To keep the proof at a known path, pass a fresh directory with `--workdir <dir>`; `demo` refuses to overwrite an existing `.loopexec` directory or `status.txt` fixture.
 
@@ -94,7 +109,7 @@ Code/tooling changes also require canonical documentation and changelog updates.
 The generated [CLI and JSON contract](docs/cli-reference.generated.md) is checked
 against the runtime. Every release packages source-bound docs and publication
 requires matching deployed content. See [continuity policy](docs/documentation-continuity.md)
-for enforcement and the pending website rollout boundary.
+for enforced source-bound release gates and the operator/account boundary.
 
 ## CLI
 
@@ -115,7 +130,7 @@ See [acceptance and evidence](docs/acceptance-policy.md) for general-purpose
 objective, retention, convergence and owner-decision boundaries. The
 [creative verification guide](docs/creative-verification.md) is an optional example.
 The [status and roadmap](docs/status-and-roadmap.md) distinguishes published
-capabilities, local improvements, and remaining work.
+capabilities, source changes, and remaining work.
 
 ### Global flag
 
@@ -136,7 +151,7 @@ Example JSON response (a converged run):
 ```json
 {
   "tool": "loopexec",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "status": "halted",
   "run_id": "local",
   "iteration": 3,
@@ -172,7 +187,7 @@ The `halt_reason` string is the stable contract; the exit code is its coarse cla
 ```text
 SPEC.md                   canonical, normative contract (source of truth)
 cmd/loopexec/             loopexec CLI
-docs/architecture.md      planned loop architecture
+docs/architecture.md      implemented runtime architecture
 docs/cli.md               current loopexec command contract
 docs/integrations.md      integration guidance for the implemented CLI
 docs/loop-contract.md     task_list mode profile of SPEC.md
@@ -189,7 +204,7 @@ Read the docs in this order:
 0. `SPEC.md` - the canonical, normative contract (source of truth for the binary and the docs site)
 1. `docs/cli.md` - what the current CLI actually does
 2. `docs/integrations.md` - how to integrate with the current implementation
-3. `docs/architecture.md` - target architecture and planned boundaries
+3. `docs/architecture.md` - implemented architecture and integration boundaries
 4. `docs/loop-contract.md` - the `task_list` mode profile
 
 ## Links

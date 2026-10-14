@@ -108,10 +108,10 @@ tasks:
       status: completed
     - id: task-36
       title: Adopt canonical docs-site handshake and hosted release protections before publication
-      status: pending
+      status: blocked
     - id: task-37
       title: Prepare v0.4.1 release and source-bound docs deployment artifacts with verified CI handoff
-      status: pending
+      status: completed
     - id: task-38
       title: Add tested configurable software, game-development and audio-engineering recipes after deployment
       status: blocked
@@ -126,4 +126,7 @@ tasks:
       status: completed
     - id: task-41
       title: Adopt stable SMALL1.1.2 for preserved QA command validation in local and CI tooling
+      status: completed
+    - id: task-42
+      title: Enforce portable audit privacy and preserve local-only validation history
       status: completed

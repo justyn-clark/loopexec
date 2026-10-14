@@ -89,8 +89,10 @@ An administrator or direct manual publication can bypass repository automation;
 account rules and human semantic review are still required. Do not claim they are
 configured without live verification.
 
-These gates are local unreleased work until committed and adopted by CI. The
-separate website currently needs the handshake integration and deployment; the
-new release workflow intentionally blocks until it is ready. Do not weaken the
-gate because the current website predates it. No release or site deployment is
-authorized merely by preparing or testing a bundle.
+The gates are committed on main and run in CI. The separate website consumes
+the canonical bundle and exposes the manifest, raw documents and homepage marker.
+A successful previous deployment does not prove that a new bundle is deployed:
+verify the exact intended release bundle again after every import/deployment.
+Account protections must be verified separately; committed workflows do not
+make unprotected branch checks mandatory. Preparing a bundle alone does not
+authorize release or deployment.

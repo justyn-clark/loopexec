@@ -161,6 +161,9 @@ A live-LLM trajectory is not reproducible; only the **verdict** is. Marketing co
 
 ## 11. Capability status (normative source for the docs matrix)
 
+This matrix describes current source. Publication status comes from GitHub Releases;
+new v0.4.1 report behavior requires a matching public binary.
+
 Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (on a feature branch), or **Planned** (specified here, not yet built). The docs site MUST render this distinction and MUST NOT present Planned capability as Shipped.
 
 | Capability | Status |
@@ -179,6 +182,7 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 | Receipt pinning: model-identity tuple + sampling + context manifest (sha256) + cost + check fingerprint (section 8) | Shipped (legacy flags record metadata; workflow usage hooks support exact in-loop strict/observed/unmetered accounting) |
 | `replay`: verify a receipt offline by re-running the check and matching the fingerprint (section 8) | Shipped |
 | `attest`: HMAC-sign a receipt and `--verify` it (section 8) | Shipped |
+| `report`: read-only event/failure/missing-evidence reporting | Shipped (v0.4.1 source; signature presence is unverified, candidate retention is not acceptance) |
 | `reexecute`: live re-run of the recorded config N times, halt-reason distribution (section 8) | Shipped |
 | `escalate` / `watch` / `ack` + comprehension gate (section 9) | Shipped (file/stdout channels, heartbeat + staleness detection, comprehension `--comprehension-every`; github/slack channels + kill-the-PID actuator Planned) |
 | `build-context`: budgeted relevant-file slice with workdir-confined, symlink-safe file resolution (section 4) | Shipped (stacktrace + last-diff + untracked relevance; import_closure / dep_graph tiers Planned) |
@@ -190,7 +194,16 @@ Each capability is **Shipped** (in `cmd/loopexec` with tests), **In progress** (
 
 This table is the contract between the binary and the site. When a capability moves status, update it here first; the binary tests and the docs matrix both reference this section.
 
-Every row above now has a Shipped core. The remaining work is named, inline sub-parts (the operator-provided infra hooks, provider-specific metering wrappers, the deeper metric-integrity layers, the `import_closure`/`dep_graph` context tiers, github/slack escalation channels, the kill-the-PID watchdog actuator) -- not whole capabilities.
+Every row above has a Shipped core. The remaining work is named, inline sub-parts (the operator-provided infra hooks, provider-specific metering wrappers, the deeper metric-integrity layers, the `import_closure`/`dep_graph` context tiers, github/slack escalation channels, the kill-the-PID watchdog actuator) -- not whole capabilities.
+
+Additional integration and topology status:
+
+| Capability | Status |
+| --- | --- |
+| SMALL CLI validation and v1/v2 compatibility proofs | Shipped (repository/adapter integration; SMALL remains an optional external CLI) |
+| Full SMALL-driven `task_list` topology | Planned |
+| Provider-specific live usage wrappers | Planned (adapters must supply provider enforcement for strict monetary caps) |
+| Container/Nix/remote substrates and multi-worker orchestration | Planned (existing isolation hooks compose with operator infrastructure) |
 
 ## 12. Unattended workflow extension
 

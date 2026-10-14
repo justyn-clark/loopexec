@@ -1,250 +1,91 @@
-Note: This document describes planned behavior. Some commands may not yet be implemented.
+# LoopExec architecture
 
-# loopexec Architecture
+This guide describes current source. [SPEC.md](../SPEC.md) is the normative
+behavioral contract; [its capability matrix](../SPEC.md#11-capability-status-normative-source-for-the-docs-matrix)
+distinguishes shipped cores from planned sub-parts.
 
-This document describes the high-level architecture of loopexec.
+## Runtime and adapter boundary
 
----
+LoopExec is a deterministic Go runtime for bounded agentic execution loops.
+An adapter supplies the work command and external check. LoopExec owns the
+iteration loop, computed halts, durable runtime state, receipts and configured
+guards. Models, quality oracles and infrastructure remain integration responsibilities.
 
-## Overview
+SMALL is an optional external state/audit CLI. LoopExec does not select SMALL
+tasks, invoke SMALL checkpoints automatically, or require a `.small/` directory
+for an ordinary run. See [SMALL integration](small-integration.md) for tested
+composition; the [historical task-list design](loop-contract.md) remains planned.
 
-loopexec is a state-driven execution CLI. It reads state from SMALL artifacts, executes bounded work, and records outcomes atomically.
+## External-check execution loop
 
-loopexec does not:
-- Define state (SMALL does)
-- Orchestrate workflows
-- Replace CI or task runners
-- Manage agents or models
-
-loopexec does:
-- Drive execution loops
-- Enforce state gates
-- Record evidence
-- Enable safe resume
-
----
-
-## Execution Loop
-
-loopexec implements a controlled execution loop (Ralph loop) with hard state boundaries.
-
-```
-+-----------------+
-|  Validate State |<---------+
-|  (strict check) |          |
-+--------+--------+          |
-         |                   |
-         v                   |
-+--------+--------+          |
-|  Select Task    |          |
-|  (pending, deps)|          |
-+--------+--------+          |
-         |                   |
-         v                   |
-+--------+--------+          |
-|  Mark In Progress|         |
-|  (progress add) |          |
-+--------+--------+          |
-         |                   |
-         v                   |
-+--------+--------+          |
-|  Execute Step   |          |
-|  (substrate)    |          |
-+--------+--------+          |
-         |                   |
-         v                   |
-+--------+--------+          |
-|  Checkpoint     |          |
-|  (atomic record)|          |
-+--------+--------+          |
-         |                   |
-         v                   |
-+--------+--------+          |
-|  Re-validate    |-----------+
-|  (strict check) |
-+-----------------+
+```text
+configuration + external check
+              |
+       validate workspace/policy
+              |
+       bounded work command <----------------+
+              |                              |
+       external check + configured guards    |
+              |                              |
+       record evidence and durable state     |
+              |                              |
+       compute halt or continue -------------+
 ```
 
-Each iteration:
-1. Validates workspace state via `small check --strict`
-2. Selects the next actionable task (status: pending, dependencies met)
-3. Marks the task in progress with evidence
-4. Executes exactly one bounded command via a substrate
-5. Records the outcome atomically via `small checkpoint`
-6. Re-validates state before continuing
+`cmd/loopexec/run.go` implements this loop. Missing checks fail closed.
+The work step runs before the check. Integrity, metering and acceptance guards
+dominate a green check; an agent's completion statement is not a halt input.
+The legacy check fingerprint records exit code and normalized output hash.
+The external check exits 0 when green; verified governor convergence exits 10.
 
-The loop terminates when no actionable tasks remain or a halt condition is triggered.
+Set-based failure collectors enable the no-regression ratchet and
+no-progress/oscillation detection. Opt-in workflow configuration adds argv
+hooks, exact usage evidence, numeric progress/patience and candidate manifests.
+See the [workflow contract](workflows.md) for ordering and resume rules.
 
----
+## Components and evidence
 
-## State Gates
+| Component | Implementation and responsibility |
+| --- | --- |
+| CLI/configuration | `cmd/loopexec/main.go`; command tree, flags, JSON identity and exit classes |
+| Loop/guards | `run.go`, `progress.go`, `numeric.go`; execution, check, integrity and progress decisions |
+| Subprocess lifecycle | `internal/subprocess` and `lifecycle.go`; deadlines, cancellation, process groups and bounded output |
+| Workflow/budget | `workflow.go`, `budget.go`, `scoped_budget.go`; pinned policy, exact usage and durable pre-call reservations |
+| Candidates | `candidate.go`, `internal/workflow`; manifest-bound snapshots, validation and restoration |
+| Receipts/reporting | `receipt.go`, `report.go`; typed JSONL events, saved state, replay, attestation and read-only reports |
+| Isolation hooks | `isolate.go`; detached clone, credential lifecycle and two-zone launch orchestration |
 
-loopexec enforces state validity at defined boundaries.
+Runtime state lives under `.loopexec/`; it is independent of SMALL audit state.
+Receipts carry observed outcomes and check fingerprints. `replay` re-runs the
+saved check and compares its fingerprint; it does not run the work command.
+`report` reads evidence without execution. Signature-file presence is
+unverified until explicit `attest --verify`; retaining a candidate is not
+owner acceptance. See [acceptance policy](acceptance-policy.md).
 
-### Strict Check
+## Bounds and isolation
 
-`small check --strict` is the primary gate. It validates:
-- All SMALL artifacts are present and well-formed
-- Schema compliance for each artifact
-- Invariant rules (non-empty intent, valid constraints)
-- ReplayId presence in handoff
+Iteration bounds always govern runs. Total/per-command deadlines default to
+disabled (zero) and must be configured when time bounds are required.
+Linux/macOS cancellation owns a process group; other platforms bound the direct
+child only. Native Windows runtime behavior is not verified by current CI.
 
-Strict check runs:
-- Before any loop iteration
-- After each checkpoint
-- Before handoff
+Shared scoped budgets count adapter-reserved model calls across run IDs,
+independently of token/dollar accounting. Strict monetary guarantees require
+trusted adapter/provider enforcement. Observed metering stops later work;
+it cannot prevent a provider from exceeding an in-flight allowance.
 
-If strict check fails, execution halts. The failure must be resolved before work continues.
+`isolate` orchestrates operator-provided container runtime, egress proxy and
+credential APIs. LoopExec itself does not supply full OS/container containment.
+Container/Nix/remote substrates and multi-worker orchestration remain planned.
 
-### Checkpoint
+## Resume and source verification
 
-`small checkpoint` atomically updates plan and progress. A checkpoint:
-- Sets task status (completed or blocked)
-- Records evidence of what changed
-- Appends to the progress audit trail
+Workflow resume revalidates pinned configuration, policy and saved candidates;
+it preserves cumulative usage instead of resetting allowances. Interrupted
+work is not evidence of completion. A workflow runtime has one governor.
 
-Checkpoints are the only valid way to mark work complete. Plan-only toggles are forbidden.
-
----
-
-## Substrate Boundary
-
-A substrate is an execution environment where commands run.
-
-### Supported Substrates
-
-| Substrate | Description |
-|-----------|-------------|
-| Local shell | Default. Commands run in the current shell environment. |
-| Container | Commands run in an isolated container. Environment is explicit. |
-| Reproducible shell | Commands run in a reproducible environment (e.g., Nix devshell). |
-
-### Substrate Contract
-
-Substrates must:
-- Accept a command string
-- Execute the command
-- Return exit code, stdout, stderr
-- Not modify SMALL artifacts directly
-
-The substrate is recorded as part of execution evidence. This makes the environment explicit and reproducible.
-
-### Substrate Selection
-
-loopexec selects the substrate based on:
-- Workspace configuration
-- Command-line flags
-- Constraint directives
-
-The default is local shell. Other substrates require explicit configuration.
-
----
-
-## Failure Modes
-
-loopexec halts execution under these conditions:
-
-### Gate Failures
-
-| Failure | Cause | Resolution |
-|---------|-------|------------|
-| Strict check fails | Invalid SMALL state | Fix artifacts, re-run check |
-| Missing replayId | Handoff not initialized | Run `small handoff` |
-| Schema violation | Malformed artifact | Fix schema errors |
-
-### Execution Failures
-
-| Failure | Cause | Resolution |
-|---------|-------|------------|
-| Command exits non-zero | Substrate command failed | Checkpoint as blocked, investigate |
-| Constraint violation | Command violates constraint | Checkpoint as blocked, revise approach |
-| Timeout | Command exceeded limit | Checkpoint as blocked, adjust or split task |
-
-### Task Failures
-
-| Failure | Cause | Resolution |
-|---------|-------|------------|
-| No actionable tasks | All tasks completed or blocked | Run handoff |
-| Dependency cycle | Tasks depend on each other | Fix plan structure |
-| Missing task | Referenced task not in plan | Add task via `small plan --add` |
-
-When execution halts, loopexec records the halt reason. The next session can resume from the recorded state.
-
----
-
-## Resume Semantics
-
-loopexec supports safe resume via SMALL handoff and replayId.
-
-### Handoff
-
-`small handoff` generates a resume context containing:
-- Summary of current state
-- Current task (if in progress)
-- Next steps (pending tasks)
-- ReplayId for session continuity
-
-Handoff runs only after strict check passes. This ensures the recorded state is valid.
-
-### ReplayId
-
-The replayId is a unique identifier for the current execution session. It:
-- Links progress entries to a specific session
-- Enables detection of state drift between sessions
-- Provides an audit anchor for lineage tracking
-
-ReplayId is generated automatically when handoff runs. All subsequent progress and checkpoint operations reference this replayId.
-
-### Resume Flow
-
-1. New session starts
-2. Read handoff.small.yml to get replayId and context
-3. Run `small check --strict` to validate state
-4. Continue loop from current_task_id or next pending task
-5. All new progress entries inherit the replayId
-
-If the workspace state has changed outside the session (manual edits, other agents), strict check will fail. The state must be reconciled before resuming.
-
----
-
-## Component Boundaries
-
-```
-+---------------------+
-|      loopexec CLI    |
-+----------+----------+
-           |
-           v
-+----------+----------+
-|     Loop Driver     |
-|  (iteration logic)  |
-+----------+----------+
-           |
-     +-----+-----+
-     |           |
-     v           v
-+----+----+ +----+----+
-| Selector| | Emitter |
-| (task)  | | (json)  |
-+---------+ +---------+
-     |
-     v
-+----+----+
-|Substrate|
-| (exec)  |
-+---------+
-     |
-     v
-+----+----+
-|  SMALL  |
-| (state) |
-+---------+
-```
-
-- **Loop Driver**: Orchestrates the execution loop. Calls selector, substrate, and SMALL CLI.
-- **Selector**: Chooses the next actionable task based on status and dependencies.
-- **Substrate**: Executes commands in the configured environment.
-- **Emitter**: Produces JSON output for integrations.
-- **SMALL**: External authority for all state operations.
-
-loopexec never bypasses SMALL. All state reads and writes go through the SMALL CLI.
+The generated [CLI/JSON reference](cli-reference.generated.md) is checked
+against the runtime. [Documentation continuity](documentation-continuity.md)
+binds allowlisted guides to the release source and requires official deployed
+readback. Hash provenance establishes which source was presented; behavioral
+tests and semantic review establish what it means.

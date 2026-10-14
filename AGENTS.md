@@ -1,6 +1,16 @@
 # HARD RULES
  Never directly edit .env files
 
+## Canonical Audit Privacy
+
+- New `.small` records and `.small-command-proofs` MUST use repository-relative
+  paths or logical aliases, never machine-specific absolute paths.
+- Do not write host paths into commands, summaries, evidence, notes or handoffs.
+  Keep host mappings and private captures outside tracked canonical state.
+- Preserve historical receipts and exact proof bytes; never scrub them in place.
+- Run `go run ./tools/audit-privacy` before publication. Follow
+  `docs/audit-privacy.md`; SMALL v1.1.2 strict alone does not enforce this rule.
+
 ## Code and documentation continuity
 
 - LoopExec is a general-purpose bounded agentic loop governor. Project-specific

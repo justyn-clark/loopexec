@@ -1,6 +1,6 @@
 small_version: "1.0.0"
 owner: agent
-summary: 'SMALL audit blocker resolved: installed stable1.1.2, root/site CI configs and prose updated, exact retained QA proof unchanged. Task41 completed; task36 is the deployment continuation. Cache-free root/site strict pass and missing proof remains fail-closed; CLI/docs contract tests, canonical tests/build and refreshed desktop/mobile QA pass. Source-bound bundle sourcee0d04802 docscb4c8adb in build/deployment/small112-documentation and docs-checkout. Rebuild older platform packages before publication. Next commit paired PRs, verify hosted CI/protections, authorized deployment, official-origin docs readback and release; recipes remain after release. No remote publication or production action.'
+summary: 'Prepared canonical documentation correction and enforced audit privacy: full Go tests, vet, privacy checks, strict SMALL and seven package checksums pass. Source bundle includes 22 canonical files; new tracking is portable and historical receipts remain unchanged. Hosted CI adoption, paired docs deployment, official-origin readback and v0.4.1 tag publication remain to finish. SMALL1.1.2 lacks a global pre-recording path guard; a separate upstream correction is needed. No new path-bearing captures, private caches or private handoffs are in this delivery.'
 resume:
     current_task_id: task-36
     next_steps:
