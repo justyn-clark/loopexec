@@ -52,7 +52,7 @@ and the creative proof script. Hidden receipt files are included in proof
 artifacts; private signing keys and diagnostic tails are excluded.
 See [CLI reference](cli.md) for the full command surface.
 
-For SMALL CLI v1.1.0 and collaborative v2 sessions, see the
+For SMALL CLI v1.1.2 and collaborative v2 sessions, see the
 [SMALL integration guide](small-integration.md). The optional real-CLI proof
 keeps task acceptance separate from a command exit and preserves session
 attribution without introducing a second loop controller.

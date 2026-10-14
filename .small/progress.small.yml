@@ -4500,3 +4500,298 @@ entries:
       status: in_progress
       task_id: task-36
       timestamp: "2026-10-09T14:21:09.461009000Z"
+    - evidence: Added task task-42 via small plan --add
+      notes: Enforce portable audit privacy and preserve local-only validation history
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-42
+      timestamp: "2026-10-14T06:27:11.925012000Z"
+    - evidence: Preparing audited documentation correction and executable privacy gate from the published baseline. Original private validation captures remain unchanged outside this delivery branch; new tracking uses portable commands and relative paths.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:27:12.056766000Z"
+    - command: go get gopkg.in/yaml.v3@v3.0.1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T062712.783809000Z.txt
+      command_sha256: 79a31d94fd01588acdff4b67e36ee23571f35fefd5983538cbceea74f9f458bf
+      command_summary: go get gopkg.in/yaml.v3@v3.0.1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:27:12.783809000Z"
+    - command: gofmt -w tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T063014.867152000Z.txt
+      command_sha256: b3a72158596426b603ea786a32b3a30bebe0f5a2fe7a6637a80493b9c06ba8ab
+      command_summary: gofmt -w tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:30:14.867152000Z"
+    - command: go test ./tools/audit-privacy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T063019.238509000Z.txt
+      command_sha256: 485bf811b6c8a062db277a5f7ef514bd370f74314849d76d0fe52ba777f13cd3
+      command_summary: go test ./tools/audit-privacy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:30:19.238509000Z"
+    - command: go run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T063245.131319000Z.txt
+      command_sha256: 0c2bb4fddd6d7917f7457560c3f5639ae0ea6c8f8a3bfa6c74845558d08f177d
+      command_summary: go run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:32:45.131319000Z"
+    - command: go test ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064031.644757000Z.txt
+      command_sha256: 1bb497e3e13a1105cf24e3359fa3ef75de08b66ff8a2839cd7f9ea97824d9eb3
+      command_summary: go test ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:40:31.644757000Z"
+    - command: go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064132.986079000Z.txt
+      command_sha256: 3d4b424f6fcd11f530525ddea9a46aeaffec7c883b6c04b6baf7df36bf47800b
+      command_summary: go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:41:32.986079000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064133.508201000Z.txt
+      command_sha256: 6fa1fa3adbafbbe01ad6cac0ae96657753a4fe147bfbad04a6dfc28657069a7f
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:41:33.508201000Z"
+    - command: mkdir -p build
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064450.858989000Z.txt
+      command_sha256: 9c48652a43dfb2ad72c56b34f93b16b22b7321806a89ccf615ba545deecf1a68
+      command_summary: mkdir -p build
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:44:50.858989000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064451.870099000Z.txt
+      command_sha256: 6fa1fa3adbafbbe01ad6cac0ae96657753a4fe147bfbad04a6dfc28657069a7f
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:44:51.870099000Z"
+    - command: gofmt -w tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064655.537245000Z.txt
+      command_sha256: b3a72158596426b603ea786a32b3a30bebe0f5a2fe7a6637a80493b9c06ba8ab
+      command_summary: gofmt -w tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:46:55.537245000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation-v2
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064656.976940000Z.txt
+      command_sha256: fc36b40def90f190ff736294a470354b1939803051dc7d2a1d7967b0b3e06e31
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation-v2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:46:56.976940000Z"
+    - command: go test ./tools/audit-privacy ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T064657.588452000Z.txt
+      command_sha256: 181711a740c052f61334348f1d493185952c495a61beb6d8243646b9aaddc87c
+      command_summary: go test ./tools/audit-privacy ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:46:57.588452000Z"
+    - command: gofmt -w tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T065227.521608000Z.txt
+      command_sha256: b3a72158596426b603ea786a32b3a30bebe0f5a2fe7a6637a80493b9c06ba8ab
+      command_summary: gofmt -w tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:52:27.521608000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation-v3
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T065229.013029000Z.txt
+      command_sha256: 484406c01aa699da54dfa571c4413bc125cb5e36b90c517e45db741e9c9650a7
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation-v3
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:52:29.013029000Z"
+    - command: go test ./tools/audit-privacy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T065229.557400000Z.txt
+      command_sha256: 485bf811b6c8a062db277a5f7ef514bd370f74314849d76d0fe52ba777f13cd3
+      command_summary: go test ./tools/audit-privacy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:52:29.557400000Z"
+    - evidence: Added structured canonical audit privacy checking, explicit immutable historical baseline, tests, hard agent policy, allowlisted guide and changelog. Full Go tests and vet passed. Focused tests cover escaped YAML, Unix and Windows paths, relative references, original progress/proof preservation, untracked files, deletion and private diagnostic keys. Clean delivery passes; original path-bearing unpublished candidate is rejected without disclosing values.
+      notes: This is repository publication enforcement, not a built-in SMALL1.1.2 guarantee. Hosted CI adoption and release remain separate gates; no original receipts were rewritten.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-42
+      timestamp: "2026-10-14T06:56:11.050874000Z"
+    - command: go run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T065611.537116000Z.txt
+      command_sha256: 0c2bb4fddd6d7917f7457560c3f5639ae0ea6c8f8a3bfa6c74845558d08f177d
+      command_summary: go run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T06:56:11.537116000Z"
+    - command: ./scripts/build-release.sh v0.4.1 build/privacy-release
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T070630.476126000Z.txt
+      command_sha256: 04b2ed95c133ef5c530407e2fb95df5c03b25c1aa98cf64595eeca616e762cad
+      command_summary: ./scripts/build-release.sh v0.4.1 build/privacy-release
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T07:06:30.476126000Z"
+    - evidence: Fresh preparation passed full Go tests, vet, privacy regression tests and strict SMALL validation. Built six trimmed-path platform binaries plus the standalone source-bound documentation archive; all seven checksums passed. Bundle includes 22 canonical files matching the privacy guide and exact source. No private caches, new path-bearing captures or handoffs are included in publication.
+      notes: Hosted adoption, official-origin deployment and stable release publication are task36 gates, not implied by local preparation.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-37
+      timestamp: "2026-10-14T07:09:17.569470000Z"
+    - evidence: Prepared safe source and metadata; publication awaits exact-head CI, paired docs deployment, official-origin readback and tag workflow. No GitHub authentication, paid-plan or repository visibility blocker exists. Existing public audit prefix is preserved; new machine-specific captures remain private and excluded.
+      notes: The privacy gate passes this clean delivery branch and rejects the previous unpublished candidate. Do not relax source/docs or privacy checks to publish.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-36
+      timestamp: "2026-10-14T07:09:17.829923000Z"
+    - command: go run ./tools/docs-continuity bundle build/portable-documentation-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T071537.902434000Z.txt
+      command_sha256: 8b277df3b57be97c2290bd1528193ec1250ba249e8cbd04224b487e4ba3610f0
+      command_summary: go run ./tools/docs-continuity bundle build/portable-documentation-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T07:15:37.902434000Z"
+    - command: go test ./tools/audit-privacy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261014T071538.124582000Z.txt
+      command_sha256: 485bf811b6c8a062db277a5f7ef514bd370f74314849d76d0fe52ba777f13cd3
+      command_summary: go test ./tools/audit-privacy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-42
+      timestamp: "2026-10-14T07:15:38.124582000Z"

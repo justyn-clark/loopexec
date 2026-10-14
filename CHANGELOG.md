@@ -2,9 +2,19 @@
 
 ## Unreleased
 
+- Added canonical audit privacy policy and a publication gate rejecting new
+  absolute host paths in SMALL metadata and command proofs. Historical receipts
+  remain unchanged; unpublished private captures are excluded from delivery.
+  Named-home references are rejected along with absolute paths.
+
+- Corrected architecture to describe the shipped external-check runtime; marked
+  the historical SMALL task-list design as planned.
+- Reconciled source/publication status, canonical Getting Started and conceptual
+  homepage prose; removed obsolete rollout claims and corrected historical releases.
+
 Future recipes and workflow adapters will remain configurable, opt-in integrations.
 
-## v0.4.1
+## v0.4.1 — current source
 
 See [release notes](docs/releases/v0.4.1.md). Publication status is authoritative
 on [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
@@ -17,7 +27,7 @@ on [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
 - Hardened code/docs continuity: canonical prose and changelog co-change CI gate,
   generated CLI/JSON contract tests, source-bound allowlisted documentation in
   every platform archive, and fail-closed deployed-docs checks before publication.
-  The separate docs site must adopt the build handshake before the next release.
+  The docs site consumes the allowlisted bundle; release publication requires exact official-origin readback.
 - Added a non-publishing Release workflow rehearsal and a main-line ancestry gate
   before deployed-docs verification or tag publication.
 - Clarified general-purpose acceptance policy: original run contracts, candidate
@@ -31,7 +41,8 @@ on [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
   presence from verified attestation. The legacy JSON `attested` field still
   describes file presence; use `attestation_status` and explicit verification.
 - Added an evidence-capture guide for creative verification and a release/status
-  roadmap. These changes are local until a subsequent release is published.
+  roadmap. These changes are merged in source. The Releases page establishes whether
+matching binary packages have been published.
 
 ## v0.4.0
 
@@ -52,5 +63,15 @@ proofs, and binary release packages. Existing convergence exit code 10 is unchan
 
 ## v0.2.0
 
-Previous published release. Later core command and deterministic demo work is
-included in v0.3.0; this changelog does not retroactively attribute it to v0.2.0.
+Published June 27, 2026 (UTC). Introduced the real bounded loop, computed halts,
+typed receipts, determinism probing, regression/integrity guards, replay,
+attestation, context slicing and isolation orchestration. The deterministic
+demo and unattended workflow extensions arrived in v0.3.0. See
+[the historical release](https://github.com/justyn-clark/loopexec/releases/tag/v0.2.0).
+
+## v0.1.0
+
+Published February 22, 2026. Established the standalone execution harness,
+single-object JSON contract, stable exit classes, contract tests and
+format/vet/test CI. See
+[the historical release](https://github.com/justyn-clark/loopexec/releases/tag/v0.1.0).

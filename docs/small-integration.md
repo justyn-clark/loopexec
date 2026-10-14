@@ -1,6 +1,11 @@
 # SMALL integration
 
-LoopExec v0.3.0 composes with SMALL CLI v1.1.0, supporting both v1 artifact
+New canonical tracking must use relative paths or logical aliases, not absolute
+host paths. The repository's [audit privacy gate](audit-privacy.md) enforces this
+before publication; SMALL v1.1.2 strict alone does not. Preserve existing receipts
+and exact command hashes rather than rewriting them to remove paths.
+
+Current LoopExec source composes with SMALL CLI v1.1.2, supporting both v1 artifact
 workspaces and explicitly migrated v2 session workspaces. SMALL is an optional
 external CLI, not a runtime dependency.
 

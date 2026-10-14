@@ -92,7 +92,7 @@ Example:
 ```json
 {
   "tool": "loopexec",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "status": "ok",
   "run_id": "local",
   "iteration": 1,
