@@ -1,0 +1,1 @@
+git add examples/model-assignment internal/modelpolicy internal/workflow/contract.go scripts/build-release.sh scripts/model-assignment-proof.sh scripts/publish-release.sh tools/release-policy tools/docs-continuity/main_test.go .small/plan.small.yml .small/progress.small.yml .small/handoff.small.yml .small/workspace.small.yml

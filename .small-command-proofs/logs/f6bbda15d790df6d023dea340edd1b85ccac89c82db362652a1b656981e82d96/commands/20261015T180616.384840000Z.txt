@@ -1,0 +1,1 @@
+git add .github/workflows/ci.yml .github/workflows/release.yml CHANGELOG.md README.md SPEC.md cmd/loopexec/documentation_test.go cmd/loopexec/main.go cmd/loopexec/models.go cmd/loopexec/models_test.go cmd/loopexec/receipt.go cmd/loopexec/report.go cmd/loopexec/run.go cmd/loopexec/workflow.go
