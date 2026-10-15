@@ -16,6 +16,8 @@ Future recipes and workflow adapters will remain configurable, opt-in integratio
 
 - Added tested stable/RC publication policy. RC tags publish as prereleases,
   never Latest, with the same source-bound deployed-documentation gates.
+- Preserve full Git history during CI co-change fetches so the immutable audit
+  privacy baseline remains an ancestor on PR and main builds.
 
 See [candidate notes](docs/releases/v0.5.0-rc.1.md). Stable promotion requires
 separate consumer acceptance; publication status is on GitHub Releases.

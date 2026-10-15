@@ -244,3 +244,14 @@ func TestReleasePublicationGatesRemainWired(t *testing.T) {
 		}
 	}
 }
+
+func TestCICochangeFetchPreservesAuditAncestry(t *testing.T) {
+	data, err := os.ReadFile("../../.github/workflows/ci.yml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	if !strings.Contains(text, "fetch-depth: 0") || !strings.Contains(text, `git fetch --no-tags origin "$BASE_SHA"`) || strings.Contains(text, "--depth=") {
+		t.Fatal("co-change fetch must preserve full audit-baseline ancestry")
+	}
+}

@@ -5315,3 +5315,108 @@ entries:
       status: in_progress
       task_id: task-44
       timestamp: "2026-10-15T18:06:16.528837000Z"
+    - command: git add examples/model-assignment internal/modelpolicy internal/workflow/contract.go scripts/build-release.sh scripts/model-assignment-proof.sh scripts/publish-release.sh tools/release-policy tools...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180616.707108000Z.txt
+      command_sha256: f117be87c698b4d26dc3cbfe0199edda07b73c535aacf1dd7573bcaa2a6781a2
+      command_summary: git add examples/model-assignment internal/modelpolicy internal/workflow/contract.go scripts/build-release.sh scripts/model-assignment-proof.sh scripts/publish-release.sh tools/release-policy tools...
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:06:16.707108000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180631.708034000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:06:31.708034000Z"
+    - command: 'git commit -m "feat: visible model assignments and guarded RC publication"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180631.996409000Z.txt
+      command_sha256: 8fc6667e1ea83c0c1fd9072bb9f2f09a9c5027f4305b7f600e5ac35c9a6ea5c5
+      command_summary: 'git commit -m "feat: visible model assignments and guarded RC publication"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:06:31.996409000Z"
+    - command: git push -u origin feature/model-assignments
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180642.330452000Z.txt
+      command_sha256: b2b0981ccdc04c6ac93bff3d5151d0029f9bfb6004679730ed83878c2eb65b7b
+      command_summary: git push -u origin feature/model-assignments
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:06:42.330452000Z"
+    - command: gh pr create --base main --head feature/model-assignments --title "Model assignments and guarded v0.5.0 RC publication" --body "Adds visible provider-neutral task/role profiles, no-spend planning a...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180700.764203000Z.txt
+      command_sha256: d1d64a47f8c603ded238b7f999709fe590bba98803877decdc1e749de80f4149
+      command_summary: gh pr create --base main --head feature/model-assignments --title "Model assignments and guarded v0.5.0 RC publication" --body "Adds visible provider-neutral task/role profiles, no-spend planning a...
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:07:00.764203000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./tools/docs-continuity ./tools/release-policy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180826.636328000Z.txt
+      command_sha256: 04172055c8b1ca21e87f044695f2ca0296048c73be656aeff6c64acaab57b207
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./tools/docs-continuity ./tools/release-policy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:08:26.636328000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../documentation-rc1-ci-fix
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261015T180837.933109000Z.txt
+      command_sha256: 359559b2cd80e3d2ed4822dff7e255dfded92fedd297b5127fd01364e949f8c6
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../documentation-rc1-ci-fix
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:08:37.933109000Z"
+    - evidence: Hosted PR failed because the later depth-one co-change fetch severed immutable privacy-baseline ancestry. Removed only that depth limit, retained full checkout and privacy enforcement, and added wiring regression test plus matching continuity prose.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-15T18:08:38.086849000Z"

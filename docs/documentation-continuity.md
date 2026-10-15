@@ -99,6 +99,10 @@ An administrator or direct manual publication can bypass repository automation;
 account rules and human semantic review are still required. Do not claim they are
 configured without live verification.
 
+Full Git history must remain available throughout CI: a later shallow fetch of
+the co-change base can sever the older immutable audit-baseline ancestry even
+after an initial full checkout. The co-change fetch must not use a depth limit.
+
 The gates are committed on main and run in CI. The separate website consumes
 the canonical bundle and exposes the manifest, raw documents and homepage marker.
 A successful previous deployment does not prove that a new bundle is deployed:
