@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
+
 	"github.com/spf13/cobra"
 )
 
@@ -16,27 +18,28 @@ import (
 // nothing (unlike replay / reexecute): it reads the durable state plus the
 // typed JSONL event log and presents them. It is the read-only audit view.
 type reportSummary struct {
-	Budget            *budgetBook       `json:"budget,omitempty"`
-	Numeric           *numericState     `json:"numeric,omitempty"`
-	Candidate         *candidateState   `json:"candidate,omitempty"`
-	BestCandidate     string            `json:"best_candidate,omitempty"`
-	Phase             string            `json:"phase"`
-	ExitCode          int               `json:"exit_code"`
-	Iterations        int               `json:"iterations"`
-	Check             string            `json:"check,omitempty"`
-	Workdir           string            `json:"workdir,omitempty"`
-	CostUSD           float64           `json:"cost_usd,omitempty"`
-	Model             *modelPin         `json:"model,omitempty"`
-	Sampling          *samplingPin      `json:"sampling,omitempty"`
-	ContextFiles      int               `json:"context_files,omitempty"`
-	Fingerprint       *checkFingerprint `json:"fingerprint,omitempty"`
-	Events            int               `json:"events"`
-	Receipt           string            `json:"receipt,omitempty"`
-	ReceiptStatus     string            `json:"receipt_status"`
-	Warnings          []string          `json:"warnings"`
-	Timeline          []receiptEvent    `json:"timeline"`
-	ScoreTarget       *float64          `json:"score_target,omitempty"`
-	AttestationStatus string            `json:"attestation_status"`
+	ModelSelection    *modelpolicy.Selection `json:"model_selection,omitempty"`
+	Budget            *budgetBook            `json:"budget,omitempty"`
+	Numeric           *numericState          `json:"numeric,omitempty"`
+	Candidate         *candidateState        `json:"candidate,omitempty"`
+	BestCandidate     string                 `json:"best_candidate,omitempty"`
+	Phase             string                 `json:"phase"`
+	ExitCode          int                    `json:"exit_code"`
+	Iterations        int                    `json:"iterations"`
+	Check             string                 `json:"check,omitempty"`
+	Workdir           string                 `json:"workdir,omitempty"`
+	CostUSD           float64                `json:"cost_usd,omitempty"`
+	Model             *modelPin              `json:"model,omitempty"`
+	Sampling          *samplingPin           `json:"sampling,omitempty"`
+	ContextFiles      int                    `json:"context_files,omitempty"`
+	Fingerprint       *checkFingerprint      `json:"fingerprint,omitempty"`
+	Events            int                    `json:"events"`
+	Receipt           string                 `json:"receipt,omitempty"`
+	ReceiptStatus     string                 `json:"receipt_status"`
+	Warnings          []string               `json:"warnings"`
+	Timeline          []receiptEvent         `json:"timeline"`
+	ScoreTarget       *float64               `json:"score_target,omitempty"`
+	AttestationStatus string                 `json:"attestation_status"`
 	// Attested preserves the legacy signature-file-presence flag, not verification.
 	Attested bool `json:"attested"`
 }
@@ -132,6 +135,7 @@ func newReportCmd() *cobra.Command {
 			}
 
 			sum := &reportSummary{Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate, BestCandidate: st.BestCandidatePath,
+				ModelSelection:    st.ModelSelection,
 				Phase:             st.Phase,
 				ExitCode:          haltExitCode(st.HaltReason),
 				Iterations:        st.Iteration,
@@ -194,6 +198,10 @@ func renderReport(cmd *cobra.Command, st loopState, sum *reportSummary, events [
 		fmt.Fprintf(w, "failure cause: %s\n", st.FailureCause)
 	}
 	fmt.Fprintf(w, "iterations: %d\n", st.Iteration)
+	renderModelSelection(w, st.ModelSelection)
+	if st.ModelSelection != nil {
+		renderReportedModels(w, st.Budget)
+	}
 	if st.Check != "" {
 		fmt.Fprintf(w, "check: %s\n", st.Check)
 	}

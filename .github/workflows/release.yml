@@ -53,7 +53,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$RELEASE_TAG" dist/loopexec-*.tar.gz dist/loopexec-*.zip dist/checksums.txt \
-            --verify-tag --draft --title "LoopExec $RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md"
-          go run ./tools/docs-continuity verify-site dist/documentation/manifest.json
-          gh release edit "$RELEASE_TAG" --draft=false --latest
+          bash scripts/publish-release.sh "$RELEASE_TAG" dist

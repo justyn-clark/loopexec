@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-[[ "$#" -eq 2 ]] || { echo "usage: build-release.sh <vX.Y.Z> <empty-output-directory>" >&2; exit 2; }
+[[ "$#" -eq 2 ]] || { echo "usage: build-release.sh <vX.Y.Z|vX.Y.Z-rc.N> <empty-output-directory>" >&2; exit 2; }
 TAG="$1"
 OUT="$2"
-[[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "a stable vX.Y.Z tag is required" >&2; exit 2; }
 command -v jq >/dev/null
+go run ./tools/release-policy "$TAG" >/dev/null
 version="$(go run ./cmd/loopexec version --json | jq -er '.version')"
 [[ "v$version" == "$TAG" ]] || { echo "source version differs from release tag" >&2; exit 1; }
 go test ./cmd/loopexec -run '^TestDocumentationContract$' -count=1

@@ -2,19 +2,35 @@
 
 ## Unreleased
 
-- Added canonical audit privacy policy and a publication gate rejecting new
-  absolute host paths in SMALL metadata and command proofs. Historical receipts
-  remain unchanged; unpublished private captures are excluded from delivery.
-  Named-home references are rejected along with absolute paths.
+Future recipes and workflow adapters will remain configurable, opt-in integrations.
+
+## v0.5.0-rc.1
+
+- Added provider-neutral named model profiles and task/role assignments, a
+  no-spend `models plan` preview, advisory guidance and explicit argv-bound
+  dispatch. Required planned/reported identity checks preserve incurred usage
+  on drift. Selection is visible in state, reports, receipts and attestations.
+- Added an offline two-role critic fixture/proof and matching adapter contract.
+  Source identity is `0.5.0-rc.1`; no automatic escalation, live provider test,
+  acceptance adjustment or budget renewal is included.
+
+- Added tested stable/RC publication policy. RC tags publish as prereleases,
+  never Latest, with the same source-bound deployed-documentation gates.
+
+See [candidate notes](docs/releases/v0.5.0-rc.1.md). Stable promotion requires
+separate consumer acceptance; publication status is on GitHub Releases.
+
+## v0.4.1
 
 - Corrected architecture to describe the shipped external-check runtime; marked
   the historical SMALL task-list design as planned.
 - Reconciled source/publication status, canonical Getting Started and conceptual
   homepage prose; removed obsolete rollout claims and corrected historical releases.
 
-Future recipes and workflow adapters will remain configurable, opt-in integrations.
-
-## v0.4.1 — current source
+- Added canonical audit privacy policy and a publication gate rejecting new
+  absolute host paths in SMALL metadata and command proofs. Historical receipts
+  remain unchanged; unpublished private captures are excluded from delivery.
+  Named-home references are rejected along with absolute paths.
 
 See [release notes](docs/releases/v0.4.1.md). Publication status is authoritative
 on [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).

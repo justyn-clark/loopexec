@@ -220,6 +220,14 @@ func TestReleasePublicationGatesRemainWired(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
+	if !strings.Contains(text, `bash scripts/publish-release.sh "$RELEASE_TAG" dist`) || !strings.Contains(text, "verify-site dist/documentation/manifest.json") {
+		t.Fatal("release workflow must delegate publication after deployed-docs verification")
+	}
+	data, err = os.ReadFile("../../scripts/publish-release.sh")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text = string(data)
 	check := strings.Index(text, "verify-site")
 	create := strings.Index(text, "gh release create")
 	publish := strings.Index(text, "--draft=false")

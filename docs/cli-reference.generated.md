@@ -2,7 +2,7 @@
 
 Generated from the Cobra command tree. Do not edit manually.
 
-Source version: `0.4.1`.
+Source version: `0.5.0-rc.1`.
 
 ## `loopexec`
 
@@ -194,6 +194,26 @@ Usage: `loopexec isolate [flags]`
 - `--runtime` (`string`, default `docker`): Container runtime used to launch the zones
 - `--workdir` (`string`, default ``): Directory holding .loopexec (default: current directory)
 
+## `loopexec models`
+
+Inspect configured task-to-model assignments without invoking models
+
+Usage: `loopexec models [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for models
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+
+## `loopexec models plan`
+
+Explain the selected workflow task, role profiles and dispatch assurance; spends nothing
+
+Usage: `loopexec models plan [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for plan
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--workdir` (`string`, default `.`): Directory used to resolve the workflow path
+- `--workflow` (`string`, default ``): Workflow JSON containing model_policy (required)
+
 ## `loopexec probe-check`
 
 Measure check determinism as a confidence bound (no check, no loop)
@@ -272,7 +292,7 @@ Usage: `loopexec run [flags]`
 - `--terminate-grace` (`duration`, default `250ms`): Grace between process-group TERM and KILL
 - `--timeout` (`duration`, default `0s`): Total run deadline (0 = disabled)
 - `--workdir` (`string`, default ``): Directory to run commands in (default: current directory)
-- `--workflow` (`string`, default ``): Pinned workflow JSON (argv hooks, metering, candidates, numeric policy)
+- `--workflow` (`string`, default ``): Pinned workflow JSON (argv hooks, metering, candidates, numeric policy, optional model assignments)
 
 ## `loopexec status`
 
@@ -321,6 +341,7 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `response`
 
+- `model_selection,omitempty`: `*modelpolicy.Selection`
 - `failure_cause,omitempty`: `string`
 - `best_candidate,omitempty`: `string`
 - `tool`: `string`
@@ -347,6 +368,7 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `receiptEvent`
 
+- `model_selection,omitempty`: `*modelpolicy.Selection`
 - `output_truncated,omitempty`: `bool`
 - `phase,omitempty`: `string`
 - `duration_ms`: `int64`
@@ -357,6 +379,13 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `event`: `string`
 - `detail,omitempty`: `string`
 - `exit_code,omitempty`: `*int`
+
+### `Selection`
+
+- `mode`: `string`
+- `task`: `string`
+- `assurance`: `string`
+- `roles`: `[]modelpolicy.Role`
 
 ### `probeReport`
 
@@ -413,6 +442,7 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `reportSummary`
 
+- `model_selection,omitempty`: `*modelpolicy.Selection`
 - `budget,omitempty`: `*main.budgetBook`
 - `numeric,omitempty`: `*main.numericState`
 - `candidate,omitempty`: `*main.candidateState`
@@ -456,6 +486,18 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `remaining`: `int`
 - `phase_remaining`: `map[string]int`
 - `reservation,omitempty`: `string`
+
+### `Role`
+
+- `provider`: `string`
+- `model_id`: `string`
+- `version,omitempty`: `string`
+- `reasoning_effort,omitempty`: `string`
+- `role`: `string`
+- `profile`: `string`
+- `reason`: `string`
+- `capabilities,omitempty`: `[]string`
+- `requires,omitempty`: `[]string`
 
 ### `doctorCheck`
 
@@ -512,7 +554,40 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `exit_code`: `int`
 - `output_sha256`: `string`
 
+### `Call`
+
+- `model,omitempty`: `*modelpolicy.Identity`
+- `id`: `string`
+- `phase`: `string`
+- `status`: `string`
+- `microusd,omitempty`: `*int64`
+- `tokens,omitempty`: `*int64`
+
+### `Preflight`
+
+- `schema_version`: `int`
+- `run_id`: `string`
+- `iteration`: `int`
+- `phase`: `string`
+- `enforced`: `bool`
+- `calls`: `[]workflow.Reservation`
+
 ### `manifestEntry`
 
 - `path`: `string`
 - `sha256`: `string`
+
+### `Identity`
+
+- `provider`: `string`
+- `model_id`: `string`
+- `version,omitempty`: `string`
+- `reasoning_effort,omitempty`: `string`
+
+### `Reservation`
+
+- `model,omitempty`: `*modelpolicy.Identity`
+- `id`: `string`
+- `phase`: `string`
+- `max_microusd`: `int64`
+- `max_tokens`: `int64`

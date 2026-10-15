@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/subprocess"
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
@@ -10,6 +11,7 @@ import (
 )
 
 type workflowRuntime struct {
+	models             *modelpolicy.Selection
 	config             *workflow.Config
 	hash, dir, workdir string
 	book               *budgetBook
@@ -37,6 +39,18 @@ func loadWorkflow(cfg runConfig) (*workflow.Config, string, error) {
 	}
 	if w.SchemaVersion != 1 {
 		return nil, "", fmt.Errorf("unsupported workflow schema")
+	}
+	selection, err := modelpolicy.Resolve(w.Models)
+	if err != nil {
+		return nil, "", err
+	}
+	if selection != nil {
+		if cfg.modelID != "" || cfg.modelProvider != "" || cfg.modelVersion != "" {
+			return nil, "", fmt.Errorf("model_policy cannot be combined with legacy model identity flags")
+		}
+		if selection.Mode == "explicit" && (len(w.Exec) != 0 || cfg.execCmd != "" || len(w.Meter.Reserve) == 0) {
+			return nil, "", fmt.Errorf("explicit model policy requires a reservation hook and task command, with no other exec override")
+		}
 	}
 	if len(w.Check) == 0 {
 		return nil, "", fmt.Errorf("workflow requires an argv check")
@@ -87,7 +101,7 @@ func (r commandRunner) argv(iter int, phase string, argv []string) subprocess.Re
 	return v
 }
 func (w *workflowRuntime) request(iter int, phase, id string) workflow.Request {
-	return workflow.Request{SchemaVersion: 1, RunID: w.runner.receipt.runID, Iteration: iter, Phase: phase, ConfigHash: w.hash, CandidateID: id}
+	return workflow.Request{Models: w.models, SchemaVersion: 1, RunID: w.runner.receipt.runID, Iteration: iter, Phase: phase, ConfigHash: w.hash, CandidateID: id}
 }
 func (w *workflowRuntime) hook(req workflow.Request, label string, argv []string) subprocess.Result {
 	if w.runner.ctx.Err() != nil {
@@ -119,16 +133,29 @@ func (w *workflowRuntime) reconcile(req workflow.Request) (string, string) {
 	if e := w.saveBudget(); e != nil {
 		return "internal_error", "budget_persist_failed"
 	}
+	if reason == "" && !modelUsage(w.models, usage.Calls) {
+		return "model_drift_detected", "model_usage_mismatch"
+	}
 	return reason, "usage_invalid_or_limit"
 }
 func (w *workflowRuntime) paid(iter int, phase, legacy string, argv []string) (subprocess.Result, string, string) {
 	req := w.request(iter, phase, "")
+	if phase == "exec" && w.models != nil && w.models.Mode == "explicit" {
+		var err error
+		argv, err = modelpolicy.Command(w.config.Models.Tasks[w.models.Task].Command, w.models)
+		if err != nil {
+			return subprocess.Result{}, "workspace_invalid", "model_command_invalid"
+		}
+	}
 	p := w.config.Meter
 	if len(p.Reserve) > 0 {
 		var reservation workflow.Preflight
 		v := w.hook(req, "reserve."+phase, p.Reserve)
 		if e := structuredResult(v, &reservation); e != nil {
 			return v, "cost_anomaly", "reservation_unavailable"
+		}
+		if !modelReservations(w.models, reservation.Calls) {
+			return v, "model_drift_detected", "model_reservation_mismatch"
 		}
 		if reason := w.book.reserve(reservation, req, p, w.cap); reason != "" {
 			return v, reason, "reservation_denied"

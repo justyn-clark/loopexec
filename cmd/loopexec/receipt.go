@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/subprocess"
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
@@ -55,11 +56,12 @@ func buildManifest(workdir string, files []string) []manifestEntry {
 // reconstructed for verification: only the pinned, output-determining fields.
 func canonicalReceipt(st loopState) ([]byte, error) {
 	type rcpt struct {
-		Workflow     *workflow.Config `json:"workflow,omitempty"`
-		WorkflowHash string           `json:"workflow_hash,omitempty"`
-		Budget       *budgetBook      `json:"budget,omitempty"`
-		Numeric      *numericState    `json:"numeric,omitempty"`
-		Candidate    *candidateState  `json:"candidate,omitempty"`
+		Workflow       *workflow.Config       `json:"workflow,omitempty"`
+		WorkflowHash   string                 `json:"workflow_hash,omitempty"`
+		ModelSelection *modelpolicy.Selection `json:"model_selection,omitempty"`
+		Budget         *budgetBook            `json:"budget,omitempty"`
+		Numeric        *numericState          `json:"numeric,omitempty"`
+		Candidate      *candidateState        `json:"candidate,omitempty"`
 
 		RunID           string            `json:"run_id"`
 		HaltReason      string            `json:"halt_reason"`
@@ -71,7 +73,7 @@ func canonicalReceipt(st loopState) ([]byte, error) {
 		CostUSD         float64           `json:"cost_usd"`
 		Fingerprint     *checkFingerprint `json:"fingerprint,omitempty"`
 	}
-	return json.Marshal(rcpt{Workflow: st.Workflow, WorkflowHash: st.WorkflowHash, Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate,
+	return json.Marshal(rcpt{Workflow: st.Workflow, WorkflowHash: st.WorkflowHash, ModelSelection: st.ModelSelection, Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate,
 		RunID:           st.RunID,
 		HaltReason:      st.HaltReason,
 		Iteration:       st.Iteration,

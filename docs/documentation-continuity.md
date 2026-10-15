@@ -81,6 +81,16 @@ The Release workflow can also be dispatched on main for a non-publishing CI and
 deployed-docs rehearsal. Both dispatch and tag runs require source reachable from
 main. Only a tag run may enter the publication job, after CI and docs readback pass.
 
+## Release channels
+
+The release policy accepts canonical `vX.Y.Z` and `vX.Y.Z-rc.N` tags (N >= 1).
+Development, beta and malformed tags fail closed. Stable releases are marked
+Latest; RCs are explicitly prereleases with Latest disabled. Both draft creation
+and publication use this policy, covered by no-network shell orchestration tests.
+An RC never bypasses bundle validation or either official deployed-docs readback.
+Keep the stable install as default and require an explicit candidate pin until
+consumer acceptance justifies a separate stable release.
+
 ## Enforcement and rollout boundary
 
 Require the CI checks on protected main, restrict release-tag and GitHub release
