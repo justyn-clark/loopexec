@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"github.com/spf13/cobra"
 	"os"
@@ -118,6 +119,9 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		st.Sampling = &samplingPin{Temperature: cfg.temperature, Seed: cfg.seed, MaxTokens: cfg.maxTokens}
 	}
 	st.ContextManifest = buildManifest(cfg.workdir, cfg.contextFiles)
+	if w != nil {
+		st.ModelSelection, _ = modelpolicy.Resolve(w.Models)
+	}
 	var ext *workflowRuntime
 	var candidate *candidateManager
 	var tracker *progressTracker
@@ -170,7 +174,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				fail("cost_anomaly", "saved_usage_invalid")
 			} else {
 				cap, _ := microUSD(cfg.budgetUSD)
-				ext = &workflowRuntime{config: w, hash: hash, dir: owned, workdir: cfg.workdir, book: book, cap: cap, runner: runner}
+				ext = &workflowRuntime{models: st.ModelSelection, config: w, hash: hash, dir: owned, workdir: cfg.workdir, book: book, cap: cap, runner: runner}
 				if book.Pending != nil && halt == "" {
 					if !cfg.resume {
 						fail("cost_anomaly", "unresolved_reservation")
@@ -241,6 +245,10 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			st.Fingerprint = nil
 		}
 		rw.emit(i, "iter_start", "", nil)
+		rw.modelSelection(i, st.ModelSelection)
+		if !jsonOutput {
+			renderModelSelection(cmd.ErrOrStderr(), st.ModelSelection)
+		}
 		writeHeartbeat(dir, i, "iter_start")
 		if candidate != nil {
 			if e = candidate.intact(cfg.workdir); e != nil {
@@ -256,7 +264,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			fail("internal_error", "state_write_failed")
 			break
 		}
-		if cfg.execCmd != "" || (w != nil && len(w.Exec) > 0) {
+		if cfg.execCmd != "" || (w != nil && len(w.Exec) > 0) || (st.ModelSelection != nil && st.ModelSelection.Mode == "explicit") {
 			var rc int
 			if ext != nil {
 				v, r, c := ext.paid(i, "exec", cfg.execCmd, w.Exec)
@@ -471,7 +479,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	if e = f.Sync(); e != nil {
 		return failResponse(cmd, cfg.runID, 50, "internal_error", "cannot flush receipt")
 	}
-	r := response{Tool: toolName, Version: toolVersion, Status: "halted", RunID: cfg.runID, Iteration: st.Iteration, HaltReason: halt, CheckExit: st.LastCheckExit, Receipt: receiptPath, Errors: []string{}, FailureCause: st.FailureCause, BestCandidate: st.BestCandidatePath}
+	r := response{ModelSelection: st.ModelSelection, Tool: toolName, Version: toolVersion, Status: "halted", RunID: cfg.runID, Iteration: st.Iteration, HaltReason: halt, CheckExit: st.LastCheckExit, Receipt: receiptPath, Errors: []string{}, FailureCause: st.FailureCause, BestCandidate: st.BestCandidatePath}
 	if halt == "execution_failure" {
 		r.Status = "error"
 		r.Errors = []string{"execution failure: " + st.FailureCause}

@@ -1,27 +1,49 @@
 # LoopExec status and roadmap
 
-Historical audit verified October 13, 2026, before v0.4.1 publication. Release and deployment status can change;
-[GitHub Releases](https://github.com/justyn-clark/loopexec/releases) remains authoritative.
-LoopExec is a general-purpose bounded loop governor. The documentation site
-presents its contract; it does not host the runtime.
+## Development Update: October 15, 2026
+
+Current source is the `0.5.0-rc.1` model-assignment release candidate, not stable
+v0.5.0. See [model assignments](model-assignments.md) and
+[candidate notes](releases/v0.5.0-rc.1.md). The Releases page establishes publication.
+It adds no-spend planning, advisory profiles, explicit role bindings and
+adapter-reported identity checks. Offline verification does not establish live
+provider behavior or Home World adapter readiness. Automatic routing is absent.
+
+v0.4.1 was published and verified October 14 at core `80b56add` and documentation
+`c98b6c7f`: matching source-bound docs, Linux/macOS CI, archives/checksums and a
+fresh pinned install passed. Its publication and continuity rollout supersede
+the October 7 blockers below. See the [release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.1).
+New model-assignment source/docs have not been deployed or published.
+
+Next: finish model-assignment regression/offline proofs, review adapter wiring
+with existing readiness and shared budgets intact, then conduct an explicitly
+authorized consumer test. A model change does not authorize another critic call.
+
+## Historical Audit: October 7, 2026
+
+The sections below retain the dated October 7 audit, not current release status.
+Snapshot verified October 7, 2026. This is not a live release feed.
+This audit covers the general-purpose LoopExec governor and published `loopexec`
+binary. The home project's quality verifier is one consumer, not its product scope.
 
 ## Published and deployed
 
 | Surface | Verified status | Evidence |
 | --- | --- | --- |
-| Source identity | v0.4.1, merged on main | [Source](https://github.com/justyn-clark/loopexec/tree/main), [notes](releases/v0.4.1.md) |
-| Public release at audit | v0.4.0, September 26, 2026 | [Release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.0) |
-| Release assets | Six macOS/Linux/Windows amd64/arm64 archives and SHA256 checksums | v0.4.0 release assets |
-| Canonical documentation flow | Source-bound bundle imported by the site; official-origin readback required for each release source | [Continuity policy](documentation-continuity.md) |
-| Hosted core gates | CI and non-publishing Release rehearsal passed on merged source `6b027d0` | [CI](https://github.com/justyn-clark/loopexec/actions/runs/37960688842), [rehearsal](https://github.com/justyn-clark/loopexec/actions/runs/37961116072) |
-| Hosted site gate | Canonical Docs passed on docs source `595e4b0` | [CI](https://github.com/justyn-clark/loopexec.dev/actions/runs/38295817979) |
-| Account enforcement | Required Linux/macOS CI checks enabled on core main, including administrators; force pushes and deletion disabled | GitHub branch-protection API, October 13, 2026 |
+| Latest published release | v0.4.0, September 26, 2026; public, not a draft or prerelease | [Release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.0) |
+| Release artifacts | Six macOS/Linux/Windows amd64/arm64 archives plus SHA256 checksums | Release assets and [successful release workflow](https://github.com/justyn-clark/loopexec/actions/runs/36276149282) |
+| Release commit | `c0e4cc2653b428faa2fceb6485f94a98aa3167d5` | Annotated v0.4.0 tag resolves to this commit |
+| Published main | `4c96ad49d9d57199824fc44c7eeee8108d292dbd`; local main matched at audit start | [Main](https://github.com/justyn-clark/loopexec/tree/main) |
+| Main CI | Passed on the exact published main commit | [CI run](https://github.com/justyn-clark/loopexec/actions/runs/36288545259) |
+| Open GitHub backlog | No open issues or PRs at audit time; not evidence that the product has no remaining work | Repository issues/PR API reads |
+| Public documentation | https://loopexec.dev is accessible; its homepage/changelog describe v0.2.0 | Public page read and matching source in the separate `loopexec.dev` repository |
 
-The live documentation manifest already describes source v0.4.1. This is a
-documentation source identity, not evidence of a public binary release.
-Every subsequent documentation change needs a new bundle and deployment
-readback. Linux/macOS CI covers runtime behavior; Windows is cross-built
-and native Windows runtime remains unverified.
+LoopExec ships as a locally installed CLI; the deployed website is documentation,
+not a hosted LoopExec runtime. The docs repository is configured for Vercel, but
+this audit did not verify the provider deployment ID or control-plane settings.
+Linux/macOS CI exercises runtime behavior. Windows is cross-built; native
+Windows runtime remains unverified. Asset metadata was checked live; the binary
+archives were not downloaded again during this audit.
 
 ## Available capabilities
 
@@ -33,9 +55,10 @@ replay/attestation, halt explanations and subprocess deadlines remain available.
 See [SPEC section 11](../SPEC.md#11-capability-status-normative-source-for-the-docs-matrix)
 for the capability-level contract.
 
-The v0.4.1 source improves reports, enforces code/docs continuity gates,
+The current local patch improves reports, enforces code/docs continuity gates,
 packages source-bound docs and adds general-purpose [acceptance guidance](acceptance-policy.md).
-Those source changes do not alter existing v0.4.0 packages or consumer installations. The source and site integration are merged; v0.4.1 has not been published at this audit.
+Those changes are unreleased and do not alter v0.4.0 packages or existing consumer
+installations. No new version, push, tag, deployment or publication was performed.
 
 An optional Jev semantic judge exists in a separate local `codex/jev-judge`
 worktree based on the older v0.3.0 development lineage. It is uncommitted and
@@ -48,8 +71,8 @@ before considering it for a release.
 
 | Priority | Work | Acceptance evidence |
 | --- | --- | --- |
-| P0 | Keep each new canonical bundle and rendered site synchronized | Source-bound manifest/content readback, rendered-page checks and correct published/unreleased boundaries; publication remains blocked until matching |
-| P0 | Require committed CI/account release protections | Exact-commit CI plus live branch/tag/release permission verification; local tests do not establish hosted enforcement |
+| P0 | Adopt canonical docs/build handshake in the site, then sync home/install/CLI/capability/changelog | Source-bound manifest/content readback, rendered-page checks and correct published/unreleased boundaries; publication remains blocked until matching |
+| P0 | Commit continuity gates and require CI/account release protections | Exact-commit CI plus live branch/tag/release permission verification; local tests do not establish hosted enforcement |
 | P0 | Release these report fixes after review and CI | Exact-commit CI, offline proof receipts, packages/checksums and fresh install verification |
 | P1 | Migrate existing adapters from v0.3.0/custom budget guards deliberately | Historic and failed reservations preserved; no restored allowance; parity and concurrency checks before model launch |
 | P1 | Add general-purpose read-only objective history across run IDs | Objective/candidate/policy/evidence/decision/budget/promotion history; explicit owner revisions and missing-evidence warnings; no work or model calls |

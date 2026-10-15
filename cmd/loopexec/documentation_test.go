@@ -69,7 +69,7 @@ func documentationContract(root *cobra.Command) []byte {
 		case reflect.Pointer, reflect.Slice, reflect.Array, reflect.Map:
 			enqueue(typ.Elem())
 		case reflect.Struct:
-			if typ.PkgPath() == reflect.TypeOf(response{}).PkgPath() {
+			if strings.HasPrefix(typ.PkgPath(), "github.com/justyn-clark/loopexec/") {
 				queue = append(queue, typ)
 			}
 		}
@@ -82,15 +82,23 @@ func documentationContract(root *cobra.Command) []byte {
 		}
 		seen[typ] = true
 		fmt.Fprintf(&out, "\n### `%s`\n\n", typ.Name())
-		for i := 0; i < typ.NumField(); i++ {
-			field := typ.Field(i)
-			tag := field.Tag.Get("json")
-			if field.PkgPath != "" || tag == "-" {
-				continue
+		var fields func(reflect.Type)
+		fields = func(typ reflect.Type) {
+			for i := 0; i < typ.NumField(); i++ {
+				field := typ.Field(i)
+				tag := field.Tag.Get("json")
+				if field.Anonymous && tag == "" && field.Type.Kind() == reflect.Struct {
+					fields(field.Type)
+					continue
+				}
+				if field.PkgPath != "" || tag == "-" {
+					continue
+				}
+				fmt.Fprintf(&out, "- `%s`: `%s`\n", tag, field.Type)
+				enqueue(field.Type)
 			}
-			fmt.Fprintf(&out, "- `%s`: `%s`\n", tag, field.Type)
-			enqueue(field.Type)
 		}
+		fields(typ)
 	}
 	return out.Bytes()
 }

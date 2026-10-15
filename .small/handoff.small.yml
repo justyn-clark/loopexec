@@ -1,6 +1,6 @@
 small_version: "1.0.0"
 owner: agent
-summary: 'Prepared canonical documentation correction and enforced audit privacy: full Go tests, vet, privacy checks, strict SMALL and seven package checksums pass. Source bundle includes 22 canonical files; new tracking is portable and historical receipts remain unchanged. Hosted CI adoption, paired docs deployment, official-origin readback and v0.4.1 tag publication remain to finish. SMALL1.1.2 lacks a global pre-recording path guard; a separate upstream correction is needed. No new path-bearing captures, private caches or private handoffs are in this delivery.'
+summary: 'Model assignments and prerelease-safe publication locally verified for v0.5.0-rc.1. Full Go suite, vet, internal race tests, offline two-role proof and isolated consumer protocol rejection pass. Matching canonical docs prepared. Next: exact-head hosted checks, paired docs deployment and official readback, main merge, rehearsal and RC publication. Stable remains v0.4.1; no live critic or consumer budget reset.'
 resume:
     current_task_id: task-36
     next_steps:

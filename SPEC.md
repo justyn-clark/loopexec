@@ -276,3 +276,20 @@ adjustments MUST preserve original receipts and desired objectives, with separat
 decision evidence; they MUST NOT silently reset budgets or authorize new work.
 See [acceptance policy](docs/acceptance-policy.md). Native cross-run decision history
 is not implemented; these records currently belong to the adapter/operator.
+
+## 14. Explicit model assignments
+
+The optional schema-1 workflow `model_policy` defines named profiles, a selected
+task and per-role assignments with declared capability requirements and rationale.
+`models plan` MUST perform no work or spending. Advisory mode MUST leave adapter
+invocation unchanged. Explicit mode MUST bind every assigned model and nonempty
+reasoning value through whole argv arguments, reject conflicting exec overrides,
+and require matching pre-call declarations and adapter-reported usage identity.
+Valid incurred usage MUST remain recorded even when identity drift halts the run.
+Model policy is hashed for resume and included in attestation; legacy records
+without it remain compatible. Operator declarations and trusted adapter reports
+MUST NOT be represented as independent provider identity/capability attestation.
+Assignments MUST NOT lower acceptance targets, renew allowances or create a
+second retry controller. Automatic routing and escalation are not implemented.
+See [model assignments](docs/model-assignments.md) for the normative adapter
+contract, validation boundaries and offline proof.

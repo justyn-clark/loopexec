@@ -10,17 +10,20 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 )
 
 const MaxEvidence = 1 << 20
 
 type Config struct {
-	SchemaVersion int              `json:"schema_version"`
-	Exec          []string         `json:"exec"`
-	Check         []string         `json:"check"`
-	Meter         MeterPolicy      `json:"metering"`
-	Candidate     *CandidatePolicy `json:"candidate,omitempty"`
-	Score         *ScorePolicy     `json:"score,omitempty"`
+	Models        *modelpolicy.Policy `json:"model_policy,omitempty"`
+	SchemaVersion int                 `json:"schema_version"`
+	Exec          []string            `json:"exec"`
+	Check         []string            `json:"check"`
+	Meter         MeterPolicy         `json:"metering"`
+	Candidate     *CandidatePolicy    `json:"candidate,omitempty"`
+	Score         *ScorePolicy        `json:"score,omitempty"`
 }
 type MeterPolicy struct {
 	Mode      string   `json:"mode"`
@@ -48,19 +51,21 @@ type ScorePolicy struct {
 	Patience       int      `json:"patience"`
 }
 type Request struct {
-	SchemaVersion int           `json:"schema_version"`
-	RunID         string        `json:"run_id"`
-	Iteration     int           `json:"iteration"`
-	Phase         string        `json:"phase"`
-	ConfigHash    string        `json:"config_hash"`
-	CandidateID   string        `json:"candidate_id,omitempty"`
-	Reservations  []Reservation `json:"reservations,omitempty"`
+	Models        *modelpolicy.Selection `json:"model_selection,omitempty"`
+	SchemaVersion int                    `json:"schema_version"`
+	RunID         string                 `json:"run_id"`
+	Iteration     int                    `json:"iteration"`
+	Phase         string                 `json:"phase"`
+	ConfigHash    string                 `json:"config_hash"`
+	CandidateID   string                 `json:"candidate_id,omitempty"`
+	Reservations  []Reservation          `json:"reservations,omitempty"`
 }
 type Reservation struct {
-	ID          string `json:"id"`
-	Phase       string `json:"phase"`
-	MaxMicroUSD int64  `json:"max_microusd"`
-	MaxTokens   int64  `json:"max_tokens"`
+	Model       *modelpolicy.Identity `json:"model,omitempty"`
+	ID          string                `json:"id"`
+	Phase       string                `json:"phase"`
+	MaxMicroUSD int64                 `json:"max_microusd"`
+	MaxTokens   int64                 `json:"max_tokens"`
 }
 type Preflight struct {
 	SchemaVersion int           `json:"schema_version"`
@@ -71,11 +76,12 @@ type Preflight struct {
 	Calls         []Reservation `json:"calls"`
 }
 type Call struct {
-	ID       string `json:"id"`
-	Phase    string `json:"phase"`
-	Status   string `json:"status"` // actual | unknown | skipped
-	MicroUSD *int64 `json:"microusd,omitempty"`
-	Tokens   *int64 `json:"tokens,omitempty"`
+	Model    *modelpolicy.Identity `json:"model,omitempty"`
+	ID       string                `json:"id"`
+	Phase    string                `json:"phase"`
+	Status   string                `json:"status"` // actual | unknown | skipped
+	MicroUSD *int64                `json:"microusd,omitempty"`
+	Tokens   *int64                `json:"tokens,omitempty"`
 }
 type Usage struct {
 	SchemaVersion int    `json:"schema_version"`

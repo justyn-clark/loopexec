@@ -8,6 +8,8 @@ and examples; both must be updated together when the behavior changes.
 
 ## Commands
 
+- `loopexec models plan`
+  - Preview the selected workflow task's configured model profiles, role assignments, reasoning settings, capability declarations and rationale. `--workflow <file>` is required; `--workdir` defaults to `.`. Read-only: no hooks, calls, reservations or runtime initialization. Supports human output and one `--json` object with `model_selection`. See [model assignments](model-assignments.md).
 - `loopexec init`
   - Initialize local loopexec workspace metadata.
 - `loopexec demo`
@@ -24,6 +26,7 @@ and examples; both must be updated together when the behavior changes.
   - Optional comprehension gate (section 9): `--comprehension-every N` halts `comprehension_debt_exceeded` after N merged-but-unread iterations (cleared by `loopexec ack`). Each iteration also updates a heartbeat for `loopexec watch`.
   - Halt reasons are **computed** from observed state (`success_condition_met` / `max_iterations_reached` / `execution_failure` / `workspace_invalid`, plus `no_progress_detected` / `oscillation_detected` / `same_test_regressed` when `--failures-cmd` is set), never forced by a flag.
   - Writes a typed JSONL receipt to `.loopexec/run-<id>.jsonl` and atomic state to `.loopexec/state.json`.
+  - Optional workflow `model_policy` selects advisory guidance or explicit argv-bound task/role assignments. Explicit mode requires reservation/usage identity, rejects other exec overrides and legacy model identity flags, and reports drift as exit 19 while retaining incurred usage. Selection appears in run JSON, state, per-attempt receipt events and reports; provider identity is adapter-reported, not independently verified. No automatic model escalation, budget renewal or quality-target change occurs.
 - `loopexec probe-check`
   - Measure check determinism as a confidence bound (SPEC O2): no check, no loop.
   - Flags: `--check "<cmd>"` (required), `--runs N` (default derived), `--max-flake-rate R` (derives run count via the rule of three, `runs >= 3/R`), `--workdir`.

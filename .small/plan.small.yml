@@ -130,3 +130,9 @@ tasks:
     - id: task-42
       title: Enforce portable audit privacy and preserve local-only validation history
       status: completed
+    - id: task-43
+      title: Implement model profile assignments with offline proof and canonical documentation
+      status: completed
+    - id: task-44
+      title: Make v0.5.0-rc.1 publication prerelease-safe and verify before tag release
+      status: completed

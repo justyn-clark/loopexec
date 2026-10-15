@@ -20,9 +20,9 @@ The normative contract is `SPEC.md`. The current source implements bounded execu
 
 ## Current status
 
-Source identity: **v0.4.1**. Documentation describes current source; the public
-binary version is established by GitHub Releases, not this source badge. This patch adds evidence-complete reports and enforced
-code/docs release continuity. See [v0.4.1 notes](docs/releases/v0.4.1.md); the
+Source identity: **v0.5.0-rc.1**, a release candidate adding
+[visible model profiles and task/role assignments](docs/model-assignments.md).
+See [candidate notes](docs/releases/v0.5.0-rc.1.md); the
 [Releases page](https://github.com/justyn-clark/loopexec/releases) establishes
 publication status. Workflow thresholds remain supplied by each integration.
 
@@ -63,8 +63,9 @@ See `SPEC.md` section 11:
 go install github.com/justyn-clark/loopexec/cmd/loopexec@latest
 ```
 
-Requires Go 1.26 or newer. The command resolves the latest public stable release. Source identity and
-publication are distinct: use a pinned tag only when it is listed as public on GitHub Releases.
+Requires Go 1.26 or newer. For the published v0.4.1 install, use `@v0.4.1`.
+That release does not contain model assignments. After RC publication, pin
+`@v0.5.0-rc.1` to test this feature; `@latest` stays on stable.
 Prebuilt archives and SHA256 checksums are linked from
 [GitHub Releases](https://github.com/justyn-clark/loopexec/releases).
 

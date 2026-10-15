@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/subprocess"
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
@@ -16,7 +17,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.4.1"
+	toolVersion = "0.5.0-rc.1"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
@@ -99,16 +100,17 @@ func (e *cliError) Unwrap() error {
 }
 
 type response struct {
-	FailureCause  string `json:"failure_cause,omitempty"`
-	BestCandidate string `json:"best_candidate,omitempty"`
-	Tool          string `json:"tool"`
-	Version       string `json:"version"`
-	Status        string `json:"status"`
-	RunID         string `json:"run_id,omitempty"`
-	Iteration     int    `json:"iteration,omitempty"`
-	HaltReason    string `json:"halt_reason,omitempty"`
-	CheckExit     *int   `json:"check_exit,omitempty"`
-	Receipt       string `json:"receipt,omitempty"`
+	ModelSelection *modelpolicy.Selection `json:"model_selection,omitempty"`
+	FailureCause   string                 `json:"failure_cause,omitempty"`
+	BestCandidate  string                 `json:"best_candidate,omitempty"`
+	Tool           string                 `json:"tool"`
+	Version        string                 `json:"version"`
+	Status         string                 `json:"status"`
+	RunID          string                 `json:"run_id,omitempty"`
+	Iteration      int                    `json:"iteration,omitempty"`
+	HaltReason     string                 `json:"halt_reason,omitempty"`
+	CheckExit      *int                   `json:"check_exit,omitempty"`
+	Receipt        string                 `json:"receipt,omitempty"`
 
 	Probe  *probeReport  `json:"probe,omitempty"`
 	Doctor *doctorReport `json:"doctor,omitempty"`
@@ -234,16 +236,17 @@ func printResponse(cmd *cobra.Command, r response) error {
 // failure text containing quotes, backslashes, or newlines can never corrupt
 // the receipt (SPEC.md section 8).
 type receiptEvent struct {
-	OutputTruncated bool   `json:"output_truncated,omitempty"`
-	Phase           string `json:"phase,omitempty"`
-	DurationMS      int64  `json:"duration_ms"`
-	Cause           string `json:"cause,omitempty"`
-	TS              int64  `json:"ts"`
-	RunID           string `json:"run_id"`
-	Iteration       int    `json:"iteration"`
-	Event           string `json:"event"`
-	Detail          string `json:"detail,omitempty"`
-	ExitCode        *int   `json:"exit_code,omitempty"`
+	ModelSelection  *modelpolicy.Selection `json:"model_selection,omitempty"`
+	OutputTruncated bool                   `json:"output_truncated,omitempty"`
+	Phase           string                 `json:"phase,omitempty"`
+	DurationMS      int64                  `json:"duration_ms"`
+	Cause           string                 `json:"cause,omitempty"`
+	TS              int64                  `json:"ts"`
+	RunID           string                 `json:"run_id"`
+	Iteration       int                    `json:"iteration"`
+	Event           string                 `json:"event"`
+	Detail          string                 `json:"detail,omitempty"`
+	ExitCode        *int                   `json:"exit_code,omitempty"`
 }
 
 // Receipt-pin types (SPEC.md section 8): everything that determines the output,
@@ -283,17 +286,18 @@ type escalationState struct {
 // loopState is the durable, resumable machine state (SPEC.md section 8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
-	Workflow          *workflow.Config `json:"workflow,omitempty"`
-	WorkflowHash      string           `json:"workflow_hash,omitempty"`
-	RunPolicyHash     string           `json:"run_policy_hash,omitempty"`
-	Budget            *budgetBook      `json:"budget,omitempty"`
-	Numeric           *numericState    `json:"numeric,omitempty"`
-	Candidate         *candidateState  `json:"candidate,omitempty"`
-	BestCandidatePath string           `json:"best_candidate_path,omitempty"`
-	IntegrityBaseline []string         `json:"integrity_baseline,omitempty"`
-	DeadlineNS        int64            `json:"deadline_ns,omitempty"`
-	CommandTimeoutNS  int64            `json:"command_timeout_ns,omitempty"`
-	GraceNS           int64            `json:"grace_ns,omitempty"`
+	ModelSelection    *modelpolicy.Selection `json:"model_selection,omitempty"`
+	Workflow          *workflow.Config       `json:"workflow,omitempty"`
+	WorkflowHash      string                 `json:"workflow_hash,omitempty"`
+	RunPolicyHash     string                 `json:"run_policy_hash,omitempty"`
+	Budget            *budgetBook            `json:"budget,omitempty"`
+	Numeric           *numericState          `json:"numeric,omitempty"`
+	Candidate         *candidateState        `json:"candidate,omitempty"`
+	BestCandidatePath string                 `json:"best_candidate_path,omitempty"`
+	IntegrityBaseline []string               `json:"integrity_baseline,omitempty"`
+	DeadlineNS        int64                  `json:"deadline_ns,omitempty"`
+	CommandTimeoutNS  int64                  `json:"command_timeout_ns,omitempty"`
+	GraceNS           int64                  `json:"grace_ns,omitempty"`
 
 	FailureCause  string  `json:"failure_cause,omitempty"`
 	SchemaVersion int     `json:"schema_version"`
@@ -493,7 +497,7 @@ func newRunCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&cfg.workflowFile, "workflow", "", "Pinned workflow JSON (argv hooks, metering, candidates, numeric policy)")
+	cmd.Flags().StringVar(&cfg.workflowFile, "workflow", "", "Pinned workflow JSON (argv hooks, metering, candidates, numeric policy, optional model assignments)")
 	cmd.Flags().BoolVar(&cfg.resume, "resume", false, "Resume a workflow run with identical policy and cumulative bounds")
 	cmd.Flags().DurationVar(&cfg.totalTimeout, "timeout", 0, "Total run deadline (0 = disabled)")
 	cmd.Flags().DurationVar(&cfg.commandTimeout, "command-timeout", 0, "Deadline for every command and collector (0 = disabled)")
@@ -626,6 +630,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newRunCmd())
 	cmd.AddCommand(newStatusCmd())
 	cmd.AddCommand(newScopedBudgetCmd())
+	cmd.AddCommand(newModelsCmd())
 	cmd.AddCommand(newCheckCmd())
 	cmd.AddCommand(newStepCmd())
 	cmd.AddCommand(newProbeCheckCmd())

@@ -42,6 +42,11 @@ Local/subscription usage may report unknown dollars while time, iteration,
 call, and token bounds remain available. Model/sampling flags record metadata;
 the adapter's actual argv/configuration chooses and limits the invoked model.
 
+The unreleased [model assignment contract](model-assignments.md) adds explicit
+argv-bound profiles and role mappings, plus a read-only `models plan` preview.
+Adapters must consume the selected settings and report observed invocation
+identity; updating LoopExec alone does not migrate an existing consumer.
+
 Legacy `--failures-cmd` and `--integrity-cmd` collect newline identities or
 `{"ids":[]}`. Collector failure or stderr cannot become valid evidence.
 The integrity baseline must retain all members. Numeric mode accepts a separate

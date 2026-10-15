@@ -220,6 +220,14 @@ func TestReleasePublicationGatesRemainWired(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
+	if !strings.Contains(text, `bash scripts/publish-release.sh "$RELEASE_TAG" dist`) || !strings.Contains(text, "verify-site dist/documentation/manifest.json") {
+		t.Fatal("release workflow must delegate publication after deployed-docs verification")
+	}
+	data, err = os.ReadFile("../../scripts/publish-release.sh")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text = string(data)
 	check := strings.Index(text, "verify-site")
 	create := strings.Index(text, "gh release create")
 	publish := strings.Index(text, "--draft=false")
@@ -234,5 +242,16 @@ func TestReleasePublicationGatesRemainWired(t *testing.T) {
 		if !strings.Contains(string(data), token) {
 			t.Fatalf("packaging gate missing: %s", token)
 		}
+	}
+}
+
+func TestCICochangeFetchPreservesAuditAncestry(t *testing.T) {
+	data, err := os.ReadFile("../../.github/workflows/ci.yml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	if !strings.Contains(text, "fetch-depth: 0") || !strings.Contains(text, `git fetch --no-tags origin "$BASE_SHA"`) || strings.Contains(text, "--depth=") {
+		t.Fatal("co-change fetch must preserve full audit-baseline ancestry")
 	}
 }

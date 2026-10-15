@@ -30,7 +30,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          git fetch --no-tags origin "$BASE_SHA"
           git diff --name-only "$BASE_SHA" HEAD | ./scripts/check-small-sync.sh
           git diff --name-only "$BASE_SHA" HEAD | bash ./scripts/check-docs-sync.sh
       - name: Verify documentation contract and source-bound bundle
@@ -54,12 +54,15 @@ jobs:
         run: |
           go build -o "$RUNNER_TEMP/loopexec" ./cmd/loopexec
           go build -o "$RUNNER_TEMP/creative-workflow" ./examples/creative-workflow
+          go build -o "$RUNNER_TEMP/model-assignment" ./examples/model-assignment
       - name: Legacy proof
         run: ./scripts/dogfood-proof.sh "$RUNNER_TEMP/loopexec" .artifacts/dogfood
       - name: Creative proof
         run: ./scripts/creative-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/creative-workflow" .artifacts/creative
       - name: Scoped budget offline proof
         run: ./scripts/scoped-budget-proof.sh "$RUNNER_TEMP/loopexec" .artifacts/scoped-budget
+      - name: Model assignment offline proof
+        run: bash ./scripts/model-assignment-proof.sh "$RUNNER_TEMP/loopexec" "$RUNNER_TEMP/model-assignment" .artifacts/model-assignment
       - name: Fetch pinned SMALL release
         shell: bash
         run: |

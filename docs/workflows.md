@@ -4,6 +4,11 @@ The Go governor remains the only retry controller. The opt-in `run --workflow`
 contract composes an argv adapter with exact accounting, candidate snapshots,
 and optional numeric progress. It needs no model SDK or engine dependency.
 
+Optional [model assignments](model-assignments.md) add a no-spend `models plan`
+preview, advisory task/role profiles, and explicit argv-bound invocation with
+pre-call declarations and adapter-reported identity checks. They do not change
+quality targets, allowances or the single retry-controller boundary.
+
 ## Run controls
 
 `--timeout 30s` bounds the total run, including collectors and hooks.
