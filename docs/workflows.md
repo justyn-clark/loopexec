@@ -1,5 +1,9 @@
 # Bounded unattended workflows
 
+See [Recovery and Continuation](recovery-and-continuation.md) for independent
+recovery deadlines, attempted-work archives, unresolved accounting and inherited
+limits across explicitly linked changed contracts.
+
 The Go governor remains the only retry controller. The opt-in `run --workflow`
 contract composes an argv adapter with exact accounting, candidate snapshots,
 and optional numeric progress. It needs no model SDK or engine dependency.

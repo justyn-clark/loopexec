@@ -10,14 +10,16 @@ import (
 )
 
 type budgetBook struct {
-	Mode          string                   `json:"mode"`
-	MicroUSD      int64                    `json:"microusd"`
-	MonetaryKnown bool                     `json:"monetary_known"`
-	Calls         int64                    `json:"calls"`
-	Tokens        int64                    `json:"tokens"`
-	Entries       map[string]workflow.Call `json:"entries"`
-	Pending       *workflow.Preflight      `json:"pending,omitempty"`
-	Series        []float64                `json:"phase_costs_usd,omitempty"`
+	Mode            string                   `json:"mode"`
+	MicroUSD        int64                    `json:"microusd"`
+	MonetaryKnown   bool                     `json:"monetary_known"`
+	Calls           int64                    `json:"calls"`
+	Tokens          int64                    `json:"tokens"`
+	Entries         map[string]workflow.Call `json:"entries"`
+	Pending         *workflow.Preflight      `json:"pending,omitempty"`
+	DispatchPending bool                     `json:"dispatch_pending,omitempty"`
+	Unsettled       *workflow.Usage          `json:"unsettled_usage,omitempty"`
+	Series          []float64                `json:"phase_costs_usd,omitempty"`
 }
 
 func newBudget(mode string) *budgetBook {
@@ -175,6 +177,8 @@ func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workf
 		}
 	}
 	next.Pending = nil
+	next.DispatchPending = false
+	next.Unsettled = nil
 	if len(next.Entries) > len(b.Entries) {
 		next.Series = append(append([]float64{}, b.Series...), float64(phaseTotal)/1e6)
 	}
@@ -210,6 +214,9 @@ func loadBudget(path, mode string) (*budgetBook, error) {
 
 }
 func (b *budgetBook) validate() error {
+	if b.Pending == nil && (b.DispatchPending || b.Unsettled != nil) {
+		return fmt.Errorf("unsettled usage has no reservation")
+	}
 	usd, tokens, calls := int64(0), int64(0), int64(0)
 	known := b.Mode != "unmetered"
 	for id, c := range b.Entries {

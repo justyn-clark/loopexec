@@ -5476,3 +5476,1272 @@ entries:
       status: in_progress
       task_id: task-44
       timestamp: "2026-10-15T18:11:36.402148000Z"
+    - command: git switch -c fix/rc2-pilot-recovery
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T200848.688819000Z.txt
+      command_sha256: e8e1b77f66efbbfc7b0c32a8b978e6865cfc44c10c18cc9e3e2e15a003f23db4
+      command_summary: git switch -c fix/rc2-pilot-recovery
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-44
+      timestamp: "2026-10-16T20:08:48.688819000Z"
+    - evidence: Added task task-45 via small plan --add
+      notes: Repair pilot recovery, retain failure chain and unresolved accounting; validate offline with stable held
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-45
+      timestamp: "2026-10-16T20:08:48.830037000Z"
+    - evidence: Start from exact rc.1 source 88b532bd. Real pilot is failed and tokens/cost unknown. Add failing regressions before isolated generic fixes; new source identity rc.2, no publication or live spending.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:08:48.986380000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201039.895637000Z.txt
+      command_sha256: 0ce4016fb250c39f528dcae3b932cccbf1402f753d1671f3c25f343fb5be3db8
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:10:39.895637000Z"
+    - command: gofmt -w cmd/loopexec/candidate.go cmd/loopexec/recovery.go cmd/loopexec/run.go cmd/loopexec/budget.go cmd/loopexec/workflow.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201302.955130000Z.txt
+      command_sha256: 42024b92e0857c312c8e6c6b845b3055ee758e9024d8f3ddab3d03e88a4f374e
+      command_summary: gofmt -w cmd/loopexec/candidate.go cmd/loopexec/recovery.go cmd/loopexec/run.go cmd/loopexec/budget.go cmd/loopexec/workflow.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:13:02.955130000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201305.432139000Z.txt
+      command_sha256: 0ce4016fb250c39f528dcae3b932cccbf1402f753d1671f3c25f343fb5be3db8
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:13:05.432139000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestCandidate|TestWorkflow" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201514.311283000Z.txt
+      command_sha256: 5b86cf474d49fa23650de64c3d1df83d3b64bf089ba8027e8c9b1c173fb84aea
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestCandidate|TestWorkflow" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:15:14.311283000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201655.346327000Z.txt
+      command_sha256: 0ce4016fb250c39f528dcae3b932cccbf1402f753d1671f3c25f343fb5be3db8
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestRCPilot -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:16:55.346327000Z"
+    - command: gofmt -w cmd/loopexec internal/workflow/contract.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201718.072145000Z.txt
+      command_sha256: cb7f5f171e2c57501667fa2efc1751a5280260689487066e5287813f16e96e3b
+      command_summary: gofmt -w cmd/loopexec internal/workflow/contract.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:17:18.072145000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestContinuation|TestWorkflow" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201750.083541000Z.txt
+      command_sha256: 2b497ca30ebdcb7695037a964888575271dbbef03c8ad7e6b2457135bb04208c
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestContinuation|TestWorkflow" -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:17:50.083541000Z"
+    - command: gofmt -w cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T201951.369792000Z.txt
+      command_sha256: f6df7043de84e47a62956a79352c1de5ef58255c9a4e487f6f9253175e495fb9
+      command_summary: gofmt -w cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:19:51.369792000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestContinuation|TestCandidate" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202039.685810000Z.txt
+      command_sha256: 8045f3338640e301536253c2d386cea55eba19da423f84a1dbf9e300f5270231
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilot|TestContinuation|TestCandidate" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:20:39.685810000Z"
+    - command: gofmt -w tools/release-policy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202055.552706000Z.txt
+      command_sha256: 7f58cb77406acc17a154513f5b997f1bf3a64b4f0d07b39ee0d88e00722e4082
+      command_summary: gofmt -w tools/release-policy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:20:55.552706000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./tools/release-policy -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202058.469262000Z.txt
+      command_sha256: c93af8e10a0f9daf16e9a400d2b82dcced8c6276f13afc10697bb0ffbd67323c
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./tools/release-policy -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:20:58.469262000Z"
+    - command: gofmt -w cmd/loopexec internal/workflow/contract.go tools/release-policy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202452.131102000Z.txt
+      command_sha256: 3be4340dfeaab2cf6b8134de2062f62ea343ed96ebbbd223f73c7ae84549a1e8
+      command_summary: gofmt -w cmd/loopexec internal/workflow/contract.go tools/release-policy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:24:52.131102000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202455.368609000Z.txt
+      command_sha256: e4147748b94c64d3a2ef52b5ac688ca508b12ba84f615a23c3b18e37b8df4a84
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:24:55.368609000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202508.888279000Z.txt
+      command_sha256: ccbbdf4f06d95045067486473d9d83200bf3cae8112ab5848272a8b3485a294f
+      command_summary: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:25:08.888279000Z"
+    - command: GOCACHE="$PWD/../go-cache" go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202603.018835000Z.txt
+      command_sha256: 6df11ab2037f803f1e91263f80b739e16a3c8cb54504e0f0f10d268b1f04dbf0
+      command_summary: GOCACHE="$PWD/../go-cache" go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:26:03.018835000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202614.158063000Z.txt
+      command_sha256: 64e53542c13d7ca93533c9c2bbd2e9f1db234dc82c4902ccead8f99fc16ce34b
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:26:14.158063000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202659.493410000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:26:59.493410000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202741.669886000Z.txt
+      command_sha256: 9b58a6bb521c9494ef407a38f5c93a735dd1e0bdd40df57822cc3a645262ca4e
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:27:41.669886000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T202742.375574000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:27:42.375574000Z"
+    - evidence: Exact rc.1 run.go hash matches consumer capture. Three initial pilot regressions failed before and pass after fixes. Full Go suite, vet and internal race checks passed; production-sized slow restore/interruption and inherited-bound tests pass. Consumer copied-suite fixture gaps identified equally on both runtimes; completing fixture inputs before rerun. Stable remains held; zero live calls.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:30:00.357305000Z"
+    - command: gofmt -w cmd/loopexec/continuation*.go cmd/loopexec/recovery.go cmd/loopexec/run.go cmd/loopexec/report.go cmd/loopexec/receipt_test.go cmd/loopexec/pilot_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203354.153264000Z.txt
+      command_sha256: 4756978e1784f583bd4d565f25e0dc23eb78afee317c2f565a365bc733399e06
+      command_summary: gofmt -w cmd/loopexec/continuation*.go cmd/loopexec/recovery.go cmd/loopexec/run.go cmd/loopexec/report.go cmd/loopexec/receipt_test.go cmd/loopexec/pilot_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:33:54.153264000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestContinuation|TestResumeRejectsChangedContext|TestReceiptPinsRecovery|TestRCPilotInterrupted|TestRCPilotPreserves" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203401.541380000Z.txt
+      command_sha256: e7f6b58021158feb2561423214875c50fc232cca830feb2ddca31c7b5669d4e8
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestContinuation|TestResumeRejectsChangedContext|TestReceiptPinsRecovery|TestRCPilotInterrupted|TestRCPilotPreserves" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:34:01.541380000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203445.671396000Z.txt
+      command_sha256: e4147748b94c64d3a2ef52b5ac688ca508b12ba84f615a23c3b18e37b8df4a84
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:34:45.671396000Z"
+    - command: gofmt -w cmd/loopexec/pilot_recovery_test.go cmd/loopexec/workflow_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203518.181943000Z.txt
+      command_sha256: 5149ba254c4ea5bba2598593f735eb674f30a09fae28d32fb9fbea1b04871748
+      command_summary: gofmt -w cmd/loopexec/pilot_recovery_test.go cmd/loopexec/workflow_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:35:18.181943000Z"
+    - command: gofmt -w cmd/loopexec/candidate.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203631.360203000Z.txt
+      command_sha256: 10f0b3a9f9982019896ebb05416a988b578919d936e3313f63947a96c58d0321
+      command_summary: gofmt -w cmd/loopexec/candidate.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:36:31.360203000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203721.935990000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:37:21.935990000Z"
+    - command: GOCACHE="$PWD/../go-cache" go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203730.901098000Z.txt
+      command_sha256: 6df11ab2037f803f1e91263f80b739e16a3c8cb54504e0f0f10d268b1f04dbf0
+      command_summary: GOCACHE="$PWD/../go-cache" go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:37:30.901098000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203733.504594000Z.txt
+      command_sha256: 64e53542c13d7ca93533c9c2bbd2e9f1db234dc82c4902ccead8f99fc16ce34b
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:37:33.504594000Z"
+    - command: gofmt -w cmd/loopexec/pilot_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203759.921512000Z.txt
+      command_sha256: 848517e28cccad0bd8085b0316f033f2e1e029d1716937611e30b1067d36712c
+      command_summary: gofmt -w cmd/loopexec/pilot_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:37:59.921512000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203816.037694000Z.txt
+      command_sha256: ccbbdf4f06d95045067486473d9d83200bf3cae8112ab5848272a8b3485a294f
+      command_summary: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:38:16.037694000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestRCPilotInterrupted|TestRCPilotCancellation|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203823.585004000Z.txt
+      command_sha256: 6dcaa8bb35deb9b2a646b8135e049939effbb593e9be180c35284c88c79e1ca5
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestRCPilotInterrupted|TestRCPilotCancellation|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:38:23.585004000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203841.968315000Z.txt
+      command_sha256: cddacc08fef75035dfe272b0351feac0300b89169627070284851c28b62d35df
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:38:41.968315000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-verified
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203954.396015000Z.txt
+      command_sha256: a9822043d476a80afec54403d40bcd384aaf3bd399bf4d38643ea3dab59c0eb5
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-verified
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:39:54.396015000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../pilot-rc2-docs-verified
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T203954.648015000Z.txt
+      command_sha256: 6342524c7fa6722e1f3651329bde90be70b4a56ac162616d62c04a411e23ed13
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../pilot-rc2-docs-verified
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:39:54.648015000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204004.812598000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-45
+      timestamp: "2026-10-16T20:40:04.812598000Z"
+    - evidence: 'Local unpublished rc.2 fixes independent staged recovery, attempt preservation, primary plus cleanup failures, nullable unresolved totals and bounded linked continuation. Full Go suite passed (123.107s cmd package), vet, internal and targeted race, generated CLI contract, 27-file source-bound docs verification, audit privacy and cache-free SMALL passed. Isolated consumer: 42 tests and 23 syntax checks pass against exact binary SHA256 7d2ef88360c21af17c52aca3c39ec62c6156900bda31dd0f53a1c0cbd4fdb681; consumer and physical ledger hashes unchanged. Three regressions failed against rc.1 and pass after fixes. Stable policy rejects publication.'
+      notes: Development is in fix/rc2-pilot-recovery from published rc.1 base 88b532bd935fb349e850c4e6d1384f760ca050c4. Runtime-version checks are not binary-digest attestation; preserve checksum-pinned installs. No live provider or engine call, push, deployment or publication. Private evidence uses logical alias [private-validation]/verification.json. Historical receipts and rc.1 artifacts unchanged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-45
+      timestamp: "2026-10-16T20:42:00.515104000Z"
+    - evidence: Added task task-46 via small plan --add
+      notes: 'Hold stable: obtain fresh bounded live-pilot authorization, independent review delivery and exact candidate hosted/docs readback evidence'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-46
+      timestamp: "2026-10-16T20:42:00.722616000Z"
+    - evidence: 'Stable acceptance is not established by offline checks. Pending: owner approval for exact binary, fresh fixture, models/effort, preventive token/cost bounds; independent candidate-bound review delivery; complete live event/usage accounting; verified live recovery and continuation; hosted CI plus exact matching deployed docs readback and new RC archive checksums. Proposed one-builder/one-critic pilot is documented in docs/recovery-and-continuation.md and is not authorized.'
+      notes: Do not consume remaining Home World allowance, renew its asset ledger, change its target, rewrite historical receipts or replace rc.1. scripts/release-readiness.json remains stable_ready false. Existing unrelated blocked tasks remain unchanged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-46
+      timestamp: "2026-10-16T20:42:00.891842000Z"
+    - evidence: Fresh non-executing live proposal is prepared at [private-validation]/live-proposal.json, bound to the exact local rc.2 binary. Proposed new release fixture, at least 1387 files, one gpt-6.1-sol high builder plus one isolated read-only critic, two calls total, 65536-token reservations per role, 20-minute cumulative active deadline and five-minute recovery, no automatic retry. Token reservations are not preventive provider caps; money mode and preventive-limit evidence still require explicit owner approval.
+      notes: Proposal does not authorize execution. Native jobs stay within the original builder. Missing usage or failed technical checks prevent further dispatch; independent review and fixture offline proof precede activation. Home World receives zero calls and zero file changes. JSON proposal parsed successfully.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-46
+      timestamp: "2026-10-16T20:44:41.732715000Z"
+    - evidence: Added task task-47 via small plan --add
+      notes: Allow deterministic resume recovery after deadline or unresolved usage without dispatch; reject missing authoritative journals
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-47
+      timestamp: "2026-10-16T20:47:16.083826000Z"
+    - evidence: Closing review found deterministic resume cleanup was coupled to work eligibility. Add recovery-only loading for an existing journal under its own bound; keep accounting/deadline failures and prohibit any new paid phase. Missing journal must fail closed rather than recapture a partial tree as initial.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:47:16.238348000Z"
+    - command: gofmt -w cmd/loopexec/run.go cmd/loopexec/pilot_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204800.039679000Z.txt
+      command_sha256: 0d2be34e94981478c979aa846d22e913e7ff48b7ec7f82c2f04d18cfc93ab326
+      command_summary: gofmt -w cmd/loopexec/run.go cmd/loopexec/pilot_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:48:00.039679000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilotResume|TestWorkflow.*Resume|TestContinuation" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204809.501979000Z.txt
+      command_sha256: 97b78f24cdf226ce6ebed44648036fa2bf77caadd2547eeb1ab5712cb0e4af76
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestRCPilotResume|TestWorkflow.*Resume|TestContinuation" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:48:09.501979000Z"
+    - command: gofmt -w cmd/loopexec/run.go cmd/loopexec/recovery.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204901.970451000Z.txt
+      command_sha256: 81524f50629164c80a043cf9efd9d54e6bce891ec11559e4dcbbdd737e0a9efc
+      command_summary: gofmt -w cmd/loopexec/run.go cmd/loopexec/recovery.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:49:01.970451000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204904.458834000Z.txt
+      command_sha256: ccbbdf4f06d95045067486473d9d83200bf3cae8112ab5848272a8b3485a294f
+      command_summary: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2 ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:49:04.458834000Z"
+    - command: gofmt -w cmd/loopexec/pilot_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T204951.457168000Z.txt
+      command_sha256: 848517e28cccad0bd8085b0316f033f2e1e029d1716937611e30b1067d36712c
+      command_summary: gofmt -w cmd/loopexec/pilot_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:49:51.457168000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-recovery-final
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T205015.355815000Z.txt
+      command_sha256: 259ae1c698a89512e4c114448f1c3260bafc54b8533cbe99a377bd825723edd4
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../pilot-rc2-docs-recovery-final
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:50:15.355815000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T205017.829263000Z.txt
+      command_sha256: 64e53542c13d7ca93533c9c2bbd2e9f1db234dc82c4902ccead8f99fc16ce34b
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:50:17.829263000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestRCPilotResume|TestRCPilotInterrupted|TestRCPilotCancellation|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T205017.972172000Z.txt
+      command_sha256: 9b8c750f7036b071abb77b17bbfcf9d3e57b1740012944c0dbfb1f571bfe14f3
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestRCPilotResume|TestRCPilotInterrupted|TestRCPilotCancellation|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:50:17.972172000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T205114.164304000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-47
+      timestamp: "2026-10-16T20:51:14.164304000Z"
+    - evidence: 'Identical-contract resume now recovers an existing candidate after unresolved usage or an expired work deadline, without more dispatch. Loading and restoration share one independent bounded context. Missing or changed authoritative initial journals fail closed and never recapture a partial tree. Full Go suite passed (130.378s cmd package); new resume, interruption, cancellation, unsettled-accounting and receipt tests passed under race (23.645s). Internal race, vet, docs contract, 27-file matching bundle, privacy and cache-free strict checks passed. Exact final rc.2 binary SHA256: 1b2b65aa9b6d23da314c5ac4ad985ec4647766209bfe8be65af70c5fb2f7a7db.'
+      notes: 'Final copied consumer: 42 tests, 23 syntax checks, no provider/engine calls, original files and physical ledger hashes unchanged. Final private-validation receipt and unapproved pilot proposal supersede earlier local draft hashes without modifying their records. Source digest dfb3171630db89e6053e45e7f88cf15991dd70949bb58fd5bc46f4ecc95f53ad; documentation digest 90304102f909bc4f1f99ff5cc511083f3dc1d474336ed6002affd4dc4cf22104. No push, deployment or publication.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-47
+      timestamp: "2026-10-16T20:53:08.612071000Z"
+    - evidence: Final unpublished rc.2 is offline-verified, including recovery-only resume and missing-journal rejection. Current exact runtime and fresh unapproved proposal are in [private-validation]/verification.json and [private-validation]/live-proposal.json. Stable still requires independent implementation/review delivery, fresh owner-authorized pilot with usage policy decided, live output/accounting/recovery/continuation proofs, hosted checks, paired deployed docs readback and new RC archive checksums.
+      notes: No Home World allowance is authorized. Runtime SHA256 1b2b65aa9b6d23da314c5ac4ad985ec4647766209bfe8be65af70c5fb2f7a7db. Earlier local draft proofs remain historical, not the current runtime. Consumer target and ledger unchanged; no paid calls.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-46
+      timestamp: "2026-10-16T20:53:08.828735000Z"
+    - evidence: Added task task-48 via small plan --add
+      notes: Run authorized independent review and fresh bounded rc.2 live pilot; preserve Home World and hold stable
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-48
+      timestamp: "2026-10-16T22:50:43.385648000Z"
+    - evidence: User authorized proceeding after clarification of offline-only validation. Execute at most one independent read-only engineering review plus a fresh two-invocation builder/critic pilot. Use existing ChatGPT-authenticated CLI, requested gpt-6.1-sol high, 65536-token accounting reservation per invocation, no automatic retries or model escalation. Actual money remains unknown where not reported; reservations are not preventive provider caps. Capture all events durably and stop on unresolved accounting.
+      notes: Home World receives zero calls and zero writes. Existing rc.1 history is immutable. Pilot active cumulative deadline is 20 minutes, recovery at most five minutes; engineering review at most eight minutes. Stable publication and deployment remain held pending evidence.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-48
+      timestamp: "2026-10-16T22:50:43.549324000Z"
+    - evidence: Added task task-49 via small plan --add
+      notes: Reproduce and fix independent RC recovery review findings before authorized pilot dispatch
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-49
+      timestamp: "2026-10-16T23:03:36.597574000Z"
+    - evidence: 'Independent read-only gpt-6.1-sol high review delivered changes_required: missing/stale resume accounting; observed-money cap renewal; stale best journal rollback; unverified exposed snapshot; replay candidate drift; baseline hook drift; file-directory restore conflicts; execution cause masked by accounting; legacy identity/sampling drift; fixture technical exit bypass and identity reporting. Reproduce each issue, add red/green coverage, repair narrowly and update canonical docs. No pilot builder/critic dispatched.'
+      notes: Review consumed one release invocation and 60141 actual tokens; USD unknown. Two release pilot invocations remain. Preserve raw review and all ledger/history. New source/runtime needs a linked authorization record, not rewriting the original snapshot or resetting allowance.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:03:36.718365000Z"
+    - command: gofmt -w cmd/loopexec/review_recovery_test.go cmd/loopexec/workflow_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T230721.072662000Z.txt
+      command_sha256: 2a19a2997f27f10e69cc05fa3595d7e9bb82aff4a07a46a5f3a6753f5fa7b52c
+      command_summary: gofmt -w cmd/loopexec/review_recovery_test.go cmd/loopexec/workflow_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:07:21.072662000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T230730.482252000Z.txt
+      command_sha256: 4f28537c95c2d13c277eb03f90c6d7358efd40307f68b3a49eb1dc874ac5b954
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:07:30.482252000Z"
+    - command: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/run.go cmd/loopexec/continuation.go cmd/loopexec/candidate.go cmd/loopexec/workflow.go cmd/loopexec/receipt.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T230857.881380000Z.txt
+      command_sha256: 1385ed2b87b320480ed0bc3311cd9f545531c5169caca4bcbf95116013844edc
+      command_summary: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/run.go cmd/loopexec/continuation.go cmd/loopexec/candidate.go cmd/loopexec/workflow.go cmd/loopexec/receipt.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:08:57.881380000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T230906.637814000Z.txt
+      command_sha256: 4f28537c95c2d13c277eb03f90c6d7358efd40307f68b3a49eb1dc874ac5b954
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:09:06.637814000Z"
+    - command: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/review_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231123.444273000Z.txt
+      command_sha256: b6be129a1255ec1111aebd51f8178dfc33de4ccd186e1f07187c500cec1dff6f
+      command_summary: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/review_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:11:23.444273000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231319.864920000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:13:19.864920000Z"
+    - command: gofmt -w cmd/loopexec/review_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231542.973770000Z.txt
+      command_sha256: a029294646bb7fe1d42c751ca04e2025a21d241f7abcf17fe25eb07cd39831cb
+      command_summary: gofmt -w cmd/loopexec/review_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:15:42.973770000Z"
+    - command: GOCACHE="$PWD/../go-cache" go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231544.910058000Z.txt
+      command_sha256: 6df11ab2037f803f1e91263f80b739e16a3c8cb54504e0f0f10d268b1f04dbf0
+      command_summary: GOCACHE="$PWD/../go-cache" go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:15:44.910058000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2-reviewed ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231545.846766000Z.txt
+      command_sha256: da621003a547e6e955a8fd272b56284629d4deefcd2c00c946d65bd060bf97cc
+      command_summary: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2-reviewed ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:15:45.846766000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-reviewed-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231727.739805000Z.txt
+      command_sha256: 80430504e25a9a09b0c9e782b6087c051c11f0107117d60c1d4ab6e698583ec1
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-reviewed-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:17:27.739805000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestReview|TestRCPilotResume|TestRCPilotInterrupted|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231730.997879000Z.txt
+      command_sha256: b444dceb7bcfc5812c30c730b1d8f92063b198e7a23390d6a3fe9a636114213c
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestReview|TestRCPilotResume|TestRCPilotInterrupted|TestReceiptPinsRecovery|TestRCPilotUnsettled|TestBudget" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:17:30.997879000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231752.201216000Z.txt
+      command_sha256: 64e53542c13d7ca93533c9c2bbd2e9f1db234dc82c4902ccead8f99fc16ce34b
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./internal/... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:17:52.201216000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231922.778773000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:19:22.778773000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../rc2-reviewed-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231933.999534000Z.txt
+      command_sha256: 3ce0c282e6c51ba028b94a3b0ec6df1d1e2290699a7f4645eb47c104c632115c
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../rc2-reviewed-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:19:33.999534000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T231934.429655000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-49
+      timestamp: "2026-10-16T23:19:34.429655000Z"
+    - evidence: Nine independent core findings reproduced before fixes and now pass. Full Go suite, cmd targeted race, internal race, vet, 42 copied consumer tests, 23 syntax checks, source-bound docs verification and publication privacy pass. Reviewed runtime SHA256 d1f0619bc45e543f2c9f4097f33dcb4e9c9632762a75864b4af2f030f3f696f5; source ee60937fa8c65cf7c847826a1c97f63e6b06328b5f456676529874a0aae27376. Consumer unchanged; real review verdict remains changes_required pending fresh independent confirmation.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-49
+      timestamp: "2026-10-16T23:22:03.298139000Z"
+    - evidence: Added task task-50 via small plan --add
+      notes: Repair final independent critic accounting, baseline replay and controller mutation findings without more model calls
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-50
+      timestamp: "2026-10-16T23:24:41.368712000Z"
+    - evidence: Fresh critic rejected missing observed dispatch retention, baseline replay request selection and private test input-mutation isolation. Three release-owned calls completed; tokens 124907; USD unknown. No further calls authorized.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:24:41.649673000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestReviewObservedDispatch|TestReviewRetainedBaseline" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232501.709992000Z.txt
+      command_sha256: 87081ec447f4530755da4bc90635854bd5c15c717ab3f6d4e335baa20cbf0cee
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestReviewObservedDispatch|TestReviewRetainedBaseline" -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:25:01.709992000Z"
+    - command: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/receipt.go cmd/loopexec/review_recovery_test.go cmd/loopexec/workflow_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232548.732682000Z.txt
+      command_sha256: de771904388fcee6f4ae8fa8bcdf2fc498a65d1557a2fc0d076651b77cdab2b7
+      command_summary: gofmt -w cmd/loopexec/resume_validation.go cmd/loopexec/receipt.go cmd/loopexec/review_recovery_test.go cmd/loopexec/workflow_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:25:48.732682000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestReviewObservedDispatch|TestReviewRetainedBaseline" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232550.859936000Z.txt
+      command_sha256: 87081ec447f4530755da4bc90635854bd5c15c717ab3f6d4e335baa20cbf0cee
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run "TestReviewObservedDispatch|TestReviewRetainedBaseline" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:25:50.859936000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232621.313043000Z.txt
+      command_sha256: 4f28537c95c2d13c277eb03f90c6d7358efd40307f68b3a49eb1dc874ac5b954
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:26:21.313043000Z"
+    - command: gofmt -w cmd/loopexec/review_recovery_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232647.910201000Z.txt
+      command_sha256: a029294646bb7fe1d42c751ca04e2025a21d241f7abcf17fe25eb07cd39831cb
+      command_summary: gofmt -w cmd/loopexec/review_recovery_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:26:47.910201000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232658.938900000Z.txt
+      command_sha256: 4f28537c95c2d13c277eb03f90c6d7358efd40307f68b3a49eb1dc874ac5b954
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./cmd/loopexec -run TestReview -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:26:58.938900000Z"
+    - command: GOCACHE="$PWD/../go-cache" go vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232825.215592000Z.txt
+      command_sha256: 6df11ab2037f803f1e91263f80b739e16a3c8cb54504e0f0f10d268b1f04dbf0
+      command_summary: GOCACHE="$PWD/../go-cache" go vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:25.215592000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -o ../pilot-rc2-post-review ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232825.748294000Z.txt
+      command_sha256: 34586f1dbf6184c74b0168cac69a9657b7ac89da198f47dba55c6e4076cadfd0
+      command_summary: GOCACHE="$PWD/../go-cache" go build -o ../pilot-rc2-post-review ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:25.748294000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-post-review-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232826.020524000Z.txt
+      command_sha256: 1709c9196bc59fb894913a1ae77fad62fdf439c45ed611c9a01a8532414c5d76
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-post-review-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:26.020524000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestReviewObserved|TestReviewRetainedBaseline" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232835.782084000Z.txt
+      command_sha256: a505a78a4f785a44c015eafb88ada134b079a1c6b406c47e3f55967444c49eb6
+      command_summary: GOCACHE="$PWD/../go-cache" go test -race ./cmd/loopexec -run "TestReviewObserved|TestReviewRetainedBaseline" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:35.782084000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../rc2-post-review-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232845.931450000Z.txt
+      command_sha256: 1555cf8a10fe2f0d9e32a139e446c25508580f0948a7bf10f64c08e4fbbe2ecb
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity verify-bundle ../rc2-post-review-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:45.931450000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T232846.373311000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:28:46.373311000Z"
+    - command: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233023.462387000Z.txt
+      command_sha256: e97ee78527eea4c77bbd1ff6fe4faf48dced374edd3735d044f409f557d2bd9a
+      command_summary: GOCACHE="$PWD/../go-cache" go test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:30:23.462387000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-acceptance-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233138.488270000Z.txt
+      command_sha256: 1fe77019df0e3e595b66ab6f7c49a0e4b8bbbb4e552eb4ca38a339feb9055d2d
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-acceptance-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-50
+      timestamp: "2026-10-16T23:31:38.488270000Z"
+    - evidence: 'Final critic findings reproduced before correction and pass afterward: observed unreserved dispatch retention and known-usage monotonicity; retained-baseline replay request selection; private controller mutation isolation. Full Go suite passes (cmd 127.446s), follow-up race 18.019s, vet, 42 copied consumer tests, 23 syntax checks, 1387-file synthetic interrupted recovery/continuation, CLI/docs/privacy and cache-free SMALL gates pass. Post-review binary SHA256 509fe7cdf59535c1e0c19d65a8dfa23ebecb93516e803f133f5006afa63fcf5c is offline-only, not independently approved.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-50
+      timestamp: "2026-10-16T23:32:23.264398000Z"
+    - evidence: Authorized three-call release-only investigation executed with immutable receipts. Engineering review changes_required; builder technical pass; independent critic reject. Actual gpt-6.1-sol/high tokens 60141 + 13099 + 51667 = 124907; USD unknown; no calls remain. Exact live runtime d1f0619bc45e543f2c9f4097f33dcb4e9c9632762a75864b4af2f030f3f696f5 restored all 1387 initial files and retained unaccepted attempt; forced-interruption/live-link sequence was not reached. Home calls/writes zero; stable held. Dated canonical report docs/releases/v0.5.0-rc.2-pilot.md.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-48
+      timestamp: "2026-10-16T23:32:23.447234000Z"
+    - evidence: Owner authorization was consumed by one review, builder and rejecting critic; no further calls authorized. Later corrections pass offline but require fresh independent acceptance and bounded live interrupted-recovery/continuation proofs. Exact-head hosted CI, matching docs deployment/readback and new RC packaging/publication remain; stable false. Original Home usage unresolved and physical allowance unchanged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-46
+      timestamp: "2026-10-16T23:32:23.619830000Z"
+    - evidence: Added task task-51 via small plan --add
+      notes: Commit scoped held RC2 corrections and verify hosted source CI without release publication
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:08.411470000Z"
+    - evidence: Remote main still 88b532bd935fb349e850c4e6d1384f760ca050c4 and held branch absent. Prepare explicit scoped source/docs/canonical commit from validated clone; no tags, releases, deployment, merge or new model calls.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:32.923101000Z"
+    - command: git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml CHANGELOG.md README.md SPEC.md cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/main.go cmd/loopexec/...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233350.244228000Z.txt
+      command_sha256: 586a8a6c621dbea41dd9902a8bb4520a0c663714b1a7de203e5e090bec6232f0
+      command_summary: git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml CHANGELOG.md README.md SPEC.md cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/main.go cmd/loopexec/...
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:50.244228000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233351.057084000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:51.057084000Z"
+    - command: 'git commit -m "fix: harden RC2 recovery and retain rejected pilot evidence"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233351.446138000Z.txt
+      command_sha256: 4c8bb5d2ed432fa37fc373c89e252ea329598588cedeff15cc38580fc79c3f16
+      command_summary: 'git commit -m "fix: harden RC2 recovery and retain rejected pilot evidence"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:51.446138000Z"
+    - command: git push -u origin fix/rc2-pilot-recovery
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233405.912877000Z.txt
+      command_sha256: 69336e1562f14bbdab3be54ea9b2a748c6800df980b62ae13ffdd70cd35f3e73
+      command_summary: git push -u origin fix/rc2-pilot-recovery
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:34:05.912877000Z"
+    - command: 'gh pr create --draft --base main --head fix/rc2-pilot-recovery --title "Hold RC2: recover safely and preserve truthful pilot evidence" --body-file ../rc2-live/pull-request.md'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233429.396251000Z.txt
+      command_sha256: 3b8d9d92346c7232d8e16fe9d16d34cc9dc110fa54f6660cbfea268080683007
+      command_summary: 'gh pr create --draft --base main --head fix/rc2-pilot-recovery --title "Hold RC2: recover safely and preserve truthful pilot evidence" --body-file ../rc2-live/pull-request.md'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:34:29.396251000Z"
+    - command: node ../rc2-live/export-stage-proof.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233522.838573000Z.txt
+      command_sha256: 44162606a20f58f6959bc576805294f85eabcde6d972f1b1f52b927642dd3f2f
+      command_summary: node ../rc2-live/export-stage-proof.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:35:22.838573000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233523.797181000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:35:23.797181000Z"
+    - evidence: Scoped source commit b0ce23328997ba0e887e168e760c1b6aad6d3b67 pushed and read back on fix/rc2-pilot-recovery. Draft PR https://github.com/justyn-clark/loopexec/pull/10 attached. Push CI 38982119770 and PR CI 38982153489 both success on Linux/macOS including docs/privacy/SMALL proofs. Main remains 88b532bd935fb349e850c4e6d1384f760ca050c4. No merge/tag/release/deployment or further model calls; final docs/audit readback is non-runtime follow-up.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-51
+      timestamp: "2026-10-16T23:37:13.375760000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-handoff-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233739.099835000Z.txt
+      command_sha256: 0dfc3848d0e80e75e5829d17a4a285e0b16690f2f63ae12c3b7e7e137c3c1fa8
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-handoff-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:37:39.099835000Z"

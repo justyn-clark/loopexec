@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+## v0.5.0-rc.2 (Unpublished; Stable Held)
+
+- Independent review regression fixes: monotonic saved accounting and committed
+  best journals; observed-money cap inheritance; full stored/working replay pins;
+  baseline post-hook integrity; file/directory restoration with excluded-content
+  preservation; execution plus reconciliation causes; immutable legacy sampling.
+- Follow-up critic regressions preserve unreserved observed dispatch/known usage
+  and replay retained baselines with their original evidence request. These fixes
+  remain offline-validated, not independently approved.
+- Independent candidate recovery deadline, full snapshot validation/staging,
+  unaccepted attempted-work archives and verified durable restoration exposure.
+- Ordered primary/cleanup failures; explicit settled, reported and unresolved
+  accounting. Unknown total calls/tokens/money remain null, not zero.
+- Immutable hash-linked changed contracts inherit spend, iterations and absolute
+  deadlines. Unresolved evidence and renewed bounds are rejected.
+- Identical-contract resume can perform deterministic recovery after a work
+  deadline or unresolved usage halt; missing authoritative journals fail closed.
+- Runtime-version/context resume pins and new receipt bindings preserve unchanged legacy
+  signatures. Stable release tooling rejects incomplete acceptance evidence.
+- Authorized release-fixture pilot: complete usage and signed critic delivery,
+  rejecting review, unaccepted attempt retained and initial tree restored.
+  See dated pilot notes. No live campaign success, consumer changes, further
+  model-call authorization or allowance renewal claimed.
+
 Future recipes and workflow adapters will remain configurable, opt-in integrations.
 
 ## v0.5.0-rc.1

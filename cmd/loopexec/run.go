@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/workflow"
@@ -18,7 +19,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	if cfg.maxIterations < 1 || cfg.budgetUSD < 0 || !finite(cfg.budgetUSD) || !finite(cfg.costUSD) || cfg.costUSD < 0 {
 		return failResponse(cmd, cfg.runID, exitInvariantFailed, "invariant_failed", "invalid iteration or monetary bound")
 	}
-	if cfg.totalTimeout < 0 || cfg.commandTimeout < 0 || cfg.grace < 0 || !validRunID(cfg.runID) {
+	if cfg.totalTimeout < 0 || cfg.commandTimeout < 0 || cfg.grace < 0 || cfg.recoveryTimeout < 0 || !validRunID(cfg.runID) {
 		return failResponse(cmd, cfg.runID, exitWorkspaceInvalid, "workspace_invalid", "invalid duration or run-id")
 	}
 	if cfg.workdir == "" {
@@ -52,6 +53,19 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		return failResponse(cmd, cfg.runID, 30, "workspace_invalid", err.Error())
 	}
 	defer unlock()
+	parent := cmd.Context()
+	if parent == nil {
+		parent = context.Background()
+	}
+	ctx, stop := signal.NotifyContext(parent, os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	preflight, cancelPreflight := context.WithTimeout(ctx, recoveryBound(cfg.recoveryTimeout))
+	linked, releaseParent, err := continuationParent(preflight, cfg, w)
+	cancelPreflight()
+	if err != nil {
+		return failResponse(cmd, cfg.runID, 30, "workspace_invalid", err.Error())
+	}
+	defer releaseParent()
 	var prior loopState
 	if w != nil {
 		if e = ensureNewRun(dir, cfg.runID, cfg.resume); e != nil {
@@ -59,22 +73,21 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		}
 		if cfg.resume {
 			prior, e = readState(filepath.Join(dir, perRunStateName(cfg.runID)))
-			if e != nil || prior.RunPolicyHash != runPolicyHash(cfg, hash) {
+			if e != nil || prior.RunPolicyHash != runPolicyHash(cfg, hash) || !resumeIdentityMatches(cfg, prior) || prior.RuntimeVersion != "" && prior.RuntimeVersion != toolVersion || workflow.JSONHash(prior.ContextManifest) != workflow.JSONHash(buildManifest(cfg.workdir, cfg.contextFiles)) {
 				return failResponse(cmd, cfg.runID, 30, "workspace_invalid", "resume policy changed or state unreadable")
 			}
 		}
 	}
-	parent := cmd.Context()
-	if parent == nil {
-		parent = context.Background()
-	}
-	ctx, stop := signal.NotifyContext(parent, os.Interrupt, syscall.SIGTERM)
-	defer stop()
 	deadline := prior.DeadlineNS
+	if !cfg.resume && linked != nil {
+		deadline = linked.DeadlineNS
+	}
 	if cfg.totalTimeout > 0 {
 		if deadline == 0 {
 			deadline = time.Now().Add(cfg.totalTimeout).UnixNano()
 		}
+	}
+	if deadline > 0 {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithDeadline(ctx, time.Unix(0, deadline))
 		defer cancel()
@@ -92,7 +105,17 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	rw := &receiptWriter{f: f, runID: cfg.runID}
 	runner := commandRunner{ctx: ctx, dir: cfg.workdir, timeout: cfg.commandTimeout, grace: cfg.grace, receipt: rw}
 	st := loopState{SchemaVersion: 1, RunID: cfg.runID, Phase: "running", DeadlineNS: deadline, Workflow: w, WorkflowHash: hash, RunPolicyHash: runPolicyHash(cfg, hash), CommandTimeoutNS: int64(cfg.commandTimeout), GraceNS: int64(cfg.grace)}
+	st.RuntimeVersion = toolVersion
+	st.RecoveryTimeoutNS = int64(cfg.recoveryTimeout)
+	st.BudgetLimitMicroUSD, _ = microUSD(cfg.budgetUSD)
 	start := 1
+	if !cfg.resume && linked != nil {
+		st.Iteration = linked.Iteration
+		start = linked.Iteration + 1
+	}
+	if !cfg.resume && linked != nil {
+		st.Lineage = append(append([]string{}, linked.Lineage...), linked.RunID)
+	}
 	if cfg.resume {
 		st = prior
 		start = prior.Iteration + 1
@@ -147,10 +170,39 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		}
 		return writeStateAtomic(dir, st)
 	}
-	fail := func(reason, cause string) { halt = reason; st.FailureCause = cause }
+	fail := func(reason, cause string) {
+		halt = reason
+		if st.FailureCause == "" {
+			st.FailureCause = cause
+		}
+		st.Failures = append(st.Failures, runFailure{Reason: reason, Cause: cause})
+		rw.emit(st.Iteration, "failure", reason+"/"+cause, nil)
+	}
+	restorationFailed := false
+	var restorationContext context.Context
+	restore := func() error {
+		var err error
+		if restorationContext != nil {
+			err = restoreCandidateContext(candidate, restorationContext, rw, st.Iteration)
+		} else {
+			err = restoreCandidate(candidate, cfg.recoveryTimeout, rw, st.Iteration)
+		}
+		if err != nil {
+			restorationFailed = true
+		}
+		if saved := persist(); saved != nil && err == nil {
+			err = saved
+			restorationFailed = true
+		}
+		return err
+	}
 	rw.emit(st.Iteration, "run_start", fmt.Sprintf("max=%d resume=%t", cfg.maxIterations, cfg.resume), nil)
 	if cfg.resume && prior.Candidate != nil {
 		for _, pin := range prior.Candidate.Protected {
+			if ctx.Err() != nil {
+				fail("execution_failure", causeOfContext(ctx))
+				break
+			}
 			path, err := workflow.SafePath(cfg.workdir, pin.Path)
 			if err != nil {
 				fail("metric_integrity_violation", "protected_policy_drift")
@@ -170,6 +222,21 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			fail("workspace_invalid", "runtime_directory_failed")
 		} else {
 			book, err := loadBudget(filepath.Join(owned, "budget.json"), w.Meter.Mode)
+			if cfg.resume {
+				book, err = loadResumeBudget(filepath.Join(owned, "budget.json"), w.Meter.Mode, prior.Budget)
+			}
+			if err == nil && !cfg.resume && linked != nil {
+				if book.Pending != nil || len(book.Entries) != 0 {
+					err = fmt.Errorf("continuation destination accounting already exists")
+				} else {
+					var inherited budgetBook
+					data, _ := json.Marshal(linked.Budget)
+					if err = workflow.Decode(data, &inherited); err == nil {
+						book = &inherited
+						err = workflow.Atomic(filepath.Join(owned, "budget.json"), book)
+					}
+				}
+			}
 			if err != nil {
 				fail("cost_anomaly", "saved_usage_invalid")
 			} else {
@@ -184,19 +251,49 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				}
 			}
 			if halt == "" && w.Candidate != nil {
-				candidate, e = newCandidate(ctx, cfg.workdir, owned, *w.Candidate)
+				if ctx.Err() != nil {
+					fail("execution_failure", causeOfContext(ctx))
+				}
+			}
+			resumeRecovery := cfg.resume && prior.Candidate != nil
+			if w.Candidate != nil && (halt == "" || resumeRecovery) {
+				initCtx, cancelInit := ctx, func() {}
+				if resumeRecovery {
+					initCtx, cancelInit = context.WithTimeout(context.Background(), recoveryBound(cfg.recoveryTimeout))
+					var journal candidateState
+					p, safeErr := workflow.SafePath(cfg.workdir, filepath.Join(".loopexec", cfg.runID, "candidate.json"))
+					if safeErr != nil || workflow.Read(p, &journal) != nil || !candidateResumeProgress(journal, *prior.Candidate, prior.Iteration) {
+						e = fmt.Errorf("authoritative recovery journal missing or changed")
+					} else {
+						candidate, e = newCandidate(initCtx, cfg.workdir, owned, *w.Candidate)
+					}
+				} else {
+					candidate, e = newCandidate(initCtx, cfg.workdir, owned, *w.Candidate)
+				}
+				if candidate != nil {
+					candidate.ctx = ctx
+				}
 				if e != nil {
 					fail("objective_unverified", "candidate_initialization_failed")
-				} else if cfg.resume && candidate.state.Status != "accepted" && candidate.state.Status != "restored" && candidate.state.Status != "initial" {
-					if e = candidate.restore(); e != nil {
+				} else if resumeRecovery && (halt != "" || candidate.state.Status != "accepted" && candidate.state.Status != "restored" && candidate.state.Status != "initial") {
+					restorationContext = initCtx
+					if e = restore(); e != nil {
 						fail("execution_failure", "restoration_failed")
 					}
+					restorationContext = nil
+				}
+				cancelInit()
+			}
+			if halt == "" && cfg.resume && candidate != nil && candidate.state.Exposed {
+				if err := candidate.validateSnapshot(candidate.state.Best); err != nil {
+					candidate.state.Exposed = false
+					fail("objective_unverified", "best_snapshot_invalid")
 				}
 			}
 			if halt == "" && cfg.resume && candidate != nil && candidate.state.Exposed {
 				current, err := workflow.Capture(ctx, candidate.root, candidate.policy)
 				if err != nil || workflow.JSONHash(current) != candidate.state.Best {
-					if err = candidate.restore(); err != nil {
+					if err = restore(); err != nil {
 						fail("execution_failure", "restoration_failed")
 					}
 				}
@@ -270,7 +367,19 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				v, r, c := ext.paid(i, "exec", cfg.execCmd, w.Exec)
 				rc = v.ExitCode
 				if r != "" {
-					fail(r, c)
+					execCause := v.Cause
+					if execCause == "" && v.ExitCode != 0 {
+						execCause = "work_command_failed"
+					}
+					if ext.dispatched && execCause != "" {
+						fail("execution_failure", execCause)
+						if r != "execution_failure" || c != execCause {
+							fail(r, c)
+						}
+						halt = "execution_failure"
+					} else {
+						fail(r, c)
+					}
 					break
 				}
 				if v.Cause != "" {
@@ -404,11 +513,10 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				}
 				if weaker {
 					candidate.state.Accepted = id
-					if e = candidate.restore(); e != nil {
+					if e = restore(); e != nil {
 						fail("execution_failure", "restoration_failed")
 						break
 					}
-					rw.emit(i, "candidate_restored", candidate.state.Restored, nil)
 				} else {
 
 					candidate.iteration = i
@@ -425,11 +533,10 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				}
 			} else {
 				rw.emit(i, "candidate_rejected", id, nil)
-				if e = candidate.restore(); e != nil {
+				if e = restore(); e != nil {
 					fail("execution_failure", "restoration_failed")
 					break
 				}
-				rw.emit(i, "candidate_restored", candidate.state.Restored, nil)
 			}
 		}
 		if ctx.Err() != nil {
@@ -457,15 +564,16 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 	if halt == "" {
 		halt = "max_iterations_reached"
 	}
-	if candidate != nil && !candidate.state.Exposed && candidate.state.Status != "restored" && st.FailureCause != "restoration_failed" {
-		cleanup, cancel := context.WithTimeout(context.Background(), max(cfg.grace, 250*time.Millisecond))
-		candidate.ctx = cleanup
-		if e = candidate.restore(); e != nil {
-			fail("execution_failure", "restoration_failed")
-		} else {
-			rw.emit(st.Iteration, "candidate_restored", candidate.state.Restored, nil)
+	if candidate != nil && candidate.state.Exposed && candidate.state.Best != "" {
+		if err := candidate.validateSnapshot(candidate.state.Best); err != nil {
+			candidate.state.Exposed = false
+			fail("objective_unverified", "best_snapshot_invalid")
 		}
-		cancel()
+	}
+	if candidate != nil && !candidate.state.Exposed && candidate.state.Status != "restored" && !restorationFailed {
+		if e = restore(); e != nil {
+			fail("execution_failure", "restoration_failed")
+		}
 	}
 	st.HaltReason = halt
 	st.Phase = "halted"
@@ -480,9 +588,12 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 		return failResponse(cmd, cfg.runID, 50, "internal_error", "cannot flush receipt")
 	}
 	r := response{ModelSelection: st.ModelSelection, Tool: toolName, Version: toolVersion, Status: "halted", RunID: cfg.runID, Iteration: st.Iteration, HaltReason: halt, CheckExit: st.LastCheckExit, Receipt: receiptPath, Errors: []string{}, FailureCause: st.FailureCause, BestCandidate: st.BestCandidatePath}
+	r.Failures, r.Accounting = st.Failures, st.Budget.accounting()
 	if halt == "execution_failure" {
 		r.Status = "error"
-		r.Errors = []string{"execution failure: " + st.FailureCause}
+		for _, failure := range st.Failures {
+			r.Errors = append(r.Errors, failure.Reason+": "+failure.Cause)
+		}
 	}
 	if e = printResponse(cmd, r); e != nil {
 		return e
@@ -516,5 +627,12 @@ func verifyBaseline(ext *workflowRuntime, c *candidateManager, st *loopState, ru
 		return nil
 	}
 	fp := &checkFingerprint{v.ExitCode, sha256hex([]byte(normalizeOutput(v.Stdout)))}
+	if err := c.intact(ext.workdir); err != nil {
+		return err
+	}
+	current, err := workflow.Capture(c.ctx, c.root, c.policy)
+	if err != nil || workflow.JSONHash(current) != id {
+		return fmt.Errorf("baseline changed during verification")
+	}
 	return c.promote(fp, st.Numeric)
 }

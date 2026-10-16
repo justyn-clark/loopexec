@@ -55,13 +55,28 @@ func buildManifest(workdir string, files []string) []manifestEntry {
 // canonicalReceipt is the deterministic byte form signed by attest and
 // reconstructed for verification: only the pinned, output-determining fields.
 func canonicalReceipt(st loopState) ([]byte, error) {
+	type runtimePins struct {
+		Version             string   `json:"version"`
+		DeadlineNS          int64    `json:"deadline_ns"`
+		RecoveryTimeoutNS   int64    `json:"recovery_timeout_ns"`
+		BudgetLimitMicroUSD int64    `json:"budget_limit_microusd"`
+		PolicyHash          string   `json:"run_policy_hash"`
+		Lineage             []string `json:"lineage,omitempty"`
+	}
+	var runtime *runtimePins
+	if st.RuntimeVersion != "" {
+		runtime = &runtimePins{st.RuntimeVersion, st.DeadlineNS, st.RecoveryTimeoutNS, st.BudgetLimitMicroUSD, st.RunPolicyHash, st.Lineage}
+	}
 	type rcpt struct {
-		Workflow       *workflow.Config       `json:"workflow,omitempty"`
-		WorkflowHash   string                 `json:"workflow_hash,omitempty"`
-		ModelSelection *modelpolicy.Selection `json:"model_selection,omitempty"`
-		Budget         *budgetBook            `json:"budget,omitempty"`
-		Numeric        *numericState          `json:"numeric,omitempty"`
-		Candidate      *candidateState        `json:"candidate,omitempty"`
+		Runtime           *runtimePins           `json:"runtime,omitempty"`
+		Workflow          *workflow.Config       `json:"workflow,omitempty"`
+		WorkflowHash      string                 `json:"workflow_hash,omitempty"`
+		ModelSelection    *modelpolicy.Selection `json:"model_selection,omitempty"`
+		Budget            *budgetBook            `json:"budget,omitempty"`
+		Numeric           *numericState          `json:"numeric,omitempty"`
+		Candidate         *candidateState        `json:"candidate,omitempty"`
+		Failures          []runFailure           `json:"failures,omitempty"`
+		RecoveryTimeoutNS int64                  `json:"recovery_timeout_ns,omitempty"`
 
 		RunID           string            `json:"run_id"`
 		HaltReason      string            `json:"halt_reason"`
@@ -73,7 +88,8 @@ func canonicalReceipt(st loopState) ([]byte, error) {
 		CostUSD         float64           `json:"cost_usd"`
 		Fingerprint     *checkFingerprint `json:"fingerprint,omitempty"`
 	}
-	return json.Marshal(rcpt{Workflow: st.Workflow, WorkflowHash: st.WorkflowHash, ModelSelection: st.ModelSelection, Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate,
+	return json.Marshal(rcpt{Runtime: runtime, Workflow: st.Workflow, WorkflowHash: st.WorkflowHash, ModelSelection: st.ModelSelection, Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate,
+		Failures: st.Failures, RecoveryTimeoutNS: st.RecoveryTimeoutNS,
 		RunID:           st.RunID,
 		HaltReason:      st.HaltReason,
 		Iteration:       st.Iteration,
@@ -269,6 +285,40 @@ func verifyWorkflowFingerprint(st loopState, fallback string) (checkFingerprint,
 	if root == "" {
 		root = fallback
 	}
+	timeout := time.Duration(st.CommandTimeoutNS)
+	if timeout <= 0 {
+		timeout = 30 * time.Second
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	verifyCandidate := func() error {
+		if st.Candidate == nil {
+			return nil
+		}
+		if st.Workflow == nil || st.Workflow.Candidate == nil || !validRunID(st.RunID) {
+			return fmt.Errorf("invalid replay candidate contract")
+		}
+		candidateRoot, err := workflow.SafePath(root, st.Workflow.Candidate.Root)
+		if err != nil {
+			return err
+		}
+		store, err := workflow.SafePath(root, filepath.Join(".loopexec", st.RunID, "candidates"))
+		if err != nil {
+			return err
+		}
+		c := &candidateManager{root: candidateRoot, store: store, policy: *st.Workflow.Candidate, state: *st.Candidate, ctx: ctx}
+		if err = c.intact(root); err != nil {
+			return err
+		}
+		if err = c.validateSnapshot(c.state.Best); err != nil {
+			return err
+		}
+		m, err := workflow.Capture(ctx, c.root, c.policy)
+		if err != nil || workflow.JSONHash(m) != c.state.Best {
+			return fmt.Errorf("replay candidate contents drifted")
+		}
+		return nil
+	}
 	fp := st.Fingerprint
 	iter := st.Iteration
 	if st.Candidate != nil {
@@ -277,21 +327,18 @@ func verifyWorkflowFingerprint(st loopState, fallback string) (checkFingerprint,
 		}
 		fp = st.Candidate.BestFingerprint
 		iter = st.Candidate.BestIteration
-		for _, pin := range st.Candidate.Protected {
-			p, e := workflow.SafePath(root, pin.Path)
-			if e != nil {
-				return checkFingerprint{}, false, e
-			}
-			hash, _, e := workflow.FileHash(context.Background(), p)
-			if e != nil || hash != pin.SHA256 {
-				return checkFingerprint{}, false, fmt.Errorf("protected policy drift")
-			}
+		if err := verifyCandidate(); err != nil {
+			return checkFingerprint{}, false, err
 		}
 	}
 	if fp == nil || len(st.Workflow.Check) == 0 {
 		return checkFingerprint{}, false, fmt.Errorf("no completed workflow check")
 	}
-	requestPath := filepath.Join(root, ".loopexec", st.RunID, fmt.Sprintf("request-%06d-check.json", iter))
+	label := "check"
+	if iter == 0 && st.Workflow.Candidate != nil && st.Workflow.Candidate.Baseline {
+		label = "baseline.check"
+	}
+	requestPath := filepath.Join(root, ".loopexec", st.RunID, fmt.Sprintf("request-%06d-%s.json", iter, label))
 	var req workflow.Request
 	if e := workflow.Read(requestPath, &req); e != nil {
 		return checkFingerprint{}, false, e
@@ -302,15 +349,14 @@ func verifyWorkflowFingerprint(st loopState, fallback string) (checkFingerprint,
 	if st.Candidate != nil && req.CandidateID != st.Candidate.Best {
 		return checkFingerprint{}, false, fmt.Errorf("replay candidate drift")
 	}
-	timeout := time.Duration(st.CommandTimeoutNS)
-	if timeout <= 0 {
-		timeout = 30 * time.Second
-	}
 	args := append(append([]string{}, st.Workflow.Check...), requestPath)
-	r := subprocess.Run(context.Background(), subprocess.Options{Dir: root, Argv: args, Timeout: timeout, Grace: time.Duration(st.GraceNS)})
+	r := subprocess.Run(ctx, subprocess.Options{Dir: root, Argv: args, Timeout: timeout, Grace: time.Duration(st.GraceNS)})
 	got := checkFingerprint{r.ExitCode, sha256hex([]byte(normalizeOutput(r.Stdout)))}
 	if r.Cause != "" || r.Truncated {
 		return got, false, fmt.Errorf("replay command unavailable")
+	}
+	if err := verifyCandidate(); err != nil {
+		return got, false, err
 	}
 	return got, got == *fp, nil
 }

@@ -17,6 +17,7 @@ import (
 const MaxEvidence = 1 << 20
 
 type Config struct {
+	Continuation  *Continuation       `json:"continuation,omitempty"`
 	Models        *modelpolicy.Policy `json:"model_policy,omitempty"`
 	SchemaVersion int                 `json:"schema_version"`
 	Exec          []string            `json:"exec"`
@@ -24,6 +25,14 @@ type Config struct {
 	Meter         MeterPolicy         `json:"metering"`
 	Candidate     *CandidatePolicy    `json:"candidate,omitempty"`
 	Score         *ScorePolicy        `json:"score,omitempty"`
+}
+
+// Continuation links a new contract to immutable, fully reconciled parent evidence.
+type Continuation struct {
+	Workdir       string `json:"workdir"`
+	RunID         string `json:"run_id"`
+	StateSHA256   string `json:"state_sha256"`
+	ReceiptSHA256 string `json:"receipt_sha256"`
 }
 type MeterPolicy struct {
 	Mode      string   `json:"mode"`

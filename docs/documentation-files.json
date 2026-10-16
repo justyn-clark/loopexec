@@ -11,6 +11,7 @@
     "docs/architecture.md",
     "docs/workflows.md",
     "docs/model-assignments.md",
+    "docs/recovery-and-continuation.md",
     "docs/integrations.md",
     "docs/loop-contract.md",
     "docs/small-integration.md",
@@ -24,6 +25,8 @@
     "docs/releases/v0.4.1.md",
     "docs/releases/v0.5.0-dev.md",
     "docs/releases/v0.5.0-rc.1.md",
+    "docs/releases/v0.5.0-rc.2.md",
+    "docs/releases/v0.5.0-rc.2-pilot.md",
     "examples/scoped-budget/README.md"
   ]
 }
