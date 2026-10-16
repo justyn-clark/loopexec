@@ -136,3 +136,24 @@ tasks:
     - id: task-44
       title: Make v0.5.0-rc.1 publication prerelease-safe and verify before tag release
       status: completed
+    - id: task-45
+      title: Repair pilot recovery, retain failure chain and unresolved accounting; validate offline with stable held
+      status: completed
+    - id: task-46
+      title: 'Hold stable: obtain fresh bounded live-pilot authorization, independent review delivery and exact candidate hosted/docs readback evidence'
+      status: blocked
+    - id: task-47
+      title: Allow deterministic resume recovery after deadline or unresolved usage without dispatch; reject missing authoritative journals
+      status: completed
+    - id: task-48
+      title: Run authorized independent review and fresh bounded rc.2 live pilot; preserve Home World and hold stable
+      status: completed
+    - id: task-49
+      title: Reproduce and fix independent RC recovery review findings before authorized pilot dispatch
+      status: completed
+    - id: task-50
+      title: Repair final independent critic accounting, baseline replay and controller mutation findings without more model calls
+      status: completed
+    - id: task-51
+      title: Commit scoped held RC2 corrections and verify hosted source CI without release publication
+      status: pending

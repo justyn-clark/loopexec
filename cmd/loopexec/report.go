@@ -18,6 +18,9 @@ import (
 // nothing (unlike replay / reexecute): it reads the durable state plus the
 // typed JSONL event log and presents them. It is the read-only audit view.
 type reportSummary struct {
+	RuntimeVersion    string                 `json:"runtime_version,omitempty"`
+	Accounting        *accountingSummary     `json:"accounting,omitempty"`
+	Failures          []runFailure           `json:"failures,omitempty"`
 	ModelSelection    *modelpolicy.Selection `json:"model_selection,omitempty"`
 	Budget            *budgetBook            `json:"budget,omitempty"`
 	Numeric           *numericState          `json:"numeric,omitempty"`
@@ -135,6 +138,8 @@ func newReportCmd() *cobra.Command {
 			}
 
 			sum := &reportSummary{Budget: st.Budget, Numeric: st.Numeric, Candidate: st.Candidate, BestCandidate: st.BestCandidatePath,
+				RuntimeVersion: st.RuntimeVersion,
+				Accounting:     st.Budget.accounting(), Failures: st.Failures,
 				ModelSelection:    st.ModelSelection,
 				Phase:             st.Phase,
 				ExitCode:          haltExitCode(st.HaltReason),
@@ -188,6 +193,11 @@ func renderReport(cmd *cobra.Command, st loopState, sum *reportSummary, events [
 	w := cmd.OutOrStdout()
 	fmt.Fprintf(w, "%s %s\n", toolName, toolVersion)
 	fmt.Fprintf(w, "report: run %q\n", st.RunID)
+	if st.RuntimeVersion != "" {
+		fmt.Fprintf(w, "recorded run runtime: %s\n", st.RuntimeVersion)
+	} else {
+		fmt.Fprintln(w, "recorded run runtime: unknown (legacy state)")
+	}
 
 	halt := st.HaltReason
 	if halt == "" {
@@ -196,6 +206,9 @@ func renderReport(cmd *cobra.Command, st loopState, sum *reportSummary, events [
 	fmt.Fprintf(w, "phase: %s (%s, exit %d)\n", st.Phase, halt, sum.ExitCode)
 	if st.FailureCause != "" {
 		fmt.Fprintf(w, "failure cause: %s\n", st.FailureCause)
+	}
+	for i, failure := range st.Failures {
+		fmt.Fprintf(w, "failure[%d]: %s/%s\n", i+1, failure.Reason, failure.Cause)
 	}
 	fmt.Fprintf(w, "iterations: %d\n", st.Iteration)
 	renderModelSelection(w, st.ModelSelection)
@@ -215,11 +228,14 @@ func renderReport(cmd *cobra.Command, st loopState, sum *reportSummary, events [
 		fmt.Fprintf(w, "cost: $%.2f\n", st.CostUSD)
 	} else {
 		if st.Budget.MonetaryKnown {
-			fmt.Fprintf(w, "metered cost: $%.6f (%s)\n", float64(st.Budget.MicroUSD)/1e6, st.Budget.Mode)
+			fmt.Fprintf(w, "settled metered cost: $%.6f (%s)\n", float64(st.Budget.MicroUSD)/1e6, st.Budget.Mode)
 		} else {
 			fmt.Fprintf(w, "monetary usage: unknown (%s)\n", st.Budget.Mode)
 		}
-		fmt.Fprintf(w, "calls: %d, tokens: %d, pending usage: %t\n", st.Budget.Calls, st.Budget.Tokens, st.Budget.Pending != nil)
+		fmt.Fprintf(w, "settled calls: %d, settled tokens: %d, pending usage: %t\n", st.Budget.Calls, st.Budget.Tokens, st.Budget.Pending != nil)
+		a := st.Budget.accounting()
+		fmt.Fprintf(w, "unresolved reservations: %d, dispatch awaiting usage: %t, reported executed unsettled: %d\n", a.UnresolvedReservations, a.DispatchAwaitingUsage, a.ReportedExecutedUnsettled)
+		fmt.Fprintf(w, "total calls known: %t, total tokens known: %t, total money known: %t\n", a.CallsKnown, a.TokensKnown, a.MoneyKnown)
 	}
 	if st.BestCandidatePath != "" {
 		fmt.Fprintf(w, "best candidate: %s\n", st.BestCandidatePath)

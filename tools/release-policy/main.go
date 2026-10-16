@@ -30,6 +30,9 @@ func main() {
 		os.Exit(2)
 	}
 	policy, err := policyFor(os.Args[1])
+	if err == nil && !policy.Prerelease {
+		err = requireStableReadiness(".")
+	}
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)

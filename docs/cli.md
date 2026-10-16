@@ -1,5 +1,10 @@
 # loopexec CLI
 
+`run --recovery-timeout` bounds candidate recovery independently of process
+termination grace; zero selects two minutes and grants no further work. See
+[Recovery and Continuation](recovery-and-continuation.md) for failure chains,
+nullable unknown totals, immutable resume and linked new contracts.
+
 This document defines the command surface and machine contract for loopexec.
 
 The [generated command, flag and JSON field contract](cli-reference.generated.md)

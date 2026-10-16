@@ -1,10 +1,16 @@
 # LoopExec status and roadmap
 
-## Development Update: October 15, 2026
+## Development Update: October 16, 2026
 
-Current source is the `0.5.0-rc.1` model-assignment release candidate, not stable
+Current source is the unpublished `0.5.0-rc.2` recovery candidate, not stable
 v0.5.0. See [model assignments](model-assignments.md) and
-[candidate notes](releases/v0.5.0-rc.1.md). The Releases page establishes publication.
+[candidate notes](releases/v0.5.0-rc.2.md). The Releases page establishes publication.
+Stable promotion is held in `scripts/release-readiness.json` pending output integrity,
+accounting, restoration, continuation, independent review delivery and a fresh
+explicitly authorized live pilot. Offline checks alone do not clear that hold.
+The October 16 release-fixture pilot was authorized and delivered a rejecting
+critic. Its allowance is exhausted. Follow-up fixes are offline only; see the
+[dated pilot record](releases/v0.5.0-rc.2-pilot.md). It was not a Home World run.
 It adds no-spend planning, advisory profiles, explicit role bindings and
 adapter-reported identity checks. Offline verification does not establish live
 provider behavior or Home World adapter readiness. Automatic routing is absent.
@@ -13,11 +19,14 @@ v0.4.1 was published and verified October 14 at core `80b56add` and documentatio
 `c98b6c7f`: matching source-bound docs, Linux/macOS CI, archives/checksums and a
 fresh pinned install passed. Its publication and continuity rollout supersede
 the October 7 blockers below. See the [release](https://github.com/justyn-clark/loopexec/releases/tag/v0.4.1).
-New model-assignment source/docs have not been deployed or published.
+Model-assignment v0.5.0-rc.1 is a published prerelease, not Latest stable.
+The rc.2 recovery source/docs have not been deployed or published.
 
-Next: finish model-assignment regression/offline proofs, review adapter wiring
-with existing readiness and shared budgets intact, then conduct an explicitly
-authorized consumer test. A model change does not authorize another critic call.
+Next: validate follow-up corrections independently, finish interrupted-recovery
+and continuation live proofs with fresh explicit authorization, then exact-head
+CI and matching docs deployment/readback before candidate publication. Consumer
+migration retains existing readiness, unresolved usage and shared budgets.
+A model change does not authorize another critic call.
 
 ## Historical Audit: October 7, 2026
 
