@@ -156,4 +156,4 @@ tasks:
       status: completed
     - id: task-51
       title: Commit scoped held RC2 corrections and verify hosted source CI without release publication
-      status: pending
+      status: completed

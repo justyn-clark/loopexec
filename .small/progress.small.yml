@@ -6627,3 +6627,121 @@ entries:
       status: in_progress
       task_id: task-51
       timestamp: "2026-10-16T23:33:32.923101000Z"
+    - command: git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml CHANGELOG.md README.md SPEC.md cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/main.go cmd/loopexec/...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233350.244228000Z.txt
+      command_sha256: 586a8a6c621dbea41dd9902a8bb4520a0c663714b1a7de203e5e090bec6232f0
+      command_summary: git add .small/plan.small.yml .small/progress.small.yml .small/workspace.small.yml CHANGELOG.md README.md SPEC.md cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/main.go cmd/loopexec/...
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:50.244228000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233351.057084000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:51.057084000Z"
+    - command: 'git commit -m "fix: harden RC2 recovery and retain rejected pilot evidence"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233351.446138000Z.txt
+      command_sha256: 4c8bb5d2ed432fa37fc373c89e252ea329598588cedeff15cc38580fc79c3f16
+      command_summary: 'git commit -m "fix: harden RC2 recovery and retain rejected pilot evidence"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:33:51.446138000Z"
+    - command: git push -u origin fix/rc2-pilot-recovery
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233405.912877000Z.txt
+      command_sha256: 69336e1562f14bbdab3be54ea9b2a748c6800df980b62ae13ffdd70cd35f3e73
+      command_summary: git push -u origin fix/rc2-pilot-recovery
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:34:05.912877000Z"
+    - command: 'gh pr create --draft --base main --head fix/rc2-pilot-recovery --title "Hold RC2: recover safely and preserve truthful pilot evidence" --body-file ../rc2-live/pull-request.md'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233429.396251000Z.txt
+      command_sha256: 3b8d9d92346c7232d8e16fe9d16d34cc9dc110fa54f6660cbfea268080683007
+      command_summary: 'gh pr create --draft --base main --head fix/rc2-pilot-recovery --title "Hold RC2: recover safely and preserve truthful pilot evidence" --body-file ../rc2-live/pull-request.md'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:34:29.396251000Z"
+    - command: node ../rc2-live/export-stage-proof.mjs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233522.838573000Z.txt
+      command_sha256: 44162606a20f58f6959bc576805294f85eabcde6d972f1b1f52b927642dd3f2f
+      command_summary: node ../rc2-live/export-stage-proof.mjs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:35:22.838573000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233523.797181000Z.txt
+      command_sha256: 238396b1559892e3f67c9416e114dd4952e3d631b0cae046468922a3a5ab3656
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy --base origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:35:23.797181000Z"
+    - evidence: Scoped source commit b0ce23328997ba0e887e168e760c1b6aad6d3b67 pushed and read back on fix/rc2-pilot-recovery. Draft PR https://github.com/justyn-clark/loopexec/pull/10 attached. Push CI 38982119770 and PR CI 38982153489 both success on Linux/macOS including docs/privacy/SMALL proofs. Main remains 88b532bd935fb349e850c4e6d1384f760ca050c4. No merge/tag/release/deployment or further model calls; final docs/audit readback is non-runtime follow-up.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-51
+      timestamp: "2026-10-16T23:37:13.375760000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-handoff-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261016T233739.099835000Z.txt
+      command_sha256: 0dfc3848d0e80e75e5829d17a4a285e0b16690f2f63ae12c3b7e7e137c3c1fa8
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/docs-continuity bundle ../rc2-handoff-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-51
+      timestamp: "2026-10-16T23:37:39.099835000Z"
