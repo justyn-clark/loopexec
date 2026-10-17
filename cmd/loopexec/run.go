@@ -241,7 +241,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 				fail("cost_anomaly", "saved_usage_invalid")
 			} else {
 				cap, _ := microUSD(cfg.budgetUSD)
-				ext = &workflowRuntime{models: st.ModelSelection, config: w, hash: hash, dir: owned, workdir: cfg.workdir, book: book, cap: cap, runner: runner}
+				ext = &workflowRuntime{models: st.ModelSelection, config: w, hash: hash, dir: owned, workdir: cfg.workdir, book: book, cap: cap, runner: runner, checkpoint: persist}
 				if book.Pending != nil && halt == "" {
 					if !cfg.resume {
 						fail("cost_anomaly", "unresolved_reservation")
@@ -570,7 +570,7 @@ func executeRun(cmd *cobra.Command, cfg runConfig) error {
 			fail("objective_unverified", "best_snapshot_invalid")
 		}
 	}
-	if candidate != nil && !candidate.state.Exposed && candidate.state.Status != "restored" && !restorationFailed {
+	if candidate != nil && !candidate.state.Exposed && (candidate.state.Status != "restored" || !candidate.hasVerifiedRecovery()) && !restorationFailed {
 		if e = restore(); e != nil {
 			fail("execution_failure", "restoration_failed")
 		}

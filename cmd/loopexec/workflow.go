@@ -18,6 +18,7 @@ type workflowRuntime struct {
 	book               *budgetBook
 	cap                int64
 	runner             commandRunner
+	checkpoint         func() error
 }
 
 func loadWorkflow(cfg runConfig) (*workflow.Config, string, error) {
@@ -126,19 +127,38 @@ func structuredResult(v subprocess.Result, target any) error {
 	return workflow.Decode([]byte(v.Stdout), target)
 }
 func (w *workflowRuntime) saveBudget() error {
-	return workflow.Atomic(filepath.Join(w.dir, "budget.json"), w.book)
+	if err := workflow.Atomic(filepath.Join(w.dir, "budget.json"), w.book); err != nil {
+		return err
+	}
+	if w.checkpoint != nil {
+		return w.checkpoint()
+	}
+	return nil
 }
 func (w *workflowRuntime) reconcile(req workflow.Request) (string, string) {
 	var usage workflow.Usage
 	v := w.hook(req, "usage."+req.Phase, w.config.Meter.Usage)
+	complete := v.ExitCode == 0 && v.Cause == "" && !v.Truncated && strings.TrimSpace(v.Stderr) == ""
+	evidence, err := w.preserveUsage(req, v.Stdout, complete)
+	if err != nil {
+		return "internal_error", "usage_evidence_persist_failed"
+	}
+	w.runner.receipt.emit(req.Iteration, "usage_report_retained", evidence, nil)
 	if e := structuredResult(v, &usage); e != nil {
 		return "cost_anomaly", "usage_unavailable"
 	}
-	// Unsettled reports are observations, never settled totals or provider proof.
-	if usage.SchemaVersion == 1 && usage.RunID == req.RunID && usage.Iteration == req.Iteration && usage.Phase == req.Phase {
-		w.book.Unsettled = &usage
+	if !usagePreservesKnown(w.book.Unsettled, &usage) {
+		w.runner.receipt.emit(req.Iteration, "usage_observation_conflict", evidence, nil)
+		if err := w.saveBudget(); err != nil {
+			return "internal_error", "budget_persist_failed"
+		}
+		return "cost_anomaly", "usage_observation_conflict"
 	}
 	reason := w.book.reconcile(usage, req, w.config.Meter, w.cap)
+	// Unsettled reports are observations, never settled totals or provider proof.
+	if w.book.Pending != nil && usage.SchemaVersion == 1 && usage.RunID == req.RunID && usage.Iteration == req.Iteration && usage.Phase == req.Phase {
+		w.book.Unsettled = &usage
+	}
 	if e := w.saveBudget(); e != nil {
 		return "internal_error", "budget_persist_failed"
 	}

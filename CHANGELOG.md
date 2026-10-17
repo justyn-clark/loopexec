@@ -4,6 +4,14 @@
 
 ## v0.5.0-rc.2 (Unpublished; Stable Held)
 
+- October 17 rejecting-review corrections: checkpoint reservation/dispatch state
+  before execution; retain exact hash-named collector reports and reject loss or
+  reduction of observed usage; validate a recovered best within its original
+  absolute recovery deadline. Offline regressions only; independent acceptance
+  of these corrections remains pending. No new model calls or consumer changes.
+- Document private engineering-fixture serializer repairs separately from core
+  behavior; neither a VM realm nor process groups claim adversarial containment.
+  See the dated offline repair record. Original rejecting receipts remain intact.
 - Independent review regression fixes: monotonic saved accounting and committed
   best journals; observed-money cap inheritance; full stored/working replay pins;
   baseline post-hook integrity; file/directory restoration with excluded-content

@@ -88,6 +88,9 @@ func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workf
 	if u.SchemaVersion != 1 || u.RunID != req.RunID || u.Iteration != req.Iteration || u.Phase != req.Phase || u.Calls == nil {
 		return "cost_anomaly"
 	}
+	if !usagePreservesKnown(b.Unsettled, &u) {
+		return "cost_anomaly"
+	}
 	allowed := map[string]workflow.Reservation{}
 	if b.Pending != nil {
 		if b.Pending.RunID != u.RunID || b.Pending.Iteration != u.Iteration || b.Pending.Phase != u.Phase {
@@ -198,6 +201,30 @@ func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workf
 	}
 	return ""
 }
+
+func usagePreservesKnown(prior, current *workflow.Usage) bool {
+	if prior == nil {
+		return true
+	}
+	if current == nil || prior.SchemaVersion != current.SchemaVersion || prior.RunID != current.RunID || prior.Iteration != current.Iteration || prior.Phase != current.Phase {
+		return false
+	}
+	byID := map[string]workflow.Call{}
+	for _, call := range current.Calls {
+		if _, duplicate := byID[call.ID]; duplicate {
+			return false
+		}
+		byID[call.ID] = call
+	}
+	for _, observed := range prior.Calls {
+		call, exists := byID[observed.ID]
+		if !exists || call.Phase != observed.Phase || observed.Status != "skipped" && call.Status == "skipped" || observed.Tokens != nil && (call.Tokens == nil || *call.Tokens < *observed.Tokens) || observed.MicroUSD != nil && (call.MicroUSD == nil || *call.MicroUSD < *observed.MicroUSD) {
+			return false
+		}
+	}
+	return true
+}
+
 func loadBudget(path, mode string) (*budgetBook, error) {
 	var b budgetBook
 	e := workflow.Read(path, &b)

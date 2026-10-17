@@ -22,7 +22,7 @@ func loadResumeBudget(path, mode string, prior *budgetBook) (*budgetBook, error)
 	}
 	if prior.Pending != nil {
 		if workflow.JSONHash(b.Pending) == workflow.JSONHash(prior.Pending) {
-			if prior.DispatchPending && !b.DispatchPending || prior.Unsettled != nil && b.Unsettled == nil {
+			if prior.DispatchPending && !b.DispatchPending || !usagePreservesKnown(prior.Unsettled, b.Unsettled) {
 				return nil, fmt.Errorf("resume dispatch evidence regressed")
 			}
 		} else {
@@ -44,11 +44,13 @@ func loadResumeBudget(path, mode string, prior *budgetBook) (*budgetBook, error)
 				}
 			}
 			if prior.Unsettled != nil {
-				for _, reported := range prior.Unsettled.Calls {
-					settled, ok := b.Entries[reported.ID]
-					if !ok || reported.Status != "skipped" && settled.Status == "skipped" || reported.Tokens != nil && (settled.Tokens == nil || *settled.Tokens < *reported.Tokens) || reported.MicroUSD != nil && (settled.MicroUSD == nil || *settled.MicroUSD < *reported.MicroUSD) {
-						return nil, fmt.Errorf("resume observed usage regressed during settlement")
-					}
+				settled := *prior.Unsettled
+				settled.Calls = nil
+				for _, call := range b.Entries {
+					settled.Calls = append(settled.Calls, call)
+				}
+				if !usagePreservesKnown(prior.Unsettled, &settled) {
+					return nil, fmt.Errorf("resume observed usage regressed during settlement")
 				}
 			}
 		}

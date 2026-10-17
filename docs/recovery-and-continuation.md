@@ -30,6 +30,10 @@ An interrupted application can leave a partial working tree, but status remains
 `restoring`, `best_exposed` is false and initial/best pointers remain authoritative.
 Only full manifest verification, directory sync and durable journal commit expose
 a completed restore. Never use a `restoring` tree as accepted work.
+Final validation of that restored best uses the same absolute recovery deadline,
+not an expired work context or a renewed cleanup allowance. This exception is
+limited to the best verified by the current recovery; it cannot validate unrelated
+snapshots or extend the work deadline. Expired recovery verification fails closed.
 Staging completes before obsolete included files and empty conflicting directories
 are pruned. File/directory transitions are supported. Retained excluded content
 blocks a conflicting transition rather than being deleted. Full stored best
@@ -49,6 +53,28 @@ dispatch awaiting usage and adapter-reported executed-but-unsettled calls.
 Settled zero is not total zero. Unsettled reports are observations, not validated
 usage or provider attestation. Valid incurred usage survives limit/identity halts.
 Unrecoverable usage stays unresolved and blocks automated continuation.
+
+Before dispatch, both the accounting journal and saved run state durably record
+the pending reservation and dispatch obligation. A checkpoint failure prevents
+execution. Resume rejects a stale pre-dispatch journal, even after an uncatchable
+governor crash. This is local file continuity, not protection against an operator
+rolling back every authoritative state file together.
+
+Each usage collector capture is retained byte-for-byte under
+`.loopexec/<run-id>/usage-reports/<iteration>-<phase>-<sha256>.json`.
+Failed/truncated captures use `.diagnostic-tail` and are not complete usage proof.
+Names are exclusive-create and hash-bound; identical reports can be reused only
+after byte verification and sync. Reports are bounded to 1 MiB; archive failure
+halts before settlement. These private files may contain sensitive adapter output;
+do not publish them or mistake unvalidated JSON for provider attestation.
+The adapter still owns durable full provider streams.
+
+Conflicting later observations are archived separately and cannot erase an earlier
+unsettled report. Every previously observed call and known token/money amount must
+remain present and nondecreasing, including same-reservation resume. Missing fields
+may gain information; valid actuals can still settle. Lower reports halt as
+`usage_observation_conflict`; the governor does not guess which report is true or
+infer zero from settled counters. Resolve evidence externally before continuation.
 
 The adapter's physical-asset/provider ledger is a separate authority. A planned
 reservation or launched adapter does not prove every planned model ran. Report
@@ -119,7 +145,10 @@ This reusable template does not grant spending authority. The separately
 authorized October 16 release-fixture pilot delivered a rejecting independent
 review, not campaign success. See the [dated pilot record](releases/v0.5.0-rc.2-pilot.md).
 Its three-call allowance is exhausted; offline corrections do not authorize a
-retry. Any next live pilot requires fresh explicit bounds after exact validation:
+retry. A separately authorized follow-up engineering review also rejected the
+candidate; see the [October 17 offline repair record](releases/v0.5.0-rc.2-offline-repair.md).
+That review extension is exhausted too. Any next live pilot requires fresh
+explicit bounds after exact validation:
 
 1. Obtain approval for exact binary SHA, fresh release-owned fixture, models and
    effort, call/token bounds and known-versus-unknown money policy.

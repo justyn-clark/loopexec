@@ -438,6 +438,11 @@ func (c *candidateManager) clearRestoreObstructions(target, current workflow.Man
 	}
 	return nil
 }
+func (c *candidateManager) hasVerifiedRecovery() bool {
+	p := c.state.Restoration
+	return !c.recoveryDeadline.IsZero() && c.state.Status == "restored" && p != nil && p.Phase == "verified" && p.DeadlineNS == c.recoveryDeadline.UnixNano() && p.Target == c.state.Best && c.state.Restored == c.state.Best
+}
+
 func (c *candidateManager) validateSnapshot(id string) error {
 	if !validCandidateID(id) {
 		return fmt.Errorf("invalid snapshot ID")
@@ -447,7 +452,13 @@ func (c *candidateManager) validateSnapshot(id string) error {
 	if e := workflow.Read(filepath.Join(base, "manifest.json"), &manifest); e != nil || workflow.JSONHash(manifest) != id {
 		return fmt.Errorf("invalid snapshot manifest")
 	}
-	m, e := workflow.Capture(c.ctx, filepath.Join(base, "files"), c.policy)
+	ctx := c.ctx
+	if id == c.state.Best && c.hasVerifiedRecovery() {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithDeadline(context.Background(), c.recoveryDeadline)
+		defer cancel()
+	}
+	m, e := workflow.Capture(ctx, filepath.Join(base, "files"), c.policy)
 	if e != nil || workflow.JSONHash(m) != id {
 		return fmt.Errorf("snapshot content corrupt")
 	}

@@ -157,3 +157,9 @@ tasks:
     - id: task-51
       title: Commit scoped held RC2 corrections and verify hosted source CI without release publication
       status: completed
+    - id: task-52
+      title: Verify exact RC2 binary binding and perform one explicitly extended independent acceptance review without Home spending
+      status: completed
+    - id: task-53
+      title: Reproduce final reviewer findings and repair warranted core and private-fixture gaps offline while preserving rejection
+      status: completed
