@@ -4,11 +4,18 @@
 
 ## v0.5.0-rc.2 (Unpublished; Stable Held)
 
+- Merge preparation retains accepted source `6a564143` unchanged in runtime,
+  tooling and workflow content, appends portable audit continuity, and documents
+  the exact static bounded-pilot acceptance. Original acceptance/binary receipts
+  remain immutable; no approval is transferred to another binary or changed
+  runtime. Continuous-spend and consumer completion work remain separate.
 - October 17 rejecting-review corrections: checkpoint reservation/dispatch state
   before execution; retain exact hash-named collector reports and reject loss or
   reduction of observed usage; validate a recovered best within its original
-  absolute recovery deadline. Offline regressions only; independent acceptance
-  of these corrections remains pending. No new model calls or consumer changes.
+  absolute recovery deadline. Those offline repairs were subsequently accepted
+  for the exact source/binary in the
+  [merge-readiness record](docs/releases/v0.5.0-rc.2-merge-readiness.md), not stable
+  release or live campaign success. Merge preparation spends no calls or consumer work.
 - Document private engineering-fixture serializer repairs separately from core
   behavior; neither a VM realm nor process groups claim adversarial containment.
   See the dated offline repair record. Original rejecting receipts remain intact.
@@ -18,7 +25,8 @@
   preservation; execution plus reconciliation causes; immutable legacy sampling.
 - Follow-up critic regressions preserve unreserved observed dispatch/known usage
   and replay retained baselines with their original evidence request. These fixes
-  remain offline-validated, not independently approved.
+  initially remained offline-validated; the later bounded static verdict and its
+  exact source/binary binding are documented in the merge-readiness record.
 - Independent candidate recovery deadline, full snapshot validation/staging,
   unaccepted attempted-work archives and verified durable restoration exposure.
 - Ordered primary/cleanup failures; explicit settled, reported and unresolved

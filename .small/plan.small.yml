@@ -163,3 +163,9 @@ tasks:
     - id: task-53
       title: Reproduce final reviewer findings and repair warranted core and private-fixture gaps offline while preserving rejection
       status: completed
+    - id: task-54
+      title: Execute newly authorized bounded independent acceptance review of repaired RC2; preserve all prior receipts and stop on acceptance
+      status: completed
+    - id: task-55
+      title: Deliver accepted RC2 PR fast-forward with byte-identical runtime, portable audit lineage and current bounded-acceptance prose; validate exact final SHA
+      status: completed

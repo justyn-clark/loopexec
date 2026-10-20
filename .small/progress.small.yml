@@ -7012,3 +7012,130 @@ entries:
       status: completed
       task_id: task-53
       timestamp: "2026-10-17T14:33:26.934439000Z"
+    - command: git add -- cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/resume_validation.go cmd/loopexec/run.go cmd/loopexec/workflow.go cmd/loopexec/workflow_test.go cmd/loopexec/offline_review_...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261017T143327.736725000Z.txt
+      command_sha256: 18f4ff9d11b7abce419439ff4aa5df37b6f4c227e44fa363d1cf84249703fbd0
+      command_summary: git add -- cmd/loopexec/budget.go cmd/loopexec/candidate.go cmd/loopexec/resume_validation.go cmd/loopexec/run.go cmd/loopexec/workflow.go cmd/loopexec/workflow_test.go cmd/loopexec/offline_review_...
+      command_summary_version: 2
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-53
+      timestamp: "2026-10-17T14:33:27.736725000Z"
+    - command: 'git commit -m "fix: preserve dispatch accounting and verified recovery"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261017T143337.942843000Z.txt
+      command_sha256: d2d6c3dbfd4163ecbae7d2bdb149d0e8ce6516bc8c59a5130b13b11bb83b00ab
+      command_summary: 'git commit -m "fix: preserve dispatch accounting and verified recovery"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-53
+      timestamp: "2026-10-17T14:33:37.942843000Z"
+    - command: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2-offline-repair-20261017 ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261017T143339.104439000Z.txt
+      command_sha256: 1a3c6b5fa7b9e55dcd5deca85385b21937b9069ee1a06441b37cc9030d6a6c76
+      command_summary: GOCACHE="$PWD/../go-cache" go build -trimpath -o ../pilot-rc2-offline-repair-20261017 ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-53
+      timestamp: "2026-10-17T14:33:39.104439000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261017T143403.014591000Z.txt
+      command_sha256: 9119a2bd24a974eaaa9ca391ac3b600fb5ccd5378d0e9142308d7919e9cbcf40
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-53
+      timestamp: "2026-10-17T14:34:03.014591000Z"
+    - evidence: Offline correction delivered locally as commit 6a5641432032b4ca3e7fe4d941e4ef14afa989e0. Distinct trimpath runtime pilot-rc2-offline-repair-20261017 version0.5.0-rc.2 SHA256 f71e926d0a864b4f36a019e8951a4cb922639fd6ab365af1e8847494ed946d8c reproduced byte-for-byte from fresh local checkout of fixed commit. Full Go suite and focused/internal race, vet, contract, privacy, cochange, format, bundle and cache-free strict passed; copied consumer56tests and30syntax passed without Home writes or model calls. Exact runtime-candidate manifest remains accepted:false; original rejection/cost receipts unchanged. Only canonical audit tail intentionally remains uncommitted. No push, merge, release or deploy.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-53
+      timestamp: "2026-10-17T14:35:14.885452000Z"
+    - evidence: Added task task-54 via small plan --add
+      notes: Execute newly authorized bounded independent acceptance review of repaired RC2; preserve all prior receipts and stop on acceptance
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-54
+      timestamp: "2026-10-19T00:04:22.391086000Z"
+    - evidence: Human approval verified in Home turn01a15175-5540-7523-a875-314982e7e662 against prior explicit two-review prompt. Authorizes maximum2new release-owned engineering reviews, lifetime6calls; each gpt-6.1-sol/high,480seconds,65536observed-token reservation, USDunknown. Stop at first acceptance. Second only after rejection and evidenced offline repair/new fixed commit/distinct reproducible binary. No Home operations, paid replay, push, merge, release or deploy.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-54
+      timestamp: "2026-10-19T00:04:45.393421000Z"
+    - evidence: 'Preflight passed before spending: fixed6a564143 commit, f71e926d binary freshly byte-reproduced, e563ec37 source digest, corrected private fixture pins, 56consumer tests/30syntax and focused offline regressions. Synthetic harness verifies durable raw completion and fail-closed missing/over-reservation usage with zero model calls. Original4spent entries and raw events intact; two-review grant recorded, lifetime6cap. First review only now; stop on acceptance, no automatic second.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-54
+      timestamp: "2026-10-19T00:08:51.777120000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261019T001003.110148000Z.txt
+      command_sha256: 9119a2bd24a974eaaa9ca391ac3b600fb5ccd5378d0e9142308d7919e9cbcf40
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-54
+      timestamp: "2026-10-19T00:10:03.110148000Z"
+    - command: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261019T001202.097449000Z.txt
+      command_sha256: 9119a2bd24a974eaaa9ca391ac3b600fb5ccd5378d0e9142308d7919e9cbcf40
+      command_summary: GOCACHE="$PWD/../go-cache" go run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-54
+      timestamp: "2026-10-19T00:12:02.097449000Z"
+    - evidence: First authorized follow-up accepted exact commit6a5641432032b4ca3e7fe4d941e4ef14afa989e0 / binaryf71e926d0a864b4f36a019e8951a4cb922639fd6ab365af1e8847494ed946d8c for bounded Home pilot only, no findings. Fresh read-only gpt-6.1-sol/high CLI context,49016reported tokens in67600ms,USDunknown; no tools/repairs. Lifetime release5of6calls spent,230937tokens; unused second review closed on first acceptance. Immutable acceptance b2df4d527847a96683f7d9a3886b658f00bd9526407e5eb8afa463e7573f3678 and manifest8a42e33364f90b91ed57e182e5de25f9baeb57e93f848fc8985ad2638b397dc9 under logical evidence rc2-review-20261018-1. Prior receipts, runtime, fixture and unrelated work verified intact. Exact non-secret long staging-command proof retained without editing original receipt; privacy and cache-free strict passed. No Home operations, installed runtime changes, push, merge, release or deploy; stable/live proof held.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-54
+      timestamp: "2026-10-19T00:12:59.076433000Z"
+    - evidence: Added task task-55 via small plan --add
+      notes: Deliver accepted RC2 PR fast-forward with byte-identical runtime, portable audit lineage and current bounded-acceptance prose; validate exact final SHA
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-55
+      timestamp: "2026-10-20T07:28:11.480554000Z"
+    - evidence: Restored complete accepted-source audit lineage through SMALL snapshot/checkout, retained exact portable proofs, and verified fresh origin main88b532b / PR10e210cde are ancestors of6a564143. Only audit/docs/changelog changes allowed beyond accepted source; no runtime/tool/workflow/dependency changes, no RC3 or Home harness import. Preserve original b2df4d52 acceptance and f71e926d binary; no automatic acceptance of new Git or binary identity. Validate local/project gates then exact-head hosted CI before merge decision; no merge or model calls.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-55
+      timestamp: "2026-10-20T07:29:06.564995000Z"
+    - evidence: 'Isolated RC2 merge payload complete: accepted6a564143 is an unchanged ancestor; runtime/dependency/example/tooling/workflow bytes and source digeste563ec37 remain identical. Updated bounded-acceptance guide, release overview, allowlist and CHANGELOG; restored exact audit lineage with SMALL CLI and retained exact long-command proof. Focused/full Go, vet, internal/scoped races, CLI contract, all five offline proofs, gitleaks, docs/cochange/privacy/format and cache-free strict passed. No model or Home operations. Scoped local commit/fast-forward push and exact final hosted CI tracked by enclosing task59; no merge or publication. Original acceptance6a/f71 retained, no acceptance transferred to any rebuilt binary.'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-55
+      timestamp: "2026-10-20T07:34:20.248749000Z"
