@@ -17,7 +17,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.5.0-rc.1"
+	toolVersion = "0.5.0-rc.2"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
@@ -102,6 +102,8 @@ func (e *cliError) Unwrap() error {
 type response struct {
 	ModelSelection *modelpolicy.Selection `json:"model_selection,omitempty"`
 	FailureCause   string                 `json:"failure_cause,omitempty"`
+	Failures       []runFailure           `json:"failures,omitempty"`
+	Accounting     *accountingSummary     `json:"accounting,omitempty"`
 	BestCandidate  string                 `json:"best_candidate,omitempty"`
 	Tool           string                 `json:"tool"`
 	Version        string                 `json:"version"`
@@ -286,18 +288,23 @@ type escalationState struct {
 // loopState is the durable, resumable machine state (SPEC.md section 8). Slice 0 holds
 // the subset needed to record a run; later slices add the audit fields.
 type loopState struct {
-	ModelSelection    *modelpolicy.Selection `json:"model_selection,omitempty"`
-	Workflow          *workflow.Config       `json:"workflow,omitempty"`
-	WorkflowHash      string                 `json:"workflow_hash,omitempty"`
-	RunPolicyHash     string                 `json:"run_policy_hash,omitempty"`
-	Budget            *budgetBook            `json:"budget,omitempty"`
-	Numeric           *numericState          `json:"numeric,omitempty"`
-	Candidate         *candidateState        `json:"candidate,omitempty"`
-	BestCandidatePath string                 `json:"best_candidate_path,omitempty"`
-	IntegrityBaseline []string               `json:"integrity_baseline,omitempty"`
-	DeadlineNS        int64                  `json:"deadline_ns,omitempty"`
-	CommandTimeoutNS  int64                  `json:"command_timeout_ns,omitempty"`
-	GraceNS           int64                  `json:"grace_ns,omitempty"`
+	RuntimeVersion      string                 `json:"runtime_version,omitempty"`
+	ModelSelection      *modelpolicy.Selection `json:"model_selection,omitempty"`
+	Workflow            *workflow.Config       `json:"workflow,omitempty"`
+	WorkflowHash        string                 `json:"workflow_hash,omitempty"`
+	RunPolicyHash       string                 `json:"run_policy_hash,omitempty"`
+	Budget              *budgetBook            `json:"budget,omitempty"`
+	Numeric             *numericState          `json:"numeric,omitempty"`
+	Candidate           *candidateState        `json:"candidate,omitempty"`
+	BestCandidatePath   string                 `json:"best_candidate_path,omitempty"`
+	IntegrityBaseline   []string               `json:"integrity_baseline,omitempty"`
+	DeadlineNS          int64                  `json:"deadline_ns,omitempty"`
+	CommandTimeoutNS    int64                  `json:"command_timeout_ns,omitempty"`
+	GraceNS             int64                  `json:"grace_ns,omitempty"`
+	RecoveryTimeoutNS   int64                  `json:"recovery_timeout_ns,omitempty"`
+	BudgetLimitMicroUSD int64                  `json:"budget_limit_microusd,omitempty"`
+	Failures            []runFailure           `json:"failures,omitempty"`
+	Lineage             []string               `json:"lineage,omitempty"`
 
 	FailureCause  string  `json:"failure_cause,omitempty"`
 	SchemaVersion int     `json:"schema_version"`
@@ -410,6 +417,7 @@ type runConfig struct {
 	workflowFile                        string
 	resume                              bool
 	totalTimeout, commandTimeout, grace time.Duration
+	recoveryTimeout                     time.Duration
 	runID                               string
 	maxIterations                       int
 	check                               string
@@ -500,6 +508,7 @@ func newRunCmd() *cobra.Command {
 	cmd.Flags().StringVar(&cfg.workflowFile, "workflow", "", "Pinned workflow JSON (argv hooks, metering, candidates, numeric policy, optional model assignments)")
 	cmd.Flags().BoolVar(&cfg.resume, "resume", false, "Resume a workflow run with identical policy and cumulative bounds")
 	cmd.Flags().DurationVar(&cfg.totalTimeout, "timeout", 0, "Total run deadline (0 = disabled)")
+	cmd.Flags().DurationVar(&cfg.recoveryTimeout, "recovery-timeout", 0, "Independent candidate recovery deadline (0 = 2m); never permits more work")
 	cmd.Flags().DurationVar(&cfg.commandTimeout, "command-timeout", 0, "Deadline for every command and collector (0 = disabled)")
 	cmd.Flags().DurationVar(&cfg.grace, "terminate-grace", 250*time.Millisecond, "Grace between process-group TERM and KILL")
 	cmd.Flags().StringVar(&cfg.runID, "run-id", "", "Run identifier")

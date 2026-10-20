@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "stable_ready": false,
+  "gates": [
+    {"id": "output_integrity", "status": "delivered_retest_pending", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md"]},
+    {"id": "accounting", "status": "followup_offline_only", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md", "docs/releases/v0.5.0-rc.2-offline-repair.md"]},
+    {"id": "restoration", "status": "interrupted_live_proof_pending", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md", "docs/releases/v0.5.0-rc.2-offline-repair.md"]},
+    {"id": "continuation", "status": "live_proof_pending", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md"]},
+    {"id": "independent_review_delivery", "status": "delivered_rejected", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md", "docs/releases/v0.5.0-rc.2-offline-repair.md"]},
+    {"id": "authorized_live_pilot", "status": "completed_rejected_allowance_exhausted", "evidence": ["docs/releases/v0.5.0-rc.2-pilot.md", "docs/releases/v0.5.0-rc.2-offline-repair.md"]}
+  ]
+}

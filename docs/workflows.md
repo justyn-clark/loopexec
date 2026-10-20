@@ -1,5 +1,9 @@
 # Bounded unattended workflows
 
+See [Recovery and Continuation](recovery-and-continuation.md) for independent
+recovery deadlines, attempted-work archives, unresolved accounting and inherited
+limits across explicitly linked changed contracts.
+
 The Go governor remains the only retry controller. The opt-in `run --workflow`
 contract composes an argv adapter with exact accounting, candidate snapshots,
 and optional numeric progress. It needs no model SDK or engine dependency.
@@ -28,16 +32,20 @@ operator removal after an uncatchable crash; Unix locks release automatically.
 
 Command output has a 1 MiB capture ceiling. Commands retain separate 16 KiB
 stdout/stderr diagnostic tails in `.loopexec/<run-id>/diagnostics/` (0600 files).
-Raw output never goes in receipts or terminal responses. No full logs are
-collected by default. Treat private diagnostic tails as potentially sensitive;
+Raw output never goes in receipts or terminal responses. Usage collector captures
+are additionally retained byte-for-byte in private, hash-named `usage-reports/`
+files; failed/truncated captures are labeled diagnostic tails. Other full logs
+are not collected by default. Treat these private captures as potentially sensitive;
 do not upload them indiscriminately. Credentials belong in isolated provider
 wrappers or private input channels, never command strings or argv recorded in
 config/state. Legacy `--exec`/`--check` strings remain recorded for replay.
 
 Every command emits start and end, timeout, or cancellation evidence with phase,
 duration, exit, and cause. Final state is atomic on controlled termination.
-Candidate cleanup gets a separate bounded grace (at least 250ms); deadlines may
-therefore finish after the configured wall time by termination/cleanup grace.
+Candidate cleanup uses `--recovery-timeout` (zero selects two minutes), independent
+of termination grace. Final verification shares that original absolute recovery
+deadline; cleanup cannot renew it or permit more work. Deadlines may therefore
+finish after the configured work wall time by termination/recovery time.
 SIGKILL, power loss, and storage failures cannot promise a final receipt.
 
 ## Workflow JSON and hook protocol
@@ -90,6 +98,14 @@ existing classes: `objective_unverified` / `metric_integrity_violation` (13),
 The additive `failure_cause` explains the failed phase. No new exit class.
 
 ## Spending and restart guarantees
+
+Pending reservations and dispatch obligations are checkpointed in both saved
+run state and accounting journal before execution. Resume rejects rollback of
+either accounting obligation. Retained unsettled observations cannot shrink or
+disappear during later collection or same-reservation resume. Exact conflicting
+reports remain private evidence, not automatically reconciled totals. See
+[Recovery and Continuation](recovery-and-continuation.md) for the archive and
+failure contract.
 
 Money is integer micro-USD: one dollar is 1,000,000 units. `--budget-usd` accepts
 up to six decimals; accumulation and reservation comparison use checked integers.

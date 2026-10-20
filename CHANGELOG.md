@@ -2,6 +2,46 @@
 
 ## Unreleased
 
+## v0.5.0-rc.2 (Unpublished; Stable Held)
+
+- Merge preparation retains accepted source `6a564143` unchanged in runtime,
+  tooling and workflow content, appends portable audit continuity, and documents
+  the exact static bounded-pilot acceptance. Original acceptance/binary receipts
+  remain immutable; no approval is transferred to another binary or changed
+  runtime. Continuous-spend and consumer completion work remain separate.
+- October 17 rejecting-review corrections: checkpoint reservation/dispatch state
+  before execution; retain exact hash-named collector reports and reject loss or
+  reduction of observed usage; validate a recovered best within its original
+  absolute recovery deadline. Those offline repairs were subsequently accepted
+  for the exact source/binary in the
+  [merge-readiness record](docs/releases/v0.5.0-rc.2-merge-readiness.md), not stable
+  release or live campaign success. Merge preparation spends no calls or consumer work.
+- Document private engineering-fixture serializer repairs separately from core
+  behavior; neither a VM realm nor process groups claim adversarial containment.
+  See the dated offline repair record. Original rejecting receipts remain intact.
+- Independent review regression fixes: monotonic saved accounting and committed
+  best journals; observed-money cap inheritance; full stored/working replay pins;
+  baseline post-hook integrity; file/directory restoration with excluded-content
+  preservation; execution plus reconciliation causes; immutable legacy sampling.
+- Follow-up critic regressions preserve unreserved observed dispatch/known usage
+  and replay retained baselines with their original evidence request. These fixes
+  initially remained offline-validated; the later bounded static verdict and its
+  exact source/binary binding are documented in the merge-readiness record.
+- Independent candidate recovery deadline, full snapshot validation/staging,
+  unaccepted attempted-work archives and verified durable restoration exposure.
+- Ordered primary/cleanup failures; explicit settled, reported and unresolved
+  accounting. Unknown total calls/tokens/money remain null, not zero.
+- Immutable hash-linked changed contracts inherit spend, iterations and absolute
+  deadlines. Unresolved evidence and renewed bounds are rejected.
+- Identical-contract resume can perform deterministic recovery after a work
+  deadline or unresolved usage halt; missing authoritative journals fail closed.
+- Runtime-version/context resume pins and new receipt bindings preserve unchanged legacy
+  signatures. Stable release tooling rejects incomplete acceptance evidence.
+- Authorized release-fixture pilot: complete usage and signed critic delivery,
+  rejecting review, unaccepted attempt retained and initial tree restored.
+  See dated pilot notes. No live campaign success, consumer changes, further
+  model-call authorization or allowance renewal claimed.
+
 Future recipes and workflow adapters will remain configurable, opt-in integrations.
 
 ## v0.5.0-rc.1

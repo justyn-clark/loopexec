@@ -10,14 +10,16 @@ import (
 )
 
 type budgetBook struct {
-	Mode          string                   `json:"mode"`
-	MicroUSD      int64                    `json:"microusd"`
-	MonetaryKnown bool                     `json:"monetary_known"`
-	Calls         int64                    `json:"calls"`
-	Tokens        int64                    `json:"tokens"`
-	Entries       map[string]workflow.Call `json:"entries"`
-	Pending       *workflow.Preflight      `json:"pending,omitempty"`
-	Series        []float64                `json:"phase_costs_usd,omitempty"`
+	Mode            string                   `json:"mode"`
+	MicroUSD        int64                    `json:"microusd"`
+	MonetaryKnown   bool                     `json:"monetary_known"`
+	Calls           int64                    `json:"calls"`
+	Tokens          int64                    `json:"tokens"`
+	Entries         map[string]workflow.Call `json:"entries"`
+	Pending         *workflow.Preflight      `json:"pending,omitempty"`
+	DispatchPending bool                     `json:"dispatch_pending,omitempty"`
+	Unsettled       *workflow.Usage          `json:"unsettled_usage,omitempty"`
+	Series          []float64                `json:"phase_costs_usd,omitempty"`
 }
 
 func newBudget(mode string) *budgetBook {
@@ -84,6 +86,9 @@ func (b *budgetBook) reserve(p workflow.Preflight, req workflow.Request, pol wor
 }
 func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workflow.MeterPolicy, cap int64) string {
 	if u.SchemaVersion != 1 || u.RunID != req.RunID || u.Iteration != req.Iteration || u.Phase != req.Phase || u.Calls == nil {
+		return "cost_anomaly"
+	}
+	if !usagePreservesKnown(b.Unsettled, &u) {
 		return "cost_anomaly"
 	}
 	allowed := map[string]workflow.Reservation{}
@@ -175,6 +180,8 @@ func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workf
 		}
 	}
 	next.Pending = nil
+	next.DispatchPending = false
+	next.Unsettled = nil
 	if len(next.Entries) > len(b.Entries) {
 		next.Series = append(append([]float64{}, b.Series...), float64(phaseTotal)/1e6)
 	}
@@ -194,6 +201,30 @@ func (b *budgetBook) reconcile(u workflow.Usage, req workflow.Request, pol workf
 	}
 	return ""
 }
+
+func usagePreservesKnown(prior, current *workflow.Usage) bool {
+	if prior == nil {
+		return true
+	}
+	if current == nil || prior.SchemaVersion != current.SchemaVersion || prior.RunID != current.RunID || prior.Iteration != current.Iteration || prior.Phase != current.Phase {
+		return false
+	}
+	byID := map[string]workflow.Call{}
+	for _, call := range current.Calls {
+		if _, duplicate := byID[call.ID]; duplicate {
+			return false
+		}
+		byID[call.ID] = call
+	}
+	for _, observed := range prior.Calls {
+		call, exists := byID[observed.ID]
+		if !exists || call.Phase != observed.Phase || observed.Status != "skipped" && call.Status == "skipped" || observed.Tokens != nil && (call.Tokens == nil || *call.Tokens < *observed.Tokens) || observed.MicroUSD != nil && (call.MicroUSD == nil || *call.MicroUSD < *observed.MicroUSD) {
+			return false
+		}
+	}
+	return true
+}
+
 func loadBudget(path, mode string) (*budgetBook, error) {
 	var b budgetBook
 	e := workflow.Read(path, &b)
@@ -210,6 +241,9 @@ func loadBudget(path, mode string) (*budgetBook, error) {
 
 }
 func (b *budgetBook) validate() error {
+	if b.Pending == nil && (b.DispatchPending || b.Unsettled != nil) {
+		return fmt.Errorf("unsettled usage has no reservation")
+	}
 	usd, tokens, calls := int64(0), int64(0), int64(0)
 	known := b.Mode != "unmetered"
 	for id, c := range b.Entries {

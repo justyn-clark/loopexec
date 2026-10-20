@@ -36,16 +36,68 @@ func TestWorkflowHookHelper(t *testing.T) {
 	write := func(v any) { json.NewEncoder(os.Stdout).Encode(v) }
 	switch phase {
 	case "reserve":
+		if mode == "offline-conflicting-usage" {
+			write(workflow.Preflight{SchemaVersion: 1, RunID: req.RunID, Iteration: req.Iteration, Phase: req.Phase, Enforced: true, Calls: []workflow.Reservation{{ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "builder"), Phase: "builder", MaxMicroUSD: 100000, MaxTokens: 10}, {ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "critic"), Phase: "critic", MaxMicroUSD: 100000, MaxTokens: 10}}})
+			break
+		}
 		write(workflow.Preflight{SchemaVersion: 1, RunID: req.RunID, Iteration: req.Iteration, Phase: req.Phase, Enforced: true, Calls: []workflow.Reservation{{ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "builder"), Phase: "builder", MaxMicroUSD: 100000, MaxTokens: 10}}})
 	case "exec":
+		if mode == "review-best-journal" {
+			if req.Iteration == 2 {
+				var old candidateState
+				workflow.Read(".loopexec/flow/candidate.json", &old)
+				workflow.Atomic("stale-journal.json", old)
+			}
+			os.WriteFile("candidate/assets/value", []byte(strconv.Itoa(req.Iteration)), 0600)
+		}
+		if mode == "pilot-cancel" {
+			os.WriteFile("candidate/assets/value", []byte("cancelled repair"), 0600)
+		}
+		if mode == "offline-evidence-failure" {
+			if err := os.WriteFile(filepath.Join(".loopexec", req.RunID, "usage-reports"), []byte("blocked archive directory"), 0600); err != nil {
+				os.Exit(3)
+			}
+		}
+		if mode == "pilot-double-failure" {
+			var journal candidateState
+			workflow.Read(".loopexec/flow/candidate.json", &journal)
+			os.WriteFile("candidate/assets/value", []byte("unreviewed repair"), 0600)
+			os.WriteFile(filepath.Join(".loopexec/flow/candidates", journal.Initial, "files/assets/value"), []byte("corrupt"), 0600)
+		}
 		f, e := os.OpenFile("executions", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
 		if e != nil {
 			os.Exit(2)
 		}
 		f.WriteString(strconv.Itoa(req.Iteration) + "\n")
 		f.Close()
+		if mode == "offline-crash-window" && req.Iteration == 2 {
+			parent, err := os.FindProcess(os.Getppid())
+			if err != nil || parent.Kill() != nil {
+				os.Exit(3)
+			}
+			os.Exit(0)
+		}
+		if mode == "review-exec-usage" || mode == "review-baseline-mutation" || mode == "review-baseline-retained" {
+			os.Exit(7)
+		}
+		if mode == "review-timeout-usage" {
+			time.Sleep(time.Hour)
+		}
+		if mode == "pilot-cancel" {
+			time.Sleep(time.Hour)
+		}
 	case "usage":
-		if mode == "bad-usage" {
+		if mode == "offline-conflicting-usage" {
+			usd := int64(80)
+			var second *int64
+			if _, err := os.Stat("usage-requested-once"); err == nil {
+				usd, second = 1, money(1)
+			}
+			os.WriteFile("usage-requested-once", []byte("yes"), 0600)
+			write(workflow.Usage{SchemaVersion: 1, RunID: req.RunID, Iteration: req.Iteration, Phase: req.Phase, Calls: []workflow.Call{{ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "builder"), Phase: "builder", Status: "actual", MicroUSD: money(usd), Tokens: money(1)}, {ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "critic"), Phase: "critic", Status: "actual", MicroUSD: second, Tokens: money(1)}}})
+			break
+		}
+		if mode == "bad-usage" || mode == "pilot-double-failure" || mode == "review-exec-usage" || mode == "review-timeout-usage" {
 			os.Stdout.WriteString(`{"schema_version":1,"calls":"bad"}`)
 			break
 		}
@@ -55,6 +107,23 @@ func TestWorkflowHookHelper(t *testing.T) {
 		}
 		write(workflow.Usage{SchemaVersion: 1, RunID: req.RunID, Iteration: req.Iteration, Phase: req.Phase, Calls: []workflow.Call{{ID: workflow.CallID(req.RunID, req.Iteration, req.Phase, "builder"), Phase: "builder", Status: "actual", MicroUSD: money(100000), Tokens: money(10)}}})
 	case "check":
+		if mode == "offline-crash-window" {
+			if req.Iteration == 1 {
+				data, err := os.ReadFile(".loopexec/flow/budget.json")
+				if err != nil || os.WriteFile("settled-before-crash.json", data, 0600) != nil {
+					os.Exit(3)
+				}
+			}
+			os.Exit(1)
+		}
+		if mode == "review-baseline-mutation" && req.Iteration == 0 {
+			os.WriteFile("candidate/assets/value", []byte("unchecked mutation"), 0600)
+		}
+		if mode == "review-replay-mutation" {
+			if _, err := os.Stat("replay-mutation-enabled"); err == nil {
+				os.WriteFile("candidate/assets/payload", []byte("mutated during replay"), 0600)
+			}
+		}
 		if mode == "bad-checkpoint" {
 			os.Rename(".loopexec/flow/candidate.json", ".loopexec/flow/candidate.saved")
 			os.Mkdir(".loopexec/flow/candidate.json", 0700)

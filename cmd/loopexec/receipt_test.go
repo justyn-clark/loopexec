@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -112,5 +113,42 @@ func TestAttestSignAndVerify(t *testing.T) {
 	exitW, _, _ := runCLI(t, bin, "attest", "--json", "--workdir", dir, "--key", "k2", "--verify")
 	if exitW != 13 {
 		t.Fatalf("attest verify (wrong key) exit=%d, want 13", exitW)
+	}
+}
+
+func TestReceiptPinsRecoveryAndContinuationWithoutChangingLegacyBytes(t *testing.T) {
+	legacy := loopState{RunID: "legacy", HaltReason: "execution_failure", Iteration: 1, Check: "false"}
+	data, err := canonicalReceipt(legacy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := `{"run_id":"legacy","halt_reason":"execution_failure","iteration":1,"check":"false","cost_usd":0}`
+	if string(data) != want {
+		t.Fatalf("legacy canonical bytes changed: %s", data)
+	}
+	st := legacy
+	st.RuntimeVersion, st.DeadlineNS, st.RecoveryTimeoutNS, st.BudgetLimitMicroUSD, st.RunPolicyHash = toolVersion, 100, 200, 300, "contract"
+	st.Lineage = []string{"parent"}
+	st.Failures = []runFailure{{Reason: "cost_anomaly", Cause: "usage_unavailable"}}
+	base, _ := canonicalReceipt(st)
+	if !bytes.Contains(base, []byte(`"runtime":{"version":"`+toolVersion+`"`)) {
+		t.Fatal("runtime identity unpinned")
+	}
+	mutations := []func(*loopState){
+		func(s *loopState) { s.RuntimeVersion = "other" },
+		func(s *loopState) { s.DeadlineNS++ },
+		func(s *loopState) { s.RecoveryTimeoutNS++ },
+		func(s *loopState) { s.BudgetLimitMicroUSD++ },
+		func(s *loopState) { s.RunPolicyHash = "changed" },
+		func(s *loopState) { s.Lineage = []string{"other"} },
+		func(s *loopState) { s.Failures = nil },
+	}
+	for i, mutate := range mutations {
+		changed := st
+		mutate(&changed)
+		got, err := canonicalReceipt(changed)
+		if err != nil || bytes.Equal(base, got) {
+			t.Fatalf("unpinned recovery/lineage field %d", i)
+		}
 	}
 }
