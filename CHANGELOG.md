@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.5.0-rc.3
+
+- Recipe distribution: `recipes export --public --package-version` generates an MIT-licensed, versioned Pi/skills pack; release packaging checks runtime identity and includes its npm-compatible tarball/checksum. Export itself performs no publication.
+
+- Integrated all 33 configurable JC recipes with real domain fixtures, independent measurements, receipt verification, candidate retention and shared call/review scopes.
+- Added portable skill/Pi exports, discovery and explicit Pi run/verify commands. Native engine/evaluator/scanner bindings remain operator-configured.
+- Retained RC2 recovery, monotonic accounting and immutable continuation fixes. Prior acceptance remains bound to its original source/binary.
+- Added an all-recipe proof tool and included embedded JavaScript, Blender and Godot programs in source-bound documentation identity.
+- Candidate publication does not clear the existing stable/live-pilot acceptance hold.
+
+
 ## Unreleased
 
 ## v0.5.0-rc.2 (Unpublished; Stable Held)

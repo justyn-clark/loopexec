@@ -145,7 +145,7 @@ func sourcePaths(root string) ([]string, error) {
 				return nil
 			}
 			switch filepath.Ext(path) {
-			case ".go", ".sh", ".json", ".yaml", ".yml", ".toml":
+			case ".go", ".sh", ".json", ".yaml", ".yml", ".toml", ".mjs", ".py", ".gd":
 				relative, err := filepath.Rel(root, path)
 				if err != nil {
 					return err

@@ -169,3 +169,6 @@ tasks:
     - id: task-55
       title: Deliver accepted RC2 PR fast-forward with byte-identical runtime, portable audit lineage and current bounded-acceptance prose; validate exact final SHA
       status: completed
+    - id: task-56
+      title: Reconcile RC2 with all JC recipes and publish verified core candidate and portable pack
+      status: pending

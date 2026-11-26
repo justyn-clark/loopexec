@@ -34,13 +34,20 @@ type Continuation struct {
 	StateSHA256   string `json:"state_sha256"`
 	ReceiptSHA256 string `json:"receipt_sha256"`
 }
+type CallScopePolicy struct {
+	StoreDir    string         `json:"store_dir"`
+	Scope       string         `json:"scope"`
+	MaxCalls    int            `json:"max_calls"`
+	PhaseLimits map[string]int `json:"phase_limits"`
+}
 type MeterPolicy struct {
-	Mode      string   `json:"mode"`
-	Reserve   []string `json:"reserve,omitempty"`
-	Usage     []string `json:"usage,omitempty"`
-	MaxCalls  int64    `json:"max_calls,omitempty"`
-	MaxTokens int64    `json:"max_tokens,omitempty"`
-	Sigma     float64  `json:"sigma,omitempty"`
+	CallScope *CallScopePolicy `json:"call_scope,omitempty"`
+	Mode      string           `json:"mode"`
+	Reserve   []string         `json:"reserve,omitempty"`
+	Usage     []string         `json:"usage,omitempty"`
+	MaxCalls  int64            `json:"max_calls,omitempty"`
+	MaxTokens int64            `json:"max_tokens,omitempty"`
+	Sigma     float64          `json:"sigma,omitempty"`
 }
 type CandidatePolicy struct {
 	Root      string   `json:"root"`

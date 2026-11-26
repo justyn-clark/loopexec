@@ -31,6 +31,11 @@ for target in darwin/amd64 darwin/arm64 linux/amd64 linux/arm64 windows/amd64 wi
     tar -czf "$OUT/$name.tar.gz" -C "$stage" "$executable" LICENSE README.md SPEC.md CHANGELOG.md RELEASE_NOTES.md docs examples documentation
   fi
 done
+pack_version="$(jq -er '.version' scripts/recipe-package.json)"
+pack_runtime="$(jq -er '.runtime_version' scripts/recipe-package.json)"
+[[ "$pack_runtime" == "$version" ]] || { echo "recipe pack runtime mismatch" >&2; exit 1; }
+go run ./cmd/loopexec recipes export --public --package-version "$pack_version" --out "$OUT/.stage/jc-loop-recipes"
+(cd "$OUT/.stage/jc-loop-recipes" && npm pack --ignore-scripts --pack-destination "$OUT")
 go run ./tools/docs-continuity verify-bundle "$OUT/documentation"
-(cd "$OUT" && shasum -a 256 loopexec-*.tar.gz loopexec-*.zip > checksums.txt && shasum -a 256 -c checksums.txt)
+(cd "$OUT" && shasum -a 256 loopexec-*.tar.gz loopexec-*.zip justynclark-jc-loop-recipes-*.tgz > checksums.txt && shasum -a 256 -c checksums.txt)
 printf 'RELEASE_PACKAGES_OK: %s\n' "$OUT"

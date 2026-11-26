@@ -20,9 +20,9 @@ The normative contract is `SPEC.md`. The current source implements bounded execu
 
 ## Current status
 
-Source identity: **v0.5.0-rc.2**, an unpublished recovery candidate adding
+Source identity: **v0.5.0-rc.3**, a recipe-enabled release candidate preserving RC2 recovery and adding
 [visible model profiles and task/role assignments](docs/model-assignments.md).
-See [candidate notes](docs/releases/v0.5.0-rc.2.md) and
+See [candidate notes](docs/releases/v0.5.0-rc.3.md) and
 [recovery/continuation](docs/recovery-and-continuation.md). Stable promotion is
 held pending complete live accounting, recovery and independent review delivery; the
 [Releases page](https://github.com/justyn-clark/loopexec/releases) establishes
@@ -58,6 +58,10 @@ See `SPEC.md` section 11:
 - Provider-specific live usage wrappers; the deeper metric-integrity layers (assertion-count / coverage-floor); `probe-check` adversarial perturbation + the in-loop sequential monitor.
 - The `import_closure` / `dep_graph` context-relevance tiers; github/slack escalation channels; the kill-the-PID watchdog actuator.
 - Full SMALL-driven `task_list` loop execution; container, Nix, or remote substrates and multi-worker orchestration.
+
+## JC Loop Recipes
+
+All 33 JC recipes are available in the v0.5.0-rc.3 candidate: discover a task, supply its inputs, bind a builder and independent checker, then run with finite limits and verify its receipt. Export 33 skills and Pi prompts from the same catalog. See [recipes](docs/recipes.md) and [live configuration](docs/live-recipes.md).
 
 ## Install
 

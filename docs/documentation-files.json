@@ -29,6 +29,11 @@
     "docs/releases/v0.5.0-rc.2-merge-readiness.md",
     "docs/releases/v0.5.0-rc.2-offline-repair.md",
     "docs/releases/v0.5.0-rc.2-pilot.md",
-    "examples/scoped-budget/README.md"
+    "examples/scoped-budget/README.md",
+    "docs/recipes.md",
+    "docs/live-recipes.md",
+    "docs/recipe-catalog.md",
+    "docs/recipe-ideas-source.md",
+    "docs/releases/v0.5.0-rc.3.md"
   ]
 }

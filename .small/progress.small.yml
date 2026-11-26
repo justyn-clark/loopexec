@@ -7139,3 +7139,467 @@ entries:
       status: completed
       task_id: task-55
       timestamp: "2026-10-20T07:34:20.248749000Z"
+    - evidence: Added task task-56 via small plan --add
+      notes: Reconcile RC2 with all JC recipes and publish verified core candidate and portable pack
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-56
+      timestamp: "2026-11-26T10:17:09.507608000Z"
+    - evidence: Owner authorized reconciliation and publication. Validate outstanding RC2 head before merging; integrate recipe additions onto accepted runtime without importing private audit records or losing recovery/accounting fixes. Release candidate channel preserves stable acceptance hold.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:17:37.276159000Z"
+    - command: python3 build/shipping/go.py test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102004.796031000Z.txt
+      command_sha256: 0ec766a460e15e90c6074786a66d53348d15dd0250d073f5382048827658d17e
+      command_summary: python3 build/shipping/go.py test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:20:04.796031000Z"
+    - evidence: Fresh full Go suite passed locally against exact PR10 head bc0b05cc before recipe integration. Existing exact-head hosted Linux/macOS and security checks pass; owner explicitly authorized outstanding PR resolution and publication. Original bounded-pilot acceptance remains unchanged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:20:54.346221000Z"
+    - command: python3 build/shipping/integrate.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102054.546801000Z.txt
+      command_sha256: 304436069ee88a75c67c18ee916c4655c851fe85dd2f0d3f4a917bb6ffa65fba
+      command_summary: python3 build/shipping/integrate.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:20:54.546801000Z"
+    - command: gofmt -w cmd/loopexec/main.go cmd/loopexec/workflow.go internal/workflow/contract.go tools/docs-continuity/main.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102054.673291000Z.txt
+      command_sha256: bf40c416236fe29bb663fbf6bf8ee0c76fecf865dd34d6b5abcd33a67860385d
+      command_summary: gofmt -w cmd/loopexec/main.go cmd/loopexec/workflow.go internal/workflow/contract.go tools/docs-continuity/main.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:20:54.673291000Z"
+    - command: python3 build/shipping/go.py test ./cmd/loopexec ./internal/... ./tools/... -run "TestRecipes|TestRecipe|TestScoped|TestWorkflowBudget" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102059.863454000Z.txt
+      command_sha256: 647210b7380977e31f542d924a4207290fd06cf02a06331bc34cd6b7661f14b9
+      command_summary: python3 build/shipping/go.py test ./cmd/loopexec ./internal/... ./tools/... -run "TestRecipes|TestRecipe|TestScoped|TestWorkflowBudget" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:20:59.863454000Z"
+    - command: python3 build/shipping/npm-login.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102325.012837000Z.txt
+      command_sha256: a8a64cd3a0647ce66fee1e97134debd6766861e5e6d728877144bd6e3d3ee3ae
+      command_summary: python3 build/shipping/npm-login.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:23:25.012837000Z"
+    - command: git fetch origin main && git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102511.594628000Z.txt
+      command_sha256: fc095eef8807ac4ff98b0240d688d710a0c549b06268b0ec9fece2f4f1520b8d
+      command_summary: git fetch origin main && git merge --ff-only origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:25:11.594628000Z"
+    - command: python3 build/shipping/public-pack.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102511.719290000Z.txt
+      command_sha256: 72a00020e308688cc52476adaefeb89e2e262b89775ef318c661cb01293a3da3
+      command_summary: python3 build/shipping/public-pack.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:25:11.719290000Z"
+    - command: gofmt -w internal/recipes cmd/loopexec/recipes.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102511.820900000Z.txt
+      command_sha256: d9e192d2f022d182938aa3368a8cf6cfaba21e76b6ff8a6eaf322b53ac32dad5
+      command_summary: gofmt -w internal/recipes cmd/loopexec/recipes.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:25:11.820900000Z"
+    - command: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -run "TestExport|TestRecipes" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102513.797192000Z.txt
+      command_sha256: 8fd94206a64a37ff6354a4a0b311bfc0354e2780ab6ce3f4dad3b1c3e3a1b2b9
+      command_summary: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -run "TestExport|TestRecipes" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:25:13.797192000Z"
+    - command: python3 build/shipping/qualify.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102656.212444000Z.txt
+      command_sha256: e10e866bd071b4af6d5591dc213337d0374ba2ec3b2753f59042308c5fe0cd53
+      command_summary: python3 build/shipping/qualify.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:26:56.212444000Z"
+    - command: gofmt -w internal/recipes/public_export_test.go tools/docs-continuity/recipe_sources_test.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102656.318470000Z.txt
+      command_sha256: 0dcc642e0b45346028764a2737b2ced1fd40a1378f491cf2869534d135bd79d8
+      command_summary: gofmt -w internal/recipes/public_export_test.go tools/docs-continuity/recipe_sources_test.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:26:56.318470000Z"
+    - command: python3 build/shipping/go.py test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102657.987116000Z.txt
+      command_sha256: 492947ac21cf516257ef233c3f0e7d14562fcdf50998f6947416ae71b2ed35ec
+      command_summary: python3 build/shipping/go.py test ./cmd/loopexec -run TestDocumentationContract -args -update-docs
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:26:57.987116000Z"
+    - command: python3 build/shipping/go.py test ./internal/recipes ./internal/recipeadapter ./tools/docs-continuity -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102659.239880000Z.txt
+      command_sha256: 45deb1a6469b054ec9fd404e7ae4689f4f7e3e79fbcf0f7fa1f16e7274514007
+      command_summary: python3 build/shipping/go.py test ./internal/recipes ./internal/recipeadapter ./tools/docs-continuity -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:26:59.239880000Z"
+    - command: python3 build/shipping/go.py build -o build/shipping/loopexec-proofs ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102700.118402000Z.txt
+      command_sha256: ec05e21292fd742fca99b7079da74f06b810f8445e9035cdc8d18cf425dd6b14
+      command_summary: python3 build/shipping/go.py build -o build/shipping/loopexec-proofs ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:27:00.118402000Z"
+    - command: python3 build/shipping/go.py build -o build/shipping/recipe-proof ./tools/recipe-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102700.455041000Z.txt
+      command_sha256: 75175459b4d7ec7902654815ecc62e589f3e19dd06218c30f53dec9a4ad4a126
+      command_summary: python3 build/shipping/go.py build -o build/shipping/recipe-proof ./tools/recipe-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:27:00.455041000Z"
+    - command: python3 build/shipping/format.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102803.897777000Z.txt
+      command_sha256: 7944f5d80d6b20584f99c691d017f59614cf4e02da3af31990cd84b9de9812cc
+      command_summary: python3 build/shipping/format.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:28:03.897777000Z"
+    - command: python3 build/shipping/go.py build -o build/shipping/loopexec-rc3-proof ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102804.848708000Z.txt
+      command_sha256: 21e732ae371bb095748ee2426154386aff9ba8fbb091187323efa5fe9e7fca37
+      command_summary: python3 build/shipping/go.py build -o build/shipping/loopexec-rc3-proof ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:28:04.848708000Z"
+    - command: build/shipping/loopexec-rc3-proof recipes catalog > docs/recipe-catalog.md
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102805.363596000Z.txt
+      command_sha256: 9e8c31e8d34e642261e7708ea07717b304435bcd3c5938466ca86764483559d3
+      command_summary: build/shipping/loopexec-rc3-proof recipes catalog > docs/recipe-catalog.md
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:28:05.363596000Z"
+    - command: python3 build/shipping/go.py build -o build/shipping/recipe-proof-rc3 ./tools/recipe-proof
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102805.697221000Z.txt
+      command_sha256: 09197e9f25179b3fb3b1a4d4f246537df61830c1414d7e8115715403a88f5897
+      command_summary: python3 build/shipping/go.py build -o build/shipping/recipe-proof-rc3 ./tools/recipe-proof
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:28:05.697221000Z"
+    - command: build/shipping/recipe-proof-rc3 -binary build/shipping/loopexec-rc3-proof -out build/shipping/recipes-proof -tools build/shipping/tools.private.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T102911.218741000Z.txt
+      command_sha256: 34f0cfb58fef743c39246ec688f3f0f771c505e7189189323b686df8b3fca182
+      command_summary: build/shipping/recipe-proof-rc3 -binary build/shipping/loopexec-rc3-proof -out build/shipping/recipes-proof -tools build/shipping/tools.private.json
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:29:11.218741000Z"
+    - command: python3 build/shipping/prepare-negative.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103010.956193000Z.txt
+      command_sha256: bc50e69ca55db05675e886d459e12eef4dbaaacd085daf3a24da7e7cf710bc8a
+      command_summary: python3 build/shipping/prepare-negative.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:30:10.956193000Z"
+    - command: python3 build/shipping/negative.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103017.061926000Z.txt
+      command_sha256: 7635e49e31ec4d7128ef1cbd002a44cee8a74400705875db8d49d2455821ed17
+      command_summary: python3 build/shipping/negative.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:30:17.061926000Z"
+    - command: python3 build/shipping/go.py test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103240.677781000Z.txt
+      command_sha256: 0ec766a460e15e90c6074786a66d53348d15dd0250d073f5382048827658d17e
+      command_summary: python3 build/shipping/go.py test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:32:40.677781000Z"
+    - command: python3 build/shipping/go.py vet ./...
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103242.185245000Z.txt
+      command_sha256: 62dd56991b39f8c3d535691086ab4e09fc533420d38dfc0c838efed9bda0b15e
+      command_summary: python3 build/shipping/go.py vet ./...
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:32:42.185245000Z"
+    - command: python3 build/shipping/go.py test -race ./internal/... ./cmd/loopexec -run "TestScoped|TestRecipe|TestBudget|TestRecovery|TestContinuation" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103410.810882000Z.txt
+      command_sha256: 26a0f09056ac9571701c634e886bb3c20cacbd66b151c5b4876d6ecff718794e
+      command_summary: python3 build/shipping/go.py test -race ./internal/... ./cmd/loopexec -run "TestScoped|TestRecipe|TestBudget|TestRecovery|TestContinuation" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:34:10.810882000Z"
+    - command: python3 build/shipping/go.py run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103411.698723000Z.txt
+      command_sha256: fa977594043c138ca3f763576a2784a55b486a52c3364340aa37995a7e8bf93b
+      command_summary: python3 build/shipping/go.py run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:34:11.698723000Z"
+    - command: python3 build/shipping/stage-reviewed.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103618.393255000Z.txt
+      command_sha256: da406222f9229afefbbcd14ac75631a261417249a46848a298c4571514d304e9
+      command_summary: python3 build/shipping/stage-reviewed.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:36:18.393255000Z"
+    - command: python3 build/shipping/fix-install.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103658.775711000Z.txt
+      command_sha256: c9b81af21a5e35ee266e616a2ab6e8be59cc805194e120d348bdac3e8336f592
+      command_summary: python3 build/shipping/fix-install.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:36:58.775711000Z"
+    - command: gofmt -w internal/recipes/export.go
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103658.891543000Z.txt
+      command_sha256: f65730858eecfda7bfd1904e14289d7c193cda8e64c0c083e5bf23a54ce64274
+      command_summary: gofmt -w internal/recipes/export.go
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:36:58.891543000Z"
+    - command: python3 build/shipping/go.py build -o build/shipping/loopexec-release-candidate ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103659.852031000Z.txt
+      command_sha256: 3e3453080c307cce433981f6c93ed914a8cc0673f20d1d55e298882d6a4b2816
+      command_summary: python3 build/shipping/go.py build -o build/shipping/loopexec-release-candidate ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:36:59.852031000Z"
+    - command: build/shipping/loopexec-release-candidate recipes catalog > docs/recipe-catalog.md
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103700.342719000Z.txt
+      command_sha256: 77869b197d06e5e106c0735c471f91f19087d2821eb0c03a62759c223284fb7c
+      command_summary: build/shipping/loopexec-release-candidate recipes catalog > docs/recipe-catalog.md
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:37:00.342719000Z"
+    - command: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -run "TestCatalog|TestExport|TestPublicPack|TestRecipe|TestDocumentationContract" -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103702.302329000Z.txt
+      command_sha256: 8981d5124ad5d59eda3e125c0eb8e126aab3c124dfd138944814632c138f5548
+      command_summary: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -run "TestCatalog|TestExport|TestPublicPack|TestRecipe|TestDocumentationContract" -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:37:02.302329000Z"

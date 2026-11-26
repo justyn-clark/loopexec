@@ -1,5 +1,11 @@
 # LoopExec status and roadmap
 
+## Recipe release candidate
+
+Current source is v0.5.0-rc.3: all 33 configurable JC recipes, portable Pi/skills distribution, bounded execution and receipt verification, integrated with RC2 recovery/accounting. See [recipes](recipes.md) and [candidate notes](releases/v0.5.0-rc.3.md). The Releases page and npm package metadata establish actual publication; stable v0.4.1 remains the default while the explicit stable/live acceptance hold is retained.
+
+The dated entries below describe earlier snapshots and do not supersede this candidate.
+
 ## Development Update: October 16, 2026
 
 Current source is the unpublished `0.5.0-rc.2` recovery candidate, not stable

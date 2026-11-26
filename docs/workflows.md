@@ -285,3 +285,7 @@ fresh performance measurement. Live use still requires verified local argv
 interfaces, Blender asset scripts, Godot test/camera routes, an independent critic,
 provider-specific usage/reservation enforcement, and the OS isolation above.
 No live Codex CLI or MCP protocol is assumed by this repository.
+
+## Persistent call scopes
+
+Optional metering.call_scope binds store_dir, scope, max_calls and phase_limits to a persistent reservation ledger. It requires a reservation hook. The governor reserves declared child calls before dispatch and refuses exhausted or inconsistent policies across run IDs. Reservations already made remain spent on a later admission failure. This counts declared child invocations; provider wrappers must reserve every actual provider call. Recipe creative baselines and reviews use this scope rather than renewing allowances. See [live recipes](live-recipes.md).

@@ -2,7 +2,7 @@
 
 Generated from the Cobra command tree. Do not edit manually.
 
-Source version: `0.5.0-rc.2`.
+Source version: `0.5.0-rc.3`.
 
 ## `loopexec`
 
@@ -227,6 +227,111 @@ Usage: `loopexec probe-check [flags]`
 - `--runs` (`int`, default `0`): Number of probe runs (default: derived from --max-flake-rate, else 10)
 - `--workdir` (`string`, default ``): Directory to run the check in (default: current directory)
 
+## `loopexec recipes`
+
+Discover JC recipes, validate task inputs and export portable skills/Pi resources
+
+Usage: `loopexec recipes [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for recipes
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+
+## `loopexec recipes catalog`
+
+Render the complete maintained catalog as Markdown (or JSON)
+
+Usage: `loopexec recipes catalog [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for catalog
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+
+## `loopexec recipes demo`
+
+Run a real domain fixture in a fresh workspace and verify its computed outcome
+
+Usage: `loopexec recipes demo <id> [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for demo
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--tools` (`string`, default ``): Private JSON mappings for installed domain tools
+- `--workdir` (`string`, default ``): Fresh directory with an existing parent; fixture files and receipts are retained
+
+## `loopexec recipes export`
+
+Write 33 skills, 33 prompts and a Pi discovery/run/verify extension to a fresh local directory
+
+Usage: `loopexec recipes export [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for export
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--out` (`string`, default ``): New directory to create; parent must already exist and existing targets are refused
+- `--package-version` (`string`, default `0.1.0-dev`): Package version for the generated Pi/skills pack
+- `--public` (`bool`, default `false`): Generate a public distributable pack; does not publish it
+
+## `loopexec recipes list`
+
+List the catalog without running tools or models
+
+Usage: `loopexec recipes list [flags]`
+
+- `--category` (`string`, default ``): Filter to an exact catalog category
+- `--help, -h` (`bool`, default `false`): help for list
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+
+## `loopexec recipes plan`
+
+Validate configurable inputs and preview a contract; executes nothing
+
+Usage: `loopexec recipes plan <id> [flags]`
+
+- `--config` (`string`, default ``): Recipe config JSON; relative paths resolve from the current directory
+- `--help, -h` (`bool`, default `false`): help for plan
+- `--inputs-json` (`string`, default ``): JSON object overriding recipe input values; data only
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--set` (`stringArray`, default `[]`): Input override name=value; arrays/numbers use JSON, other text becomes a string (repeatable)
+
+## `loopexec recipes run`
+
+Run a configured live recipe through the existing governor and seal its evidence
+
+Usage: `loopexec recipes run <id> [flags]`
+
+- `--config` (`string`, default ``): Versioned recipe JSON with adapter binding (required)
+- `--help, -h` (`bool`, default `false`): help for run
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--run-id` (`string`, default ``): Unique run identity (default: random recipe-specific identity)
+- `--workdir` (`string`, default `.`): Existing workspace root; adapter paths resolve within this directory
+
+## `loopexec recipes show`
+
+Show one recipe's inputs, checks, evidence and original idea
+
+Usage: `loopexec recipes show <id> [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for show
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+
+## `loopexec recipes suggest`
+
+Rank keyword/tag matches deterministically without a model
+
+Usage: `loopexec recipes suggest <task words> [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for suggest
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--limit` (`int`, default `5`): Maximum suggestions (1..33)
+
+## `loopexec recipes verify`
+
+Verify a recipe receipt seal, candidate binding and independently computed outcome
+
+Usage: `loopexec recipes verify [flags]`
+
+- `--help, -h` (`bool`, default `false`): help for verify
+- `--json` (`bool`, default `false`): Emit machine-readable JSON output
+- `--run-id` (`string`, default ``): Original recipe run identity (required)
+- `--workdir` (`string`, default `.`): Recipe workspace
+
 ## `loopexec reexecute`
 
 Live re-run of the recorded loop config N times; reports a statistical match (--confirm)
@@ -342,6 +447,7 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `response`
 
+- `recipes,omitempty`: `*recipes.Result`
 - `model_selection,omitempty`: `*modelpolicy.Selection`
 - `failure_cause,omitempty`: `string`
 - `failures,omitempty`: `[]main.runFailure`
@@ -382,6 +488,17 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `event`: `string`
 - `detail,omitempty`: `string`
 - `exit_code,omitempty`: `*int`
+
+### `Result`
+
+- `verification,omitempty`: `*recipes.Verification`
+- `catalog_sha256`: `string`
+- `entries,omitempty`: `[]recipes.Entry`
+- `suggestions,omitempty`: `[]recipes.Suggestion`
+- `definition,omitempty`: `*recipes.Recipe`
+- `plan,omitempty`: `*recipes.Plan`
+- `export,omitempty`: `*recipes.ExportResult`
+- `catalog,omitempty`: `*recipes.Catalog`
 
 ### `Selection`
 
@@ -513,6 +630,90 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `phase_remaining`: `map[string]int`
 - `reservation,omitempty`: `string`
 
+### `Verification`
+
+- `recipe`: `string`
+- `expected_halt`: `string`
+- `halt_reason`: `string`
+- `receipt_verified`: `bool`
+- `oracle_passed`: `bool`
+- `acceptance_met`: `bool`
+- `baseline_passed`: `bool`
+- `replay_verified,omitempty`: `*bool`
+- `evidence`: `string`
+- `measurements,omitempty`: `[]map[string]float64`
+
+### `Entry`
+
+- `id`: `string`
+- `title`: `string`
+- `category`: `string`
+- `adapter_status`: `string`
+- `social_priority,omitempty`: `int`
+
+### `Suggestion`
+
+- `recipe`: `recipes.Entry`
+- `score`: `int`
+- `matched`: `[]string`
+
+### `Recipe`
+
+- `id`: `string`
+- `title`: `string`
+- `category`: `string`
+- `summary`: `string`
+- `source_idea`: `string`
+- `inputs`: `[]recipes.Input`
+- `attempt`: `string`
+- `checks`: `[]string`
+- `protect`: `[]string`
+- `evidence`: `[]string`
+- `demo`: `string`
+- `tags`: `[]string`
+- `expected_halt`: `string`
+- `social_priority`: `int`
+- `adapter_status`: `string`
+- `source_index`: `int`
+
+### `Plan`
+
+- `schema_version`: `int`
+- `catalog_sha256`: `string`
+- `recipe`: `string`
+- `inputs`: `map[string]interface {}`
+- `limits`: `recipes.Limits`
+- `missing_inputs`: `[]string`
+- `execution_ready`: `bool`
+- `readiness`: `string`
+- `attempt`: `string`
+- `checks`: `[]string`
+- `protected`: `[]string`
+- `evidence`: `[]string`
+- `expected_halt`: `string`
+- `next_steps`: `[]string`
+
+### `ExportResult`
+
+- `path`: `string`
+- `skills`: `int`
+- `prompts`: `int`
+- `catalog_sha256`: `string`
+
+### `Catalog`
+
+- `catalog_sha256,omitempty`: `string`
+- `schema_version`: `int`
+- `brand`: `string`
+- `collection`: `string`
+- `status`: `string`
+- `origin`: `string`
+- `source_intro`: `string`
+- `source_social_intro`: `string`
+- `source_social_priorities`: `[]string`
+- `source_closing`: `string`
+- `recipes`: `[]recipes.Recipe`
+
 ### `Role`
 
 - `provider`: `string`
@@ -583,6 +784,22 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 - `exit_code`: `int`
 - `output_sha256`: `string`
+
+### `Input`
+
+- `name`: `string`
+- `type`: `string`
+- `description`: `string`
+- `required`: `bool`
+- `default,omitempty`: `json.RawMessage`
+- `minimum,omitempty`: `*float64`
+- `maximum,omitempty`: `*float64`
+
+### `Limits`
+
+- `max_iterations`: `int`
+- `timeout_seconds`: `int`
+- `command_timeout_seconds`: `int`
 
 ### `Call`
 
