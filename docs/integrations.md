@@ -62,6 +62,8 @@ For SMALL CLI v1.1.2 and collaborative v2 sessions, see the
 keeps task acceptance separate from a command exit and preserves session
 attribution without introducing a second loop controller.
 
-## JC recipes and Pi
+<a id="jc-recipes-and-pi"></a>
 
-[JC Loop Recipes](recipes.md) shares one catalog across the CLI, portable skills and Pi prompts. The extension provides discovery, typed planning, explicit saved-config execution and read-only receipt verification. Local tool fixtures demonstrate each domain; production builders and trusted verifier bindings remain explicit. See [live recipes](live-recipes.md).
+## LoopExec Recipes and Pi
+
+[LoopExec Recipes](recipes.md) shares one catalog across the CLI, portable skills and Pi prompts. The extension provides discovery, typed planning, explicit saved-config execution and read-only receipt verification. Local tool fixtures demonstrate each domain; production builders and trusted verifier bindings remain explicit. See [live recipes](live-recipes.md).

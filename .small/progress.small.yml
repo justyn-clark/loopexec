@@ -8089,3 +8089,17 @@ entries:
       status: in_progress
       task_id: task-58
       timestamp: "2026-11-26T22:04:58.387938000Z"
+    - command: python3 build/migration/stage.py core
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220509.333470000Z.txt
+      command_sha256: 884334228940b0a531e44d6767cf9870632cb5b70207a4f3993aebcd927030c5
+      command_summary: python3 build/migration/stage.py core
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:05:09.333470000Z"
