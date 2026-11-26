@@ -174,4 +174,4 @@ tasks:
       status: completed
     - id: task-57
       title: Complete npm publication approval for JC recipe pack and verify exact registry installation
-      status: blocked
+      status: completed
