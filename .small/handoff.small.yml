@@ -1,10 +1,10 @@
 small_version: "1.0.0"
 owner: agent
-summary: RC2 scoped merge payload ready locally. Accepted6a564143 remains runtime/tooling/workflow-byte identical with source digeste563ec37. Complete historical SMALL progress/proofs preserved via CLI snapshot/checkout, new bounded-acceptance prose/CHANGELOG/allowlist added, no RC3 or consumer harness changes. Local full/focused Go, vet, internal/scoped races, contract, five offline proofs, gitleaks, docs/privacy/cochange/format/cache-free gates passed. Enclosing audit task59 will publish fast-forward to existing PR10 and verify exact final hosted SHA before merge decision; no merge authorized. Original b2df4d52 acceptance stays bound to6a/f71 only; stable/live release and proposed190k review remain held. No model calls, Home writes, runtime replacement, tag, publish or deploy.
+summary: Recipe delivery shipped publicly as v0.5.0-rc.3 with all33 configurable adapters, matching source-bound docs, public pack, verification matrix and catalog tour. Exact downloaded Mac binary and33 independent receipt readbacks passed; pack hashes and real Pi discovery passed; personal CLI and local Pi install verified. Core PR10/11 and docs PR11 merged. Remaining task57 is npm browser publication approval plus exact registry readback; task46 stable/live acceptance hold retained. Preserve original acceptance, receipts and primary source; no paid model calls or allowance resets.
 resume:
-    current_task_id: task-36
+    current_task_id: task-46
     next_steps:
-        - Unblock task-36
+        - Unblock task-46
 links: []
 replayId:
     value: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96

@@ -108,13 +108,13 @@ tasks:
       status: completed
     - id: task-36
       title: Adopt canonical docs-site handshake and hosted release protections before publication
-      status: blocked
+      status: completed
     - id: task-37
       title: Prepare v0.4.1 release and source-bound docs deployment artifacts with verified CI handoff
       status: completed
     - id: task-38
       title: Add tested configurable software, game-development and audio-engineering recipes after deployment
-      status: blocked
+      status: completed
       dependencies:
         - task-36
         - task-37
@@ -171,4 +171,7 @@ tasks:
       status: completed
     - id: task-56
       title: Reconcile RC2 with all JC recipes and publish verified core candidate and portable pack
-      status: pending
+      status: completed
+    - id: task-57
+      title: Complete npm publication approval for JC recipe pack and verify exact registry installation
+      status: blocked
