@@ -13,7 +13,7 @@ func TestPublicPackMetadataAndRefusal(t *testing.T) {
 		t.Fatal(e)
 	}
 	out := filepath.Join(t.TempDir(), "public")
-	result, e := ExportWithOptions(c, out, ExportOptions{PackageVersion: "0.1.0", Public: true, RuntimeVersion: "0.5.0-rc.3"})
+	result, e := ExportWithOptions(c, out, ExportOptions{PackageVersion: "0.1.0", Public: true, RuntimeVersion: "0.5.0-rc.4"})
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -28,11 +28,46 @@ func TestPublicPackMetadataAndRefusal(t *testing.T) {
 	if e = json.Unmarshal(b, &p); e != nil {
 		t.Fatal(e)
 	}
-	if p["private"] != false || p["version"] != "0.1.0" || p["license"] != "MIT" {
+	if p["name"] != "@justynclark/loopexec-recipes" || p["private"] != false || p["version"] != "0.1.0" || p["license"] != "MIT" {
 		t.Fatal("bad public metadata")
 	}
 	if b, e = os.ReadFile(filepath.Join(out, "LICENSE")); e != nil || len(b) < 100 {
 		t.Fatal("missing license")
+	}
+	err := filepath.WalkDir(out, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		body, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		for _, b := range body {
+			if b > 127 {
+				t.Errorf("non-ASCII pack file: %s", path)
+				break
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	exported, err := os.ReadFile(filepath.Join(out, "catalog.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var roundTrip Catalog
+	if err = json.Unmarshal(exported, &roundTrip); err != nil {
+		t.Fatal(err)
+	}
+	for i, r := range c.Recipes {
+		if roundTrip.Recipes[i].SourceIdea != r.SourceIdea {
+			t.Fatal("source idea changed")
+		}
 	}
 	for _, version := range []string{"", "bad", "../escape", "01.2.3"} {
 		target := filepath.Join(t.TempDir(), "invalid")

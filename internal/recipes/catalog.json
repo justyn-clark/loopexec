@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "brand": "JC",
-  "collection": "JC Loop Recipes",
+  "brand": "LoopExec",
+  "collection": "LoopExec Recipes",
   "status": "live-adapters",
   "origin": "User-supplied ChatGPT conversation, preserved in original order",
   "source_intro": "A good LoopExec demo should make the loop visible: something starts wrong or incomplete, LoopExec iterates against an external check, and the proof ends with a computed halt reason plus receipt. The domain can vary widely.",

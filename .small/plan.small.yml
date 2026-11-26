@@ -175,3 +175,6 @@ tasks:
     - id: task-57
       title: Complete npm publication approval for JC recipe pack and verify exact registry installation
       status: completed
+    - id: task-58
+      title: Roll out LoopExec Recipes and LoopExec for Pi with compatible configs, verified package and migration
+      status: pending

@@ -1,4 +1,4 @@
-# Live JC recipes
+# Live LoopExec recipes
 
 All 33 catalog recipes have configurable execution adapters and real domain
 fixtures. This is development source, with local tool verification. It is not a

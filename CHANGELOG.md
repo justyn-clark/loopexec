@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.0-rc.4
+
+- Named the catalog LoopExec Recipes and the optional Pi integration LoopExec for Pi. The new npm identity is @justynclark/loopexec-recipes; commands, skills and prompts use loopexec- prefixes.
+- Preserve original catalog ideas, old package bytes and receipts. Reject broken new-path config links without selecting an older config. The Pi extension reads legacy .jc-recipes configs with explicit new-path precedence and fail-closed validation.
+- Generate ASCII pack text and escaped JSON without changing original source-string values. Bind the new catalog, CLI, docs and release pack together; stable v0.4.1 remains the default and the existing live acceptance hold remains.
+
 ## v0.5.0-rc.3
 
 - Recipe distribution: `recipes export --public --package-version` generates an MIT-licensed, versioned Pi/skills pack; release packaging checks runtime identity and includes its npm-compatible tarball/checksum. Export itself performs no publication.

@@ -2,7 +2,7 @@
 
 Generated from the Cobra command tree. Do not edit manually.
 
-Source version: `0.5.0-rc.3`.
+Source version: `0.5.0-rc.4`.
 
 ## `loopexec`
 
@@ -229,7 +229,7 @@ Usage: `loopexec probe-check [flags]`
 
 ## `loopexec recipes`
 
-Discover JC recipes, validate task inputs and export portable skills/Pi resources
+Discover LoopExec recipes, validate task inputs and export portable skills/Pi resources
 
 Usage: `loopexec recipes [flags]`
 

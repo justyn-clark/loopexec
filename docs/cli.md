@@ -13,7 +13,7 @@ and examples; both must be updated together when the behavior changes.
 
 ## Commands
 
-- `loopexec recipes list|suggest|show|plan|export|catalog`: discover the 33 JC methods, validate inputs without execution, and export portable skills/Pi resources. Export requires a new --out directory; optional --public and --package-version create distributable metadata without publishing.
+- `loopexec recipes list|suggest|show|plan|export|catalog`: discover the 33 recipe methods, validate inputs without execution, and export portable skills/Pi resources. Export requires a new --out directory; optional --public and --package-version create distributable metadata without publishing.
 - `loopexec recipes demo <id> --workdir <new-dir> [--tools <private-json>]`: run one real domain fixture and separately verify its expected computed outcome.
 - `loopexec recipes run <id> --config <json> --workdir <workspace>`: execute a configured adapter with finite bounds; return the governor exit.
 - `loopexec recipes verify --workdir <workspace> --run-id <id>`: read back the sealed receipt, evidence and candidate without another builder or critic call. Verification is separate from acceptance. See [live recipes](live-recipes.md) for exact bindings and trust boundaries.
