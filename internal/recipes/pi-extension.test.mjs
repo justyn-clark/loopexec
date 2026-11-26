@@ -1,6 +1,12 @@
 // Behavioral test against an exported package; no Pi process or model is started.
 import assert from "node:assert/strict";
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import {
+  readFileSync,
+  mkdirSync,
+  writeFileSync,
+  unlinkSync,
+  symlinkSync,
+} from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
@@ -148,6 +154,19 @@ assert.equal(
   beforeInvalid,
   "invalid new config must not fall back to legacy",
 );
+if (process.platform !== "win32") {
+  const config = resolve(pack, ".loopexec-recipes/audio-mastering.json");
+  unlinkSync(config);
+  symlinkSync("missing-config.json", config);
+  const beforeDangling = calls.length;
+  await commands.get("loopexec-recipe-run").handler("audio-mastering", ctx);
+  assert.equal(
+    calls.length,
+    beforeDangling,
+    "dangling new config must not select legacy",
+  );
+  assert.match(notices.at(-1).message, /ENOENT/);
+}
 await commands.get("loopexec-recipe-verify").handler("saved-run", ctx);
 assert.equal(calls.at(-1).args[1], "verify");
 assert.equal(

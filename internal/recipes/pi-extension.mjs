@@ -1,5 +1,5 @@
 // No execution on load. Discovery/planning are read-only; run is an explicit command.
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, lstatSync } from "node:fs";
 import { join } from "node:path";
 
 const catalog = JSON.parse(
@@ -54,12 +54,18 @@ export default function loopexecRecipes(pi) {
       );
     return response.recipes;
   }
+  function configExists(cwd, config) {
+    // A dangling new-path link must fail, never select an older config.
+    return (
+      lstatSync(join(cwd, config), { throwIfNoEntry: false }) !== undefined
+    );
+  }
   function configPath(id, cwd) {
     const current = join(".loopexec-recipes", id + ".json");
     const legacy = join(".jc-recipes", id + ".json");
-    return existsSync(join(cwd, current))
+    return configExists(cwd, current)
       ? current
-      : existsSync(join(cwd, legacy))
+      : configExists(cwd, legacy)
         ? legacy
         : current;
   }
@@ -69,7 +75,7 @@ export default function loopexecRecipes(pi) {
       throw new Error("Unknown recipe; browse with /loopexec-recipes");
     const config = configPath(id, ctx.cwd);
     const args = ["plan", id];
-    if (existsSync(join(ctx.cwd, config))) args.push("--config", config);
+    if (configExists(ctx.cwd, config)) args.push("--config", config);
     let result = await call(args, ctx.cwd);
     const inputs = {};
     if (ctx.hasUI) {
@@ -129,7 +135,7 @@ export default function loopexecRecipes(pi) {
         if (!recipe)
           throw Error("Choose one recipe ID; browse with /loopexec-recipes");
         const config = configPath(id, ctx.cwd);
-        if (!existsSync(join(ctx.cwd, config)))
+        if (!configExists(ctx.cwd, config))
           throw Error(
             "Save inputs, adapter and limits in " + config + " before running",
           );

@@ -8117,3 +8117,45 @@ entries:
       status: in_progress
       task_id: task-58
       timestamp: "2026-11-26T22:08:43.154001000Z"
+    - command: python3 build/migration/complete-prose.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220920.257592000Z.txt
+      command_sha256: 643807e420bdfd6a7633216bb6ec39241b68801faf251057fd85097e039a1601
+      command_summary: python3 build/migration/complete-prose.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:09:20.257592000Z"
+    - command: gh run cancel 45902857317 --repo justyn-clark/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220946.576648000Z.txt
+      command_sha256: e7b2f647ec21c2d41d559b0b3a2774baa4e64e40dce9ed611988801c7189a68f
+      command_summary: gh run cancel 45902857317 --repo justyn-clark/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:09:46.576648000Z"
+    - command: gh run cancel 45902852706 --repo justyn-clark/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220947.791005000Z.txt
+      command_sha256: e20583d680c9dcce3cfeaba7490a7235e9579f17d922012dfc253be6d43e8b58
+      command_summary: gh run cancel 45902852706 --repo justyn-clark/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:09:47.791005000Z"
