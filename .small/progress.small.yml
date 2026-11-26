@@ -7802,3 +7802,125 @@ entries:
       status: completed
       task_id: task-56
       timestamp: "2026-11-26T11:07:35.071079000Z"
+    - command: python3 build/shipping/commit-audit.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T110757.902742000Z.txt
+      command_sha256: fa981abd252eb86822010dc822e807200534c679d0d2c71e2a4a36df31aaaad2
+      command_summary: python3 build/shipping/commit-audit.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T11:07:57.902742000Z"
+    - command: git fetch origin main && git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T111616.655824000Z.txt
+      command_sha256: fc095eef8807ac4ff98b0240d688d710a0c549b06268b0ec9fece2f4f1520b8d
+      command_summary: git fetch origin main && git merge --ff-only origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T11:16:16.655824000Z"
+    - command: python3 build/shipping/start-npm.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T111636.906308000Z.txt
+      command_sha256: bfb0c83261d92da25cfd44d1cc8c530768abb505b4471554c7724ced34271384
+      command_summary: python3 build/shipping/start-npm.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:16:36.906308000Z"
+    - command: python3 build/shipping/start-npm.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T113840.422112000Z.txt
+      command_sha256: bfb0c83261d92da25cfd44d1cc8c530768abb505b4471554c7724ced34271384
+      command_summary: python3 build/shipping/start-npm.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:38:40.422112000Z"
+    - evidence: Owner completed browser approval; npm publish exited0 for exact RC3 recipe archive. Visibility is public and stage list is empty; registry reports asynchronous processing, so public version/archive readback remains pending.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:41:03.387652000Z"
+    - command: python3 ../install-registry.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T114430.350841000Z.txt
+      command_sha256: 2be5c81a2cb7bb5f1f95781848b53ddb9fc5de95ba6a78b981a218602d0f7d9e
+      command_summary: python3 ../install-registry.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:44:30.350841000Z"
+    - command: python3 ../install-registry.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T114454.989262000Z.txt
+      command_sha256: 2be5c81a2cb7bb5f1f95781848b53ddb9fc5de95ba6a78b981a218602d0f7d9e
+      command_summary: python3 ../install-registry.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:44:54.989262000Z"
+    - command: python3 ../install-registry.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T114627.711575000Z.txt
+      command_sha256: 2be5c81a2cb7bb5f1f95781848b53ddb9fc5de95ba6a78b981a218602d0f7d9e
+      command_summary: python3 ../install-registry.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:46:27.711575000Z"
+    - command: python3 build/shipping/publish-npm-proof.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T114732.677330000Z.txt
+      command_sha256: f60642c9c76d26aee96a54dc686862b8340d2176c0ef6462dfd6f0f071c33a57
+      command_summary: python3 build/shipping/publish-npm-proof.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:47:32.677330000Z"
+    - evidence: npm @justynclark/jc-loop-recipes@0.1.0 is public; unauthenticated tarball and npm pack match RC3 archive SHA256 6dce9e3caa9f175c95effbfa399072d5e1f4cf09a6d0b3107cf4d78c84939173. Real Pi registry install loads33 skills33 prompts4 commands with no errors; owner registration updated, other settings preserved. Portable proof published and read back from RC3 release.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-57
+      timestamp: "2026-11-26T11:47:45.686668000Z"

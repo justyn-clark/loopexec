@@ -1,6 +1,6 @@
 small_version: "1.0.0"
 owner: agent
-summary: Recipe delivery shipped publicly as v0.5.0-rc.3 with all33 configurable adapters, matching source-bound docs, public pack, verification matrix and catalog tour. Exact downloaded Mac binary and33 independent receipt readbacks passed; pack hashes and real Pi discovery passed; personal CLI and local Pi install verified. Core PR10/11 and docs PR11 merged. Remaining task57 is npm browser publication approval plus exact registry readback; task46 stable/live acceptance hold retained. Preserve original acceptance, receipts and primary source; no paid model calls or allowance resets.
+summary: 'All scoped recipe publication complete: RC3 and docs public, npm0.1.0 public and byte-identical to release archive, unauthenticated download verified. Exact released binary passed33 real fixtures and independent receipt checks; Pi registry install verified33skills33prompts4commands with no errors and other settings preserved. Core task57 completed; only existing stable/live task46 remains held. Final audit-only npm completion PR will record this verified outcome. Original receipts and acceptance unchanged; no paid calls.'
 resume:
     current_task_id: task-46
     next_steps:
