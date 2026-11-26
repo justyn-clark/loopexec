@@ -1,0 +1,2310 @@
+{
+  "schema_version": 1,
+  "brand": "JC",
+  "collection": "JC Loop Recipes",
+  "status": "live-adapters",
+  "origin": "User-supplied ChatGPT conversation, preserved in original order",
+  "source_intro": "A good LoopExec demo should make the loop visible: something starts wrong or incomplete, LoopExec iterates against an external check, and the proof ends with a computed halt reason plus receipt. The domain can vary widely.",
+  "source_social_intro": "For social content, I would prioritize five demos because they tell different stories:",
+  "source_social_priorities": [
+    "Metric gaming caught — the agent “cheats,” LoopExec refuses success.",
+    "Oscillation caught — the agent keeps undoing itself, LoopExec stops it.",
+    "Frontend repair — visible broken UI → fixed UI, with an independent browser test.",
+    "Audio/mastering convergence — measurable creative work outside coding.",
+    "Cost-budget halt — agent wants another call, LoopExec says the budget is spent."
+  ],
+  "source_closing": "Those five together communicate something much bigger than “a coding loop”: LoopExec can govern any iterative process where work can be executed and success can be independently measured.",
+  "recipes": [
+    {
+      "id": "code-repair",
+      "title": "Code repair / test convergence",
+      "category": "engineering",
+      "summary": "Diagnose the captured failing tests and make one narrow source repair without changing the acceptance suite.",
+      "source_idea": "Start with a failing test suite. --exec runs a repair script or coding agent; --check runs go test, pytest, npm test, etc. Visually capture red tests → iteration count → green tests → success_condition_met → receipt replay. This is the clearest baseline demo.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Project root relative to the invocation directory",
+          "required": true
+        },
+        {
+          "name": "test_command",
+          "type": "string",
+          "description": "Existing complete test command; data for adapter authoring, never interpolated",
+          "required": true
+        },
+        {
+          "name": "allowed_paths",
+          "type": "strings",
+          "description": "Source files the builder may change",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Diagnose the captured failing tests and make one narrow source repair without changing the acceptance suite.",
+      "checks": [
+        "The complete pinned test suite passes.",
+        "The measured test inventory and protected test/config hashes remain intact."
+      ],
+      "protect": [
+        "Tests, test selection, fixtures and test runner configuration"
+      ],
+      "evidence": [
+        "Failing and final passing test reports",
+        "Source diff and pinned suite inventory",
+        "Computed halt, receipt and replay result"
+      ],
+      "demo": "Show red tests, the attempt count, green tests, success_condition_met and a replay.",
+      "tags": [
+        "code",
+        "tests",
+        "repair",
+        "convergence"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 1
+    },
+    {
+      "id": "frontend-visual",
+      "title": "Frontend visual regression",
+      "category": "web",
+      "summary": "Repair one observed HTML/CSS or component discrepancy against the approved reference.",
+      "source_idea": "Give an agent a page that is visibly wrong. The loop modifies HTML/CSS, while the external check uses screenshot comparison, DOM assertions, Lighthouse thresholds, or Playwright tests. Show the browser before/after beside the terminal. This is much more visually compelling than pure CLI output.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Web project root",
+          "required": true
+        },
+        {
+          "name": "page_url",
+          "type": "string",
+          "description": "Page in a controlled browser environment",
+          "required": true
+        },
+        {
+          "name": "reference",
+          "type": "path",
+          "description": "Approved screenshot or visual reference",
+          "required": true
+        },
+        {
+          "name": "max_visual_difference",
+          "type": "number",
+          "description": "Maximum allowed normalized image difference",
+          "required": true,
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one observed HTML/CSS or component discrepancy against the approved reference.",
+      "checks": [
+        "Pinned browser, viewport, fonts and screenshot comparison meet the difference threshold.",
+        "Independent DOM assertions and required functional checks pass."
+      ],
+      "protect": [
+        "Reference images, comparison algorithm and DOM acceptance tests"
+      ],
+      "evidence": [
+        "Before/after screenshots",
+        "Candidate-bound image difference and DOM results"
+      ],
+      "demo": "Place before/after browsers beside the terminal and show the independent comparison passing.",
+      "tags": [
+        "frontend",
+        "css",
+        "screenshot",
+        "browser",
+        "visual"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 3,
+      "adapter_status": "live",
+      "source_index": 2
+    },
+    {
+      "id": "accessibility",
+      "title": "Accessibility remediation",
+      "category": "web",
+      "summary": "Remediate one captured accessibility failure while retaining page behavior and the audited route/rule inventory.",
+      "source_idea": "Start with a page failing axe/Playwright accessibility checks. Iterate until critical violations reach zero. Capture the accessibility report dropping from, say, 8 violations → 3 → 0. This is strong because the success criterion is objective and understandable.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Web project root",
+          "required": true
+        },
+        {
+          "name": "routes",
+          "type": "strings",
+          "description": "Frozen route list",
+          "required": true
+        },
+        {
+          "name": "rules",
+          "type": "strings",
+          "description": "Applicable accessibility rules",
+          "required": true
+        },
+        {
+          "name": "max_critical",
+          "type": "integer",
+          "description": "Allowed critical violations",
+          "required": false,
+          "default": 0,
+          "minimum": 0
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Remediate one captured accessibility failure while retaining page behavior and the audited route/rule inventory.",
+      "checks": [
+        "Critical violation count is at or below max_critical across every pinned route/state.",
+        "Keyboard and focus assertions required by the acceptance contract pass.",
+        "Automated checks are reported as scoped evidence, not full accessibility certification."
+      ],
+      "protect": [
+        "Axe rules, exclusions, route inventory and keyboard acceptance checks"
+      ],
+      "evidence": [
+        "Per-route violation counts and rule IDs",
+        "Keyboard/focus results and relevant screenshots"
+      ],
+      "demo": "Show scoped violation counts dropping from 8 to 3 to 0.",
+      "tags": [
+        "accessibility",
+        "axe",
+        "keyboard",
+        "wcag",
+        "browser"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 3
+    },
+    {
+      "id": "performance",
+      "title": "Performance optimization",
+      "category": "engineering",
+      "summary": "Optimize one measured bottleneck using the fixed benchmark environment and unchanged correctness contract.",
+      "source_idea": "Have LoopExec repeatedly optimize a web app or command until a measurable threshold is met: Lighthouse performance score, bundle size, startup time, memory use, query latency, or benchmark duration. Show a chart or terminal values improving each iteration. This demonstrates numeric progress rather than binary pass/fail.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Project root",
+          "required": true
+        },
+        {
+          "name": "metric",
+          "type": "string",
+          "description": "Metric and measurement tool",
+          "required": true
+        },
+        {
+          "name": "direction",
+          "type": "string",
+          "description": "minimize or maximize",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "number",
+          "description": "Accepted threshold",
+          "required": true
+        },
+        {
+          "name": "samples",
+          "type": "integer",
+          "description": "Measurements per candidate",
+          "required": false,
+          "default": 5,
+          "minimum": 3
+        },
+        {
+          "name": "correctness_command",
+          "type": "string",
+          "description": "Pinned correctness check",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Optimize one measured bottleneck using the fixed benchmark environment and unchanged correctness contract.",
+      "checks": [
+        "Declared metric reaches the target using the pinned aggregation and sampling procedure.",
+        "Correctness and resource guardrails still pass.",
+        "Warmup, hardware/load and variance are recorded; noisy measurements cannot certify improvement."
+      ],
+      "protect": [
+        "Benchmark workload, sample policy and correctness checks"
+      ],
+      "evidence": [
+        "Per-attempt samples and aggregate",
+        "Correctness report and runtime/tool versions"
+      ],
+      "demo": "Chart the same measured quantity per candidate alongside correctness status.",
+      "tags": [
+        "performance",
+        "benchmark",
+        "latency",
+        "memory",
+        "bundle",
+        "lighthouse"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 4
+    },
+    {
+      "id": "media-optimization",
+      "title": "Image compression / media optimization",
+      "category": "media",
+      "summary": "Render one compression candidate with changed encoder parameters while retaining the immutable source.",
+      "source_idea": "Start with a large image or video and iterate compression parameters until size is below a target while SSIM/VMAF or another quality metric stays above a floor. Visually show file size shrinking while quality stays acceptable. This is a very good non-code demonstration.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Original image or video",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Separate destination file",
+          "required": true
+        },
+        {
+          "name": "max_bytes",
+          "type": "number",
+          "description": "Maximum output bytes",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "quality_metric",
+          "type": "string",
+          "description": "Pinned SSIM, VMAF or other comparison method",
+          "required": true
+        },
+        {
+          "name": "quality_floor",
+          "type": "number",
+          "description": "Minimum accepted quality",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Render one compression candidate with changed encoder parameters while retaining the immutable source.",
+      "checks": [
+        "Output bytes are at or below max_bytes.",
+        "Comparison against the original meets quality_floor.",
+        "Required dimensions, duration, streams, color and metadata constraints pass."
+      ],
+      "protect": [
+        "Original media, comparison reference and metric configuration"
+      ],
+      "evidence": [
+        "Source/output hashes and sizes",
+        "Quality measurements and encoder settings",
+        "Side-by-side captures"
+      ],
+      "demo": "Show bytes shrinking while the quality meter stays above its floor.",
+      "tags": [
+        "image",
+        "video",
+        "compression",
+        "ssim",
+        "vmaf",
+        "ffmpeg"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 5
+    },
+    {
+      "id": "audio-mastering",
+      "title": "Audio mastering / loudness normalization",
+      "category": "audio",
+      "summary": "Adjust one offline processing-chain candidate from captured analysis; retain the input and best technically valid render.",
+      "source_idea": "Feed an audio file through an offline processing chain and loop until LUFS, true peak, dynamic range, or spectral constraints fall within target bounds. Show meters or waveform analysis changing between iterations. This fits your audio background particularly well and makes LoopExec look broader than “AI coding infrastructure.”",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Immutable input audio",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Separate mastered audio destination",
+          "required": true
+        },
+        {
+          "name": "target_lufs",
+          "type": "number",
+          "description": "Requested integrated LUFS",
+          "required": true
+        },
+        {
+          "name": "lufs_tolerance",
+          "type": "number",
+          "description": "Allowed loudness deviation",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "max_true_peak_dbtp",
+          "type": "number",
+          "description": "True peak ceiling in dBTP",
+          "required": true
+        },
+        {
+          "name": "min_dynamic_range",
+          "type": "number",
+          "description": "Minimum dynamic range in the declared measurement units",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Adjust one offline processing-chain candidate from captured analysis; retain the input and best technically valid render.",
+      "checks": [
+        "Integrated loudness is within target_lufs ± lufs_tolerance.",
+        "True peak does not exceed max_true_peak_dbtp and dynamic range meets its floor.",
+        "Duration, sample rate/channels and any user-supplied spectral constraints pass.",
+        "Meter compliance is distinct from subjective musical approval."
+      ],
+      "protect": [
+        "Original audio, meter implementation and acceptance bounds"
+      ],
+      "evidence": [
+        "Chain settings, audio hashes and LUFS/peak/range reports",
+        "Waveform or meter captures",
+        "Retained candidate and receipt"
+      ],
+      "demo": "Show waveform and meters moving into the accepted region beside the loop.",
+      "tags": [
+        "audio",
+        "mastering",
+        "loudness",
+        "lufs",
+        "true-peak",
+        "music"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 4,
+      "adapter_status": "live",
+      "source_index": 6
+    },
+    {
+      "id": "music-mix",
+      "title": "Music mix validation",
+      "category": "audio",
+      "summary": "Make one mix/render correction addressing measured silence, phase, balance, peak or stem-integrity failures.",
+      "source_idea": "Iterate on a render until measurable conditions pass: integrated loudness, peak ceiling, silence detection, phase correlation, channel balance, or stem integrity. The external check can use ffmpeg, ffprobe, sox, or custom DSP analysis. A DAW + terminal split-screen would be excellent visually.",
+      "inputs": [
+        {
+          "name": "render",
+          "type": "path",
+          "description": "Rendered mix",
+          "required": true
+        },
+        {
+          "name": "stems",
+          "type": "path",
+          "description": "Stem directory or inventory",
+          "required": true
+        },
+        {
+          "name": "max_true_peak_dbtp",
+          "type": "number",
+          "description": "Peak ceiling in dBTP",
+          "required": true
+        },
+        {
+          "name": "max_silence_seconds",
+          "type": "number",
+          "description": "Maximum unintended silence duration",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "min_phase_correlation",
+          "type": "number",
+          "description": "Minimum declared phase-correlation statistic",
+          "required": true,
+          "minimum": -1,
+          "maximum": 1
+        },
+        {
+          "name": "max_channel_imbalance_db",
+          "type": "number",
+          "description": "Maximum left/right imbalance",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Make one mix/render correction addressing measured silence, phase, balance, peak or stem-integrity failures.",
+      "checks": [
+        "Pinned loudness/peak, silence, phase and channel-balance requirements pass.",
+        "All expected stems exist with matching sample rate, duration/alignment and hashes where required.",
+        "Intentional silence and artistic exceptions are explicit inputs, never silently excluded."
+      ],
+      "protect": [
+        "Original session/stems, stem inventory, alignment and analyzer policy"
+      ],
+      "evidence": [
+        "Per-render DSP report",
+        "Stem manifest and alignment results",
+        "DAW/meter captures"
+      ],
+      "demo": "Use a DAW and terminal split-screen with criterion-by-criterion results.",
+      "tags": [
+        "music",
+        "mix",
+        "stems",
+        "phase",
+        "silence",
+        "balance",
+        "dsp"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 7
+    },
+    {
+      "id": "asset-optimization",
+      "title": "3D asset optimization",
+      "category": "creative",
+      "summary": "Produce one optimized mesh/material candidate and measure it from the fixed comparison views.",
+      "source_idea": "Use Blender headlessly. Start with a heavy model and iteratively reduce polygon count, texture size, or render cost while preserving a similarity or silhouette threshold. Show Blender statistics or rendered frames beside the LoopExec run. This would be one of the most distinctive demos.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Authored source model",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Separate optimized model",
+          "required": true
+        },
+        {
+          "name": "max_triangles",
+          "type": "number",
+          "description": "Triangle-count ceiling",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "max_texture_edge",
+          "type": "number",
+          "description": "Largest accepted texture dimension",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "min_similarity",
+          "type": "number",
+          "description": "Minimum declared render/silhouette similarity",
+          "required": true,
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "name": "views",
+          "type": "strings",
+          "description": "Frozen comparison cameras/views",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Produce one optimized mesh/material candidate and measure it from the fixed comparison views.",
+      "checks": [
+        "Triangle, texture and declared render-cost limits pass.",
+        "Similarity or silhouette quality remains above the floor in every required view.",
+        "UVs, material slots, scale, normals and requested engine import remain valid."
+      ],
+      "protect": [
+        "Authored source asset, comparison cameras, references and similarity evaluator"
+      ],
+      "evidence": [
+        "Before/after asset statistics",
+        "Pinned-view render comparisons and engine import results"
+      ],
+      "demo": "Show Blender statistics beside matched before/after rendered frames.",
+      "tags": [
+        "3d",
+        "blender",
+        "mesh",
+        "texture",
+        "silhouette",
+        "optimization"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 8
+    },
+    {
+      "id": "godot-performance",
+      "title": "Godot game performance",
+      "category": "games",
+      "summary": "Optimize one profiled game-scene bottleneck and produce a fresh benchmark run with unchanged gameplay assertions.",
+      "source_idea": "Run a small game scene and iterate until frame time, draw calls, memory, or automated gameplay assertions fall under a threshold. Capture the game running while LoopExec reports objective checks. This makes the project immediately understandable outside backend engineering.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Godot project",
+          "required": true
+        },
+        {
+          "name": "scene",
+          "type": "path",
+          "description": "Benchmark scene relative to project",
+          "required": true
+        },
+        {
+          "name": "max_frame_ms",
+          "type": "number",
+          "description": "Frame-time ceiling for the declared percentile",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "max_draw_calls",
+          "type": "number",
+          "description": "Draw-call ceiling",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "max_memory_bytes",
+          "type": "number",
+          "description": "Memory ceiling",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "gameplay_assertions",
+          "type": "strings",
+          "description": "Required automated behavior assertions",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Optimize one profiled game-scene bottleneck and produce a fresh benchmark run with unchanged gameplay assertions.",
+      "checks": [
+        "Frame-time, draw-call and memory bounds pass under the pinned hardware/renderer/workload.",
+        "Every required gameplay assertion passes."
+      ],
+      "protect": [
+        "Scene workload, benchmark capture settings and gameplay tests"
+      ],
+      "evidence": [
+        "Frame-time distribution, draw calls and memory",
+        "Gameplay results, Godot version and game capture"
+      ],
+      "demo": "Show the running game and measured budgets with passing gameplay tests.",
+      "tags": [
+        "godot",
+        "game",
+        "frame-time",
+        "draw-calls",
+        "memory"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 9
+    },
+    {
+      "id": "responsive-ui",
+      "title": "Responsive UI repair",
+      "category": "web",
+      "summary": "Repair one responsive layout failure without sacrificing other pinned viewport states.",
+      "source_idea": "Give an agent a page broken at several viewport widths. --check runs Playwright screenshots or layout assertions across mobile/tablet/desktop. LoopExec continues until all viewport checks pass. A tiled visual showing broken → repaired layouts would be extremely shareable.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Web project",
+          "required": true
+        },
+        {
+          "name": "routes",
+          "type": "strings",
+          "description": "Pinned pages/states",
+          "required": true
+        },
+        {
+          "name": "viewports",
+          "type": "strings",
+          "description": "Viewport definitions such as 390x844 and 1440x900",
+          "required": true
+        },
+        {
+          "name": "max_overflow_px",
+          "type": "number",
+          "description": "Allowed horizontal overflow in pixels",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one responsive layout failure without sacrificing other pinned viewport states.",
+      "checks": [
+        "Every route/viewport passes overflow, clipping, visibility and required interaction assertions.",
+        "Required screenshots meet approved references or explicit layout criteria."
+      ],
+      "protect": [
+        "Viewport/route inventory, reference captures and layout assertions"
+      ],
+      "evidence": [
+        "Tiled before/after screenshots",
+        "Per-viewport assertion results"
+      ],
+      "demo": "Tile mobile/tablet/desktop before and after around the loop counters.",
+      "tags": [
+        "responsive",
+        "mobile",
+        "tablet",
+        "desktop",
+        "layout",
+        "playwright"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 10
+    },
+    {
+      "id": "api-contract",
+      "title": "Broken API contract repair",
+      "category": "engineering",
+      "summary": "Repair one implementation mismatch with the approved API contract.",
+      "source_idea": "Start with an API implementation that fails an OpenAPI contract test. Iterate until schema validation, status codes, headers, and payloads all pass. Show failing contract cases count decreasing each iteration. This is a strong platform-engineering example.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "API project",
+          "required": true
+        },
+        {
+          "name": "openapi",
+          "type": "path",
+          "description": "Approved OpenAPI document",
+          "required": true
+        },
+        {
+          "name": "base_url",
+          "type": "string",
+          "description": "Disposable integration API endpoint",
+          "required": true
+        },
+        {
+          "name": "cases",
+          "type": "strings",
+          "description": "Pinned contract case inventory",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one implementation mismatch with the approved API contract.",
+      "checks": [
+        "All pinned cases pass schema, status-code, header and payload validation.",
+        "Required error responses and backward-compatible behavior pass."
+      ],
+      "protect": [
+        "OpenAPI source, case inventory and test client configuration"
+      ],
+      "evidence": [
+        "Failing-case trajectory",
+        "Final contract and compatibility reports"
+      ],
+      "demo": "Show failing contract cases decreasing until the full contract passes.",
+      "tags": [
+        "api",
+        "openapi",
+        "schema",
+        "headers",
+        "contract"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 11
+    },
+    {
+      "id": "migration-safety",
+      "title": "Database migration safety",
+      "category": "data",
+      "summary": "Apply one candidate to a freshly restored disposable database and collect migration plus recovery evidence.",
+      "source_idea": "Run a candidate migration against a disposable database. Check schema invariants, row counts, constraints, backward compatibility, and migration reversibility. LoopExec halts if data integrity regresses. Visually, show the migration attempt plus invariant checks—not flashy, but very credible for senior engineers.",
+      "inputs": [
+        {
+          "name": "migration",
+          "type": "path",
+          "description": "Candidate migration file",
+          "required": true
+        },
+        {
+          "name": "sandbox_database",
+          "type": "string",
+          "description": "Explicit disposable database alias, never a credential",
+          "required": true
+        },
+        {
+          "name": "fixture",
+          "type": "path",
+          "description": "Versioned representative data fixture",
+          "required": true
+        },
+        {
+          "name": "invariants",
+          "type": "strings",
+          "description": "Schema/data/backward-compatibility invariants",
+          "required": true
+        },
+        {
+          "name": "rollback_policy",
+          "type": "string",
+          "description": "Required rollback or forward-recovery contract",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Apply one candidate to a freshly restored disposable database and collect migration plus recovery evidence.",
+      "checks": [
+        "Schema/data constraints, exact row counts and declared invariants pass.",
+        "Old and new application compatibility passes where required.",
+        "Rollback or forward recovery is exercised against the declared policy without data loss."
+      ],
+      "protect": [
+        "Original fixture, invariant queries and database identity isolation"
+      ],
+      "evidence": [
+        "Before/after schema and row-count/checksum comparisons",
+        "Recovery and compatibility results"
+      ],
+      "demo": "Display the migration alongside independent integrity and recovery checks.",
+      "tags": [
+        "database",
+        "migration",
+        "rollback",
+        "integrity",
+        "schema"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 12
+    },
+    {
+      "id": "sql-optimization",
+      "title": "SQL query optimization",
+      "category": "data",
+      "summary": "Propose one query or index change and benchmark it against the unchanged baseline result contract.",
+      "source_idea": "Give it a slow query and an execution-time target. The loop proposes index/query changes, then the external check uses EXPLAIN ANALYZE and correctness comparisons. Show 850 ms → 260 ms → 74 ms while result hashes remain identical.",
+      "inputs": [
+        {
+          "name": "query",
+          "type": "path",
+          "description": "Query source file",
+          "required": true
+        },
+        {
+          "name": "sandbox_database",
+          "type": "string",
+          "description": "Disposable benchmark database alias",
+          "required": true
+        },
+        {
+          "name": "fixture",
+          "type": "path",
+          "description": "Frozen data fixture",
+          "required": true
+        },
+        {
+          "name": "max_latency_ms",
+          "type": "number",
+          "description": "Latency target under the pinned aggregation",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "result_comparison",
+          "type": "string",
+          "description": "Canonical row ordering, duplicate, NULL and numeric-tolerance policy",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Propose one query or index change and benchmark it against the unchanged baseline result contract.",
+      "checks": [
+        "Pinned benchmark aggregate meets max_latency_ms.",
+        "Canonical results equal baseline including duplicates, NULLs, ordering requirements and explicit numeric tolerances.",
+        "EXPLAIN ANALYZE runs only in the disposable database; mutating queries remain scoped to fixtures."
+      ],
+      "protect": [
+        "Baseline query/results, fixture, benchmark workload and comparison policy"
+      ],
+      "evidence": [
+        "EXPLAIN ANALYZE plans and timing samples",
+        "Canonical result hashes and equality details"
+      ],
+      "demo": "Show 850 ms → 260 ms → 74 ms while the canonical result hash remains equal.",
+      "tags": [
+        "sql",
+        "query",
+        "index",
+        "explain",
+        "latency",
+        "correctness"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 13
+    },
+    {
+      "id": "docker-reduction",
+      "title": "Docker image reduction",
+      "category": "engineering",
+      "summary": "Reduce one source of container-image weight while retaining the required runtime dependencies and behavior.",
+      "source_idea": "Start with a bloated container image. Iterate Dockerfile changes until image size drops beneath a threshold while health checks/tests still pass. Very easy visual: 1.2 GB → 640 MB → 312 MB, with test status staying green.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Build context",
+          "required": true
+        },
+        {
+          "name": "dockerfile",
+          "type": "path",
+          "description": "Candidate Dockerfile",
+          "required": true
+        },
+        {
+          "name": "max_image_bytes",
+          "type": "number",
+          "description": "Platform-specific image-size ceiling",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "Fixed target architecture/platform",
+          "required": true
+        },
+        {
+          "name": "checks",
+          "type": "strings",
+          "description": "Health, runtime and test commands",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Reduce one source of container-image weight while retaining the required runtime dependencies and behavior.",
+      "checks": [
+        "Image size meets max_image_bytes for the declared measurement type/platform.",
+        "Health checks, required runtime features and tests pass in the built image."
+      ],
+      "protect": [
+        "Build context inputs, platform and health/test assertions"
+      ],
+      "evidence": [
+        "Image digest, layer sizes and total bytes",
+        "Container health and test reports"
+      ],
+      "demo": "Show image size falling from 1.2 GB through 640 MB to 312 MB with green tests.",
+      "tags": [
+        "docker",
+        "container",
+        "image",
+        "layers",
+        "size"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 14
+    },
+    {
+      "id": "dependency-remediation",
+      "title": "Dependency vulnerability remediation",
+      "category": "engineering",
+      "summary": "Upgrade or replace one vulnerable dependency group and validate the resulting dependency graph and runtime compatibility.",
+      "source_idea": "Start with a repo containing known vulnerable dependencies. Iterate upgrades or replacements until a scanner reports no high/critical findings while tests still pass. Show vulnerability count falling. Important caveat: frame this as automated remediation assistance, not a security guarantee.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Dependency project",
+          "required": true
+        },
+        {
+          "name": "manifests",
+          "type": "strings",
+          "description": "Dependency manifests and lockfiles",
+          "required": true
+        },
+        {
+          "name": "scanner",
+          "type": "string",
+          "description": "Chosen scanner/version and advisory snapshot",
+          "required": true
+        },
+        {
+          "name": "severities",
+          "type": "strings",
+          "description": "Severities required to reach zero",
+          "required": true
+        },
+        {
+          "name": "test_command",
+          "type": "string",
+          "description": "Pinned regression suite",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Upgrade or replace one vulnerable dependency group and validate the resulting dependency graph and runtime compatibility.",
+      "checks": [
+        "The chosen scanner reports zero findings at the configured severities using the recorded advisory snapshot.",
+        "Regression tests and lockfile consistency pass.",
+        "Report scanner scope and residual uncertainty; zero known findings is not a security guarantee."
+      ],
+      "protect": [
+        "Scanner policy/exclusions, advisory snapshot and regression suite"
+      ],
+      "evidence": [
+        "Before/after dependency graphs and scanner reports",
+        "Lockfile diff and regression results"
+      ],
+      "demo": "Show known high/critical counts dropping while tests stay green.",
+      "tags": [
+        "dependency",
+        "vulnerability",
+        "remediation",
+        "scanner",
+        "upgrade",
+        "lockfile"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 15
+    },
+    {
+      "id": "lint-types",
+      "title": "Lint/type-error convergence",
+      "category": "engineering",
+      "summary": "Repair one related cluster of compiler, type or lint failures without relaxing the configured checks.",
+      "source_idea": "Begin with dozens of TypeScript, ESLint, compiler, or static-analysis failures. Loop until error count reaches zero. Show the number falling each iteration. This is simple but extremely legible on video.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Source project",
+          "required": true
+        },
+        {
+          "name": "check_command",
+          "type": "string",
+          "description": "Complete compiler/lint/static-analysis command",
+          "required": true
+        },
+        {
+          "name": "allowed_paths",
+          "type": "strings",
+          "description": "Source paths eligible for repair",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one related cluster of compiler, type or lint failures without relaxing the configured checks.",
+      "checks": [
+        "Full pinned compiler/linter scope reports zero required errors.",
+        "Ignore rules, suppressions, file inventory and compiler strictness remain within the original contract."
+      ],
+      "protect": [
+        "Compiler/linter policy, checked-file inventory and accepted suppressions"
+      ],
+      "evidence": [
+        "Stable diagnostic IDs and count trajectory",
+        "Final complete check output"
+      ],
+      "demo": "Show the error count falling to zero beside the source diff.",
+      "tags": [
+        "lint",
+        "types",
+        "typescript",
+        "eslint",
+        "compiler",
+        "static-analysis"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 16
+    },
+    {
+      "id": "documentation-drift",
+      "title": "Documentation drift repair",
+      "category": "release",
+      "summary": "Repair one source/documentation mismatch and regenerate contracts from the intended source identity.",
+      "source_idea": "This one is directly relevant to what you just did with LoopExec itself. Start with code/docs mismatch. The loop updates docs while an external verifier checks runtime CLI output, generated docs, version identity, links, and deployment markers. Show stale version → generated mismatch → corrected docs → verification pass. This demonstrates LoopExec governing release integrity rather than code generation.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Documentation/source project",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "description": "Expected source/binary identity",
+          "required": true
+        },
+        {
+          "name": "docs",
+          "type": "strings",
+          "description": "Canonical documentation inventory",
+          "required": true
+        },
+        {
+          "name": "contract_command",
+          "type": "string",
+          "description": "CLI/generated-reference verifier",
+          "required": true
+        },
+        {
+          "name": "deployment_origin",
+          "type": "string",
+          "description": "Expected docs origin or explicit local-only scope",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one source/documentation mismatch and regenerate contracts from the intended source identity.",
+      "checks": [
+        "CLI output/generated references, versions and links match the exact source-bound documentation bundle.",
+        "Required deployment markers and raw-file readback match when deployed evidence is in scope.",
+        "Local generation is never reported as deployed verification."
+      ],
+      "protect": [
+        "Source identity, documentation inventory and provenance verifier"
+      ],
+      "evidence": [
+        "Source/docs manifests and contract diff",
+        "Link results and deployed readback when authorized"
+      ],
+      "demo": "Show stale version, generated mismatch, corrected docs and verified provenance.",
+      "tags": [
+        "docs",
+        "documentation",
+        "drift",
+        "cli",
+        "provenance",
+        "version"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 17
+    },
+    {
+      "id": "release-readiness",
+      "title": "Release readiness gate",
+      "category": "release",
+      "summary": "Prepare one missing or inconsistent release artifact and collect fresh source-bound readiness evidence.",
+      "source_idea": "Let the loop prepare a release while the check validates tests, generated artifacts, changelog, docs provenance, version consistency, checksums, and site deployment. It stops only when everything is ready or a guard fails. This is a very mature platform-engineering demo.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Release project",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "description": "Intended release version",
+          "required": true
+        },
+        {
+          "name": "artifacts",
+          "type": "strings",
+          "description": "Required package/platform inventory",
+          "required": true
+        },
+        {
+          "name": "gates",
+          "type": "strings",
+          "description": "Required release readiness checks",
+          "required": true
+        },
+        {
+          "name": "docs_origin",
+          "type": "string",
+          "description": "Required deployed documentation origin",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Prepare one missing or inconsistent release artifact and collect fresh source-bound readiness evidence.",
+      "checks": [
+        "Tests, generated artifacts, changelog, versions and checksums pass for the same intended source.",
+        "Documentation provenance and required deployed readback pass.",
+        "Readiness remains separate from owner publication/merge/deployment authorization."
+      ],
+      "protect": [
+        "Release policy, source identity, expected artifact inventory and publication gates"
+      ],
+      "evidence": [
+        "Exact-source gate matrix",
+        "Artifact checksums and source/docs manifests",
+        "Site readback"
+      ],
+      "demo": "Display each release gate becoming ready or the exact guard stopping preparation.",
+      "tags": [
+        "release",
+        "changelog",
+        "checksum",
+        "deployment",
+        "provenance",
+        "readiness"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 18
+    },
+    {
+      "id": "configuration-repair",
+      "title": "Configuration repair",
+      "category": "engineering",
+      "summary": "Repair one configuration error and exercise its behavior in the declared disposable environment.",
+      "source_idea": "Start with a broken Nginx, Terraform, GitHub Actions, Docker Compose, or CI config. Iterate against syntax validation plus a real integration test. Capture the config failure becoming a valid deployment. Again, use a disposable local environment for safety.",
+      "inputs": [
+        {
+          "name": "configuration",
+          "type": "path",
+          "description": "Candidate configuration",
+          "required": true
+        },
+        {
+          "name": "validator",
+          "type": "string",
+          "description": "Syntax/schema validator",
+          "required": true
+        },
+        {
+          "name": "integration_command",
+          "type": "string",
+          "description": "Real sandbox integration check",
+          "required": true
+        },
+        {
+          "name": "sandbox",
+          "type": "string",
+          "description": "Explicit local/disposable target alias",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one configuration error and exercise its behavior in the declared disposable environment.",
+      "checks": [
+        "Syntax/schema validation passes.",
+        "Real integration behavior passes in the declared target; syntax alone is insufficient.",
+        "External production apply/deploy is outside the repair unless separately authorized."
+      ],
+      "protect": [
+        "Validator policy, integration assertions and target identity"
+      ],
+      "evidence": [
+        "Initial validator failure",
+        "Integration result and resulting sandbox behavior"
+      ],
+      "demo": "Show the invalid configuration becoming a working disposable deployment.",
+      "tags": [
+        "config",
+        "nginx",
+        "terraform",
+        "compose",
+        "ci",
+        "yaml"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 19
+    },
+    {
+      "id": "data-cleaning",
+      "title": "Data cleaning",
+      "category": "data",
+      "summary": "Apply one explicit cleaning transformation and retain a trace from each output row to its source.",
+      "source_idea": "Give LoopExec a dirty CSV or JSON dataset and an explicit acceptance contract: zero invalid dates, no duplicate IDs, no nulls in required fields, value ranges preserved, row-count constraints satisfied. Show quality metrics improving over iterations. This expands LoopExec into data engineering.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Immutable CSV/JSON dataset",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Separate cleaned dataset",
+          "required": true
+        },
+        {
+          "name": "required_fields",
+          "type": "strings",
+          "description": "Fields that cannot be missing",
+          "required": true
+        },
+        {
+          "name": "id_field",
+          "type": "string",
+          "description": "Uniqueness key",
+          "required": true
+        },
+        {
+          "name": "date_fields",
+          "type": "strings",
+          "description": "Date fields and accepted formats",
+          "required": true
+        },
+        {
+          "name": "max_dropped_rows",
+          "type": "integer",
+          "description": "Maximum explicitly permitted dropped rows",
+          "required": false,
+          "default": 0,
+          "minimum": 0
+        },
+        {
+          "name": "ranges",
+          "type": "strings",
+          "description": "Declared value-range constraints",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Apply one explicit cleaning transformation and retain a trace from each output row to its source.",
+      "checks": [
+        "Required dates, unique IDs, non-null fields, ranges and row-count/drop limits all pass.",
+        "Ambiguous values are surfaced for resolution; invented replacements or silent row deletion cannot improve the metric."
+      ],
+      "protect": [
+        "Source data, row lineage, acceptance rules and permitted drop policy"
+      ],
+      "evidence": [
+        "Per-rule quality counts before/after",
+        "Row lineage and dropped/quarantined-row report"
+      ],
+      "demo": "Show invalid dates, duplicates and missing-field counts decreasing under fixed row constraints.",
+      "tags": [
+        "csv",
+        "json",
+        "data",
+        "cleaning",
+        "duplicates",
+        "dates",
+        "quality"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 20
+    },
+    {
+      "id": "etl-reconciliation",
+      "title": "ETL reconciliation",
+      "category": "data",
+      "summary": "Correct one transformation discrepancy while retaining source/target lineage and the same reconciliation contract.",
+      "source_idea": "Iterate on a transformation until source/target totals, checksums, row counts, and schema contracts reconcile. Show mismatch → decreasing discrepancies → exact reconciliation. Very compelling to enterprise/platform audiences.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Frozen source dataset/snapshot",
+          "required": true
+        },
+        {
+          "name": "transformation",
+          "type": "path",
+          "description": "Transformation code/configuration",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "path",
+          "description": "Disposable transformed output",
+          "required": true
+        },
+        {
+          "name": "reconciliation_keys",
+          "type": "strings",
+          "description": "Join/group keys",
+          "required": true
+        },
+        {
+          "name": "totals",
+          "type": "strings",
+          "description": "Expected sums/counts and explicit tolerances",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Correct one transformation discrepancy while retaining source/target lineage and the same reconciliation contract.",
+      "checks": [
+        "Source/target row counts, totals, canonical checksums and schema contracts reconcile.",
+        "Key cardinality, duplicate, NULL and rounding rules remain explicit and unchanged."
+      ],
+      "protect": [
+        "Source snapshot, reconciliation keys, tolerance policy and schema checks"
+      ],
+      "evidence": [
+        "Per-key discrepancies and totals",
+        "Source/target manifests and lineage"
+      ],
+      "demo": "Show mismatch counts falling to exact reconciliation.",
+      "tags": [
+        "etl",
+        "transformation",
+        "reconciliation",
+        "totals",
+        "checksum",
+        "pipeline"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 21
+    },
+    {
+      "id": "ocr-extraction",
+      "title": "OCR/document extraction quality",
+      "category": "documents",
+      "summary": "Try one preprocessing/extraction strategy and score structured fields against the frozen annotated reference.",
+      "source_idea": "Run several preprocessing strategies on scanned documents until extraction confidence or comparison against known fields passes a threshold. Show image → extracted structured fields → validation. This is more visually interesting than code.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Immutable scans or document images",
+          "required": true
+        },
+        {
+          "name": "truth",
+          "type": "path",
+          "description": "Known fields or held-out annotated sample",
+          "required": true
+        },
+        {
+          "name": "required_fields",
+          "type": "strings",
+          "description": "Field names with validation rules",
+          "required": true
+        },
+        {
+          "name": "min_field_accuracy",
+          "type": "number",
+          "description": "Required measured field accuracy",
+          "required": true,
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "name": "ocr_engine",
+          "type": "string",
+          "description": "Chosen OCR engine and version",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Try one preprocessing/extraction strategy and score structured fields against the frozen annotated reference.",
+      "checks": [
+        "Required field validity and measured field accuracy meet the pinned target.",
+        "Confidence-only acceptance is explicitly calibrated to labeled data; self-reported confidence alone cannot establish correctness.",
+        "Preserve document/page/region provenance for each extracted field."
+      ],
+      "protect": [
+        "Original scans, ground truth, field rules and held-out samples"
+      ],
+      "evidence": [
+        "Image/preprocessing comparison",
+        "Extracted fields, provenance and validation scores"
+      ],
+      "demo": "Show scan, structured fields and independent field validation together.",
+      "tags": [
+        "ocr",
+        "document",
+        "extraction",
+        "scan",
+        "fields",
+        "preprocessing"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 22
+    },
+    {
+      "id": "prompt-optimization",
+      "title": "Prompt/workflow optimization",
+      "category": "agents",
+      "summary": "Revise one prompt/workflow candidate using development feedback while retaining the frozen evaluation contract.",
+      "source_idea": "Use a fixed evaluation set and iterate a prompt or agent workflow until the external evaluator crosses a target while cost/latency stays under bounds. The important part is that LoopExec evaluates against a frozen test set rather than accepting the model's own judgment. This is especially aligned with the product thesis.",
+      "inputs": [
+        {
+          "name": "prompt",
+          "type": "path",
+          "description": "Candidate prompt/workflow",
+          "required": true
+        },
+        {
+          "name": "evaluation_set",
+          "type": "path",
+          "description": "Frozen versioned evaluation cases",
+          "required": true
+        },
+        {
+          "name": "evaluator",
+          "type": "string",
+          "description": "Independent evaluator and scoring policy",
+          "required": true
+        },
+        {
+          "name": "target_score",
+          "type": "number",
+          "description": "Acceptance score",
+          "required": true
+        },
+        {
+          "name": "max_latency_ms",
+          "type": "number",
+          "description": "Latency bound",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "max_cost_microusd",
+          "type": "number",
+          "description": "Per-evaluation cost limit in integer micro-USD",
+          "required": true,
+          "minimum": 0
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Revise one prompt/workflow candidate using development feedback while retaining the frozen evaluation contract.",
+      "checks": [
+        "Independent evaluator score meets target with all hard correctness constraints intact.",
+        "Recorded latency and adapter/provider-enforced cost constraints satisfy the contract.",
+        "Keep a held-out acceptance split; evaluation-set edits, label leakage and self-grading cannot certify improvement."
+      ],
+      "protect": [
+        "Evaluation cases/labels, evaluator, split policy and budget ledger"
+      ],
+      "evidence": [
+        "Case-level scores and held-out results",
+        "Observed invocation, latency and exact/unknown cost records"
+      ],
+      "demo": "Show frozen-case scores improving alongside cost and latency limits.",
+      "tags": [
+        "prompt",
+        "workflow",
+        "eval",
+        "evaluator",
+        "benchmark",
+        "agent"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 23
+    },
+    {
+      "id": "cost-budget",
+      "title": "Cost-bounded agent workflow",
+      "category": "governance",
+      "summary": "Reserve one permitted attempt before dispatch; after exhaustion request another only in an offline fixture to prove refusal.",
+      "source_idea": "Let an agent try to solve a task under a strict model-call budget. Visually show remaining calls decreasing and LoopExec refusing a further call once the shared budget is exhausted. This is a great demo of the v0.4.x work because the “failure” itself is the proof.",
+      "inputs": [
+        {
+          "name": "objective",
+          "type": "string",
+          "description": "Bounded task objective",
+          "required": true
+        },
+        {
+          "name": "scope_id",
+          "type": "string",
+          "description": "Existing or new explicit shared budget identity",
+          "required": true
+        },
+        {
+          "name": "max_calls",
+          "type": "integer",
+          "description": "Authorized total call allowance",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "phases",
+          "type": "strings",
+          "description": "Builder/critic phases included in the allowance",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Reserve one permitted attempt before dispatch; after exhaustion request another only in an offline fixture to prove refusal.",
+      "checks": [
+        "Shared pre-call reservations never exceed max_calls across run IDs and phases.",
+        "A refused call never launches; failed launches retain consumed reservations.",
+        "Call-count bounds are not dollar bounds; strict monetary caps additionally require enforced per-call cost reservations."
+      ],
+      "protect": [
+        "Shared scope identity, pinned allowance and append-only reservation history"
+      ],
+      "evidence": [
+        "Per-call reservations, remaining allowance and launch count",
+        "Computed budget_exceeded receipt"
+      ],
+      "demo": "Show remaining calls decrementing and an extra call being refused without launching.",
+      "tags": [
+        "budget",
+        "cost",
+        "calls",
+        "reservation",
+        "shared",
+        "agent"
+      ],
+      "expected_halt": "budget_exceeded",
+      "social_priority": 5,
+      "adapter_status": "live",
+      "source_index": 24
+    },
+    {
+      "id": "oscillation",
+      "title": "Oscillation detection",
+      "category": "governance",
+      "summary": "Produce the next alternating fixture state while retaining the same contradictory acceptance checks.",
+      "source_idea": "Construct a deliberately pathological task where an agent alternates between A and B—perhaps formatting one file in mutually incompatible ways. LoopExec detects the repeated state and halts rather than looping forever. Visually this is excellent: A → B → A → B → oscillation_detected.",
+      "inputs": [
+        {
+          "name": "fixture",
+          "type": "path",
+          "description": "Disposable fixture directory",
+          "required": true
+        },
+        {
+          "name": "states",
+          "type": "strings",
+          "description": "Deliberately conflicting states A and B",
+          "required": true
+        },
+        {
+          "name": "failure_ids",
+          "type": "strings",
+          "description": "Stable failure identities for each state",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Produce the next alternating fixture state while retaining the same contradictory acceptance checks.",
+      "checks": [
+        "Repeated state/failure history produces the computed oscillation guard before the attempt/time cap.",
+        "The detector uses real captured observations and never a caller-supplied halt reason."
+      ],
+      "protect": [
+        "Contradictory checks, failure identity mapping and detector policy"
+      ],
+      "evidence": [
+        "A/B state sequence and captured failure sets",
+        "Computed halt and retained receipt"
+      ],
+      "demo": "Animate A → B → A → B and the computed oscillation_detected stop.",
+      "tags": [
+        "oscillation",
+        "cycle",
+        "loop",
+        "undo",
+        "conflict"
+      ],
+      "expected_halt": "oscillation_detected",
+      "social_priority": 2,
+      "adapter_status": "live",
+      "source_index": 25
+    },
+    {
+      "id": "regression",
+      "title": "Regression detection",
+      "category": "governance",
+      "summary": "Fix one failing condition in the fixture while deliberately exposing a regression in a previously passing condition.",
+      "source_idea": "Give a task with two acceptance conditions. The agent fixes one but breaks the other. LoopExec's ratchet catches that regression and refuses to count the iteration as progress. This may be one of the strongest conceptual demos because it exposes a very real agent failure mode.",
+      "inputs": [
+        {
+          "name": "fixture",
+          "type": "path",
+          "description": "Disposable two-condition fixture",
+          "required": true
+        },
+        {
+          "name": "conditions",
+          "type": "strings",
+          "description": "At least two independently identified acceptance conditions",
+          "required": true
+        },
+        {
+          "name": "allowed_paths",
+          "type": "strings",
+          "description": "Builder-owned fixture files",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Fix one failing condition in the fixture while deliberately exposing a regression in a previously passing condition.",
+      "checks": [
+        "Previously passing criterion re-entering the failure set is detected as same_test_regressed.",
+        "With candidate management, rejected candidates retain evidence and restore the best verified candidate according to the configured policy."
+      ],
+      "protect": [
+        "Acceptance conditions, stable IDs and retained baseline evidence"
+      ],
+      "evidence": [
+        "Per-condition trajectory",
+        "Rejected candidate and restored-best identity when configured"
+      ],
+      "demo": "Show one check turn green while the other turns red, then the ratchet/restore result.",
+      "tags": [
+        "regression",
+        "ratchet",
+        "candidate",
+        "restore",
+        "tests"
+      ],
+      "expected_halt": "same_test_regressed",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 26
+    },
+    {
+      "id": "metric-gaming",
+      "title": "Metric gaming / reward hacking",
+      "category": "governance",
+      "summary": "Attempt one deliberate metric-weakening change in a disposable fixture while keeping the authoritative verifier outside builder control.",
+      "source_idea": "Create a deliberately bad example where the agent can make the metric look better by weakening the check—for example deleting tests or excluding files. The integrity guard detects the shrinking measured set and halts with metric_integrity_violation. This is extremely strong social content because the failure is instantly understandable.",
+      "inputs": [
+        {
+          "name": "fixture",
+          "type": "path",
+          "description": "Disposable deliberately gameable fixture",
+          "required": true
+        },
+        {
+          "name": "measured_ids",
+          "type": "strings",
+          "description": "Frozen measured-test or item inventory",
+          "required": true
+        },
+        {
+          "name": "protected_paths",
+          "type": "strings",
+          "description": "Verifier, test-selection and policy files",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Attempt one deliberate metric-weakening change in a disposable fixture while keeping the authoritative verifier outside builder control.",
+      "checks": [
+        "Shrinking measured inventory or changing protected verifier policy triggers metric_integrity_violation before green can count as success.",
+        "Published claims distinguish implemented inventory/manifest guards from still-unimplemented deeper assertion-count/coverage protections."
+      ],
+      "protect": [
+        "Authoritative checks, original measured set and protected manifest"
+      ],
+      "evidence": [
+        "Before/after item inventory and policy hashes",
+        "Tempting green metric, refused success and computed receipt"
+      ],
+      "demo": "Show the agent delete/exclude a test, the apparent improvement and LoopExec refusing success.",
+      "tags": [
+        "metric",
+        "gaming",
+        "reward",
+        "hacking",
+        "cheat",
+        "integrity",
+        "tests"
+      ],
+      "expected_halt": "metric_integrity_violation",
+      "social_priority": 1,
+      "adapter_status": "live",
+      "source_index": 27
+    },
+    {
+      "id": "batch-transformation",
+      "title": "File transformation / batch processing",
+      "category": "files",
+      "summary": "Transform one bounded batch and record source-to-output lineage and failures.",
+      "source_idea": "Convert a directory of files to a required format until every file satisfies a validator: image dimensions, metadata, encoding, naming convention, checksums, etc. This shows LoopExec as a general deterministic workflow engine, not an AI-specific tool.",
+      "inputs": [
+        {
+          "name": "source",
+          "type": "path",
+          "description": "Immutable source directory",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Separate destination directory",
+          "required": true
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "description": "Required output format/encoding",
+          "required": true
+        },
+        {
+          "name": "validation_rules",
+          "type": "strings",
+          "description": "Dimension, metadata, naming and checksum requirements",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Transform one bounded batch and record source-to-output lineage and failures.",
+      "checks": [
+        "Every source item has the required output(s) and all declared validators pass.",
+        "Frozen inventory, collision policy, checksum and permitted metadata-loss constraints pass."
+      ],
+      "protect": [
+        "Source inventory, validation policy and required metadata"
+      ],
+      "evidence": [
+        "Per-file conversion/validation matrix",
+        "Input/output manifests and checksums"
+      ],
+      "demo": "Show remaining invalid files decreasing to zero without dropping source items.",
+      "tags": [
+        "batch",
+        "files",
+        "conversion",
+        "encoding",
+        "metadata",
+        "checksum"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 28
+    },
+    {
+      "id": "static-site",
+      "title": "Static-site repair",
+      "category": "web",
+      "summary": "Repair one group of broken links/assets or missing metadata against the frozen crawl scope.",
+      "source_idea": "Crawl a site, find broken links/assets/metadata, iterate fixes, and stop when the crawl returns zero broken links and required metadata exists. You could show a dashboard/count changing live.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Static-site project",
+          "required": true
+        },
+        {
+          "name": "base_url",
+          "type": "string",
+          "description": "Controlled site origin",
+          "required": true
+        },
+        {
+          "name": "routes",
+          "type": "strings",
+          "description": "Fixed crawl seeds and route inventory",
+          "required": true
+        },
+        {
+          "name": "required_metadata",
+          "type": "strings",
+          "description": "Required page metadata",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one group of broken links/assets or missing metadata against the frozen crawl scope.",
+      "checks": [
+        "No broken required internal links/assets remain across the pinned crawl inventory.",
+        "Required metadata exists on every applicable page; redirects and excluded external links are explicit."
+      ],
+      "protect": [
+        "Crawl scope, required route inventory and metadata policy"
+      ],
+      "evidence": [
+        "Per-page broken-link/asset counts",
+        "Final crawl and metadata report"
+      ],
+      "demo": "Show a live dashboard/count reaching zero broken links.",
+      "tags": [
+        "site",
+        "crawl",
+        "links",
+        "assets",
+        "metadata"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 29
+    },
+    {
+      "id": "seo-metadata",
+      "title": "SEO/metadata compliance",
+      "category": "web",
+      "summary": "Correct one technical metadata discrepancy while preserving approved page content and canonical policy.",
+      "source_idea": "Iterate a site until all pages satisfy technical SEO requirements: title length, canonical URL, OG tags, sitemap membership, no broken internal links. This is objective and very easy to understand visually.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Site project",
+          "required": true
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "description": "Expected canonical origin",
+          "required": true
+        },
+        {
+          "name": "pages",
+          "type": "strings",
+          "description": "Pinned page inventory",
+          "required": true
+        },
+        {
+          "name": "metadata_rules",
+          "type": "strings",
+          "description": "Title, canonical, OG, sitemap and link rules",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Correct one technical metadata discrepancy while preserving approved page content and canonical policy.",
+      "checks": [
+        "Every declared page meets title, canonical URL, OG, sitemap and internal-link rules.",
+        "Report technical compliance only; no ranking or traffic outcome is implied."
+      ],
+      "protect": [
+        "Page inventory, canonical origin, metadata limits and crawl rules"
+      ],
+      "evidence": [
+        "Page-level compliance matrix",
+        "Crawler results and rendered head snapshots"
+      ],
+      "demo": "Display required metadata checks turning green for every page.",
+      "tags": [
+        "seo",
+        "metadata",
+        "canonical",
+        "og",
+        "sitemap",
+        "technical"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 30
+    },
+    {
+      "id": "build-system",
+      "title": "Build-system repair",
+      "category": "engineering",
+      "summary": "Repair one dependency/build configuration or source failure while preserving the complete workspace graph.",
+      "source_idea": "Start with a deliberately broken monorepo build. Iterate until all packages compile, tests pass, and no dependency boundary violations remain. Show the failing workspace count shrinking.",
+      "inputs": [
+        {
+          "name": "project",
+          "type": "path",
+          "description": "Monorepo root",
+          "required": true
+        },
+        {
+          "name": "packages",
+          "type": "strings",
+          "description": "Frozen package/workspace inventory",
+          "required": true
+        },
+        {
+          "name": "build_command",
+          "type": "string",
+          "description": "Complete workspace build",
+          "required": true
+        },
+        {
+          "name": "test_command",
+          "type": "string",
+          "description": "Required regression tests",
+          "required": true
+        },
+        {
+          "name": "boundary_command",
+          "type": "string",
+          "description": "Dependency-boundary validator",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Repair one dependency/build configuration or source failure while preserving the complete workspace graph.",
+      "checks": [
+        "All declared packages compile and required tests pass.",
+        "Dependency-boundary validator passes without shrinking the workspace inventory or skipping failing packages."
+      ],
+      "protect": [
+        "Package graph, build/test commands and boundary rules"
+      ],
+      "evidence": [
+        "Failing workspace counts",
+        "Full build, test and dependency-boundary results"
+      ],
+      "demo": "Show the failing-package count shrink to zero across the full workspace.",
+      "tags": [
+        "monorepo",
+        "build",
+        "workspace",
+        "compiler",
+        "boundaries",
+        "packages"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 31
+    },
+    {
+      "id": "infrastructure-drift",
+      "title": "Infrastructure drift detection",
+      "category": "infrastructure",
+      "summary": "Reconcile one allowed difference in the declared sandbox and capture actual-state readback.",
+      "source_idea": "Compare actual infrastructure state with declared configuration and iterate reconciliation in a sandbox until drift reaches zero. This is suitable for a controlled local/demo environment and shows LoopExec as an infrastructure governor.",
+      "inputs": [
+        {
+          "name": "configuration",
+          "type": "path",
+          "description": "Declared infrastructure configuration",
+          "required": true
+        },
+        {
+          "name": "sandbox",
+          "type": "string",
+          "description": "Explicit disposable target identity",
+          "required": true
+        },
+        {
+          "name": "drift_command",
+          "type": "string",
+          "description": "Read-only independent drift detector",
+          "required": true
+        },
+        {
+          "name": "allowed_changes",
+          "type": "strings",
+          "description": "Permitted sandbox reconciliation operations",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Reconcile one allowed difference in the declared sandbox and capture actual-state readback.",
+      "checks": [
+        "Independent desired/actual comparison reports zero required drift.",
+        "Resource identity and allowed-change constraints remain intact.",
+        "A plan alone cannot prove applied state; production reconciliation remains separately authorized."
+      ],
+      "protect": [
+        "Desired-state definition, resource inventory and target/change policy"
+      ],
+      "evidence": [
+        "Before/after drift reports",
+        "Sandbox action ledger and actual-state readback"
+      ],
+      "demo": "Show sandbox drift count falling to zero with independent resource readback.",
+      "tags": [
+        "infrastructure",
+        "drift",
+        "terraform",
+        "reconcile",
+        "sandbox"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 32
+    },
+    {
+      "id": "creative-workflow",
+      "title": "Synthetic creative workflow",
+      "category": "creative",
+      "summary": "Produce one candidate and an independently attributed review against the unchanged brief, references and criterion-level rubric.",
+      "source_idea": "Have independent builder and critic roles produce and evaluate an image, audio clip, 3D asset, UI, or document under bounded attempts. LoopExec governs attempts, budgets, candidate retention, and reviewer rejection. The output itself is visual, while the terminal proves the governance.",
+      "inputs": [
+        {
+          "name": "brief",
+          "type": "string",
+          "description": "User creative brief and required deliverable",
+          "required": true
+        },
+        {
+          "name": "references",
+          "type": "strings",
+          "description": "User-approved reference assets",
+          "required": true
+        },
+        {
+          "name": "criteria",
+          "type": "strings",
+          "description": "Technical constraints and criterion-level rubric",
+          "required": true
+        },
+        {
+          "name": "target_score",
+          "type": "number",
+          "description": "Pinned desired score",
+          "required": true
+        },
+        {
+          "name": "max_reviews",
+          "type": "integer",
+          "description": "Authorized critic calls",
+          "required": true,
+          "minimum": 1
+        },
+        {
+          "name": "output",
+          "type": "path",
+          "description": "Candidate deliverable root",
+          "required": true
+        },
+        {
+          "name": "additional_constraints",
+          "type": "strings",
+          "description": "Optional additional user acceptance constraints; never replaces the required checks",
+          "required": false
+        }
+      ],
+      "attempt": "Produce one candidate and an independently attributed review against the unchanged brief, references and criterion-level rubric.",
+      "checks": [
+        "All hard technical criteria pass and candidate-bound independent review reaches the pinned target.",
+        "Reviewer veto remains a veto; subjective review cannot override a failed technical oracle.",
+        "Rejected attempts retain evidence/usage, restore the best verified candidate, and never reset review allowances."
+      ],
+      "protect": [
+        "Brief, references, rubric, verifier and shared review budget"
+      ],
+      "evidence": [
+        "Candidate hashes and technical reports",
+        "Independent criterion-level review, retained/rejected manifests and incurred usage"
+      ],
+      "demo": "Show the creative output beside attempt, budget, best-candidate and reviewer-veto evidence.",
+      "tags": [
+        "creative",
+        "builder",
+        "critic",
+        "image",
+        "audio",
+        "3d",
+        "ui",
+        "document"
+      ],
+      "expected_halt": "success_condition_met",
+      "social_priority": 0,
+      "adapter_status": "live",
+      "source_index": 33
+    }
+  ]
+}

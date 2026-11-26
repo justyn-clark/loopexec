@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/justyn-clark/loopexec/internal/modelpolicy"
 	"github.com/justyn-clark/loopexec/internal/subprocess"
@@ -66,6 +67,17 @@ func loadWorkflow(cfg runConfig) (*workflow.Config, string, error) {
 		}
 	}
 	m := w.Meter
+	if m.CallScope != nil {
+		scope := m.CallScope
+		if len(m.Reserve) == 0 || !filepath.IsAbs(scope.StoreDir) || !scopedName.MatchString(scope.Scope) || scope.MaxCalls < 0 || len(scope.PhaseLimits) == 0 {
+			return nil, "", fmt.Errorf("call_scope requires reservations, an absolute store, a scope and pinned phase limits")
+		}
+		for phase, limit := range scope.PhaseLimits {
+			if !scopedName.MatchString(phase) || limit < 0 || limit > scope.MaxCalls {
+				return nil, "", fmt.Errorf("invalid call_scope phase limit")
+			}
+		}
+	}
 	if m.Mode != "strict" && m.Mode != "observed" && m.Mode != "unmetered" {
 		return nil, "", fmt.Errorf("metering mode must be strict, observed, or unmetered")
 	}
@@ -189,6 +201,22 @@ func (w *workflowRuntime) paid(iter int, phase, legacy string, argv []string) (s
 		}
 		if reason := w.book.reserve(reservation, req, p, w.cap); reason != "" {
 			return v, reason, "reservation_denied"
+		}
+		if p.CallScope != nil {
+			scope := p.CallScope
+			policy := scopedBudgetPolicy{SchemaVersion: 1, Scope: scope.Scope, MaxCalls: scope.MaxCalls, PhaseLimits: scope.PhaseLimits}
+			for _, call := range reservation.Calls {
+				if _, err := reserveScopedCall(scope.StoreDir, policy, call.ID, call.Phase); err != nil {
+					w.book.Pending = nil
+					if e := w.saveBudget(); e != nil {
+						return v, "internal_error", "scoped_denial_persist_failed"
+					}
+					if errors.Is(err, errScopedExhausted) {
+						return v, "budget_exceeded", "shared_call_allowance_exhausted"
+					}
+					return v, "cost_anomaly", "shared_call_allowance_invalid"
+				}
+			}
 		}
 		req.Reservations = reservation.Calls
 	} else {

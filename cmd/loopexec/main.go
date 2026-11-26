@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/justyn-clark/loopexec/internal/modelpolicy"
+	"github.com/justyn-clark/loopexec/internal/recipes"
 	"github.com/justyn-clark/loopexec/internal/subprocess"
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
@@ -17,7 +18,7 @@ import (
 
 const (
 	toolName    = "loopexec"
-	toolVersion = "0.5.0-rc.2"
+	toolVersion = "0.5.0-rc.3"
 )
 
 // Exit-code classes are the coarse CI-branch buckets defined in SPEC.md section 5.
@@ -100,6 +101,7 @@ func (e *cliError) Unwrap() error {
 }
 
 type response struct {
+	Recipes        *recipes.Result        `json:"recipes,omitempty"`
 	ModelSelection *modelpolicy.Selection `json:"model_selection,omitempty"`
 	FailureCause   string                 `json:"failure_cause,omitempty"`
 	Failures       []runFailure           `json:"failures,omitempty"`
@@ -640,6 +642,7 @@ func newRootCmd() *cobra.Command {
 	cmd.AddCommand(newStatusCmd())
 	cmd.AddCommand(newScopedBudgetCmd())
 	cmd.AddCommand(newModelsCmd())
+	cmd.AddCommand(newRecipesCmd())
 	cmd.AddCommand(newCheckCmd())
 	cmd.AddCommand(newStepCmd())
 	cmd.AddCommand(newProbeCheckCmd())
