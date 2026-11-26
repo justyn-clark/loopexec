@@ -7,9 +7,13 @@ import (
 	"github.com/justyn-clark/loopexec/internal/workflow"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 )
 
 type candidateState struct {
+	AttemptArchive  string            `json:"attempt_archive_id,omitempty"`
+	Restoration     *restoreProgress  `json:"restoration,omitempty"`
 	BestIteration   int               `json:"best_iteration,omitempty"`
 	Numeric         *numericState     `json:"numeric,omitempty"`
 	Attempted       string            `json:"attempted_id,omitempty"`
@@ -28,6 +32,24 @@ type candidateManager struct {
 	policy               workflow.CandidatePolicy
 	state                candidateState
 	ctx                  context.Context
+	copyArtifact         func(context.Context, string, string, workflow.Artifact) error
+	recoveryDeadline     time.Time
+}
+
+type restoreProgress struct {
+	DeadlineNS   int64  `json:"deadline_ns,omitempty"`
+	FailureCause string `json:"failure_cause,omitempty"`
+	Target       string `json:"target_id"`
+	Phase        string `json:"phase"`
+	Completed    int    `json:"completed_files"`
+	Total        int    `json:"total_files"`
+}
+
+func (c *candidateManager) recoveryDeadlineNS() int64 {
+	if c.recoveryDeadline.IsZero() {
+		return 0
+	}
+	return c.recoveryDeadline.UnixNano()
 }
 
 func newCandidate(ctx context.Context, workdir, dir string, p workflow.CandidatePolicy) (*candidateManager, error) {
@@ -52,7 +74,7 @@ func newCandidate(ctx context.Context, workdir, dir string, p workflow.Candidate
 	if e != nil && !os.IsNotExist(e) {
 		return nil, e
 	}
-	for _, id := range []string{c.state.Best, c.state.Initial, c.state.Accepted, c.state.Attempted, c.state.Restored} {
+	for _, id := range []string{c.state.Best, c.state.Initial, c.state.Accepted, c.state.Attempted, c.state.Restored, c.state.AttemptArchive} {
 		if id != "" && !validCandidateID(id) {
 			return nil, fmt.Errorf("invalid saved candidate ID")
 		}
@@ -154,6 +176,8 @@ func (c *candidateManager) begin() error {
 	c.state.Status = "attempting"
 	c.state.Exposed = false
 	c.state.Attempted = ""
+	c.state.AttemptArchive = ""
+	c.state.Restoration = nil
 	return c.save()
 }
 func (c *candidateManager) attempted() (string, error) {
@@ -197,6 +221,29 @@ func (c *candidateManager) promote(fp *checkFingerprint, progress ...*numericSta
 	return nil
 }
 func (c *candidateManager) restore() error {
+	sourceStatus := c.state.Status
+	c.state.Status, c.state.Exposed = "restoring", false
+	if e := c.save(); e != nil {
+		return e
+	}
+	// Preserve the policy-included attempt before any rollback mutation. This is
+	// recovery evidence only; it never changes the accepted/best pointers.
+	if c.state.AttemptArchive == "" {
+		id, err := c.capture()
+		if err != nil {
+			return err
+		}
+		archive := struct {
+			Kind         string `json:"kind"`
+			Accepted     bool   `json:"accepted"`
+			Snapshot     string `json:"snapshot_id"`
+			SourceStatus string `json:"source_status"`
+		}{"attempt-recovery-only", false, id, sourceStatus}
+		if err = workflow.Atomic(filepath.Join(c.store, "attempt-recovery-"+id+".json"), archive); err != nil {
+			return err
+		}
+		c.state.AttemptArchive = id
+	}
 	c.state.Status = "restoring"
 	c.state.Exposed = false
 	if e := c.save(); e != nil {
@@ -206,47 +253,196 @@ func (c *candidateManager) restore() error {
 	if id == "" {
 		id = c.state.Initial
 	}
+	c.state.Restoration = &restoreProgress{Target: id, Phase: "validating", DeadlineNS: c.recoveryDeadlineNS()}
+	if err := c.save(); err != nil {
+		return err
+	}
 	base := filepath.Join(c.store, id)
 	var m workflow.Manifest
 	if e := workflow.Read(filepath.Join(base, "manifest.json"), &m); e != nil || workflow.JSONHash(m) != id {
 		return fmt.Errorf("restoration snapshot invalid")
 	}
+	if e := c.validateSnapshot(id); e != nil {
+		return e
+	}
 	current, e := workflow.Capture(c.ctx, c.root, c.policy)
 	if e != nil {
 		return e
 	}
-	wanted := map[string]bool{}
-	for _, a := range m.Files {
-		wanted[a.Path] = true
+	stage, e := os.MkdirTemp(c.store, "restore-")
+	if e != nil {
+		return e
 	}
-	for _, a := range current.Files {
-		if !wanted[a.Path] {
-			p, e := workflow.SafePath(c.root, a.Path)
-			if e != nil {
-				return e
-			}
-			if e = c.ctx.Err(); e != nil {
-				return e
-			}
-			if e = os.Remove(p); e != nil {
-				return e
-			}
+	defer os.RemoveAll(stage)
+	copyFile := c.copyArtifact
+	if copyFile == nil {
+		copyFile = workflow.CopyArtifact
+	}
+	progress := func(phase string, n int) error {
+		c.state.Restoration = &restoreProgress{Target: id, Phase: phase, Completed: n, Total: len(m.Files), DeadlineNS: c.recoveryDeadlineNS()}
+		if n%64 == 0 || n == len(m.Files) {
+			return c.save()
 		}
+		return c.ctx.Err()
 	}
-	for _, a := range m.Files {
-		if e = workflow.CopyArtifact(c.ctx, filepath.Join(base, "files"), c.root, a); e != nil {
+	if e = progress("staging", 0); e != nil {
+		return e
+	}
+	for i, a := range m.Files {
+		if e = copyFile(c.ctx, filepath.Join(base, "files"), stage, a); e != nil {
 			return e
 		}
+		if e = progress("staging", i+1); e != nil {
+			return e
+		}
+	}
+	staged, e := workflow.Capture(c.ctx, stage, c.policy)
+	if e != nil || workflow.JSONHash(staged) != id {
+		return fmt.Errorf("restoration stage invalid")
+	}
+	if e = workflow.SyncDirectories(c.ctx, stage); e != nil {
+		return e
+	}
+	if e = progress("pruning", 0); e != nil {
+		return e
+	}
+	if e = c.clearRestoreObstructions(m, current); e != nil {
+		return e
+	}
+	if e = progress("applying", 0); e != nil {
+		return e
+	}
+	for i, a := range m.Files {
+		if e = copyFile(c.ctx, stage, c.root, a); e != nil {
+			return e
+		}
+		if e = progress("applying", i+1); e != nil {
+			return e
+		}
+	}
+	if e = progress("verifying", 0); e != nil {
+		return e
 	}
 	actual, e := workflow.Capture(c.ctx, c.root, c.policy)
 	if e != nil || workflow.JSONHash(actual) != id {
 		return fmt.Errorf("restoration verification failed")
 	}
-	c.state.Restored = id
-	c.state.Status = "restored"
-	c.state.Exposed = c.state.Best != ""
-	return c.save()
+	parents := map[string]bool{c.root: true}
+	for _, files := range [][]workflow.Artifact{m.Files, current.Files} {
+		for _, a := range files {
+			for parent := filepath.Dir(filepath.Join(c.root, a.Path)); parent != c.root; parent = filepath.Dir(parent) {
+				parents[parent] = true
+			}
+		}
+	}
+	for parent := range parents {
+		if e = c.ctx.Err(); e != nil {
+			return e
+		}
+		info, err := os.Stat(parent)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			continue
+		}
+		if e = workflow.SyncDirectory(parent); e != nil {
+			return e
+		}
+	}
+	if e = c.ctx.Err(); e != nil {
+		return e
+	}
+	next := c.state
+	next.Restored, next.Status, next.Exposed = id, "restored", c.state.Best != ""
+	next.Restoration = &restoreProgress{Target: id, Phase: "verified", Completed: len(m.Files), Total: len(m.Files), DeadlineNS: c.recoveryDeadlineNS()}
+	if e = workflow.Atomic(c.journal, next); e != nil {
+		return e
+	}
+	c.state = next
+	return nil
 }
+
+func (c *candidateManager) clearRestoreObstructions(target, current workflow.Manifest) error {
+	wanted := map[string]bool{}
+	for _, a := range target.Files {
+		wanted[a.Path] = true
+	}
+	for _, a := range current.Files {
+		if wanted[a.Path] {
+			continue
+		}
+		if err := c.ctx.Err(); err != nil {
+			return err
+		}
+		p, err := workflow.SafePath(c.root, a.Path)
+		if err != nil {
+			return err
+		}
+		if err = os.Remove(p); err != nil {
+			return err
+		}
+	}
+	for _, a := range target.Files {
+		p, err := workflow.SafePath(c.root, a.Path)
+		if err != nil {
+			return err
+		}
+		info, err := os.Lstat(p)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			continue
+		}
+		var dirs []string
+		err = filepath.WalkDir(p, func(item string, d os.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if err = c.ctx.Err(); err != nil {
+				return err
+			}
+			rel, err := filepath.Rel(c.root, item)
+			if err != nil {
+				return err
+			}
+			for _, excluded := range c.policy.Exclude {
+				if rel == excluded || strings.HasPrefix(rel, excluded+string(filepath.Separator)) {
+					return fmt.Errorf("restoration blocked by excluded content")
+				}
+			}
+			if !d.IsDir() {
+				return fmt.Errorf("restoration blocked by retained content")
+			}
+			dirs = append(dirs, item)
+			return nil
+		})
+		if err != nil {
+			return err
+		}
+		for i := len(dirs) - 1; i >= 0; i-- {
+			if err = c.ctx.Err(); err != nil {
+				return err
+			}
+			if err = os.Remove(dirs[i]); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+func (c *candidateManager) hasVerifiedRecovery() bool {
+	p := c.state.Restoration
+	return !c.recoveryDeadline.IsZero() && c.state.Status == "restored" && p != nil && p.Phase == "verified" && p.DeadlineNS == c.recoveryDeadline.UnixNano() && p.Target == c.state.Best && c.state.Restored == c.state.Best
+}
+
 func (c *candidateManager) validateSnapshot(id string) error {
 	if !validCandidateID(id) {
 		return fmt.Errorf("invalid snapshot ID")
@@ -256,7 +452,13 @@ func (c *candidateManager) validateSnapshot(id string) error {
 	if e := workflow.Read(filepath.Join(base, "manifest.json"), &manifest); e != nil || workflow.JSONHash(manifest) != id {
 		return fmt.Errorf("invalid snapshot manifest")
 	}
-	m, e := workflow.Capture(c.ctx, filepath.Join(base, "files"), c.policy)
+	ctx := c.ctx
+	if id == c.state.Best && c.hasVerifiedRecovery() {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithDeadline(context.Background(), c.recoveryDeadline)
+		defer cancel()
+	}
+	m, e := workflow.Capture(ctx, filepath.Join(base, "files"), c.policy)
 	if e != nil || workflow.JSONHash(m) != id {
 		return fmt.Errorf("snapshot content corrupt")
 	}

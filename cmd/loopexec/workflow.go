@@ -12,11 +12,13 @@ import (
 
 type workflowRuntime struct {
 	models             *modelpolicy.Selection
+	dispatched         bool
 	config             *workflow.Config
 	hash, dir, workdir string
 	book               *budgetBook
 	cap                int64
 	runner             commandRunner
+	checkpoint         func() error
 }
 
 func loadWorkflow(cfg runConfig) (*workflow.Config, string, error) {
@@ -85,7 +87,11 @@ func loadWorkflow(cfg runConfig) (*workflow.Config, string, error) {
 	return &w, workflow.JSONHash(w), nil
 }
 func runPolicyHash(cfg runConfig, hash string) string {
-	return workflow.JSONHash([]any{hash, cfg.check, cfg.execCmd, cfg.failuresCmd, cfg.integrityCmd, cfg.maxIterations, cfg.noProgressK, cfg.budgetUSD, cfg.totalTimeout, cfg.commandTimeout, cfg.grace, cfg.comprehensionEvery})
+	fields := []any{hash, cfg.check, cfg.execCmd, cfg.failuresCmd, cfg.integrityCmd, cfg.maxIterations, cfg.noProgressK, cfg.budgetUSD, cfg.totalTimeout, cfg.commandTimeout, cfg.grace, cfg.comprehensionEvery}
+	if cfg.recoveryTimeout != 0 {
+		fields = append(fields, cfg.recoveryTimeout)
+	}
+	return workflow.JSONHash(fields)
 }
 func (r commandRunner) argv(iter int, phase string, argv []string) subprocess.Result {
 	r.receipt.command(iter, "command_start", phase, subprocess.Result{})
@@ -121,15 +127,38 @@ func structuredResult(v subprocess.Result, target any) error {
 	return workflow.Decode([]byte(v.Stdout), target)
 }
 func (w *workflowRuntime) saveBudget() error {
-	return workflow.Atomic(filepath.Join(w.dir, "budget.json"), w.book)
+	if err := workflow.Atomic(filepath.Join(w.dir, "budget.json"), w.book); err != nil {
+		return err
+	}
+	if w.checkpoint != nil {
+		return w.checkpoint()
+	}
+	return nil
 }
 func (w *workflowRuntime) reconcile(req workflow.Request) (string, string) {
 	var usage workflow.Usage
 	v := w.hook(req, "usage."+req.Phase, w.config.Meter.Usage)
+	complete := v.ExitCode == 0 && v.Cause == "" && !v.Truncated && strings.TrimSpace(v.Stderr) == ""
+	evidence, err := w.preserveUsage(req, v.Stdout, complete)
+	if err != nil {
+		return "internal_error", "usage_evidence_persist_failed"
+	}
+	w.runner.receipt.emit(req.Iteration, "usage_report_retained", evidence, nil)
 	if e := structuredResult(v, &usage); e != nil {
 		return "cost_anomaly", "usage_unavailable"
 	}
+	if !usagePreservesKnown(w.book.Unsettled, &usage) {
+		w.runner.receipt.emit(req.Iteration, "usage_observation_conflict", evidence, nil)
+		if err := w.saveBudget(); err != nil {
+			return "internal_error", "budget_persist_failed"
+		}
+		return "cost_anomaly", "usage_observation_conflict"
+	}
 	reason := w.book.reconcile(usage, req, w.config.Meter, w.cap)
+	// Unsettled reports are observations, never settled totals or provider proof.
+	if w.book.Pending != nil && usage.SchemaVersion == 1 && usage.RunID == req.RunID && usage.Iteration == req.Iteration && usage.Phase == req.Phase {
+		w.book.Unsettled = &usage
+	}
 	if e := w.saveBudget(); e != nil {
 		return "internal_error", "budget_persist_failed"
 	}
@@ -139,6 +168,7 @@ func (w *workflowRuntime) reconcile(req workflow.Request) (string, string) {
 	return reason, "usage_invalid_or_limit"
 }
 func (w *workflowRuntime) paid(iter int, phase, legacy string, argv []string) (subprocess.Result, string, string) {
+	w.dispatched = false
 	req := w.request(iter, phase, "")
 	if phase == "exec" && w.models != nil && w.models.Mode == "explicit" {
 		var err error
@@ -171,9 +201,15 @@ func (w *workflowRuntime) paid(iter int, phase, legacy string, argv []string) (s
 		return subprocess.Result{}, "internal_error", "budget_persist_failed"
 	}
 	var v subprocess.Result
+	w.book.DispatchPending = true
+	if e := w.saveBudget(); e != nil {
+		return subprocess.Result{}, "internal_error", "budget_persist_failed"
+	}
 	if len(argv) > 0 {
+		w.dispatched = true
 		v = w.hook(req, phase, argv)
 	} else {
+		w.dispatched = true
 		v = w.runner.run(iter, phase, legacy)
 	}
 	if w.runner.ctx.Err() != nil {

@@ -1,6 +1,7 @@
 # Model Assignments
 
-Status: `0.5.0-rc.1` release-candidate source; GitHub Releases establishes
+Status: `0.5.0-rc.2` unpublished recovery source; model assignments first shipped
+in `0.5.0-rc.1`. GitHub Releases establishes
 publication status. LoopExec remains a
 provider-neutral governor. No model ranking, price catalog, SDK, automatic
 routing or automatic escalation is included.

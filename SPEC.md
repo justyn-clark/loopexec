@@ -4,6 +4,31 @@
 
 **Spec version:** 2.0.0  |  **Conformance keywords:** MUST / MUST NOT / SHOULD / MAY per RFC 2119.
 
+### Recovery and Continuation Contract
+
+Recovery MUST have an independent bounded deadline, never process termination
+grace. Before rollback it MUST retain policy-included attempted work as unaccepted
+recovery evidence, validate the complete authoritative snapshot and stage it.
+Interrupted/failed application MUST NOT expose a complete/best candidate or change
+committed best/initial pointers. Full manifest verification and durable journal
+commit are required. Multi-file application is not a filesystem-wide transaction.
+
+Primary and cleanup failures MUST remain separately visible. Settled accounting
+MUST NOT be presented as total zero while usage is unresolved; unknown totals are
+null. Reserved roles, dispatched phases, adapter-reported execution and external
+physical reservations are distinct facts. Unknown usage MUST fail closed.
+
+True resume MUST preserve its original pinned contract and cumulative deadline.
+A changed contract MAY explicitly hash-link to a frozen parent, inheriting settled
+usage, iterations and absolute deadline without renewing limits. Unresolved
+accounting, active/changed parents and unverified restoration MUST block linking.
+Existing-journal deterministic recovery MAY run despite unresolved usage or an
+expired work deadline, under a separate shared loading/restoration deadline. It
+MUST NOT dispatch more work, renew bounds or recapture a missing initial journal.
+Runtime targets remain general-purpose; domain quality scores belong to adapters.
+See [Recovery and Continuation](docs/recovery-and-continuation.md) for exact fields,
+adapter output responsibilities and the fresh live-pilot acceptance boundary.
+
 ---
 
 ## 1. What loopexec is

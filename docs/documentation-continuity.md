@@ -83,6 +83,13 @@ main. Only a tag run may enter the publication job, after CI and docs readback p
 
 ## Release channels
 
+Stable publication additionally requires source-bound `scripts/release-readiness.json` to grant
+explicit readiness and mark every required acceptance gate verified with evidence.
+The real rc.1 consumer pilot failed before review; offline rc.2 recovery fixes do
+not clear the live gates. RC artifacts are immutable: publish fixes only under a
+new candidate version, never by replacing rc.1. The stable hold is checked by the
+release-policy tool used before packaging/publication, not merely described here.
+
 The release policy accepts canonical `vX.Y.Z` and `vX.Y.Z-rc.N` tags (N >= 1).
 Development, beta and malformed tags fail closed. Stable releases are marked
 Latest; RCs are explicitly prereleases with Latest disabled. Both draft creation

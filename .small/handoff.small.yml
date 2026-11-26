@@ -1,6 +1,6 @@
 small_version: "1.0.0"
 owner: agent
-summary: 'Model assignments and prerelease-safe publication locally verified for v0.5.0-rc.1. Full Go suite, vet, internal race tests, offline two-role proof and isolated consumer protocol rejection pass. Matching canonical docs prepared. Next: exact-head hosted checks, paired docs deployment and official readback, main merge, rehearsal and RC publication. Stable remains v0.4.1; no live critic or consumer budget reset.'
+summary: RC2 scoped merge payload ready locally. Accepted6a564143 remains runtime/tooling/workflow-byte identical with source digeste563ec37. Complete historical SMALL progress/proofs preserved via CLI snapshot/checkout, new bounded-acceptance prose/CHANGELOG/allowlist added, no RC3 or consumer harness changes. Local full/focused Go, vet, internal/scoped races, contract, five offline proofs, gitleaks, docs/privacy/cochange/format/cache-free gates passed. Enclosing audit task59 will publish fast-forward to existing PR10 and verify exact final hosted SHA before merge decision; no merge authorized. Original b2df4d52 acceptance stays bound to6a/f71 only; stable/live release and proposed190k review remain held. No model calls, Home writes, runtime replacement, tag, publish or deploy.
 resume:
     current_task_id: task-36
     next_steps:

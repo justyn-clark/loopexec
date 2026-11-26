@@ -2,7 +2,7 @@
 
 Generated from the Cobra command tree. Do not edit manually.
 
-Source version: `0.5.0-rc.1`.
+Source version: `0.5.0-rc.2`.
 
 ## `loopexec`
 
@@ -285,6 +285,7 @@ Usage: `loopexec run [flags]`
 - `--model-version` (`string`, default ``): Record the model version/build in the receipt
 - `--no-progress-k` (`int`, default `3`): Halt no_progress_detected after K iterations with no new best failing-set size
 - `--once` (`bool`, default `false`): Run exactly one iteration (debug single-step); overrides --max-iterations
+- `--recovery-timeout` (`duration`, default `0s`): Independent candidate recovery deadline (0 = 2m); never permits more work
 - `--resume` (`bool`, default `false`): Resume a workflow run with identical policy and cumulative bounds
 - `--run-id` (`string`, default ``): Run identifier
 - `--seed` (`int`, default `0`): Recorded sampling seed
@@ -343,6 +344,8 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 - `model_selection,omitempty`: `*modelpolicy.Selection`
 - `failure_cause,omitempty`: `string`
+- `failures,omitempty`: `[]main.runFailure`
+- `accounting,omitempty`: `*main.accountingSummary`
 - `best_candidate,omitempty`: `string`
 - `tool`: `string`
 - `version`: `string`
@@ -386,6 +389,26 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `task`: `string`
 - `assurance`: `string`
 - `roles`: `[]modelpolicy.Role`
+
+### `runFailure`
+
+- `halt_reason`: `string`
+- `cause`: `string`
+
+### `accountingSummary`
+
+- `total_calls`: `*int64`
+- `total_tokens`: `*int64`
+- `total_microusd`: `*int64`
+- `settled_calls`: `int64`
+- `settled_tokens`: `int64`
+- `settled_microusd`: `int64`
+- `unresolved_reservations`: `int`
+- `dispatch_awaiting_usage`: `bool`
+- `reported_executed_unsettled`: `int`
+- `calls_known`: `bool`
+- `tokens_known`: `bool`
+- `money_known`: `bool`
 
 ### `probeReport`
 
@@ -442,6 +465,9 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `reportSummary`
 
+- `runtime_version,omitempty`: `string`
+- `accounting,omitempty`: `*main.accountingSummary`
+- `failures,omitempty`: `[]main.runFailure`
 - `model_selection,omitempty`: `*modelpolicy.Selection`
 - `budget,omitempty`: `*main.budgetBook`
 - `numeric,omitempty`: `*main.numericState`
@@ -514,6 +540,8 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `tokens`: `int64`
 - `entries`: `map[string]workflow.Call`
 - `pending,omitempty`: `*workflow.Preflight`
+- `dispatch_pending,omitempty`: `bool`
+- `unsettled_usage,omitempty`: `*workflow.Usage`
 - `phase_costs_usd,omitempty`: `[]float64`
 
 ### `numericState`
@@ -525,6 +553,8 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 
 ### `candidateState`
 
+- `attempt_archive_id,omitempty`: `string`
+- `restoration,omitempty`: `*main.restoreProgress`
 - `best_iteration,omitempty`: `int`
 - `numeric,omitempty`: `*main.numericState`
 - `attempted_id,omitempty`: `string`
@@ -571,6 +601,23 @@ Types and JSON tags are generated from the runtime structs. Value semantics and 
 - `phase`: `string`
 - `enforced`: `bool`
 - `calls`: `[]workflow.Reservation`
+
+### `Usage`
+
+- `schema_version`: `int`
+- `run_id`: `string`
+- `iteration`: `int`
+- `phase`: `string`
+- `calls`: `[]workflow.Call`
+
+### `restoreProgress`
+
+- `deadline_ns,omitempty`: `int64`
+- `failure_cause,omitempty`: `string`
+- `target_id`: `string`
+- `phase`: `string`
+- `completed_files`: `int`
+- `total_files`: `int`
 
 ### `manifestEntry`
 

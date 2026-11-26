@@ -20,9 +20,11 @@ The normative contract is `SPEC.md`. The current source implements bounded execu
 
 ## Current status
 
-Source identity: **v0.5.0-rc.1**, a release candidate adding
+Source identity: **v0.5.0-rc.2**, an unpublished recovery candidate adding
 [visible model profiles and task/role assignments](docs/model-assignments.md).
-See [candidate notes](docs/releases/v0.5.0-rc.1.md); the
+See [candidate notes](docs/releases/v0.5.0-rc.2.md) and
+[recovery/continuation](docs/recovery-and-continuation.md). Stable promotion is
+held pending complete live accounting, recovery and independent review delivery; the
 [Releases page](https://github.com/justyn-clark/loopexec/releases) establishes
 publication status. Workflow thresholds remain supplied by each integration.
 
