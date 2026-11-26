@@ -8103,3 +8103,17 @@ entries:
       status: in_progress
       task_id: task-58
       timestamp: "2026-11-26T22:05:09.333470000Z"
+    - command: python3 build/migration/finish-prose.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220843.154001000Z.txt
+      command_sha256: 744a308f811a60413c5aa2e94c73a38713d2a866918c6c475d51f98a1790b768
+      command_summary: python3 build/migration/finish-prose.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:08:43.154001000Z"

@@ -120,7 +120,7 @@ authorize release or deployment.
 
 ## Recipe distribution
 
-Embedded .mjs, Blender .py and Godot .gd programs participate in the source digest. Release packaging generates a versioned MIT-licensed JC Pi/skills pack from the same executable and catalog, checks its runtime version against scripts/recipe-package.json and includes its tarball in release checksums. CLI export flags create metadata only; publishing is explicit.
+Embedded .mjs, Blender .py and Godot .gd programs participate in the source digest. Release packaging generates a versioned MIT-licensed LoopExec for Pi pack from the same executable and catalog, checks its runtime version against scripts/recipe-package.json and includes its tarball in release checksums. CLI export flags create metadata only; publishing is explicit.
 
 ## Generic recipe package migration
 
