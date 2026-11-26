@@ -13,7 +13,7 @@ import (
 )
 
 func newRecipesCmd() *cobra.Command {
-	root := &cobra.Command{Use: "recipes", Short: "Discover JC recipes, validate task inputs and export portable skills/Pi resources"}
+	root := &cobra.Command{Use: "recipes", Short: "Discover LoopExec recipes, validate task inputs and export portable skills/Pi resources"}
 	load := func() (recipes.Catalog, error) { return recipes.Load() }
 	emit := func(cmd *cobra.Command, status string, result recipes.Result, human string) error {
 		result.CatalogSHA256 = recipes.Digest()
@@ -121,7 +121,7 @@ func newRecipesCmd() *cobra.Command {
 			return bad(cmd, err)
 		}
 		var b strings.Builder
-		fmt.Fprintf(&b, "JC %s: %s\nInputs: %s\nBounds: %d attempts, %ds total, %ds per command\n", r.ID, p.Readiness, formatRecipeInputs(p.Inputs), p.Limits.MaxIterations, p.Limits.TimeoutSeconds, p.Limits.CommandTimeoutSeconds)
+		fmt.Fprintf(&b, "Recipe %s: %s\nInputs: %s\nBounds: %d attempts, %ds total, %ds per command\n", r.ID, p.Readiness, formatRecipeInputs(p.Inputs), p.Limits.MaxIterations, p.Limits.TimeoutSeconds, p.Limits.CommandTimeoutSeconds)
 		if len(p.Missing) > 0 {
 			fmt.Fprintf(&b, "Missing inputs: %s\n", strings.Join(p.Missing, ", "))
 		}
@@ -149,7 +149,7 @@ func newRecipesCmd() *cobra.Command {
 		if err != nil {
 			return bad(cmd, err)
 		}
-		return emit(cmd, "exported", recipes.Result{Export: &result}, fmt.Sprintf("Exported %d JC skills, %d Pi prompts and the Pi extension to %s\n", result.Skills, result.Prompts, result.Path))
+		return emit(cmd, "exported", recipes.Result{Export: &result}, fmt.Sprintf("Exported %d recipe skills, %d Pi prompts and the Pi extension to %s\n", result.Skills, result.Prompts, result.Path))
 	}}
 	export.Flags().BoolVar(&public, "public", false, "Generate a public distributable pack; does not publish it")
 	export.Flags().StringVar(&packageVersion, "package-version", "0.1.0-dev", "Package version for the generated Pi/skills pack")

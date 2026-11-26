@@ -121,3 +121,7 @@ authorize release or deployment.
 ## Recipe distribution
 
 Embedded .mjs, Blender .py and Godot .gd programs participate in the source digest. Release packaging generates a versioned MIT-licensed JC Pi/skills pack from the same executable and catalog, checks its runtime version against scripts/recipe-package.json and includes its tarball in release checksums. CLI export flags create metadata only; publishing is explicit.
+
+## Generic recipe package migration
+
+The v0.5.0-rc.4 source generates LoopExec Recipes and the optional LoopExec for Pi pack under @justynclark/loopexec-recipes. Exported skills/prompts and commands use loopexec- prefixes. Legacy .jc-recipes configs remain readable; a present new config takes precedence and is never silently bypassed. Original package versions, transcripts and receipts are retained. A new catalog digest requires the matching CLI and source-bound docs; naming changes do not clear the stable/live acceptance hold. The public pack is ASCII, with original catalog strings escaped losslessly in JSON.

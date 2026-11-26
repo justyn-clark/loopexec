@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 const pack = resolve(process.argv[2]);
 const catalog = JSON.parse(readFileSync(resolve(pack, "catalog.json"), "utf8"));
 const { default: extension } = await import(
-  pathToFileURL(resolve(pack, "extensions/jc-recipes.mjs"))
+  pathToFileURL(resolve(pack, "extensions/loopexec-recipes.mjs"))
 );
 const commands = new Map();
 const calls = [];
@@ -62,7 +62,9 @@ const pi = {
 extension(pi);
 assert.equal(calls.length, 0, "loading the extension must not execute a child");
 assert.equal(commands.size, 4);
-const completion = commands.get("jc-recipe").getArgumentCompletions("audio");
+const completion = commands
+  .get("loopexec-recipe")
+  .getArgumentCompletions("audio");
 assert.equal(completion[0].value, "audio-mastering");
 const answers = ["audio/input $(touch injected).wav", "-14"];
 const ctx = {
@@ -81,7 +83,7 @@ const ctx = {
     setStatus() {},
   },
 };
-await commands.get("jc-recipe").handler("audio-mastering", ctx);
+await commands.get("loopexec-recipe").handler("audio-mastering", ctx);
 assert.equal(notices.length, 0);
 assert.equal(calls.length, 2);
 const argv = calls[1].args;
@@ -96,17 +98,17 @@ assert.ok(
   "the planning UI must not initiate a model task",
 );
 mode = "empty";
-await commands.get("jc-recipes").handler("unrelatedzzz", ctx);
+await commands.get("loopexec-recipes").handler("unrelatedzzz", ctx);
 assert.match(messages.at(-1).content, /No matching recipes/);
 mode = "drift";
-await commands.get("jc-recipe").handler("audio-mastering", ctx);
+await commands.get("loopexec-recipe").handler("audio-mastering", ctx);
 assert.match(notices.at(-1).message, /catalog differ/);
 mode = "normal";
 ctx.ui.input = async () => undefined;
-await commands.get("jc-recipe").handler("audio-mastering", ctx);
+await commands.get("loopexec-recipe").handler("audio-mastering", ctx);
 assert.match(notices.at(-1).message, /cancelled/);
 const before = calls.length;
-await commands.get("jc-recipe-run").handler("audio-mastering", ctx);
+await commands.get("loopexec-recipe-run").handler("audio-mastering", ctx);
 assert.equal(calls.length, before, "missing configuration must not run tools");
 assert.match(notices.at(-1).message, /Save inputs/);
 mkdirSync(resolve(pack, ".jc-recipes"));
@@ -115,19 +117,45 @@ writeFileSync(
   JSON.stringify({ limits: { timeout_seconds: 60 } }),
 );
 mode = "ready";
-await commands.get("jc-recipe-run").handler("audio-mastering", ctx);
+await commands.get("loopexec-recipe-run").handler("audio-mastering", ctx);
 assert.equal(calls.at(-1).args[1], "run");
 assert.equal(calls.at(-1).options.timeout, 120000);
 assert.match(messages.at(-1).content, /budget_exceeded/);
 assert.match(messages.at(-1).content, /"acceptance_met": false/);
-await commands.get("jc-recipe-verify").handler("saved-run", ctx);
+assert.equal(
+  calls.at(-1).args[calls.at(-1).args.indexOf("--config") + 1],
+  ".jc-recipes/audio-mastering.json",
+);
+mkdirSync(resolve(pack, ".loopexec-recipes"));
+writeFileSync(
+  resolve(pack, ".loopexec-recipes/audio-mastering.json"),
+  JSON.stringify({ limits: { timeout_seconds: 30 } }),
+);
+await commands.get("loopexec-recipe-run").handler("audio-mastering", ctx);
+assert.equal(
+  calls.at(-1).args[calls.at(-1).args.indexOf("--config") + 1],
+  ".loopexec-recipes/audio-mastering.json",
+);
+assert.equal(calls.at(-1).options.timeout, 90000);
+writeFileSync(
+  resolve(pack, ".loopexec-recipes/audio-mastering.json"),
+  "invalid JSON",
+);
+const beforeInvalid = calls.length;
+await commands.get("loopexec-recipe-run").handler("audio-mastering", ctx);
+assert.equal(
+  calls.length,
+  beforeInvalid,
+  "invalid new config must not fall back to legacy",
+);
+await commands.get("loopexec-recipe-verify").handler("saved-run", ctx);
 assert.equal(calls.at(-1).args[1], "verify");
 assert.equal(
   calls.at(-1).args[calls.at(-1).args.indexOf("--run-id") + 1],
   "saved-run",
 );
 const count = calls.length;
-await commands.get("jc-recipe-verify").handler("../../bad", ctx);
+await commands.get("loopexec-recipe-verify").handler("../../bad", ctx);
 assert.equal(calls.length, count);
 console.log(
   "Pi extension behavior passed: discovery, input, argv isolation, cancellation, drift, explicit run, verified guard, read-only verify",

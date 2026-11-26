@@ -1,10 +1,10 @@
-# JC recipe catalog
+# LoopExec recipe catalog
 
 Generated from internal/recipes/catalog.json with loopexec recipes catalog. Edit the catalog and regenerate this guide. All 33 original ideas remain distinct. Inputs are configurable; required inputs have no invented domain defaults. All 33 have live execution adapters and real tool fixtures. Tool installations and trusted oracle bindings are explicit prerequisites; see live-recipes.md.
 
 ## 1. Code repair / test convergence
 
-ID: code-repair · category: engineering · adapter: live · expected halt: success_condition_met
+ID: code-repair | category: engineering | adapter: live | expected halt: success_condition_met
 
 Diagnose the captured failing tests and make one narrow source repair without changing the acceptance suite.
 
@@ -34,7 +34,7 @@ Demo: Show red tests, the attempt count, green tests, success_condition_met and 
 
 ## 2. Frontend visual regression
 
-ID: frontend-visual · category: web · adapter: live · expected halt: success_condition_met
+ID: frontend-visual | category: web | adapter: live | expected halt: success_condition_met
 
 Repair one observed HTML/CSS or component discrepancy against the approved reference.
 
@@ -64,7 +64,7 @@ Demo: Place before/after browsers beside the terminal and show the independent c
 
 ## 3. Accessibility remediation
 
-ID: accessibility · category: web · adapter: live · expected halt: success_condition_met
+ID: accessibility | category: web | adapter: live | expected halt: success_condition_met
 
 Remediate one captured accessibility failure while retaining page behavior and the audited route/rule inventory.
 
@@ -95,7 +95,7 @@ Demo: Show scoped violation counts dropping from 8 to 3 to 0.
 
 ## 4. Performance optimization
 
-ID: performance · category: engineering · adapter: live · expected halt: success_condition_met
+ID: performance | category: engineering | adapter: live | expected halt: success_condition_met
 
 Optimize one measured bottleneck using the fixed benchmark environment and unchanged correctness contract.
 
@@ -128,7 +128,7 @@ Demo: Chart the same measured quantity per candidate alongside correctness statu
 
 ## 5. Image compression / media optimization
 
-ID: media-optimization · category: media · adapter: live · expected halt: success_condition_met
+ID: media-optimization | category: media | adapter: live | expected halt: success_condition_met
 
 Render one compression candidate with changed encoder parameters while retaining the immutable source.
 
@@ -161,7 +161,7 @@ Demo: Show bytes shrinking while the quality meter stays above its floor.
 
 ## 6. Audio mastering / loudness normalization
 
-ID: audio-mastering · category: audio · adapter: live · expected halt: success_condition_met
+ID: audio-mastering | category: audio | adapter: live | expected halt: success_condition_met
 
 Adjust one offline processing-chain candidate from captured analysis; retain the input and best technically valid render.
 
@@ -177,7 +177,7 @@ Inputs:
 
 Acceptance:
 
-- Integrated loudness is within target_lufs ± lufs_tolerance.
+- Integrated loudness is within target_lufs +/- lufs_tolerance.
 - True peak does not exceed max_true_peak_dbtp and dynamic range meets its floor.
 - Duration, sample rate/channels and any user-supplied spectral constraints pass.
 - Meter compliance is distinct from subjective musical approval.
@@ -196,7 +196,7 @@ Demo: Show waveform and meters moving into the accepted region beside the loop.
 
 ## 7. Music mix validation
 
-ID: music-mix · category: audio · adapter: live · expected halt: success_condition_met
+ID: music-mix | category: audio | adapter: live | expected halt: success_condition_met
 
 Make one mix/render correction addressing measured silence, phase, balance, peak or stem-integrity failures.
 
@@ -230,7 +230,7 @@ Demo: Use a DAW and terminal split-screen with criterion-by-criterion results.
 
 ## 8. 3D asset optimization
 
-ID: asset-optimization · category: creative · adapter: live · expected halt: success_condition_met
+ID: asset-optimization | category: creative | adapter: live | expected halt: success_condition_met
 
 Produce one optimized mesh/material candidate and measure it from the fixed comparison views.
 
@@ -263,7 +263,7 @@ Demo: Show Blender statistics beside matched before/after rendered frames.
 
 ## 9. Godot game performance
 
-ID: godot-performance · category: games · adapter: live · expected halt: success_condition_met
+ID: godot-performance | category: games | adapter: live | expected halt: success_condition_met
 
 Optimize one profiled game-scene bottleneck and produce a fresh benchmark run with unchanged gameplay assertions.
 
@@ -295,7 +295,7 @@ Demo: Show the running game and measured budgets with passing gameplay tests.
 
 ## 10. Responsive UI repair
 
-ID: responsive-ui · category: web · adapter: live · expected halt: success_condition_met
+ID: responsive-ui | category: web | adapter: live | expected halt: success_condition_met
 
 Repair one responsive layout failure without sacrificing other pinned viewport states.
 
@@ -325,7 +325,7 @@ Demo: Tile mobile/tablet/desktop before and after around the loop counters.
 
 ## 11. Broken API contract repair
 
-ID: api-contract · category: engineering · adapter: live · expected halt: success_condition_met
+ID: api-contract | category: engineering | adapter: live | expected halt: success_condition_met
 
 Repair one implementation mismatch with the approved API contract.
 
@@ -355,7 +355,7 @@ Demo: Show failing contract cases decreasing until the full contract passes.
 
 ## 12. Database migration safety
 
-ID: migration-safety · category: data · adapter: live · expected halt: success_condition_met
+ID: migration-safety | category: data | adapter: live | expected halt: success_condition_met
 
 Apply one candidate to a freshly restored disposable database and collect migration plus recovery evidence.
 
@@ -387,7 +387,7 @@ Demo: Display the migration alongside independent integrity and recovery checks.
 
 ## 13. SQL query optimization
 
-ID: sql-optimization · category: data · adapter: live · expected halt: success_condition_met
+ID: sql-optimization | category: data | adapter: live | expected halt: success_condition_met
 
 Propose one query or index change and benchmark it against the unchanged baseline result contract.
 
@@ -415,11 +415,11 @@ Evidence:
 - EXPLAIN ANALYZE plans and timing samples
 - Canonical result hashes and equality details
 
-Demo: Show 850 ms → 260 ms → 74 ms while the canonical result hash remains equal.
+Demo: Show 850 ms -> 260 ms -> 74 ms while the canonical result hash remains equal.
 
 ## 14. Docker image reduction
 
-ID: docker-reduction · category: engineering · adapter: live · expected halt: success_condition_met
+ID: docker-reduction | category: engineering | adapter: live | expected halt: success_condition_met
 
 Reduce one source of container-image weight while retaining the required runtime dependencies and behavior.
 
@@ -450,7 +450,7 @@ Demo: Show image size falling from 1.2 GB through 640 MB to 312 MB with green te
 
 ## 15. Dependency vulnerability remediation
 
-ID: dependency-remediation · category: engineering · adapter: live · expected halt: success_condition_met
+ID: dependency-remediation | category: engineering | adapter: live | expected halt: success_condition_met
 
 Upgrade or replace one vulnerable dependency group and validate the resulting dependency graph and runtime compatibility.
 
@@ -482,7 +482,7 @@ Demo: Show known high/critical counts dropping while tests stay green.
 
 ## 16. Lint/type-error convergence
 
-ID: lint-types · category: engineering · adapter: live · expected halt: success_condition_met
+ID: lint-types | category: engineering | adapter: live | expected halt: success_condition_met
 
 Repair one related cluster of compiler, type or lint failures without relaxing the configured checks.
 
@@ -511,7 +511,7 @@ Demo: Show the error count falling to zero beside the source diff.
 
 ## 17. Documentation drift repair
 
-ID: documentation-drift · category: release · adapter: live · expected halt: success_condition_met
+ID: documentation-drift | category: release | adapter: live | expected halt: success_condition_met
 
 Repair one source/documentation mismatch and regenerate contracts from the intended source identity.
 
@@ -543,7 +543,7 @@ Demo: Show stale version, generated mismatch, corrected docs and verified proven
 
 ## 18. Release readiness gate
 
-ID: release-readiness · category: release · adapter: live · expected halt: success_condition_met
+ID: release-readiness | category: release | adapter: live | expected halt: success_condition_met
 
 Prepare one missing or inconsistent release artifact and collect fresh source-bound readiness evidence.
 
@@ -576,7 +576,7 @@ Demo: Display each release gate becoming ready or the exact guard stopping prepa
 
 ## 19. Configuration repair
 
-ID: configuration-repair · category: engineering · adapter: live · expected halt: success_condition_met
+ID: configuration-repair | category: engineering | adapter: live | expected halt: success_condition_met
 
 Repair one configuration error and exercise its behavior in the declared disposable environment.
 
@@ -607,7 +607,7 @@ Demo: Show the invalid configuration becoming a working disposable deployment.
 
 ## 20. Data cleaning
 
-ID: data-cleaning · category: data · adapter: live · expected halt: success_condition_met
+ID: data-cleaning | category: data | adapter: live | expected halt: success_condition_met
 
 Apply one explicit cleaning transformation and retain a trace from each output row to its source.
 
@@ -640,7 +640,7 @@ Demo: Show invalid dates, duplicates and missing-field counts decreasing under f
 
 ## 21. ETL reconciliation
 
-ID: etl-reconciliation · category: data · adapter: live · expected halt: success_condition_met
+ID: etl-reconciliation | category: data | adapter: live | expected halt: success_condition_met
 
 Correct one transformation discrepancy while retaining source/target lineage and the same reconciliation contract.
 
@@ -671,7 +671,7 @@ Demo: Show mismatch counts falling to exact reconciliation.
 
 ## 22. OCR/document extraction quality
 
-ID: ocr-extraction · category: documents · adapter: live · expected halt: success_condition_met
+ID: ocr-extraction | category: documents | adapter: live | expected halt: success_condition_met
 
 Try one preprocessing/extraction strategy and score structured fields against the frozen annotated reference.
 
@@ -703,7 +703,7 @@ Demo: Show scan, structured fields and independent field validation together.
 
 ## 23. Prompt/workflow optimization
 
-ID: prompt-optimization · category: agents · adapter: live · expected halt: success_condition_met
+ID: prompt-optimization | category: agents | adapter: live | expected halt: success_condition_met
 
 Revise one prompt/workflow candidate using development feedback while retaining the frozen evaluation contract.
 
@@ -736,7 +736,7 @@ Demo: Show frozen-case scores improving alongside cost and latency limits.
 
 ## 24. Cost-bounded agent workflow
 
-ID: cost-budget · category: governance · adapter: live · expected halt: budget_exceeded
+ID: cost-budget | category: governance | adapter: live | expected halt: budget_exceeded
 
 Reserve one permitted attempt before dispatch; after exhaustion request another only in an offline fixture to prove refusal.
 
@@ -767,7 +767,7 @@ Demo: Show remaining calls decrementing and an extra call being refused without 
 
 ## 25. Oscillation detection
 
-ID: oscillation · category: governance · adapter: live · expected halt: oscillation_detected
+ID: oscillation | category: governance | adapter: live | expected halt: oscillation_detected
 
 Produce the next alternating fixture state while retaining the same contradictory acceptance checks.
 
@@ -792,11 +792,11 @@ Evidence:
 - A/B state sequence and captured failure sets
 - Computed halt and retained receipt
 
-Demo: Animate A → B → A → B and the computed oscillation_detected stop.
+Demo: Animate A -> B -> A -> B and the computed oscillation_detected stop.
 
 ## 26. Regression detection
 
-ID: regression · category: governance · adapter: live · expected halt: same_test_regressed
+ID: regression | category: governance | adapter: live | expected halt: same_test_regressed
 
 Fix one failing condition in the fixture while deliberately exposing a regression in a previously passing condition.
 
@@ -825,7 +825,7 @@ Demo: Show one check turn green while the other turns red, then the ratchet/rest
 
 ## 27. Metric gaming / reward hacking
 
-ID: metric-gaming · category: governance · adapter: live · expected halt: metric_integrity_violation
+ID: metric-gaming | category: governance | adapter: live | expected halt: metric_integrity_violation
 
 Attempt one deliberate metric-weakening change in a disposable fixture while keeping the authoritative verifier outside builder control.
 
@@ -854,7 +854,7 @@ Demo: Show the agent delete/exclude a test, the apparent improvement and LoopExe
 
 ## 28. File transformation / batch processing
 
-ID: batch-transformation · category: files · adapter: live · expected halt: success_condition_met
+ID: batch-transformation | category: files | adapter: live | expected halt: success_condition_met
 
 Transform one bounded batch and record source-to-output lineage and failures.
 
@@ -884,7 +884,7 @@ Demo: Show remaining invalid files decreasing to zero without dropping source it
 
 ## 29. Static-site repair
 
-ID: static-site · category: web · adapter: live · expected halt: success_condition_met
+ID: static-site | category: web | adapter: live | expected halt: success_condition_met
 
 Repair one group of broken links/assets or missing metadata against the frozen crawl scope.
 
@@ -914,7 +914,7 @@ Demo: Show a live dashboard/count reaching zero broken links.
 
 ## 30. SEO/metadata compliance
 
-ID: seo-metadata · category: web · adapter: live · expected halt: success_condition_met
+ID: seo-metadata | category: web | adapter: live | expected halt: success_condition_met
 
 Correct one technical metadata discrepancy while preserving approved page content and canonical policy.
 
@@ -944,7 +944,7 @@ Demo: Display required metadata checks turning green for every page.
 
 ## 31. Build-system repair
 
-ID: build-system · category: engineering · adapter: live · expected halt: success_condition_met
+ID: build-system | category: engineering | adapter: live | expected halt: success_condition_met
 
 Repair one dependency/build configuration or source failure while preserving the complete workspace graph.
 
@@ -975,7 +975,7 @@ Demo: Show the failing-package count shrink to zero across the full workspace.
 
 ## 32. Infrastructure drift detection
 
-ID: infrastructure-drift · category: infrastructure · adapter: live · expected halt: success_condition_met
+ID: infrastructure-drift | category: infrastructure | adapter: live | expected halt: success_condition_met
 
 Reconcile one allowed difference in the declared sandbox and capture actual-state readback.
 
@@ -1006,7 +1006,7 @@ Demo: Show sandbox drift count falling to zero with independent resource readbac
 
 ## 33. Synthetic creative workflow
 
-ID: creative-workflow · category: creative · adapter: live · expected halt: success_condition_met
+ID: creative-workflow | category: creative | adapter: live | expected halt: success_condition_met
 
 Produce one candidate and an independently attributed review against the unchanged brief, references and criterion-level rubric.
 

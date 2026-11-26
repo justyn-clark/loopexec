@@ -9,10 +9,10 @@ const client = JSON.parse(
   readFileSync(new URL("../client.json", import.meta.url), "utf8"),
 );
 
-export default function jcRecipes(pi) {
+export default function loopexecRecipes(pi) {
   function display(title, content) {
     pi.sendMessage({
-      customType: "jc-recipe-plan",
+      customType: "loopexec-recipe-plan",
       content: title + "\n\n" + content,
       display: true,
     });
@@ -54,10 +54,20 @@ export default function jcRecipes(pi) {
       );
     return response.recipes;
   }
+  function configPath(id, cwd) {
+    const current = join(".loopexec-recipes", id + ".json");
+    const legacy = join(".jc-recipes", id + ".json");
+    return existsSync(join(cwd, current))
+      ? current
+      : existsSync(join(cwd, legacy))
+        ? legacy
+        : current;
+  }
   async function plan(id, ctx) {
     const recipe = catalog.recipes.find((r) => r.id === id);
-    if (!recipe) throw new Error("Unknown recipe; browse with /jc-recipes");
-    const config = join(".jc-recipes", id + ".json");
+    if (!recipe)
+      throw new Error("Unknown recipe; browse with /loopexec-recipes");
+    const config = configPath(id, ctx.cwd);
     const args = ["plan", id];
     if (existsSync(join(ctx.cwd, config))) args.push("--config", config);
     let result = await call(args, ctx.cwd);
@@ -66,7 +76,7 @@ export default function jcRecipes(pi) {
       for (const name of result.plan.missing_inputs) {
         const input = recipe.inputs.find((i) => i.name === name);
         const raw = await ctx.ui.input(
-          "JC " + recipe.title + ": " + name,
+          "LoopExec " + recipe.title + ": " + name,
           input.description + " (" + input.type + ")",
         );
         if (raw === undefined) {
@@ -84,19 +94,22 @@ export default function jcRecipes(pi) {
         );
     }
     display(
-      recipe.title + " — " + result.plan.readiness,
+      recipe.title + " - " + result.plan.readiness,
       JSON.stringify(result.plan, null, 2),
     );
     if (ctx.hasUI)
-      ctx.ui.setStatus("jc-recipes", "JC " + id + ": " + result.plan.readiness);
+      ctx.ui.setStatus(
+        "loopexec-recipes",
+        "LoopExec " + id + ": " + result.plan.readiness,
+      );
   }
-  pi.registerCommand("jc-recipe", {
+  pi.registerCommand("loopexec-recipe", {
     description:
-      "Collect JC recipe inputs and preview a bounded plan; starts no work",
+      "Collect LoopExec recipe inputs and preview a bounded plan; starts no work",
     getArgumentCompletions(prefix) {
       return catalog.recipes
         .filter((r) => r.id.startsWith(prefix))
-        .map((r) => ({ value: r.id, label: r.id + " — " + r.title }));
+        .map((r) => ({ value: r.id, label: r.id + " - " + r.title }));
     },
     async handler(raw, ctx) {
       try {
@@ -106,7 +119,7 @@ export default function jcRecipes(pi) {
       }
     },
   });
-  pi.registerCommand("jc-recipe-run", {
+  pi.registerCommand("loopexec-recipe-run", {
     description:
       "Explicitly execute a saved, configured recipe with finite bounds and verify its receipt",
     async handler(raw, ctx) {
@@ -114,8 +127,8 @@ export default function jcRecipes(pi) {
         const id = raw.trim(),
           recipe = catalog.recipes.find((r) => r.id === id);
         if (!recipe)
-          throw Error("Choose one recipe ID; browse with /jc-recipes");
-        const config = join(".jc-recipes", id + ".json");
+          throw Error("Choose one recipe ID; browse with /loopexec-recipes");
+        const config = configPath(id, ctx.cwd);
         if (!existsSync(join(ctx.cwd, config)))
           throw Error(
             "Save inputs, adapter and limits in " + config + " before running",
@@ -131,7 +144,7 @@ export default function jcRecipes(pi) {
           true,
         );
         display(
-          recipe.title + " — " + result.verification.halt_reason,
+          recipe.title + " - " + result.verification.halt_reason,
           JSON.stringify(result.verification, null, 2),
         );
       } catch (error) {
@@ -139,7 +152,7 @@ export default function jcRecipes(pi) {
       }
     },
   });
-  pi.registerCommand("jc-recipe-verify", {
+  pi.registerCommand("loopexec-recipe-verify", {
     description:
       "Verify a saved recipe receipt and candidate without rerunning the builder or reviewer",
     async handler(raw, ctx) {
@@ -160,9 +173,9 @@ export default function jcRecipes(pi) {
       }
     },
   });
-  pi.registerCommand("jc-recipes", {
+  pi.registerCommand("loopexec-recipes", {
     description:
-      "Browse all 33 JC recipes or suggest matches to a task; starts no work",
+      "Browse all 33 LoopExec recipes or suggest matches to a task; starts no work",
     async handler(raw, ctx) {
       try {
         const query = raw.trim();
@@ -175,20 +188,20 @@ export default function jcRecipes(pi) {
           : (result.entries ?? []);
         if (!entries.length) {
           display(
-            "JC recipes",
-            "No matching recipes. Use /jc-recipes to browse all.",
+            "LoopExec recipes",
+            "No matching recipes. Use /loopexec-recipes to browse all.",
           );
           return;
         }
         if (!ctx.hasUI) {
           display(
-            "JC recipes",
+            "LoopExec recipes",
             entries.map((r) => r.id + ": " + r.title).join("\n"),
           );
           return;
         }
-        const labels = entries.map((r) => r.id + " — " + r.title);
-        const selected = await ctx.ui.select("JC Loop Recipes", labels);
+        const labels = entries.map((r) => r.id + " - " + r.title);
+        const selected = await ctx.ui.select("LoopExec Recipes", labels);
         if (selected !== undefined)
           await plan(entries[labels.indexOf(selected)].id, ctx);
       } catch (error) {

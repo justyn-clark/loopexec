@@ -34,8 +34,8 @@ done
 pack_version="$(jq -er '.version' scripts/recipe-package.json)"
 pack_runtime="$(jq -er '.runtime_version' scripts/recipe-package.json)"
 [[ "$pack_runtime" == "$version" ]] || { echo "recipe pack runtime mismatch" >&2; exit 1; }
-go run ./cmd/loopexec recipes export --public --package-version "$pack_version" --out "$OUT/.stage/jc-loop-recipes"
-(cd "$OUT/.stage/jc-loop-recipes" && npm pack --ignore-scripts --pack-destination "$OUT")
+go run ./cmd/loopexec recipes export --public --package-version "$pack_version" --out "$OUT/.stage/loopexec-recipes"
+(cd "$OUT/.stage/loopexec-recipes" && npm pack --ignore-scripts --pack-destination "$OUT")
 go run ./tools/docs-continuity verify-bundle "$OUT/documentation"
-(cd "$OUT" && shasum -a 256 loopexec-*.tar.gz loopexec-*.zip justynclark-jc-loop-recipes-*.tgz > checksums.txt && shasum -a 256 -c checksums.txt)
+(cd "$OUT" && shasum -a 256 loopexec-*.tar.gz loopexec-*.zip justynclark-loopexec-recipes-*.tgz > checksums.txt && shasum -a 256 -c checksums.txt)
 printf 'RELEASE_PACKAGES_OK: %s\n' "$OUT"

@@ -153,7 +153,7 @@ func TestExportIsCompletePortableAndRefusesOverwrite(t *testing.T) {
 		}
 	}
 	for _, r := range c.Recipes {
-		body, err := os.ReadFile(filepath.Join(out, "skills", "jc-"+r.ID, "SKILL.md"))
+		body, err := os.ReadFile(filepath.Join(out, "skills", "loopexec-"+r.ID, "SKILL.md"))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -165,18 +165,18 @@ func TestExportIsCompletePortableAndRefusesOverwrite(t *testing.T) {
 		if err := yaml.Unmarshal([]byte(parts[1]), &front); err != nil {
 			t.Fatal(err)
 		}
-		if front["name"] != "jc-"+r.ID {
+		if front["name"] != "loopexec-"+r.ID {
 			t.Fatal("wrong skill name")
 		}
 		if _, ok := front["description"].(string); !ok {
 			t.Fatal("non-string skill description")
 		}
 		for _, check := range r.Checks {
-			if !strings.Contains(parts[2], check) {
+			if !strings.Contains(parts[2], asciiText(check)) {
 				t.Fatalf("%s lost acceptance", r.ID)
 			}
 		}
-		if _, err := os.Stat(filepath.Join(out, "prompts", "jc-"+r.ID+".md")); err != nil {
+		if _, err := os.Stat(filepath.Join(out, "prompts", "loopexec-"+r.ID+".md")); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -189,7 +189,7 @@ func TestExportIsCompletePortableAndRefusesOverwrite(t *testing.T) {
 		t.Fatal("existing package changed")
 	}
 	if _, err := exec.LookPath("node"); err == nil {
-		cmd := exec.Command("node", "--check", filepath.Join(out, "extensions", "jc-recipes.mjs"))
+		cmd := exec.Command("node", "--check", filepath.Join(out, "extensions", "loopexec-recipes.mjs"))
 		if output, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("JS syntax: %v %s", err, output)
 		}

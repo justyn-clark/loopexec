@@ -7924,3 +7924,168 @@ entries:
       status: completed
       task_id: task-57
       timestamp: "2026-11-26T11:47:45.686668000Z"
+    - command: python3 build/shipping/commit-npm-audit.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T114749.266787000Z.txt
+      command_sha256: 8ecb26fcccfd596ca6d444c881691835e3a0a66b3f27f9bdca351ebdedeb92b2
+      command_summary: python3 build/shipping/commit-npm-audit.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:47:49.266787000Z"
+    - command: git fetch origin main && git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T115120.083768000Z.txt
+      command_sha256: fc095eef8807ac4ff98b0240d688d710a0c549b06268b0ec9fece2f4f1520b8d
+      command_summary: git fetch origin main && git merge --ff-only origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:51:20.083768000Z"
+    - evidence: Added task task-58 via small plan --add
+      notes: Roll out LoopExec Recipes and LoopExec for Pi with compatible configs, verified package and migration
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-58
+      timestamp: "2026-11-26T21:53:26.202496000Z"
+    - evidence: Owner approved generic naming rollout. Preserve old package bytes, configs and receipts; verify new CLI, pack and docs before deprecating old npm identity.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:53:26.367240000Z"
+    - command: python3 build/migration/implement.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215608.920778000Z.txt
+      command_sha256: 229e97af688d0e7345d3ac1407e5070d7ca5293d0a1b8707a3a39cc26b03dfe7
+      command_summary: python3 build/migration/implement.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:56:08.920778000Z"
+    - command: python3 build/migration/docs.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215641.091498000Z.txt
+      command_sha256: 917f9990fd916d54415584ee39e9f00c1fc09ee05489f67460aa3acd457302be
+      command_summary: python3 build/migration/docs.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:56:41.091498000Z"
+    - command: python3 build/shipping/go.py fmt ./internal/recipes ./cmd/loopexec
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215641.704621000Z.txt
+      command_sha256: c54c1bb36e7dfbe1f4cf261644e40ae012ea7ae2ebd9a6abc95ea6cc92855282
+      command_summary: python3 build/shipping/go.py fmt ./internal/recipes ./cmd/loopexec
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:56:41.704621000Z"
+    - command: python3 build/shipping/go.py test ./internal/recipes -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215643.020252000Z.txt
+      command_sha256: 34c04948f7931781088b197ac430735d8eea8f8aff2a5fa068f2792f7e46e9be
+      command_summary: python3 build/shipping/go.py test ./internal/recipes -count=1
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:56:43.020252000Z"
+    - command: python3 build/migration/format.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215708.068757000Z.txt
+      command_sha256: 95a2b35ffae95e4801c776c04d1b4b99e6fa4a84ef33269b66c592c57fa24036
+      command_summary: python3 build/migration/format.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:57:08.068757000Z"
+    - command: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T215952.238721000Z.txt
+      command_sha256: ac4d2ddc92fb7dd746c7b20193c5c2668c90de9160256c24af967d4a4655f2ad
+      command_summary: python3 build/shipping/go.py test ./internal/recipes ./cmd/loopexec -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T21:59:52.238721000Z"
+    - command: python3 build/migration/quality.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220252.916123000Z.txt
+      command_sha256: 5c661449f6fb2e5c99111abc272dac590fd4fa973a15453e304bdbca9700cdef
+      command_summary: python3 build/migration/quality.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:02:52.916123000Z"
+    - command: python3 build/migration/proof.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220411.515770000Z.txt
+      command_sha256: d545534a832f0632f089162d6e16d9edbf0f98cad5f0e603b0af12bd0bd87976
+      command_summary: python3 build/migration/proof.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:04:11.515770000Z"
+    - command: python3 build/migration/distribution.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T220458.387938000Z.txt
+      command_sha256: 41059946926eac204568ba9ca487e751b0f41e0cdda160856e44ccbc25c28a4f
+      command_summary: python3 build/migration/distribution.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:04:58.387938000Z"

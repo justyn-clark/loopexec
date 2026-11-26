@@ -1,4 +1,4 @@
-// Package recipes provides the JC catalog and no-execution planning/export surfaces.
+// Package recipes provides the LoopExec catalog and no-execution planning/export surfaces.
 package recipes
 
 import (
@@ -78,7 +78,7 @@ func Load() (Catalog, error) {
 	if err := workflow.Decode(catalogBytes, &c); err != nil {
 		return c, err
 	}
-	if c.SchemaVersion != 1 || c.Brand != "JC" {
+	if c.SchemaVersion != 1 || c.Brand != "LoopExec" {
 		return c, fmt.Errorf("unsupported recipe catalog")
 	}
 	seen := map[string]bool{}
