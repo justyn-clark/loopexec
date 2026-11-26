@@ -7603,3 +7603,202 @@ entries:
       status: in_progress
       task_id: task-56
       timestamp: "2026-11-26T10:37:02.302329000Z"
+    - command: python3 build/shipping/stage-reviewed.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103702.838894000Z.txt
+      command_sha256: da406222f9229afefbbcd14ac75631a261417249a46848a298c4571514d304e9
+      command_summary: python3 build/shipping/stage-reviewed.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:37:02.838894000Z"
+    - command: 'git commit -m "feat: ship 33 JC recipes and public Pi skills distribution"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103809.334305000Z.txt
+      command_sha256: ef2acb55851474e12cf9fb8a45066ae543391e07fa294b080ca84c7ce304fba5
+      command_summary: 'git commit -m "feat: ship 33 JC recipes and public Pi skills distribution"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:38:09.334305000Z"
+    - command: git push --set-upstream origin release/jc-recipes-20261126
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T103811.610471000Z.txt
+      command_sha256: c913967884c57570905b9feb258a45212af8dc89555ded6b2b78d08531d9c581
+      command_summary: git push --set-upstream origin release/jc-recipes-20261126
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:38:11.610471000Z"
+    - command: python3 build/shipping/commands.py bash scripts/build-release.sh v0.5.0-rc.3 build/shipping/dist-local
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T104259.153914000Z.txt
+      command_sha256: 250cc57bd7caa6fa49dfabb0db8af51e6f1fac667891a9c221bab55383211c5c
+      command_summary: python3 build/shipping/commands.py bash scripts/build-release.sh v0.5.0-rc.3 build/shipping/dist-local
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:42:59.153914000Z"
+    - command: git fetch origin main && git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T104516.788839000Z.txt
+      command_sha256: fc095eef8807ac4ff98b0240d688d710a0c549b06268b0ec9fece2f4f1520b8d
+      command_summary: git fetch origin main && git merge --ff-only origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:45:16.788839000Z"
+    - command: python3 build/shipping/go.py run ./tools/docs-continuity verify-site build/shipping/docs-bundle-final/manifest.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T104522.153597000Z.txt
+      command_sha256: 03f29edad9373ed8869391c99391963cf1f616ad514c43c88fde1c393084fe4f
+      command_summary: python3 build/shipping/go.py run ./tools/docs-continuity verify-site build/shipping/docs-bundle-final/manifest.json
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:45:22.153597000Z"
+    - command: 'git tag -a v0.5.0-rc.3 -m "LoopExec v0.5.0-rc.3: JC Loop Recipes"'
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T104644.121611000Z.txt
+      command_sha256: d5c7e5f179db96a13b80aae807054941179e32fce8c957105e1ffabd2b01a830
+      command_summary: 'git tag -a v0.5.0-rc.3 -m "LoopExec v0.5.0-rc.3: JC Loop Recipes"'
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:46:44.121611000Z"
+    - command: git push origin refs/tags/v0.5.0-rc.3
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T104645.974431000Z.txt
+      command_sha256: 18d558a2351bc3378a878ab6be0d923a2fb7f3f355d0831cbb296ec6ba13537a
+      command_summary: git push origin refs/tags/v0.5.0-rc.3
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:46:45.974431000Z"
+    - command: python3 build/shipping/download-published.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T105408.806230000Z.txt
+      command_sha256: e15c61d400bbdb4b8f5425ec995b38b1e40d425b3b678c7d62fb69d2cf286b4f
+      command_summary: python3 build/shipping/download-published.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:54:08.806230000Z"
+    - command: python3 build/shipping/publish-npm.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T105447.060868000Z.txt
+      command_sha256: 304ca75476aa461ef351d845c7492025657b3418c17c29af2a31fc22dccffba7
+      command_summary: python3 build/shipping/publish-npm.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T10:54:47.060868000Z"
+    - command: python3 build/shipping/publish-npm.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T110044.623039000Z.txt
+      command_sha256: 304ca75476aa461ef351d845c7492025657b3418c17c29af2a31fc22dccffba7
+      command_summary: python3 build/shipping/publish-npm.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T11:00:44.623039000Z"
+    - evidence: Source-bound RC3 official-origin documentation readback and guarded release run 45804479757 passed. Live public core main requires Linux/macOS CI with strict checks and enforced admins; private docs plan does not offer branch protection.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-36
+      timestamp: "2026-11-26T11:01:37.838410000Z"
+    - evidence: All 33 configurable JC recipes shipped in v0.5.0-rc.3. Downloaded native binary passed 33 fixtures and independent receipt checks; released Pi tarball loads 33 skills, 33 prompts and four commands. Public verification matrix retained on the release.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-38
+      timestamp: "2026-11-26T11:01:37.998078000Z"
+    - command: python3 build/shipping/publish-npm.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T110657.263427000Z.txt
+      command_sha256: 304ca75476aa461ef351d845c7492025657b3418c17c29af2a31fc22dccffba7
+      command_summary: python3 build/shipping/publish-npm.py
+      evidence:
+        exit_code: 1
+        kind: cli_execution
+        outcome: failed
+        strength: cli_captured
+      notes: 'apply: command outcome failed; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-56
+      timestamp: "2026-11-26T11:06:57.263427000Z"
+    - evidence: Added task task-57 via small plan --add
+      notes: Complete npm publication approval for JC recipe pack and verify exact registry installation
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: pending
+      task_id: task-57
+      timestamp: "2026-11-26T11:07:34.639233000Z"
+    - evidence: GitHub recipe pack is public and installed locally; npm login succeeds but registry publication requires the owner browser security challenge.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-57
+      timestamp: "2026-11-26T11:07:34.743402000Z"
+    - evidence: npm publication challenge expired without browser completion. Need owner to complete fresh npm web approval; then verify registry archive equality and replace personal local Pi package registration with the pinned npm source. No authentication protections changed.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-57
+      timestamp: "2026-11-26T11:07:34.906086000Z"
+    - evidence: Core PR10 and PR11 plus docs PR11 merged with green hosted verification. RC3 release run45804479757 published eight verified archives and source-bound docs. Downloaded Mac binary passed all33 live fixtures and independent receipts; public Pi pack loads33 skills33 prompts4 commands and is installed for owner. Registry-only gate tracked in task57; stable hold unchanged.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-56
+      timestamp: "2026-11-26T11:07:35.071079000Z"
