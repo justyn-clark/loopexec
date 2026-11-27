@@ -8159,3 +8159,332 @@ entries:
       status: in_progress
       task_id: task-58
       timestamp: "2026-11-26T22:09:47.791005000Z"
+    - command: python3 build/migration/config-edge.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221243.036468000Z.txt
+      command_sha256: c24b40fbc0298b525583b55629afd6285cc9d2e5f43ea4a39537df388802cd8f
+      command_summary: python3 build/migration/config-edge.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:12:43.036468000Z"
+    - command: python3 build/shipping/go.py test ./... -count=1
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221538.226318000Z.txt
+      command_sha256: 0ec766a460e15e90c6074786a66d53348d15dd0250d073f5382048827658d17e
+      command_summary: python3 build/shipping/go.py test ./... -count=1
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:15:38.226318000Z"
+    - command: git fetch origin main && git merge --ff-only origin/main
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221613.516733000Z.txt
+      command_sha256: fc095eef8807ac4ff98b0240d688d710a0c549b06268b0ec9fece2f4f1520b8d
+      command_summary: git fetch origin main && git merge --ff-only origin/main
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:16:13.516733000Z"
+    - command: git tag v0.5.0-rc.4 621f7cdede12ecd46ec612c066cdaca2e635333c && git push origin v0.5.0-rc.4
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221739.555365000Z.txt
+      command_sha256: 620c1ad1c1dd269bd8b03bc80808c08f9dd2a9a69814735414e8ba30ed6aa5c2
+      command_summary: git tag v0.5.0-rc.4 621f7cdede12ecd46ec612c066cdaca2e635333c && git push origin v0.5.0-rc.4
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:17:39.555365000Z"
+    - command: python3 build/migration/old-package.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221846.108485000Z.txt
+      command_sha256: f7bae203654ff4e971651be256c563d95346dcf9bd6de401c0b1ddff0021c1b4
+      command_summary: python3 build/migration/old-package.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:18:46.108485000Z"
+    - command: python3 build/migration/anchors.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T221942.394912000Z.txt
+      command_sha256: 1ca55b47c1501465cd594ae04d8c2cf375354c1f8382a5ceab0618777371e7af
+      command_summary: python3 build/migration/anchors.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:19:42.394912000Z"
+    - command: python3 build/migration/published.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T222351.368466000Z.txt
+      command_sha256: 3b70b0218b5966bf8cffa788a286e5a4e17c6f4662b4fa67bf959275641634af
+      command_summary: python3 build/migration/published.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:23:51.368466000Z"
+    - command: python3 build/migration/archive-docs.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T222409.010484000Z.txt
+      command_sha256: 607bd6757dc9b4e14d843c677264f6da36d1b5e6f965aa7dc87c7dfe1adf6239
+      command_summary: python3 build/migration/archive-docs.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:24:09.010484000Z"
+    - command: python3 build/migration/start-npm.py publish
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T222409.161913000Z.txt
+      command_sha256: bdda09b226ea260bbd06fdf1e539bdd431606d3efc20fe3993a7e3d2dc82a339
+      command_summary: python3 build/migration/start-npm.py publish
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:24:09.161913000Z"
+    - command: python3 build/migration/start-npm.py login
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T222431.585392000Z.txt
+      command_sha256: ba5866527cf95d6afa599a1f7b642498eb3633ef264e1c68e370213e6536fe2a
+      command_summary: python3 build/migration/start-npm.py login
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:24:31.585392000Z"
+    - command: python3 build/migration/state.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261126T222521.944239000Z.txt
+      command_sha256: 386b40adcc22881e98e4b3576952fcc769e04f4f68ec122b511d85f297925fa4
+      command_summary: python3 build/migration/state.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:25:21.944239000Z"
+    - evidence: RC4 released through guarded workflow. Eight archive checksums and source-bound docs verified;33 released-binary receipts and real Pi33 skills33 prompts4 commands pass. npm publication rejected E404; fresh web login pending. Old npm archive unchanged and not deprecated.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-26T22:25:22.049019000Z"
+    - evidence: Site and RC4 GitHub release shipped; all33 published-binary receipts, exact pack Pi loading, eight archive checksums and seven embedded docs manifests verified. npm rejected new-package publication with E404 despite account login; fresh npm web authentication is pending. Old package remains downloadable with original bytes and no deprecation notice yet.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: blocked
+      task_id: task-58
+      timestamp: "2026-11-26T22:25:53.907208000Z"
+    - command: kill -TERM -- -52046
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002143.664504000Z.txt
+      command_sha256: a122d39355288d6e0e65df89b07c3aa3ab1bf8e9935e9d3537f8467a98ddba6e
+      command_summary: kill -TERM -- -52046
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:21:43.664504000Z"
+    - command: python3 build/migration/start-npm.py login
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002143.804062000Z.txt
+      command_sha256: ba5866527cf95d6afa599a1f7b642498eb3633ef264e1c68e370213e6536fe2a
+      command_summary: python3 build/migration/start-npm.py login
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:21:43.804062000Z"
+    - evidence: Fresh npm web login completed successfully. Resume exact verified RC4 package publication, registry readback, owner migration and legacy-package deprecation; preserve stable acceptance hold and all old bytes.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:22:43.024768000Z"
+    - command: python3 build/migration/start-npm.py publish
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002243.227741000Z.txt
+      command_sha256: bdda09b226ea260bbd06fdf1e539bdd431606d3efc20fe3993a7e3d2dc82a339
+      command_summary: python3 build/migration/start-npm.py publish
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:22:43.227741000Z"
+    - command: python3 build/shipping/go.py run ./tools/audit-privacy
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002341.284226000Z.txt
+      command_sha256: fa977594043c138ca3f763576a2784a55b486a52c3364340aa37995a7e8bf93b
+      command_summary: python3 build/shipping/go.py run ./tools/audit-privacy
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:23:41.284226000Z"
+    - command: python3 build/migration/state.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002341.406120000Z.txt
+      command_sha256: 386b40adcc22881e98e4b3576952fcc769e04f4f68ec122b511d85f297925fa4
+      command_summary: python3 build/migration/state.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:23:41.406120000Z"
+    - evidence: Fresh npm login completed. Exact publication archive matches verified RC4 SHA256. npm requires a separate browser approval for publication; its challenge is active. Registry readback and owner migration remain pending.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:23:41.503455000Z"
+    - evidence: npm publication attempt3 completed successfully for the exact RC4 archive. Registry reports package processing; public metadata is not available yet. Await public tarball readback before owner migration or old-package deprecation; do not republish.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:24:40.252545000Z"
+    - command: python3 build/migration/registry.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002853.515316000Z.txt
+      command_sha256: 21e2fa38bb21ef5e51e6c98270eee5b6e5132a06be2893e0cdeb79b1e6793216
+      command_summary: python3 build/migration/registry.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:28:53.515316000Z"
+    - command: python3 build/migration/start-npm.py deprecate
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T002921.066391000Z.txt
+      command_sha256: 5e7b2a4c8385e2e2e856e7c6e4d5f964e65bfadf863f673d569342eb4eabc343
+      command_summary: python3 build/migration/start-npm.py deprecate
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:29:21.066391000Z"
+    - evidence: New npm package is public. Anonymous download and npm pack match RC4 SHA25666599a184423c845db00d11ec14b407cf91f525379202f94436cf88e960f5ec3. Real Pi loads33 skills33 prompts4 commands; owner registration and RC4 CLI updated with unrelated settings preserved. Old-package migration notice awaits its separate npm web approval.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:30:06.725894000Z"
+    - command: python3 build/migration/old-package.py --after
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T003055.069916000Z.txt
+      command_sha256: 21da2c814e38f632c53182b3ba79eeabca47c6eed825696754a0e105d45475d4
+      command_summary: python3 build/migration/old-package.py --after
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:30:55.069916000Z"
+    - command: python3 build/migration/finish.py
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T003105.500097000Z.txt
+      command_sha256: c4fa73b97116a15af41e1455cea9fc3d20eb588c3a2ac5897bb6091cf64cdddf
+      command_summary: python3 build/migration/finish.py
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:31:05.500097000Z"
+    - command: mv -n ../RECIPE-RENAME-PENDING.json ../RECIPE-RENAME-BEFORE-NPM.json
+      command_ref: .small-cache/logs/f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96/commands/20261127T003105.620552000Z.txt
+      command_sha256: eff40b2e03adbab5ce9d56336330d37b23d8a5d29898d8b6e4be3707e9a60662
+      command_summary: mv -n ../RECIPE-RENAME-PENDING.json ../RECIPE-RENAME-BEFORE-NPM.json
+      evidence:
+        exit_code: 0
+        kind: cli_execution
+        outcome: succeeded
+        strength: cli_captured
+      notes: 'apply: command outcome succeeded; task acceptance unchanged'
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: in_progress
+      task_id: task-58
+      timestamp: "2026-11-27T00:31:05.620552000Z"
+    - evidence: Generic naming rollout shipped. RC4 release and production docs verified;33 released-binary receipts pass. npm new package0.1.0 public, anonymous and npm downloads match SHA25666599a184423c845db00d11ec14b407cf91f525379202f94436cf88e960f5ec3. Real Pi33 skills33 prompts4 commands load without errors; owner package and CLI migrated with settings preserved. Old package migration notice read back and original archive hash preserved. Final migration proof published and downloaded for hash verification; stable default remains v0.4.1.
+      replayId: f6bbda15d790df6d023dea340edd1b85ccac89c82db362652a1b656981e82d96
+      status: completed
+      task_id: task-58
+      timestamp: "2026-11-27T00:31:53.778232000Z"
