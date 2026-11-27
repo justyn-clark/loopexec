@@ -1,6 +1,6 @@
 small_version: "1.0.0"
 owner: agent
-summary: 'All scoped recipe publication complete: RC3 and docs public, npm0.1.0 public and byte-identical to release archive, unauthenticated download verified. Exact released binary passed33 real fixtures and independent receipt checks; Pi registry install verified33skills33prompts4commands with no errors and other settings preserved. Core task57 completed; only existing stable/live task46 remains held. Final audit-only npm completion PR will record this verified outcome. Original receipts and acceptance unchanged; no paid calls.'
+summary: LoopExec Recipes and LoopExec for Pi rollout complete. RC4 source and docs merged; generic npm package0.1.0 public and installed with RC4 CLI. All33 actual release receipts, archive/source-doc binding, registry bytes and Pi33/33/4 resources verified. Old npm package deprecated with migration notice, remains downloadable with original bytes. Owner must reload Pi. Delivery recorded in RECIPE-RENAME-DELIVERY.json and public RC4 migration proof. Task46 stable/live hold remains unchanged; no paid calls spent. Completion audit commit is next.
 resume:
     current_task_id: task-46
     next_steps:
